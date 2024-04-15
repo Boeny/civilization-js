@@ -1,71 +1,9 @@
-const {TREE_FILTER_EXCLUDE} = require('./constants');
-
-function getElementsExceptLast(array) {
-    return array.slice(0, -1);
-}
-
-function getFolder(path) {
-    return getElementsExceptLast(path.split('/')).join('/');
-}
-
-function getLastElement(array) {
-    return array.slice(-1)[0];
-}
-
-function getFileName(path) {
-    return getLastElement(path.split('/'));
-}
-
-function vectorLength(x1, y1, x2, y2) {
-    return Math.sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
-}
-
-function splitArray(array, size) {
-    let stepArray = [];
-    const result = [];
-
-    for (let i=0; i<array.length; i++) {
-        if (stepArray.length < size) {
-            stepArray.push(array[i]);
-        } else {
-            result.push(stepArray);
-            stepArray = [];
-        }
+function readFile(fs, path) {
+    try {
+        return fs.readFileSync(path, 'utf-8');
+    } catch (e) {
+        return e.message;
     }
-
-    if (stepArray.length > 0) {
-        result.push(stepArray);
-    }
-
-    return result;
-}
-
-function resolvePath(folder, filePath) {
-    let result = folder + '/' + filePath;
-    result = result.replaceAll('//', '/');
-    result = result.replaceAll('/./', '/');
-    result = result.replace(/\/\.$/g, '');
-
-    while (result.includes('..')) {
-        result = result.replaceAll(/\/\w+\/\.\./g, '');
-    }
-    return result;
-}
-
-function resolveFolder(folder, partialFilePath) {
-    return resolvePath(folder, getFolder(partialFilePath));
-}
-
-function isExcluded(path, excludeArr) {
-    return excludeArr.some(type => !TREE_FILTER_EXCLUDE[type](path));
-}
-
-function isExcludedFromLoad(path) {
-    return isExcluded(path, Object.keys(TREE_FILTER_EXCLUDE).filter(key => key !== 'css'));
-}
-
-function isExcludedFile(path) {
-    return ['libs', '@', 'http'].every(type => TREE_FILTER_EXCLUDE[type](path));
 }
 
 // ----------------------- Async
@@ -75,29 +13,7 @@ async function sendRequest(url) {
     return response.json();
 }
 
-async function loadInSteps(promises, stepSize) {
-    let arrays = [];
-
-    if (promises.length > stepSize) {
-        arrays = splitArray(promises, stepSize);
-    } else {
-        arrays.push(promises);
-    }
-
-    const results = [];
-
-    for (let i=0; i<arrays.length; i++) {
-        results.push(await Promise.all(arrays[i]));
-    }
-
-    return results.flat();
-}
-
 // ----------------------- DOM
-
-function removeBlocks() {
-    document.querySelectorAll('.block').forEach((el) => el.remove());
-}
 
 function insertContent(el, content) {
     if (Array.isArray(content))
@@ -112,64 +28,50 @@ function body(content) {
     insertContent(document.body, content);
 }
 
-function createDiv(content = '', className, style) {
+function div(content = '', className, style) {
     const el = document.createElement('div');
     el.className = className;
     el.style = style;
 
     insertContent(el, content);
-
     return el;
 }
 
-function createBlock(content = '', style = '') {
-    return createDiv(content, 'block', 'margin: 20px;background: white; padding: 8px; border-radius: 8px;height: 40px;box-shadow: 1px 1px 8px;' + style);
-}
-
-function createContainer(content) {
-    return createDiv(content, 'block', 'display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: center;height: 80px;margin-left: 145px;');
-}
-
-function createConnections(from, toArray) {
-    const {bottom: rootBottom, left: rootLeft, width: rootWidth} = from.getBoundingClientRect();
-
-    body(toArray.map(el => {
-        const {top, left, width} = el.getBoundingClientRect();
-        const rootX = rootLeft + rootWidth/2;
-        const rootY = rootBottom - 8;
-        const x = left + width/2;
-        const length = vectorLength(x, top, rootX, rootY);
-        const dx = rootX - x;
-        const cos = dx / length;
-        const rad = -Math.acos(cos);
-        return createDiv('', 'block', `top: ${(rootY + top)/2}px;left: ${(rootX + x - length)/2}px;width: ${length + 4}px;height: 3px;transform: rotate(${rad}rad);background-color: black;position: absolute;z-index: -1;`);
-    }));
-}
-
-function makeDraggable(block, dragElement) {
-    if (!dragElement) dragElement = block;
+function makeDraggable(el, dragElement, onMove, onUp) {
+    if (!dragElement) dragElement = el;
 
     dragElement.style.cursor = 'move';
-    block.style.position = 'absolute';
+    el.style.position = 'absolute';
 
-    dragElement.onmousedown = (e) => {
+    dragElement.addEventListener('mousedown', (e) => {
         e.preventDefault();
-        // get the mouse cursor position at startup:
+        e.stopPropagation();
+
+        let oldZIndex = el.style.zIndex;
+        el.style.zIndex = 10;
+
         let oldX = e.clientX;
         let oldY = e.clientY;
 
-        document.addEventListener('mouseup', up);
+        dragElement.addEventListener('mouseup', up);
 
-        function up() {
+        function up(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            el.style.zIndex = oldZIndex;
+            onUp?.(e);
+
             document.removeEventListener('mousemove', move);
             document.removeEventListener('mouseup', up);
         }
 
-        // call a function whenever the cursor moves:
-        document.addEventListener('mousemove', move);
+        dragElement.addEventListener('mousemove', move);
 
         function move(e) {
             e.preventDefault();
+            e.stopPropagation();
+
             let x = e.clientX;
             let y = e.clientY;
 
@@ -180,31 +82,76 @@ function makeDraggable(block, dragElement) {
             oldY = e.clientY;
 
             // set the element's new position:
-            block.style.left = (block.offsetLeft - dX) + "px";
-            block.style.top = (block.offsetTop - dY) + "px";
+            x = el.offsetLeft - dX;
+            y = el.offsetTop - dY;
+            el.style.left = x + "px";
+            el.style.top = y + "px";
+
+            onMove?.(e);
         }
-      };
+    });
+}
+
+function removeDraggable(el, dragElement) {
+    if (!dragElement) dragElement = el;
+
+    dragElement.style.cursor = 'default';
+    el.style.position = 'initial';
+}
+
+function makeDraggableInsideBlock(el, dragElement, onMove, onUp) {
+    if (!dragElement) dragElement = el;
+
+    dragElement.style.cursor = 'move';
+
+    dragElement.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        let oldX = e.clientX + parseInt(el.style.marginLeft.replace('px',''));
+        let oldY = e.clientY+ parseInt(el.style.marginTop.replace('px',''));
+
+        dragElement.addEventListener('mouseup', up);
+
+        function up(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            onUp?.(e);
+
+            document.removeEventListener('mousemove', move);
+            dragElement.removeEventListener('mouseup', up);
+        }
+
+        document.addEventListener('mousemove', move);
+
+        function move(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            let x = e.clientX;
+            let y = e.clientY;
+
+            // calculate the new cursor position:
+            dX = x - oldX;
+            dY = y - oldY;
+
+            // set the element's new position:
+            el.style.marginLeft = dX + "px";
+            el.style.marginTop = dY + "px";
+
+            onMove?.(e);
+        }
+    });
 }
 
 module.exports = {
-    getFolder,
-    resolvePath,
-    resolveFolder,
-    getLastElement,
-    isExcluded,
-    isExcludedFromLoad,
-    isExcludedFile,
-    getElementsExceptLast,
-    getFileName,
-    vectorLength,
+    readFile,
     sendRequest,
-    loadInSteps,
-    removeBlocks,
-    createDiv,
-    createBlock,
+    div,
     makeDraggable,
+    removeDraggable,
+    makeDraggableInsideBlock,
     insertContent,
     body,
-    createConnections,
-    createContainer
 }
