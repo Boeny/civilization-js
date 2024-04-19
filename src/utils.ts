@@ -1,11 +1,12 @@
-export type Content = string | HTMLElement | HTMLElement[] | HTMLElement[][];
+type ContentElement = string | null | undefined | HTMLElement;
+export type Content = ContentElement | ContentElement[] | ContentElement[][];
 
 export function insertContent(container: HTMLElement, content: Content) {
     if (Array.isArray(content))
         content.forEach(item => insertContent(container, item));
-    else if (typeof content === 'object')
+    else if (typeof content === 'object' && content)
         container.appendChild(content);
-    else
+    else if (content)
         container.innerHTML = content;
 }
 
@@ -17,7 +18,7 @@ export function onLoad(callback: () => void) {
     document.addEventListener('DOMContentLoaded', callback);
 }
 
-export function multiply(n: number, callback: (i: number) => boolean | void) {
+export function forEach(n: number, callback: (i: number) => boolean | void) {
     for (let i = 0; i < n; i += 1) {
         if (callback(i) === false) break;
     }
@@ -25,7 +26,42 @@ export function multiply(n: number, callback: (i: number) => boolean | void) {
 
 export function range(from: number, to?: number): number[] {
     const count = to ? to - from : from;
+
     return [...Array(count)].map((item, i) => i);
+}
+
+export function getClasses(classes: (string | boolean | undefined)[]): string {
+    return classes.filter(Boolean).join(' ');
+}
+
+export function isValuePositiveNumber(value: number): boolean {
+    return value > 0;
+}
+
+export function isValueNumber(value: number): boolean {
+    return !isNaN(value);
+}
+
+export function isValueNonNegativeNumber(value: number): boolean {
+    return value >= 0;
+}
+
+export function isValueSmallNumber(value: number): boolean {
+    return value <= 99999;
+}
+
+export function convertToInteger(value: string): number {
+    return value.includes('.') ? NaN : Number(value);
+}
+
+export function quitGameScreen() {
+    const editorScreen = document.getElementById('game-screen');
+    editorScreen?.remove();
+}
+
+export function quitEditorScreen() {
+    const editorScreen = document.getElementById('editor-screen');
+    editorScreen?.remove();
 }
 
 // function makeDraggable(el, dragElement, onMove, onUp) {
