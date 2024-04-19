@@ -3,7 +3,45 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const isProduction = process.env.NODE_ENV == 'production';
 
 module.exports = {
-    mode: isProduction ? 'production' : 'development',
+    // amd: undefined,
+    // bail: undefined,
+    // cache: undefined,
+    // context: undefined,
+    // dependencies: undefined,
+    devServer: {
+        open: true, // open default browser
+        host: 'localhost',
+        //onBeforeSetupMiddleware: (app) => { // IS DEPRECATED for webpack 5.0
+            // app.app.get("/", function(req, res){
+            //     res.json({})
+            // });
+
+            // app.post("/post/some-data", bodyParser.json(), function(req, res){
+            //     console.log(req.body);
+            //     res.send("POST res sent from webpack dev server")
+            // });
+        //},
+        // allowedHosts: undefined,
+        // bonjour: undefined,
+        // client: undefined,
+        // compress: undefined,
+        // devMiddleware: undefined,
+        // headers: undefined,
+        // historyApiFallback: undefined,
+        // hot: undefined,
+        // ipc: undefined,
+        // liveReload: undefined,
+        // onListening: undefined,
+        // port: undefined,
+        // proxy: undefined,
+        // server: undefined,
+        // setupExitSignals: undefined,
+        // setupMiddlewares: undefined,
+        // static: undefined,
+        // watchFiles: undefined,
+        // webSocketServer: undefined,
+    },
+    // devtool: undefined,
     entry: path.resolve(__dirname, 'src/index.ts'),
     // entry: {
     //     home: './home.js',
@@ -23,7 +61,24 @@ module.exports = {
     //         layer: 'name of layer', // set the layer for an entry point
     //     },
     // },
+    // experiments: undefined,
+    // extends: undefined,
+    // externals: undefined,
+    // externalsPresets: undefined,
+    // externalsType: undefined,
+    // ignoreWarnings: undefined,
+    // infrastructureLogging: undefined,
+    // loader: undefined,
+    mode: isProduction ? 'production' : 'development',
     module: {
+        // defaultRules: undefined,
+        // exprContextCritical: undefined,
+        // exprContextRecursive: undefined,
+        // exprContextRegExp: undefined,
+        // exprContextRequest: undefined,
+        // generator: undefined,
+        // noParse: undefined,
+        // parser: undefined,
         rules: [
             {
                 test: /\.(ts)$/i,
@@ -44,7 +99,35 @@ module.exports = {
                 type: 'asset',
             },
         ],
+        // strictExportPresence: undefined,
+        // strictThisContextOnImports: undefined,
+        // unknownContextCritical: undefined,
+        // unknownContextRecursive: undefined,
+        // unknownContextRegExp: undefined,
+        // unknownContextRequest: undefined,
+        // unsafeCache: undefined,
+        // wrappedContextCritical: undefined,
+        // wrappedContextRecursive: undefined,
+        // wrappedContextRegExp: undefined,
     },
+    // name: undefined,
+    // node: undefined,
+    // optimization: undefined,
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+    },
+    // parallelism: undefined,
+    // performance: undefined,
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: 'Development',
+            template: path.resolve(__dirname, 'templates/index.html'),
+        }),
+    ],
+    // profile: undefined,
+    // recordsInputPath: undefined,
+    // recordsOutputPath: undefined,
+    // recordsPath: undefined,
     resolve: {
         // alias: {}, // Create aliases to import or require certain modules more easily
         // aliasFields: ['browser'], // Specify a field, such as browser, to be parsed according to this specification https://github.com/defunctzombie/package-browser-field-spec
@@ -112,46 +195,9 @@ module.exports = {
     //     ...
     // },
     // context: path.resolve(__dirname, 'src'), // The base directory, an absolute path, for resolving entry points and loaders from the configuration
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            title: 'Development',
-            template: path.resolve(__dirname, 'templates/index.html'),
-        }),
-    ],
-    devServer: {
-        open: true, // open default browser
-        host: 'localhost',
-        //onBeforeSetupMiddleware: (app) => { // IS DEPRECATED for webpack 5.0
-            // app.app.get("/", function(req, res){
-            //     res.json({})
-            // });
-
-            // app.post("/post/some-data", bodyParser.json(), function(req, res){
-            //     console.log(req.body);
-            //     res.send("POST res sent from webpack dev server")
-            // });
-        //},
-        // allowedHosts: undefined,
-        // bonjour: undefined,
-        // client: undefined,
-        // compress: undefined,
-        // devMiddleware: undefined,
-        // headers: undefined,
-        // historyApiFallback: undefined,
-        // hot: undefined,
-        // ipc: undefined,
-        // liveReload: undefined,
-        // onListening: undefined,
-        // port: undefined,
-        // proxy: undefined,
-        // server: undefined,
-        // setupExitSignals: undefined,
-        // setupMiddlewares: undefined,
-        // static: undefined,
-        // watchFiles: undefined,
-        // webSocketServer: undefined,
-    },
+    // snapshot: undefined,
+    // stats: undefined,
+    // target: undefined,
+    // watch: undefined,
+    // watchOptions: undefined,
 };
