@@ -24,6 +24,7 @@ export function EditorParamsPopup({openParentMenu}: Params) {
 
                     const values = getFormValues();
 
+
                     closePopup();
                     EditorScreen(values);
                 }}),

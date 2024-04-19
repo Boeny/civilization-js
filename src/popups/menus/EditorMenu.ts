@@ -13,7 +13,7 @@ export function EditorMenu() {
         [
             Button('Back to editing', {id: 'close-menu-button', onClick: closePopup}),
             Button('Back to main menu', {onClick: [quitEditorScreen, closePopup, MainMenu]}),
-            Button('Restart map', {onClick: [quitEditorScreen, closePopup, EditorScreen]}),
+            Button('Reload map', {onClick: [closePopup, EditorScreen]}),
             Button('New map', {onClick: [closePopup, () => EditorParamsPopup(SUB_MENU_PARAMS)]}),
             Button('Options', {onClick: [closePopup, () => OptionsPopup(SUB_MENU_PARAMS)]}),
         ],
