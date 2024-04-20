@@ -17,7 +17,6 @@ module.exports = {
             // });
 
             // app.post("/post/some-data", bodyParser.json(), function(req, res){
-            //     console.log(req.body);
             //     res.send("POST res sent from webpack dev server")
             // });
         //},
@@ -96,7 +95,11 @@ module.exports = {
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: 'asset/resource',
+            },
+            {
+                test: /\.svg$/i,
+                type: 'asset/source',
             },
         ],
         // strictExportPresence: undefined,
@@ -115,6 +118,7 @@ module.exports = {
     // optimization: undefined,
     output: {
         path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js',
     },
     // parallelism: undefined,
     // performance: undefined,

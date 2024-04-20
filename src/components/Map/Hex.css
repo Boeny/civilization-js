@@ -1,0 +1,6 @@
+.hex {
+    display: inline-block;
+}
+.hex > svg {
+    margin: -8px -9px;
+}

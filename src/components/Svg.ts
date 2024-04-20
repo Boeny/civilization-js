@@ -1,4 +1,7 @@
-export function Svg(src: string, params: Record<string, any>): HTMLElement {
-    const el = document.createElement('svg');
-    return el;
+interface Params {
+    width: number;
+}
+
+export function Svg(source: string, {width}: Params): string {
+    return source.replace('width=""', `width="${width}"`);
 }

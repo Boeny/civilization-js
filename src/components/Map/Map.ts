@@ -5,12 +5,13 @@ import { HexRow } from "./HexRow";
 interface Params {
     width: number;
     height: number;
+    hexSize: number;
     id?: string;
 }
 
-export function Map({width, height, ...params}: Params): HTMLElement {
+export function Map({width, height, hexSize, ...params}: Params): HTMLElement {
     return Block(
-        range(height).map((y) => HexRow(y, width)),
+        range(height).map((y) => HexRow(y, width, hexSize)),
         params,
     )
 }
