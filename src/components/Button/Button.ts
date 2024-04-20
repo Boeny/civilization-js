@@ -1,5 +1,6 @@
 import './Button.css';
-import { Content, getClasses, insertContent } from "utils";
+import { Content } from "types";
+import { getClasses, insertContent } from "utils";
 
 interface Params {
     id?: string;

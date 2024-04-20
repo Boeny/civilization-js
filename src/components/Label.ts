@@ -1,4 +1,5 @@
-import { Content, insertContent } from "utils";
+import { Content } from "types";
+import { insertContent } from "utils";
 
 export function Label(label: string, content?: Content): HTMLLabelElement {
     const el = document.createElement('label');

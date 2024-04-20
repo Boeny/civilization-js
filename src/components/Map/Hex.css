@@ -1,6 +1,12 @@
 .hex {
+    position: relative;
     display: inline-block;
 }
 .hex > svg {
     margin: -8px -9px;
+}
+.hex .hex-type {
+    position: absolute;
+    top: 38%;
+    left: 42%;
 }

@@ -1,5 +1,4 @@
-import { getClasses } from "utils";
-import { CustormFieldSetElement } from "./Form";
+import { CustormFieldSetElement } from "types";
 
 type CustomInputElement<T = string> = CustormFieldSetElement<T> & HTMLInputElement;
 

@@ -1,4 +1,5 @@
-import { Content, insertContent } from "utils";
+import { Content } from "types";
+import { insertContent } from "utils";
 
 interface Params {
     id?: string;

@@ -1,5 +1,6 @@
 import './Block.css';
-import { Content, getClasses } from "utils";
+import { Content } from "types";
+import { getClasses } from "utils";
 import { Div } from "../Div";
 
 interface Params {

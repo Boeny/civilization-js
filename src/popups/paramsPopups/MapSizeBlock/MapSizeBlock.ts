@@ -3,7 +3,8 @@ import './MapSizeBlock.css';
 import { Block } from "components/Block/Block";
 import { Input, Params } from "components/Input";
 import { Label } from "components/Label";
-import { convertToInteger, isValueNonNegativeNumber, isValueNumber, isValuePositiveNumber, isValueSmallNumber } from 'utils';
+import { convertToInteger } from 'utils';
+import { isValueNonNegativeNumber, isValueNumber, isValuePositiveNumber, isValueSmallNumber } from 'logic';
 
 const DEFAULT_MAP_SIZE_VALUE = 100;
 const DEFAULT_HEX_SIZE_VALUE = 100;

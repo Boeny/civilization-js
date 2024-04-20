@@ -1,5 +1,6 @@
 import './Popup.css';
-import { Content, body, getClasses } from "utils";
+import { Content } from "types";
+import { body, getClasses } from "utils";
 import { Div } from "../../components/Div";
 
 interface ContentParams {

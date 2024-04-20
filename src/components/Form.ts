@@ -1,14 +1,5 @@
-import { Content } from "utils";
+import { Content, CustormFieldSetElement } from "types";
 import { Div } from "./Div";
-
-export interface CustormFieldSetElement<T> extends HTMLFieldSetElement {
-    name: string;
-    value: string;
-    getValue: () => T;
-    checkSubmitValidity: () => boolean;
-    setSubmitError: () => void;
-    removeSubmitError: () => void;
-}
 
 function getFormFields<T>(container: HTMLElement) {
     const formElementsIterator = container.querySelectorAll<CustormFieldSetElement<T>>('[name]').values();

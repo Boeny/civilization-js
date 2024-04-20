@@ -1,17 +1,17 @@
 import { Block } from "components/Block/Block";
 import { range } from "utils";
 import { HexRow } from "./HexRow";
+import { MapData } from "types";
 
 interface Params {
-    width: number;
-    height: number;
+    mapData: MapData;
     hexSize: number;
     id?: string;
 }
 
-export function Map({width, height, hexSize, ...params}: Params): HTMLElement {
+export function Map({mapData, hexSize, ...params}: Params): HTMLElement {
     return Block(
-        range(height).map((y) => HexRow(y, width, hexSize)),
+        mapData.map((dataRow, y) => HexRow(y, dataRow, hexSize)),
         params,
     )
 }
