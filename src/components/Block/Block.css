@@ -1,10 +1,11 @@
 .block {
     padding: 14px;
     margin: 5px 0;
+    background-color: white;
+    border-radius: 7px;
 }
 .block.bordered {
     border: 1px solid #ccc;
-    border-radius: 7px;
 }
 .block.flex-column {
     display: flex;

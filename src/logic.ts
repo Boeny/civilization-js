@@ -1,6 +1,6 @@
-import { MapData } from "types";
+import { MapData, MapDataRow } from "types";
 import { HEX_TYPES_COUNT } from "const";
-import { range } from "utils";
+import { getAsyncCallback, range } from "utils";
 
 export function isValuePositiveNumber(value: number): boolean {
     return value > 0;
@@ -18,10 +18,25 @@ export function isValueSmallNumber(value: number): boolean {
     return value <= 99999;
 }
 
-export function generateRandomMapData(width: number, height: number): MapData {
-    return range(height).map((y) => {
-        return range(width).map((x) => {
-            return Math.floor(Math.random() * HEX_TYPES_COUNT);
-        })
-    });
+async function generateRandomMapRow(width: number): Promise<MapDataRow> {
+    const result: MapDataRow = [];
+
+    for (let i = 0; i < width; i += 1) {
+        const type = await getAsyncCallback(() => Math.floor(Math.random() * HEX_TYPES_COUNT));
+        result.push(type);
+    }
+
+    return result;
+}
+
+export async function generateRandomMapData(width: number, height: number, callback: (n: number) => void): Promise<MapData> {
+    const result: MapData = [];
+
+    for (let i = 0; i < height; i += 1) {
+        const row = await generateRandomMapRow(width);
+        callback(width * i);
+        result.push(row);
+    }
+
+    return result;
 }

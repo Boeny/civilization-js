@@ -10,7 +10,7 @@ interface Params {
     alignedVertically?: boolean;
 }
 
-export function Block(content?: Content, params?: Params): HTMLElement {
+export function Block(content?: Content, params?: Params) {
     const {bordered, alignedVertically, className, ...rest} = params || {};
 
     return Div(

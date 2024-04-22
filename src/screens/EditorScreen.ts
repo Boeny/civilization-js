@@ -1,9 +1,17 @@
-import { Block } from "components/Block/Block";
-import { Map } from "components/Map/Map";
+import './Screen.css';
+import { MapData } from 'types';
 import { generateRandomMapData } from "logic";
+import { body } from "utils";
+import { Map, Params as MapParams } from "components/Map/Map";
 import { EditorMenu } from "popups/menus/EditorMenu";
 import { OpenMenuButton } from "screens/OpenMenuButton/OpenMenuButton";
-import { body, quitEditorScreen } from "utils";
+import { Message } from "./Message";
+import { Div } from 'components/Div';
+
+async function generateMap({width, height}: Params): Promise<MapData> {
+    const count = width * height;
+    return generateRandomMapData(width, height, (n) => Message(`Loading... ${Math.floor(100 * n / count)}%`));
+}
 
 export interface Params {
     width: number;
@@ -11,21 +19,17 @@ export interface Params {
     hexSize: number;
 }
 
-let cachedParams: Params;
-
-export function EditorScreen(params: Params = cachedParams) {
-    const {width, height, hexSize} = params;
-    cachedParams = params;
-
-    quitEditorScreen();
+export async function EditorScreen(params?: Params) {
+    const mapParams: MapParams | undefined = params ? {mapData: await generateMap(params), hexSize: params.hexSize} : undefined;
 
     body(
-        Block(
+        Div(
             [
-                Map({mapData: generateRandomMapData(width, height), hexSize}),
+                Map(mapParams),
                 OpenMenuButton({openMenu: EditorMenu}),
             ],
-            {id: 'editor-screen'}
-        )
+            {id: 'editor-screen', className: 'screen'}
+        ),
+        true
     );
 }
