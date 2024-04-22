@@ -2,6 +2,7 @@ import './Popup.css';
 import { Content } from "types";
 import { body, getClasses } from "utils";
 import { Div } from "../../components/Div";
+import { Layout } from 'components/Layout/Layout';
 
 interface ContentParams {
     closePopup: () => void;
@@ -19,7 +20,7 @@ export function Popup(contentCallback: (contentParams: ContentParams) => Content
         ...params,
         className: getClasses(['popup', params?.className])
     });
-    const container = Div(popup, {id: 'layout'});
+    const container = Layout(popup);
 
     body(container, params?.reset);
 }
