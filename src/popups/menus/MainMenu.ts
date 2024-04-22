@@ -13,6 +13,6 @@ export function MainMenu() {
             Button('Editor', {onClick: [closePopup, () => EditorParamsPopup(SUB_MENU_PARAMS)]}),
             Button('Options', {onClick: [closePopup, () => OptionsPopup(SUB_MENU_PARAMS)]}),
         ],
-        {id: 'main-menu'}
+        {id: 'main-menu', reset: true}
     )
 }

@@ -10,7 +10,8 @@ export function insertContent(container: HTMLElement, content: Content) {
         container.innerHTML = content;
 }
 
-export function body(content: Content) {
+export function body(content: Content, reset = false) {
+    if (reset) document.body.innerHTML = '';
     insertContent(document.body, content);
 }
 
@@ -38,14 +39,10 @@ export function convertToInteger(value: string): number {
     return value.includes('.') ? NaN : Number(value);
 }
 
-export function quitGameScreen() {
-    const editorScreen = document.getElementById('game-screen');
-    editorScreen?.remove();
-}
-
-export function quitEditorScreen() {
-    const editorScreen = document.getElementById('editor-screen');
-    editorScreen?.remove();
+export function getAsyncCallback<T>(callback: () => T, timeout = 0): Promise<T> {
+    return new Promise((resolve) => {
+        setTimeout(() => resolve(callback()), timeout);
+    });
 }
 
 // function makeDraggable(el, dragElement, onMove, onUp) {

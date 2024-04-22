@@ -1,6 +1,5 @@
 import { Button } from "components/Button/Button";
 import { Popup } from "popups/Popup/Popup";
-import { MainMenu } from "../menus/MainMenu";
 import { GameScreen, Params as GemScreenParams } from "screens/GameScreen";
 import { Form } from "components/Form";
 import { MapSizeBlock } from "./MapSizeBlock/MapSizeBlock";
@@ -22,10 +21,7 @@ export function NewGameParamsPopup({openParentMenu}: Params) {
                         return;
                     }
 
-                    const values = getFormValues();
-
-                    closePopup();
-                    GameScreen(values);
+                    GameScreen(getFormValues());
                 }}),
             ]
         ),

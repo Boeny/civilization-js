@@ -10,6 +10,7 @@ interface ContentParams {
 interface Params {
     id?: string;
     className?: string;
+    reset?: boolean;
 }
 
 export function Popup(contentCallback: (contentParams: ContentParams) => Content, params?: Params) {
@@ -20,5 +21,5 @@ export function Popup(contentCallback: (contentParams: ContentParams) => Content
     });
     const container = Div(popup, {id: 'layout'});
 
-    body(container);
+    body(container, params?.reset);
 }

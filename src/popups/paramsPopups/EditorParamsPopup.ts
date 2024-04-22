@@ -1,6 +1,5 @@
 import { Button } from "components/Button/Button";
 import { Popup } from "popups/Popup/Popup";
-import { MainMenu } from "../menus/MainMenu";
 import { EditorScreen, Params as EditorScreenParams } from "screens/EditorScreen";
 import { Form } from "components/Form";
 import { MapSizeBlock } from "./MapSizeBlock/MapSizeBlock";
@@ -22,11 +21,7 @@ export function EditorParamsPopup({openParentMenu}: Params) {
                         return;
                     }
 
-                    const values = getFormValues();
-
-
-                    closePopup();
-                    EditorScreen(values);
+                    EditorScreen(getFormValues());
                 }}),
             ]
         ),
