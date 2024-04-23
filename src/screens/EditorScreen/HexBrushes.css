@@ -6,4 +6,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    user-select: none;
+    border: 3px solid #8f8f8f;
+}
+.brush.selected {
+    outline: 4px solid #ff7600;
 }

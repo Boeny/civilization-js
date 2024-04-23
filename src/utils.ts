@@ -61,6 +61,10 @@ export function getAsyncCallback<T>(callback: () => T, timeout = 0): Promise<T> 
     });
 }
 
+export function trigger(event: string) {
+    document.dispatchEvent(new Event(event));
+}
+
 // function makeDraggable(el, dragElement, onMove, onUp) {
 //     if (!dragElement) dragElement = el;
 
