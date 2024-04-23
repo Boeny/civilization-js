@@ -2,6 +2,7 @@ import './HexRow.css';
 import { Hex } from "./Hex";
 import { Div } from "components/Div";
 import { MapDataRow } from 'types';
+import { HEX_TYPE } from 'const';
 
 // tg(60) = (width / 2) / offset = sqrt(3)
 // 2x-offset = width / (2 * sqrt(3))
@@ -9,7 +10,7 @@ import { MapDataRow } from 'types';
 const _4_SQRT_3 = 4 * Math.sqrt(3);
 
 export function HexRow(index: number, dataRow: MapDataRow, size: number, isLast: boolean) {
-    const row = dataRow.map((type) => Hex(size, type));
+    const row = dataRow.map((type) => Hex(size, type || HEX_TYPE.ocean));
     const offset = size / _4_SQRT_3;
 
     return Div(row, {
