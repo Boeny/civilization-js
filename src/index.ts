@@ -1,10 +1,7 @@
 import './index.css';
+import { KEY_CODE } from 'const';
 import { MainMenu } from "popups/menus/MainMenu";
 import { onLoad } from "utils";
-
-enum KEY_CODE {
-    esc = 'Escape',
-}
 
 document.body.addEventListener('keydown', (e) => {
     if (e.key === KEY_CODE.esc) {

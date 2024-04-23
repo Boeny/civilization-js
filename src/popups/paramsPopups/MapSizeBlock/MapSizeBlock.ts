@@ -1,7 +1,7 @@
 import { Div } from 'components/Div';
 import './MapSizeBlock.css';
 import { Block } from "components/Block/Block";
-import { Input, Params } from "components/Input";
+import { Input, Params as InputParams } from "components/Input";
 import { Label } from "components/Label";
 import { convertToInteger } from 'utils';
 import { isValueNonNegativeNumber, isValueNumber, isValuePositiveNumber, isValueSmallNumber } from 'logic';
@@ -18,7 +18,7 @@ function checkSubmitValidity(value: number): boolean {
     return isValuePositiveNumber(value);
 }
 
-const MAP_SIZE_INPUT_PROPS: Params<number> = {
+const MAP_SIZE_INPUT_PROPS: InputParams<number> = {
     defaultValue: String(DEFAULT_MAP_SIZE_VALUE),
     className: 'number-input',
     checkValidity,
@@ -27,16 +27,24 @@ const MAP_SIZE_INPUT_PROPS: Params<number> = {
     setSubmitError: (el) => el.style.outline = '2px solid #ff4d4d',
     removeSubmitError: (el) => el.style.outline = 'none',
 };
-const HEX_SIZE_INPUT_PROPS: Params<number> = {...MAP_SIZE_INPUT_PROPS, defaultValue: String(DEFAULT_HEX_SIZE_VALUE)};
 
-export function MapSizeBlock() {
+const HEX_SIZE_INPUT_PROPS: InputParams<number> = {...MAP_SIZE_INPUT_PROPS, defaultValue: String(DEFAULT_HEX_SIZE_VALUE)};
+
+interface Params {
+    autoFocus?: boolean;
+    onEnterKeyDown?: () => void;
+}
+
+export function MapSizeBlock(params?: Params) {
+    const {onEnterKeyDown, autoFocus} = params || {};
+
     return Block(
         [
             Div([
-                Label('Width', Input('width', MAP_SIZE_INPUT_PROPS)),
-                Label('Height', Input('height', MAP_SIZE_INPUT_PROPS)),
+                Label('Width', Input('width', {...MAP_SIZE_INPUT_PROPS, autoFocus, onEnterKeyDown})),
+                Label('Height', Input('height', {...MAP_SIZE_INPUT_PROPS, onEnterKeyDown})),
             ]),
-            Label('Hex size', Input('hexSize', HEX_SIZE_INPUT_PROPS)),
+            Label('Hex size', Input('hexSize', {...HEX_SIZE_INPUT_PROPS, onEnterKeyDown})),
         ],
         {bordered: true}
     )

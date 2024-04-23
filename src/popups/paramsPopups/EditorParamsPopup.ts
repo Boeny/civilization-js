@@ -4,6 +4,14 @@ import { EditorScreen, Params as EditorScreenParams } from "screens/EditorScreen
 import { Form } from "components/Form";
 import { MapSizeBlock } from "./MapSizeBlock/MapSizeBlock";
 
+const submit = (checkSubmitValidity: () => boolean, getFormValues: () => EditorScreenParams) => () => {
+    if (!checkSubmitValidity()) {
+        return;
+    }
+
+    EditorScreen(getFormValues());
+}
+
 interface Params {
     openParentMenu: () => void;
 }
@@ -13,16 +21,8 @@ export function EditorParamsPopup({openParentMenu}: Params) {
         Form<EditorScreenParams>(({getFormValues, checkSubmitValidity}) =>
             [
                 Button('Back to main menu', {id: 'close-menu-button', onClick: [closePopup, openParentMenu]}),
-
-                MapSizeBlock(),
-
-                Button('Create Map', {onClick: () => {
-                    if (!checkSubmitValidity()) {
-                        return;
-                    }
-
-                    EditorScreen(getFormValues());
-                }}),
+                MapSizeBlock({autoFocus: true, onEnterKeyDown: submit(checkSubmitValidity, getFormValues)}),
+                Button('Create Map', {onClick: submit(checkSubmitValidity, getFormValues)}),
             ]
         ),
         {id: 'editor-params-popup'}

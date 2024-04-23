@@ -1,3 +1,8 @@
+export enum KEY_CODE {
+    esc = 'Escape',
+    enter = 'Enter',
+}
+
 export enum HEX_TYPE {
     ocean,
     sea,
