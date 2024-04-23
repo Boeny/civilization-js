@@ -9,14 +9,14 @@ import { HEX_TYPE } from 'const';
 // 2x-offset / 2 = width / (4 * sqrt(3))
 const _4_SQRT_3 = 4 * Math.sqrt(3);
 
-export function HexRow(index: number, dataRow: MapDataRow, size: number, isLast: boolean) {
-    const row = dataRow.map((type) => Hex(size, type || HEX_TYPE.ocean));
+export function HexRow(y: number, dataRow: MapDataRow, size: number, isLast: boolean) {
+    const row = dataRow.map((type, x) => Hex(x, y, size, type || HEX_TYPE.ocean));
     const offset = size / _4_SQRT_3;
 
     return Div(row, {
         className: 'row',
-        marginLeft: index % 2 !== 0 ? size / 2 : 0,
-        marginTop: index === 0 ? 0 : -offset,
+        marginLeft: y % 2 !== 0 ? size / 2 : 0,
+        marginTop: y === 0 ? 0 : -offset,
         marginBottom: isLast ? 0 : -offset,
     });
 }

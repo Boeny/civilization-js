@@ -9,6 +9,9 @@ interface Params {
     marginBottom?: number;
     background?: string;
     onClick?: () => void;
+    onMouseDown?: () => void;
+    onMouseUp?: () => void;
+    onMouseMove?: () => void;
 }
 
 export function Div(content?: Content, params?: Params) {
@@ -21,6 +24,9 @@ export function Div(content?: Content, params?: Params) {
     if (params?.marginBottom) el.style.marginBottom = `${params.marginBottom}px`;
     if (params?.background) el.style.background = params.background;
     if (params?.onClick) el.onclick = params.onClick;
+    if (params?.onMouseDown) el.onmousedown = params.onMouseDown;
+    if (params?.onMouseUp) el.onmouseup = params.onMouseUp;
+    if (params?.onMouseMove) el.onmousemove = params.onMouseMove;
 
     insertContent(el, content);
 
