@@ -25,6 +25,22 @@ export function forEach(n: number, callback: (i: number) => boolean | void) {
     }
 }
 
+export async function asyncForEach(n: number, callback: (i: number) => void) {
+    for (let i = 0; i < n; i += 1) {
+        await callback(i);
+    }
+}
+
+export async function asyncMap<T, Q>(array: T[], callback: (el: T, i: number) => Promise<Q>): Promise<Q[]> {
+    const result: Q[] = [];
+
+    for (let i = 0; i < array.length; i += 1) {
+        result.push(await callback(array[i], i));
+    }
+
+    return result;
+}
+
 export function range(from: number, to?: number): number[] {
     const count = to ? to - from : from;
 
