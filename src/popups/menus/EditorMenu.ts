@@ -2,7 +2,7 @@ import { Button } from "components/Button/Button";
 import { Popup } from "popups/Popup/Popup";
 import { MainMenu } from './MainMenu';
 import { EditorParamsPopup } from 'popups/paramsPopups/EditorParamsPopup';
-import { EditorScreen } from 'screens/EditorScreen';
+import { EditorScreen } from 'screens/EditorScreen/EditorScreen';
 import { OptionsPopup } from './OptionsPopup';
 
 const SUB_MENU_PARAMS = {openParentMenu: EditorMenu};

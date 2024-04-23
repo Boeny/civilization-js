@@ -1,6 +1,6 @@
 import { Button } from "components/Button/Button";
 import { Popup } from "popups/Popup/Popup";
-import { EditorScreen, Params as EditorScreenParams } from "screens/EditorScreen";
+import { EditorScreen, Params as EditorScreenParams } from "screens/EditorScreen/EditorScreen";
 import { Form } from "components/Form";
 import { MapSizeBlock } from "./MapSizeBlock/MapSizeBlock";
 
