@@ -3,7 +3,7 @@ import { HexRow } from "./HexRow";
 import { MapData } from "types";
 import { Div } from 'components/Div';
 import { asyncMap, getAsyncCallback } from 'utils';
-import { CachedHOC } from 'hoc/Cached';
+import { cached } from 'hoc/Cached';
 import { Message } from 'screens/Message';
 
 export interface Params {
@@ -22,4 +22,4 @@ async function MapComponent({mapData, hexSize}: Params) {
     return Div(result, {id: 'map'});
 }
 
-export const Map = CachedHOC(MapComponent);
+export const Map = cached(MapComponent);

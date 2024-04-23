@@ -1,8 +1,8 @@
-let cache: any;
+const cache = new WeakMap();
 
-export function CachedHOC<T, Q>(component: (params: T) => Q) {
+export function cached<T, Q>(component: (params: T) => Q) {
     return function(params?: T) {
-        if (params) cache = params;
-        return component(params || cache);
+        if (params) cache.set(component, params);
+        return component(params || cache.get(component));
     }
 }
