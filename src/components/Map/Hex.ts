@@ -14,9 +14,8 @@ export function Hex(x: number, y: number, size: number, type: HEX_TYPE) {
     const key = x+'-'+y;
     let color = HEX_CONFIG[type].color;
 
-    return observable(key, () =>
-        Div(
-            Svg(hex, {width: size, color}),
+    return Div(
+            observable(key, () => Svg(hex, {width: size, color})),
             {
                 className: 'hex',
                 onMouseDown: () => {
@@ -41,5 +40,4 @@ export function Hex(x: number, y: number, size: number, type: HEX_TYPE) {
                 },
             }
         )
-    )
 }

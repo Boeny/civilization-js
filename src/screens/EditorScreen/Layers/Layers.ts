@@ -1,6 +1,6 @@
 import './Layers.css';
 
-import { observable } from 'hoc/observer';
+import { observableAttrs } from 'hoc/observer';
 import { setLayerAction, isLayerSelected, selectLayerAction } from 'state/layerActions';
 import { LAYER_CONFIG, LAYER_TYPE } from 'const';
 import { getClasses } from 'utils';
@@ -13,11 +13,15 @@ function Title(title: string) {
 }
 
 function ImageContainer(title: string) {
-    return Img('image', {className: 'image-container', alt: title, title})
+    return Img('', {className: 'image-container', alt: title, title})
 }
 
 function getLayerKey(type: LAYER_TYPE) {
     return 'layer-'+type;
+}
+
+function getLayerClassName(type: LAYER_TYPE): string {
+    return getClasses(['layer', isLayerSelected(type) ? 'selected' : undefined]);
 }
 
 function Layer(type: LAYER_TYPE) {
@@ -25,17 +29,24 @@ function Layer(type: LAYER_TYPE) {
     const key = getLayerKey(type);
     setLayerAction(LAYER_TYPE.hex);
 
-    return observable(key, () =>
+    return observableAttrs(
+        key,
         Div(
             [
                 Title(title),
-                ImageContainer(title)
+                ImageContainer(title),
             ],
             {
-                className: getClasses(['layer', isLayerSelected(type) ? 'selected' : undefined]),
+                className: getLayerClassName(type),
                 onClick: () => selectLayerAction(type, getLayerKey)
             }
-        )
+        ),
+        [
+            {
+                name: 'className',
+                value: () => getLayerClassName(type),
+            }
+        ]
     )
 }
 
