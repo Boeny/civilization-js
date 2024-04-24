@@ -31,11 +31,21 @@ export async function EditorScreen(params?: Params) {
         Div(
             [
                 await Map({mapData, hexSize}),
-                Panel([
-                    OpenMenuButton({openMenu: EditorMenu}),
-                    HexBrushes(),
-                ]),
-                Panel(Layers(), {right: true}),
+                Panel(
+                    [
+                        OpenMenuButton({openMenu: EditorMenu}),
+                        HexBrushes(),
+                    ],
+                    {padding: '42px 39px'}
+                ),
+                Panel(
+                    Layers(),
+                    {
+                        width: 200,
+                        padding: 20,
+                        left: `calc(100% - ${200}px - 2*${20}px)`
+                    }
+                ),
             ],
             {id: 'editor-screen', className: 'screen'}
         ),
