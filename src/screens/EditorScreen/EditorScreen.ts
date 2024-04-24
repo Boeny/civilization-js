@@ -1,7 +1,10 @@
 import '../Screen.css';
+
 import { generateEmptyMapData } from "logic";
 import { body } from "utils";
-import { Map, Params as MapParams } from "components/Map/Map";
+import { getHexSize, getMapData, setHexSizeAction, setMapDataAction } from 'state/state';
+
+import { Map } from "components/Map/Map";
 import { EditorMenu } from "popups/menus/EditorMenu";
 import { OpenMenuButton } from "screens/OpenMenuButton/OpenMenuButton";
 import { Div } from 'components/Div';
@@ -16,12 +19,18 @@ export interface Params {
 }
 
 export async function EditorScreen(params?: Params) {
-    const mapParams: MapParams | undefined = params ? {mapData: generateEmptyMapData(params.width, params.height), hexSize: params.hexSize} : undefined;
+    const mapData = params ? generateEmptyMapData(params.width, params.height) : getMapData();
+    const hexSize = params?.hexSize || getHexSize();
+
+    if (params) {
+        setMapDataAction(mapData);
+        setHexSizeAction(hexSize);
+    }
 
     body(
         Div(
             [
-                await Map(mapParams),
+                await Map({mapData, hexSize}),
                 Panel([
                     OpenMenuButton({openMenu: EditorMenu}),
                     HexBrushes(),
