@@ -1,7 +1,7 @@
 import './Layout.css';
-import { Div } from "components/Div";
+import { Div, Params as DivParams } from "components/Div";
 import { Content } from "types";
 
-export function Layout(content: Content) {
-    return Div(content, {id: 'layout'});
+export function Layout(content: Content, params?: DivParams) {
+    return Div(content, {...params, id: 'layout'});
 }

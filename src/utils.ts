@@ -1,4 +1,4 @@
-import { Content } from "types";
+import { Attrs, Content } from "types";
 
 
 export function insertContent(container: HTMLElement, content: Content) {
@@ -63,6 +63,41 @@ export function getAsyncCallback<T>(callback: () => T, timeout = 0): Promise<T> 
 
 export function trigger(event: string) {
     document.dispatchEvent(new Event(event));
+}
+
+function getStyleAttr(attr: string | number): string {
+    return typeof attr === 'number' ? `${attr}px` : attr;
+}
+
+function applyStyleAttr(el: HTMLElement, param: string | number | undefined, styleAttr: string) {
+    if (param !== undefined) (el.style as any)[styleAttr] = getStyleAttr(param);
+}
+
+export function applyCommonAttrs(el: HTMLElement, params?: Attrs) {
+    if (params?.id) el.id = params.id;
+    if (params?.className) el.className = params.className;
+
+    applyStyleAttr(el, params?.margin, 'margin');
+    applyStyleAttr(el, params?.marginLeft, 'marginLeft');
+    applyStyleAttr(el, params?.marginRight, 'marginRight');
+    applyStyleAttr(el, params?.marginTop, 'marginTop');
+    applyStyleAttr(el, params?.marginBottom, 'marginBottom');
+
+    applyStyleAttr(el, params?.padding, 'padding');
+    applyStyleAttr(el, params?.paddingLeft, 'paddingLeft');
+    applyStyleAttr(el, params?.paddingRight, 'paddingRight');
+    applyStyleAttr(el, params?.paddingTop, 'paddingTop');
+    applyStyleAttr(el, params?.paddingBottom, 'paddingBottom');
+
+    applyStyleAttr(el, params?.left, 'left');
+    applyStyleAttr(el, params?.top, 'top');
+    applyStyleAttr(el, params?.width, 'width');
+    applyStyleAttr(el, params?.height, 'height');
+
+    if (params?.onClick) el.onclick = params.onClick;
+    if (params?.onMouseDown) el.onmousedown = params.onMouseDown;
+    if (params?.onMouseUp) el.onmouseup = params.onMouseUp;
+    if (params?.onMouseMove) el.onmousemove = params.onMouseMove;
 }
 
 // function makeDraggable(el, dragElement, onMove, onUp) {

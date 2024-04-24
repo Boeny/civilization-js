@@ -1,16 +1,14 @@
 import './Popup.css';
 import { Content } from "types";
 import { body, getClasses } from "utils";
-import { Div } from "../../components/Div";
+import { Div, Params as DivParams } from "../../components/Div";
 import { Layout } from 'components/Layout/Layout';
 
 interface ContentParams {
     closePopup: () => void;
 }
 
-interface Params {
-    id?: string;
-    className?: string;
+interface Params extends DivParams {
     reset?: boolean;
 }
 

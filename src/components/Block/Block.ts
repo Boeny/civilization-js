@@ -1,11 +1,9 @@
 import './Block.css';
 import { Content } from "types";
 import { getClasses } from "utils";
-import { Div } from "../Div";
+import { Div, Params as DivParams } from "../Div";
 
-interface Params {
-    id?: string;
-    className?: string;
+interface Params extends DivParams {
     bordered?: boolean;
     alignedVertically?: boolean;
 }
