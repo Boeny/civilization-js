@@ -1,3 +1,4 @@
+import { HEX_TYPE } from "const";
 import { MapData } from "types";
 
 export function isValuePositiveNumber(value: number): boolean {
@@ -17,5 +18,5 @@ export function isValueSmallNumber(value: number): boolean {
 }
 
 export function generateEmptyMapData(width: number, height: number): MapData {
-    return Array.from({length: height}).map(() => Array.from({length: width}));
+    return Array.from({length: height}).map(() => Array.from({length: width}).map(() => HEX_TYPE.ocean));
 }
