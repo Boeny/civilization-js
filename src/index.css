@@ -5,6 +5,6 @@ label > input {
     margin: 10px;
 }
 :root {
-    --selected-color: #ff8100;
+    --selected-color: #ff2800;
     --hover-color: #1f6ada;
 }
