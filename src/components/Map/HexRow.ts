@@ -4,7 +4,7 @@ import { Div } from "components/Div";
 import { MapDataRow } from 'types';
 import { HEX_TYPE } from 'const';
 
-// tg(60) = (width / 2) / offset = sqrt(3)
+// tg(60) = (width / 2) / 2x-offset = sqrt(3)
 // 2x-offset = width / (2 * sqrt(3))
 // 2x-offset / 2 = width / (4 * sqrt(3))
 const _4_SQRT_3 = 4 * Math.sqrt(3);
