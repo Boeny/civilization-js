@@ -1,14 +1,5 @@
-import { HEX_TYPE } from "const"
-
-interface State {
-    brush: HEX_TYPE | undefined;
-    isPainting: boolean;
-}
-
-const STATE: State = {
-    brush: undefined,
-    isPainting: false,
-}
+import { HEX_TYPE } from "const";
+import { STATE } from "./state";
 
 export function clearBrushAction() {
     STATE.brush = undefined;
@@ -34,12 +25,4 @@ export function isBrushSelected(type: HEX_TYPE): boolean {
 
 export function isAnyBrushSelected(): boolean {
     return STATE.brush !== undefined;
-}
-
-export function setPainting(isPainting: boolean) {
-    STATE.isPainting = isPainting;
-}
-
-export function isPainting(): boolean {
-    return STATE.isPainting;
 }
