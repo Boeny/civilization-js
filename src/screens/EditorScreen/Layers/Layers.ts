@@ -1,13 +1,12 @@
 import './Layers.css';
 
 import { observable } from 'hoc/observer';
-import { isAnyLayerSelected, isLayerSelected, setLayerAction } from 'state/layerActions';
+import { setLayerAction, isLayerSelected, selectLayerAction } from 'state/layerActions';
 import { LAYER_CONFIG, LAYER_TYPE } from 'const';
-import { getClasses, trigger } from 'utils';
+import { getClasses } from 'utils';
 
 import { Img } from 'components/Img';
 import { Div } from "components/Div";
-import { STATE } from 'state/state';
 
 function Title(title: string) {
     return Div(title, {className: 'title'})
@@ -34,19 +33,7 @@ function Layer(type: LAYER_TYPE) {
             ],
             {
                 className: getClasses(['layer', isLayerSelected(type) ? 'selected' : undefined]),
-                onClick: () => {
-                    if (isLayerSelected(type)) return;
-
-                    if (isAnyLayerSelected()) {
-                        const prevSelectedLayer = setLayerAction(type)!;
-                        trigger(getLayerKey(prevSelectedLayer));
-                        trigger(key);
-                        return;
-                    }
-
-                    setLayerAction(type);
-                    trigger(key);
-                }
+                onClick: () => selectLayerAction(type, getLayerKey)
             }
         )
     )
