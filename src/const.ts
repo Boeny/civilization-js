@@ -16,30 +16,61 @@ export enum HEX_TYPE {
     hill,
 }
 
-export const HEX_TYPES_COUNT = Object.keys(HEX_TYPE).length / 2; // enum object contains both number and literal keys
-
-export const HEX_COLOR: Record<string, string> = {
-    [HEX_TYPE.ocean]: 'rgb(0 138 134)',
-    [HEX_TYPE.sea]: '#02acd2',
-    [HEX_TYPE.desert]: '#f2be00',
-    [HEX_TYPE.dirt]: '#6c3700',
-    [HEX_TYPE.meadow]: '#008c00',
-    [HEX_TYPE.tundra]: '#a1daa1',
-    [HEX_TYPE.snow]: '#cffaff',
-    [HEX_TYPE.ice]: '#ffffff',
-    [HEX_TYPE.mountain]: '#a37070',
-    [HEX_TYPE.hill]: '#b0d700',
+export const HEX_CONFIG: Record<HEX_TYPE, {color: string, title: string}> = {
+    [HEX_TYPE.ocean]: {
+        color: 'rgb(0 138 134)',
+        title: 'Ocean',
+    },
+    [HEX_TYPE.sea]: {
+        color: '#02acd2',
+        title: 'Sea',
+    },
+    [HEX_TYPE.desert]: {
+        color: '#f2be00',
+        title: 'Desert',
+    },
+    [HEX_TYPE.dirt]: {
+        color: '#6c3700',
+        title: 'Dirt',
+    },
+    [HEX_TYPE.meadow]: {
+        color: '#008c00',
+        title: 'Meadow',
+    },
+    [HEX_TYPE.tundra]: {
+        color: '#a1daa1',
+        title: 'Tundra',
+    },
+    [HEX_TYPE.snow]: {
+        color: '#cffaff',
+        title: 'Snow',
+    },
+    [HEX_TYPE.ice]: {
+        color: '#ffffff',
+        title: 'Ice',
+    },
+    [HEX_TYPE.mountain]: {
+        color: '#a37070',
+        title: 'Mountain',
+    },
+    [HEX_TYPE.hill]: {
+        color: '#b0d700',
+        title: 'Hill',
+    },
 }
 
-export const HEX_NAME: Record<string, string> = {
-    [HEX_TYPE.ocean]: 'Ocean',
-    [HEX_TYPE.sea]: 'Sea',
-    [HEX_TYPE.desert]: 'Desert',
-    [HEX_TYPE.dirt]: 'Dirt',
-    [HEX_TYPE.meadow]: 'Wet',
-    [HEX_TYPE.tundra]: 'Tundra',
-    [HEX_TYPE.snow]: 'Snow',
-    [HEX_TYPE.ice]: 'Ice',
-    [HEX_TYPE.mountain]: 'Mountain',
-    [HEX_TYPE.hill]: 'Hill',
+export enum LAYER_TYPE {
+    image,
+    continuous,
+    hex,
+    objects,
+    borders,
+}
+
+export const LAYER_CONFIG: Record<LAYER_TYPE, {title: string}> = {
+    [LAYER_TYPE.image]: {title: 'Image'},
+    [LAYER_TYPE.continuous]: {title: 'Continuous map'},
+    [LAYER_TYPE.hex]: {title: 'Hexagonal base map'},
+    [LAYER_TYPE.objects]: {title: 'Objects map'},
+    [LAYER_TYPE.borders]: {title: 'Borders'},
 }

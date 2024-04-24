@@ -1,15 +1,18 @@
 import './Hex.css';
+
+import { observable } from 'hoc/observer';
+import { getBrush, isAnyBrushSelected } from 'state/brushActions';
+import { isPainting, setPainting } from 'state/paintingActions';
+import { HEX_CONFIG, HEX_TYPE } from 'const';
+import { trigger } from 'utils';
+
 import hex from 'assets/hex.svg';
 import { Svg } from "components/Svg";
 import { Div } from "components/Div";
-import { HEX_COLOR, HEX_TYPE } from 'const';
-import { getBrush, isAnyBrushSelected, isPainting, setPainting } from 'state';
-import { observable } from 'hoc/observer';
-import { trigger } from 'utils';
 
 export function Hex(x: number, y: number, size: number, type: HEX_TYPE) {
     const key = x+'-'+y;
-    let color = HEX_COLOR[type];
+    let color = HEX_CONFIG[type].color;
 
     return observable(key, () =>
         Div(
@@ -18,14 +21,14 @@ export function Hex(x: number, y: number, size: number, type: HEX_TYPE) {
                 className: 'hex',
                 onMouseDown: () => {
                     if (isAnyBrushSelected()) {
-                        color = HEX_COLOR[getBrush()!];
+                        color = HEX_CONFIG[getBrush()!].color;
                         setPainting(true);
                         trigger(key);
                     }
                 },
                 onMouseMove: () => {
                     if (isPainting()) {
-                        const newColor = HEX_COLOR[getBrush()!];
+                        const newColor = HEX_CONFIG[getBrush()!].color;
 
                         if (color != newColor) {
                             color = newColor;

@@ -1,30 +1,28 @@
 import './HexBrushes.css';
-import { HEX_NAME, HEX_COLOR, HEX_TYPE } from "const";
-import { clearBrushAction, isAnyBrushSelected, isBrushSelected, setBrushAction, toggleBrushAction } from 'state';
+
 import { observable } from 'hoc/observer';
+import { clearBrushAction, isAnyBrushSelected, isBrushSelected, setBrushAction, toggleBrushAction } from 'state/brushActions';
+import { HEX_CONFIG, HEX_TYPE } from "const";
 import { getClasses, trigger } from 'utils';
+
 import { Div } from "components/Div";
 
+// TODO: Ctrl+Z
 function getKey(type: HEX_TYPE) {
     return 'brush-button' + type;
 }
 
-export function HexBrushes() {
-    return Div(
-        Object.keys(HEX_NAME).map((type) => BrushButton(type as any as HEX_TYPE))
-    )
-}
-
 function BrushButton(type: HEX_TYPE) {
+    const {title, color} = HEX_CONFIG[type];
     const key = getKey(type);
     clearBrushAction();
 
     return observable(key, () =>
         Div(
-            HEX_NAME[type],
+            title,
             {
                 className: getClasses(['brush', isBrushSelected(type) ? 'selected' : undefined]),
-                background: HEX_COLOR[type],
+                background: color,
                 onClick: () => {
                     if (isAnyBrushSelected() && !isBrushSelected(type)) {
                         const prevSelectedBrush = setBrushAction(type)!;
@@ -38,5 +36,11 @@ function BrushButton(type: HEX_TYPE) {
                 }
             }
         )
+    )
+}
+
+export function HexBrushes() {
+    return Div(
+        Object.keys(HEX_CONFIG).map((type) => BrushButton(parseInt(type)))
     )
 }

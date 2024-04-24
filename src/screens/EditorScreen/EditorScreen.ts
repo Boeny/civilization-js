@@ -6,7 +6,8 @@ import { EditorMenu } from "popups/menus/EditorMenu";
 import { OpenMenuButton } from "screens/OpenMenuButton/OpenMenuButton";
 import { Div } from 'components/Div';
 import { Panel } from 'components/Panel/Panel';
-import { HexBrushes } from './HexBrushes';
+import { HexBrushes } from './HexBrushes/HexBrushes';
+import { Layers } from './Layers/Layers';
 
 export interface Params {
     width: number;
@@ -25,6 +26,7 @@ export async function EditorScreen(params?: Params) {
                     OpenMenuButton({openMenu: EditorMenu}),
                     HexBrushes(),
                 ]),
+                Panel(Layers(), {right: true}),
             ],
             {id: 'editor-screen', className: 'screen'}
         ),
