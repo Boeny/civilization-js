@@ -1,11 +1,13 @@
 import './Hex.css';
 
+import { HEX_CONFIG } from 'const';
 import { observable } from 'hoc/observer';
 import { getHexSize } from 'state/state';
 import { getMapPoint, updateMapPointAction } from 'state/mapActions';
 import { getBrush, isAnyBrushSelected } from 'state/brushActions';
 import { isPainting, setPainting } from 'state/paintingActions';
-import { HEX_CONFIG } from 'const';
+import { getCurrentLayer } from 'state/layerActions';
+import { getLayerImageKey } from 'screens/EditorScreen/Layers/Layer/Layer';
 
 import hex from 'assets/hex.svg';
 import { Svg } from "components/Svg";
@@ -33,12 +35,12 @@ export function Hex(x: number, y: number) {
             onMouseDown: () => {
                 if (isAnyBrushSelected()) {
                     setPainting(true);
-                    updateMapPointAction(x, y, getBrush()!, getHexKey);
+                    updateMapPointAction(x, y, getBrush()!, key, getLayerImageKey(getCurrentLayer()!));
                 }
             },
             onMouseMove: () => {
                 if (isPainting()) {
-                    updateMapPointAction(x, y, getBrush()!, getHexKey);
+                    updateMapPointAction(x, y, getBrush()!, key, getLayerImageKey(getCurrentLayer()!));
                 }
             },
             onMouseUp: () => {

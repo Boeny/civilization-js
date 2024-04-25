@@ -2,6 +2,10 @@ import { LAYER_TYPE } from "const";
 import { STATE } from "./state";
 import { trigger } from "utils";
 
+export function getCurrentLayer(): LAYER_TYPE | undefined {
+    return STATE.layer;
+}
+
 export function setLayerAction(type: LAYER_TYPE): LAYER_TYPE | undefined {
     const prevSelected = STATE.layer;
     STATE.layer = type;

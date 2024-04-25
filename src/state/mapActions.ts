@@ -20,10 +20,10 @@ function setMapPointAction(x: number, y: number, type: HEX_TYPE) {
     STATE.mapData[y][x] = type;
 }
 
-export function updateMapPointAction(x: number, y: number, newType: HEX_TYPE, getHexKey: (x: number, y: number) => string) {
+export function updateMapPointAction(x: number, y: number, newType: HEX_TYPE, hexKey: string, layerImageKey: string) {
     if (getMapPoint(x, y) != newType) {
         setMapPointAction(x, y, newType);
-        trigger(getHexKey(x, y));
-        trigger(getLayerImageKey(STATE.layer!));
+        trigger(hexKey);
+        trigger(layerImageKey);
     }
 }
