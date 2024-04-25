@@ -2,7 +2,8 @@ import '../Screen.css';
 
 import { generateEmptyMapData } from "logic";
 import { body } from "utils";
-import { getHexSize, getMapData, setHexSizeAction, setMapDataAction } from 'state/state';
+import { getHexSize, setHexSizeAction } from 'state/state';
+import { getMapData, setMapDataAction } from 'state/mapActions';
 
 import { Map } from "components/Map/Map";
 import { EditorMenu } from "popups/menus/EditorMenu";

@@ -17,14 +17,6 @@ export const STATE: State = {
     hexSize: 0,
 }
 
-export function setMapDataAction(data: MapData) {
-    STATE.mapData = data;
-}
-
-export function getMapData(): MapData {
-    return STATE.mapData;
-}
-
 export function setHexSizeAction(size: number) {
     STATE.hexSize = size;
 }

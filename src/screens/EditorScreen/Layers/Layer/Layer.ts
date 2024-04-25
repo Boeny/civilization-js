@@ -1,6 +1,6 @@
 import './Layer.css';
 
-import { observableAttrs } from 'hoc/observer';
+import { observable, observableAttrs } from 'hoc/observer';
 import { setLayerAction, isLayerSelected, selectLayerAction } from 'state/layerActions';
 import { LAYER_CONFIG, LAYER_TYPE } from 'const';
 import { getClasses } from 'utils';
@@ -14,6 +14,10 @@ function Title(title: string) {
 
 function getLayerKey(type: LAYER_TYPE) {
     return 'layer-'+type;
+}
+
+export function getLayerImageKey(type: LAYER_TYPE) {
+    return 'layer-image-'+type;
 }
 
 function getLayerClassName(type: LAYER_TYPE): string {
@@ -30,7 +34,7 @@ export function Layer(type: LAYER_TYPE) {
         Div(
             [
                 Title(title),
-                ImageContainer(title),
+                observable(getLayerImageKey(type), () => ImageContainer(title)),
             ],
             {
                 className: getLayerClassName(type),

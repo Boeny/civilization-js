@@ -1,8 +1,10 @@
-import { getMapData } from 'state/state';
 import './ImageContainer.css';
-import { Img } from "components/Img";
+
 import { MapData } from 'types';
 import { HEX_CONFIG, HEX_TYPE } from 'const';
+import { getMapData } from 'state/mapActions';
+
+import { Img } from "components/Img";
 
 function drawPoly(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, sides: number) {
     ctx.beginPath();
@@ -20,14 +22,14 @@ function getImageSrc(mapData: MapData): string {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d')!;
 
-    ctx.strokeStyle = '#000';
-    ctx.lineWidth = 1;
+    //ctx.strokeStyle = '#000';
+    //ctx.lineWidth = 1;
 
     mapData.forEach((row, y) => {
         row.forEach((type: HEX_TYPE, x) => {
             ctx.fillStyle = HEX_CONFIG[type].color;
 
-            const width = 183.15 / row.length;
+            const width = 200 / row.length;
             const radius = width / Math.sqrt(3);
             const height = 2 * radius;
             const xOffset = y % 2 === 0 ? width : width / 2;
