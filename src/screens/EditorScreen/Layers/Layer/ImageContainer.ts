@@ -1,10 +1,7 @@
 import './ImageContainer.css';
-
 import { MapData } from 'types';
 import { HEX_CONFIG, HEX_TYPE } from 'const';
 import { getMapData } from 'state/mapActions';
-
-import { Img } from "components/Img";
 
 function drawPoly(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, sides: number) {
     ctx.beginPath();
@@ -18,8 +15,9 @@ function drawPoly(ctx: CanvasRenderingContext2D, x: number, y: number, radius: n
     ctx.fill();
 }
 
-function getImageSrc(mapData: MapData): string {
+function getImageSrc(mapData: MapData) {
     const canvas = document.createElement('canvas');
+    canvas.className = 'image-container';
 
     const imageWidth = 174;
     const hexWidth = imageWidth / mapData[0].length;
@@ -27,18 +25,12 @@ function getImageSrc(mapData: MapData): string {
     const hexRadius = hexWidth / Math.sqrt(3);
 
     canvas.width = imageWidth + halfHexWidth;
-    canvas.height = 2 * hexRadius * mapData.length;
-
-    if (canvas.width > canvas.height) {
-        canvas.height = canvas.width
-    } else {
-        canvas.width = canvas.height;
-    }
+    canvas.height = 3 * hexRadius * mapData.length / 2 + hexRadius; // diameter * length / 2 + radius * length / 2 + radius
 
     const ctx = canvas.getContext('2d')!;
 
     //ctx.strokeStyle = '#000';
-    ctx.lineWidth = 1;
+    //ctx.lineWidth = 1;
 
     mapData.forEach((row, y) => {
         row.forEach((type: HEX_TYPE, x) => {
@@ -51,9 +43,9 @@ function getImageSrc(mapData: MapData): string {
         })
     })
 
-    return canvas.toDataURL();
+    return canvas;
 }
 
 export function ImageContainer(title: string) {
-    return Img(getImageSrc(getMapData()), {className: 'image-container', alt: title, title})
+    return getImageSrc(getMapData());
 }
