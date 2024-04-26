@@ -7,6 +7,7 @@ import { getClasses } from 'utils';
 
 import { Div } from "components/Div";
 import { ImageContainer } from './ImageContainer';
+import { getMapData } from 'state/mapActions';
 
 function Title(title: string) {
     return Div(title, {className: 'title'})
@@ -36,7 +37,7 @@ export function Layer(type: LAYER_TYPE, width: number) {
                 Title(title),
                 observable(
                     getLayerImageKey(type),
-                    () => ImageContainer(width - 29, title)
+                    () => ImageContainer(getMapData(), width - 29, title)
                 ),
             ],
             {

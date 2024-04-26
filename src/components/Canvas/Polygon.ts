@@ -10,7 +10,15 @@ function getPointByAngle(offset: Point, angle: number, radius: number): Point {
     };
 }
 
-export function Polygon(ctx: CanvasRenderingContext2D, centerPoint: Point, startAngle: number, radius: number, sides: number) {
+interface Params {
+    ctx: CanvasRenderingContext2D;
+    centerPoint: Point;
+    startAngle: number;
+    radius: number;
+    sides: number;
+}
+
+export function Polygon({ctx, centerPoint, startAngle, radius, sides}: Params) {
     ctx.beginPath();
 
     const startPoint = getPointByAngle(centerPoint, startAngle, radius);

@@ -1,22 +1,51 @@
 import './Map.css';
-import { HexRow } from "./HexRow";
 import { MapData } from "types";
-import { Div } from 'components/Div';
-import { asyncMap, getAsyncCallback } from 'utils';
-import { Message } from 'screens/Message';
+import { Canvas } from 'components/Canvas/Canvas';
+import { HEX_CONFIG, HEX_TYPE } from 'const';
+import { Polygon } from 'components/Canvas/Polygon';
 
 export interface Params {
     mapData: MapData;
     hexSize: number;
 }
 
-export async function Map({mapData, hexSize}: Params) {
-    const result = await asyncMap(mapData, async (dataRow, i) => {
-        Message('Loading row ' + i);
-        return getAsyncCallback(() => HexRow(i, dataRow, hexSize, i === mapData.length - 1));
-    });
+export function Map ({mapData, hexSize}: Params) {
+    const width = mapData[0].length * hexSize;
+    const halfHexWidth = hexSize / 2;
+    const hexRadius = hexSize / Math.sqrt(3);
 
-    Message('Completed');
+    return Canvas(
+        (ctx) => {
+            //ctx.strokeStyle = '#000';
+            //ctx.lineWidth = 1;
 
-    return Div(result, {id: 'map'});
+            mapData.forEach((row, y) => {
+                row.forEach((type: HEX_TYPE, x) => {
+                    ctx.fillStyle = HEX_CONFIG[type].color;
+
+                    const xOffset = (y % 2 === 0 ? 0 : halfHexWidth) + halfHexWidth;
+                    const yOffset = hexRadius;
+
+                    Polygon({
+                        ctx,
+                        centerPoint: {
+                            x: x * hexSize + xOffset,
+                            y: y * 3 * hexRadius / 2 + yOffset
+                        },
+                        startAngle: Math.PI / 2,
+                        radius: hexRadius,
+                        sides: 6,
+                    });
+
+                    //ctx.stroke();
+                    ctx.fill();
+                })
+            })
+        },
+        {
+            id: 'map',
+            width: width + halfHexWidth,
+            height: 3 * hexRadius * mapData.length / 2 + hexRadius / 2, // diameter * length / 2 + radius * length / 2 + radius / 2
+        }
+    );
 }

@@ -20,7 +20,7 @@ export interface Params {
     hexSize: number;
 }
 
-async function EditorScreenComponent(params: Params) {
+function EditorScreenComponent(params: Params) {
     const mapData = generateEmptyMapData(params.width, params.height);
     const hexSize = params.hexSize;
 
@@ -30,7 +30,7 @@ async function EditorScreenComponent(params: Params) {
     body(
         Div(
             [
-                await Map({mapData, hexSize}),
+                Map({mapData, hexSize}),
                 Panel(
                     [
                         OpenMenuButton({openMenu: EditorMenu}),
