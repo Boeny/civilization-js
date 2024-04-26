@@ -24,7 +24,8 @@ import { ToggleRightPanelButton } from './ToggleRightPanelButton';
 const LEFT_PANEL_KEY = 'toggle-left-panel';
 const RIGHT_PANEL_KEY = 'toggle-right-panel';
 const TOP_PANEL_HEIGHT = 32;
-const RIGHT_PANEL = {width: 200, padding: 20};
+const RIGHT_PANEL = {innerWidth: 200, padding: 20};
+const RIGHT_PANEL_WIDTH = RIGHT_PANEL.innerWidth + RIGHT_PANEL.padding * 2;
 
 export interface Params {
     width: number;
@@ -48,6 +49,7 @@ function EditorScreenComponent(params: Params) {
         Div(
             [
                 Map({mapData, hexSize}),
+
                 TopPanel(
                     [
                         Div(
@@ -65,11 +67,12 @@ function EditorScreenComponent(params: Params) {
                                 isRightPanelOpened = !isRightPanelOpened;
                                 trigger(RIGHT_PANEL_KEY);
                             }}),
-                            {display: 'flex', width: RIGHT_PANEL.width + RIGHT_PANEL.padding * 2},
+                            {display: 'flex', width: RIGHT_PANEL_WIDTH},
                         ),
                     ],
                     {height: TOP_PANEL_HEIGHT}
                 ),
+
                 observableAttrs(
                     LEFT_PANEL_KEY,
                     Panel(
@@ -84,17 +87,18 @@ function EditorScreenComponent(params: Params) {
                         {name: 'className', value: () => isLeftPanelOpened ? 'panel opened' : 'panel'}
                     ]
                 ),
+
                 observableAttrs(
                     RIGHT_PANEL_KEY,
                     Panel(
-                        Layers({width: RIGHT_PANEL.width}),
+                        Layers({width: RIGHT_PANEL.innerWidth}),
                         {
-                            width: RIGHT_PANEL.width,
+                            width: RIGHT_PANEL.innerWidth,
                             height: '100%',
                             overflowY: 'scroll',
                             padding: RIGHT_PANEL.padding,
                             paddingTop: 42,
-                            left: `calc(100% - ${RIGHT_PANEL.width}px - 2*${RIGHT_PANEL.padding}px)`
+                            left: `calc(100% - ${RIGHT_PANEL_WIDTH}px)`
                         }
                     ),
                     [
