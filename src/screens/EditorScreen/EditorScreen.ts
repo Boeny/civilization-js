@@ -17,6 +17,8 @@ import { setBrushAction } from 'state/brushActions';
 import { TopPanel } from './TopPanel/TopPanel';
 import { ToggleLeftPanelButton } from './ToggleLeftPanelButton';
 import { observableAttrs } from 'hoc/observable';
+import { setLayerAction } from 'state/layerActions';
+import { LAYER_TYPE } from 'const';
 
 const LEFT_PANEL_KEY = 'toggle-left-panel';
 const TOP_PANEL_HEIGHT = 32;
@@ -35,6 +37,7 @@ function EditorScreenComponent(params: Params) {
     setMapDataAction(mapData);
     setHexSizeAction(hexSize);
     setBrushAction(undefined);
+    setLayerAction(LAYER_TYPE.hex);
 
     let isLeftPanelOpened = true;
 

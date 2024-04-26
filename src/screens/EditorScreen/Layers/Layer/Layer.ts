@@ -1,7 +1,7 @@
 import './Layer.css';
 
 import { observable, observableAttrs } from 'hoc/observable';
-import { setLayerAction, isLayerSelected, selectLayerAction } from 'state/layerActions';
+import { isLayerSelected, selectLayerAction } from 'state/layerActions';
 import { LAYER_CONFIG, LAYER_TYPE } from 'const';
 import { getClasses } from 'utils';
 
@@ -28,7 +28,6 @@ function getLayerClassName(type: LAYER_TYPE): string {
 export function Layer(type: LAYER_TYPE, width: number) {
     const {title} = LAYER_CONFIG[type];
     const key = getLayerKey(type);
-    setLayerAction(LAYER_TYPE.hex);
 
     return observableAttrs(
         key,
