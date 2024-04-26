@@ -75,6 +75,7 @@ function applyStyleAttr(el: HTMLElement, param: string | number | undefined, sty
 export function applyCommonAttrs(el: HTMLElement, params?: Attrs) {
     if (params?.id) el.id = params.id;
     if (params?.className) el.className = params.className;
+    if (params?.display) el.style.display = params.display;
 
     applyStyleAttr(el, params?.margin, 'margin');
     applyStyleAttr(el, params?.marginLeft, 'marginLeft');

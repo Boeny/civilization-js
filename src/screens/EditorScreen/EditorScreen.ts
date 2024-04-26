@@ -19,8 +19,10 @@ import { ToggleLeftPanelButton } from './ToggleLeftPanelButton';
 import { observableAttrs } from 'hoc/observable';
 import { setLayerAction } from 'state/layerActions';
 import { LAYER_TYPE } from 'const';
+import { ToggleRightPanelButton } from './ToggleRightPanelButton';
 
 const LEFT_PANEL_KEY = 'toggle-left-panel';
+const RIGHT_PANEL_KEY = 'toggle-right-panel';
 const TOP_PANEL_HEIGHT = 32;
 const RIGHT_PANEL = {width: 200, padding: 20};
 
@@ -40,6 +42,7 @@ function EditorScreenComponent(params: Params) {
     setLayerAction(LAYER_TYPE.hex);
 
     let isLeftPanelOpened = true;
+    let isRightPanelOpened = true;
 
     body(
         Div(
@@ -47,11 +50,23 @@ function EditorScreenComponent(params: Params) {
                 Map({mapData, hexSize}),
                 TopPanel(
                     [
-                        OpenMenuButton({openMenu: EditorMenu}),
-                        ToggleLeftPanelButton({onClick: () => {
-                            isLeftPanelOpened = !isLeftPanelOpened;
-                            trigger(LEFT_PANEL_KEY);
-                        }}),
+                        Div(
+                            [
+                                OpenMenuButton({openMenu: EditorMenu}),
+                                ToggleLeftPanelButton({onClick: () => {
+                                    isLeftPanelOpened = !isLeftPanelOpened;
+                                    trigger(LEFT_PANEL_KEY);
+                                }}),
+                            ],
+                            {display: 'flex'},
+                        ),
+                        Div(
+                            ToggleRightPanelButton({onClick: () => {
+                                isRightPanelOpened = !isRightPanelOpened;
+                                trigger(RIGHT_PANEL_KEY);
+                            }}),
+                            {display: 'flex', width: RIGHT_PANEL.width + RIGHT_PANEL.padding * 2},
+                        ),
                     ],
                     {height: TOP_PANEL_HEIGHT}
                 ),
@@ -69,16 +84,22 @@ function EditorScreenComponent(params: Params) {
                         {name: 'className', value: () => isLeftPanelOpened ? 'panel opened' : 'panel'}
                     ]
                 ),
-                Panel(
-                    Layers({width: RIGHT_PANEL.width}),
-                    {
-                        width: RIGHT_PANEL.width,
-                        height: '100%',
-                        overflowY: 'scroll',
-                        padding: RIGHT_PANEL.padding,
-                        paddingTop: 42,
-                        left: `calc(100% - ${RIGHT_PANEL.width}px - 2*${RIGHT_PANEL.padding}px)`
-                    }
+                observableAttrs(
+                    RIGHT_PANEL_KEY,
+                    Panel(
+                        Layers({width: RIGHT_PANEL.width}),
+                        {
+                            width: RIGHT_PANEL.width,
+                            height: '100%',
+                            overflowY: 'scroll',
+                            padding: RIGHT_PANEL.padding,
+                            paddingTop: 42,
+                            left: `calc(100% - ${RIGHT_PANEL.width}px - 2*${RIGHT_PANEL.padding}px)`
+                        }
+                    ),
+                    [
+                        {name: 'className', value: () => isRightPanelOpened ? 'panel opened' : 'panel'}
+                    ]
                 ),
             ],
             {id: 'editor-screen', className: 'screen', paddingTop: TOP_PANEL_HEIGHT}

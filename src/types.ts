@@ -22,6 +22,7 @@ export interface Attrs {
     top?: string | number;
     width?: string | number;
     height?: string | number;
+    display?: string;
     margin?: string | number;
     marginLeft?: string | number;
     marginRight?: string | number;
