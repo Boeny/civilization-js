@@ -1,4 +1,3 @@
-import './OpenMenuButton.css';
 import { Button } from "components/Button/Button";
 
 interface Params {
