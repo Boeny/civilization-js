@@ -5,7 +5,7 @@ import { body } from "utils";
 import { setHexSizeAction } from 'state/state';
 import { setMapDataAction } from 'state/mapActions';
 
-import { Map } from "components/Map/Map";
+import { Map } from "../Map/Map";
 import { EditorMenu } from "popups/menus/EditorMenu";
 import { OpenMenuButton } from "screens/OpenMenuButton/OpenMenuButton";
 import { Div } from 'components/Div';
