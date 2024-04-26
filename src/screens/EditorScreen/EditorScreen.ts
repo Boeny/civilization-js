@@ -2,8 +2,8 @@ import '../Screen.css';
 
 import { generateEmptyMapData } from "logic";
 import { body } from "utils";
-import { getHexSize, setHexSizeAction } from 'state/state';
-import { getMapData, setMapDataAction } from 'state/mapActions';
+import { setHexSizeAction } from 'state/state';
+import { setMapDataAction } from 'state/mapActions';
 
 import { Map } from "components/Map/Map";
 import { EditorMenu } from "popups/menus/EditorMenu";
@@ -12,6 +12,7 @@ import { Div } from 'components/Div';
 import { Panel } from 'components/Panel/Panel';
 import { HexBrushes } from './HexBrushes/HexBrushes';
 import { Layers } from './Layers/Layers';
+import { cacheParams } from 'hoc/cacheParams';
 
 export interface Params {
     width: number;
@@ -19,14 +20,12 @@ export interface Params {
     hexSize: number;
 }
 
-export async function EditorScreen(params?: Params) {
-    const mapData = params ? generateEmptyMapData(params.width, params.height) : getMapData();
-    const hexSize = params?.hexSize || getHexSize();
+async function EditorScreenComponent(params: Params) {
+    const mapData = generateEmptyMapData(params.width, params.height);
+    const hexSize = params.hexSize;
 
-    if (params) {
-        setMapDataAction(mapData);
-        setHexSizeAction(hexSize);
-    }
+    setMapDataAction(mapData);
+    setHexSizeAction(hexSize);
 
     body(
         Div(
@@ -53,3 +52,5 @@ export async function EditorScreen(params?: Params) {
         true
     );
 }
+
+export const EditorScreen = cacheParams(EditorScreenComponent);
