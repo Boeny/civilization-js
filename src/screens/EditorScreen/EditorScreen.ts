@@ -13,6 +13,7 @@ import { Panel } from 'components/Panel/Panel';
 import { HexBrushes } from './HexBrushes/HexBrushes';
 import { Layers } from './Layers/Layers';
 import { cacheParams } from 'hoc/cacheParams';
+import { setBrushAction } from 'state/brushActions';
 
 export interface Params {
     width: number;
@@ -26,6 +27,7 @@ function EditorScreenComponent(params: Params) {
 
     setMapDataAction(mapData);
     setHexSizeAction(hexSize);
+    setBrushAction(undefined);
 
     body(
         Div(

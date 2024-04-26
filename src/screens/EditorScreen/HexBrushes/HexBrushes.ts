@@ -1,6 +1,6 @@
 import './HexBrushes.css';
 import { observableAttrs } from 'hoc/observable';
-import { setBrushAction, isBrushSelected, selectBrushAction } from 'state/brushActions';
+import { isBrushSelected, selectBrushAction } from 'state/brushActions';
 import { HEX_CONFIG, HEX_TYPE } from "const";
 import { getClasses } from 'utils';
 
@@ -18,7 +18,6 @@ function getBrushClassName(type: HEX_TYPE): string {
 function BrushButton(type: HEX_TYPE) {
     const {title, color} = HEX_CONFIG[type];
     const key = getBrushKey(type);
-    setBrushAction(undefined);
 
     return observableAttrs(
         key,
