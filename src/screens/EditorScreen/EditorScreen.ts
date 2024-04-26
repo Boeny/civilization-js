@@ -40,7 +40,7 @@ export async function EditorScreen(params?: Params) {
                     {padding: '42px 39px'}
                 ),
                 Panel(
-                    Layers(),
+                    Layers({width: 200}),
                     {
                         width: 200,
                         padding: 20,

@@ -24,7 +24,7 @@ function getLayerClassName(type: LAYER_TYPE): string {
     return getClasses(['layer', isLayerSelected(type) ? 'selected' : undefined]);
 }
 
-export function Layer(type: LAYER_TYPE) {
+export function Layer(type: LAYER_TYPE, width: number) {
     const {title} = LAYER_CONFIG[type];
     const key = getLayerKey(type);
     setLayerAction(LAYER_TYPE.hex);
@@ -34,7 +34,10 @@ export function Layer(type: LAYER_TYPE) {
         Div(
             [
                 Title(title),
-                observable(getLayerImageKey(type), () => ImageContainer(title)),
+                observable(
+                    getLayerImageKey(type),
+                    () => ImageContainer(width - 29, title)
+                ),
             ],
             {
                 className: getLayerClassName(type),
