@@ -1,7 +1,7 @@
 import './Hex.css';
 
 import { HEX_CONFIG } from 'const';
-import { observable } from 'hoc/observer';
+import { observable } from 'hoc/observable';
 import { getHexSize } from 'state/state';
 import { getMapPoint, updateMapPointAction } from 'state/mapActions';
 import { getBrush, isAnyBrushSelected } from 'state/brushActions';

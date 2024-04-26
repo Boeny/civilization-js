@@ -1,6 +1,6 @@
 import './Layer.css';
 
-import { observable, observableAttrs } from 'hoc/observer';
+import { observable, observableAttrs } from 'hoc/observable';
 import { setLayerAction, isLayerSelected, selectLayerAction } from 'state/layerActions';
 import { LAYER_CONFIG, LAYER_TYPE } from 'const';
 import { getClasses } from 'utils';
