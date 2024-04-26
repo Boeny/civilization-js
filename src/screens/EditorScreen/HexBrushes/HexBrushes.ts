@@ -40,6 +40,7 @@ function BrushButton(type: HEX_TYPE) {
 
 export function HexBrushes() {
     return Div(
-        Object.keys(HEX_CONFIG).map((type) => BrushButton(parseInt(type)))
+        Object.keys(HEX_CONFIG).map((type) => BrushButton(parseInt(type))),
+        {paddingBottom: 80}
     )
 }
