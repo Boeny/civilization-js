@@ -32,7 +32,7 @@ export interface Attrs {
     paddingRight?: string | number;
     paddingTop?: string | number;
     paddingBottom?: string | number;
-    onClick?: () => void;
+    onClick?: (() => void) | (() => void)[];
     onMouseDown?: () => void;
     onMouseUp?: () => void;
     onMouseMove?: () => void;

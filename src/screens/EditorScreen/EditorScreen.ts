@@ -1,7 +1,7 @@
 import '../Screen.css';
 
 import { generateEmptyMapData } from "logic";
-import { body } from "utils";
+import { body, trigger } from "utils";
 import { setHexSizeAction } from 'state/state';
 import { setMapDataAction } from 'state/mapActions';
 
@@ -15,6 +15,12 @@ import { Layers } from './Layers/Layers';
 import { cacheParams } from 'hoc/cacheParams';
 import { setBrushAction } from 'state/brushActions';
 import { TopPanel } from './TopPanel/TopPanel';
+import { ToggleLeftPanelButton } from './ToggleLeftPanelButton';
+import { observableAttrs } from 'hoc/observable';
+
+const LEFT_PANEL_KEY = 'toggle-left-panel';
+const TOP_PANEL_HEIGHT = 32;
+const RIGHT_PANEL = {width: 200, padding: 20};
 
 export interface Params {
     width: number;
@@ -30,34 +36,49 @@ function EditorScreenComponent(params: Params) {
     setHexSizeAction(hexSize);
     setBrushAction(undefined);
 
+    let isLeftPanelOpened = true;
+
     body(
         Div(
             [
                 Map({mapData, hexSize}),
                 TopPanel(
-                    OpenMenuButton({openMenu: EditorMenu}),
+                    [
+                        OpenMenuButton({openMenu: EditorMenu}),
+                        ToggleLeftPanelButton({onClick: () => {
+                            isLeftPanelOpened = !isLeftPanelOpened;
+                            trigger(LEFT_PANEL_KEY);
+                        }}),
+                    ],
+                    {height: TOP_PANEL_HEIGHT}
+                ),
+                observableAttrs(
+                    LEFT_PANEL_KEY,
+                    Panel(
+                        HexBrushes(),
+                        {
+                            height: '100%',
+                            overflowY: 'scroll',
+                            padding: '42px 39px',
+                        }
+                    ),
+                    [
+                        {name: 'className', value: () => isLeftPanelOpened ? 'panel opened' : 'panel'}
+                    ]
                 ),
                 Panel(
-                    HexBrushes(),
+                    Layers({width: RIGHT_PANEL.width}),
                     {
+                        width: RIGHT_PANEL.width,
                         height: '100%',
                         overflowY: 'scroll',
-                        padding: '42px 39px',
-                    }
-                ),
-                Panel(
-                    Layers({width: 200}),
-                    {
-                        width: 200,
-                        height: '100%',
-                        overflowY: 'scroll',
-                        padding: 20,
+                        padding: RIGHT_PANEL.padding,
                         paddingTop: 42,
-                        left: `calc(100% - ${200}px - 2*${20}px)`
+                        left: `calc(100% - ${RIGHT_PANEL.width}px - 2*${RIGHT_PANEL.padding}px)`
                     }
                 ),
             ],
-            {id: 'editor-screen', className: 'screen'}
+            {id: 'editor-screen', className: 'screen', paddingTop: TOP_PANEL_HEIGHT}
         ),
         true
     );

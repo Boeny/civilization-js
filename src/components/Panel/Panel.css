@@ -5,4 +5,8 @@
     left: 0;
     background-color: #ccc;
     box-shadow: -2px 0px 16px #000;
+    visibility: hidden;
+}
+.opened {
+    visibility: visible;
 }

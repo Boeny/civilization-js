@@ -93,7 +93,11 @@ export function applyCommonAttrs(el: HTMLElement, params?: Attrs) {
     applyStyleAttr(el, params?.width, 'width');
     applyStyleAttr(el, params?.height, 'height');
 
-    if (params?.onClick) el.onclick = params.onClick;
+    if (params?.onClick) {
+        el.onclick = Array.isArray(params?.onClick) ?
+            () => (params.onClick as (() => void)[]).forEach((callback) => callback()) :
+            () => (params.onClick as () => void)();
+    }
     if (params?.onMouseDown) el.onmousedown = params.onMouseDown;
     if (params?.onMouseUp) el.onmouseup = params.onMouseUp;
     if (params?.onMouseMove) el.onmousemove = params.onMouseMove;

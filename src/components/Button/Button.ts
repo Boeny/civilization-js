@@ -1,22 +1,16 @@
 import './Button.css';
-import { Content } from "types";
-import { getClasses, insertContent } from "utils";
+import { Attrs, Content } from "types";
+import { applyCommonAttrs, getClasses, insertContent } from "utils";
 
-// TODO: extend Attrs
-export interface Params {
-    id?: string;
-    className?: string;
-    onClick: (() => void) | (() => void)[];
+export interface Params extends Attrs {
 }
 
-export function Button(content: Content, {onClick, className, id}: Params) {
+export function Button(content: Content, {className, ...params}: Params) {
     const el = document.createElement('button');
 
-    if (id) el.id = id;
-
     el.className = getClasses(['button', className]);
-    el.onclick = Array.isArray(onClick) ? () => onClick.forEach((callback) => callback()) : () => onClick();
 
+    applyCommonAttrs(el, params);
     insertContent(el, content);
 
     return el;
