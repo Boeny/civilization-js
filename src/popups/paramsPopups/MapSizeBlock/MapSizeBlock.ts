@@ -1,5 +1,5 @@
-import { Div } from 'components/Div';
 import './MapSizeBlock.css';
+import { Div } from 'components/Div';
 import { Block } from "components/Block/Block";
 import { Input, Params as InputParams } from "components/Input";
 import { Label } from "components/Label";

@@ -1,5 +1,4 @@
 import './ImageContainer.css';
-import { MapData } from 'types';
 import { HEX_CONFIG, HEX_TYPE } from 'const';
 import { getMapData } from 'state/mapActions';
 import { Polygon } from 'components/Canvas/Polygon';

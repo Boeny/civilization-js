@@ -1,5 +1,4 @@
 import './HexBrushes.css';
-
 import { observableAttrs } from 'hoc/observable';
 import { setBrushAction, isBrushSelected, selectBrushAction } from 'state/brushActions';
 import { HEX_CONFIG, HEX_TYPE } from "const";

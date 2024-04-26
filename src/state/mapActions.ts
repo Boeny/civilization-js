@@ -2,7 +2,6 @@ import { MapData } from "types";
 import { STATE } from "./state";
 import { HEX_TYPE } from "const";
 import { trigger } from "utils";
-import { getLayerImageKey } from "screens/EditorScreen/Layers/Layer/Layer";
 
 export function setMapDataAction(data: MapData) {
     STATE.mapData = data;

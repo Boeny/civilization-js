@@ -1,6 +1,5 @@
 import { Attrs, Content } from "types";
 
-
 export function insertContent(container: HTMLElement, content: Content) {
     if (Array.isArray(content))
         content.forEach(item => insertContent(container, item));
