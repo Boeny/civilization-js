@@ -1,31 +1,32 @@
 import '../Screen.css';
 
+import { LAYER_TYPE } from 'const';
+import { LEFT_PANEL_KEY, RIGHT_PANEL_KEY } from 'screens/const';
 import { generateEmptyMapData } from "logic";
 import { body, trigger } from "utils";
-import { setHexSizeAction } from 'state/state';
-import { setMapDataAction } from 'state/mapActions';
 
-import { Map } from "../Map/Map";
-import { EditorMenu } from "popups/menus/EditorMenu";
-import { OpenMenuButton } from "screens/OpenMenuButton";
-import { Div } from 'components/Div';
-import { Panel } from 'components/Panel/Panel';
-import { HexBrushes } from './HexBrushes/HexBrushes';
-import { Layers } from './Layers/Layers';
-import { cacheParams } from 'hoc/cacheParams';
+import { setHexSizeAction } from 'state/hexSizeActions';
+import { setMapDataAction } from 'state/mapActions';
 import { setBrushAction } from 'state/brushActions';
+import { setLayerAction } from 'state/layerActions';
+import { setGridTurnedOn } from 'state/gridStatusActions';
+import { isLeftPanelOpened, setLeftPanelOpened, toggleLeftPanelOpened } from 'state/leftPanelActions';
+import { isRightPanelOpened, setRightPanelOpened, toggleRightPanelOpened } from 'state/rightPanelActions';
+
+import { cacheParams } from 'hoc/cacheParams';
+
+import { EditorMenu } from "popups/menus/EditorMenu";
+import { Div } from 'components/Div';
+import { MapContainer } from "../Map/Map";
+import { OpenMenuButton } from "../OpenMenuButton";
 import { TopPanel } from './TopPanel/TopPanel';
 import { ToggleLeftPanelButton } from './ToggleLeftPanelButton';
-import { observableAttrs } from 'hoc/observable';
-import { setLayerAction } from 'state/layerActions';
-import { LAYER_TYPE } from 'const';
 import { ToggleRightPanelButton } from './ToggleRightPanelButton';
+import { ToggleMapGridButtonContainer } from './ToggleMapGridButton';
+import { LeftPanelContainer } from './LeftPanel/LeftPanel';
+import { RIGHT_PANEL_WIDTH, RightPanelContainer } from './RightPanel/RightPanel';
 
-const LEFT_PANEL_KEY = 'toggle-left-panel';
-const RIGHT_PANEL_KEY = 'toggle-right-panel';
 const TOP_PANEL_HEIGHT = 32;
-const RIGHT_PANEL = {innerWidth: 200, padding: 20};
-const RIGHT_PANEL_WIDTH = RIGHT_PANEL.innerWidth + RIGHT_PANEL.padding * 2;
 
 export interface Params {
     width: number;
@@ -41,14 +42,19 @@ function EditorScreenComponent(params: Params) {
     setHexSizeAction(hexSize);
     setBrushAction(undefined);
     setLayerAction(LAYER_TYPE.hex);
-
-    let isLeftPanelOpened = true;
-    let isRightPanelOpened = true;
+    setGridTurnedOn(true);
+    setLeftPanelOpened(true);
+    setRightPanelOpened(true);
 
     body(
         Div(
             [
-                Map({mapData, hexSize}),
+                MapContainer({
+                    mapData,
+                    hexSize,
+                    width: window.innerWidth,
+                    height: window.innerHeight - TOP_PANEL_HEIGHT
+                }),
 
                 TopPanel(
                     [
@@ -56,15 +62,16 @@ function EditorScreenComponent(params: Params) {
                             [
                                 OpenMenuButton({openMenu: EditorMenu}),
                                 ToggleLeftPanelButton({onClick: () => {
-                                    isLeftPanelOpened = !isLeftPanelOpened;
+                                    toggleLeftPanelOpened();
                                     trigger(LEFT_PANEL_KEY);
                                 }}),
+                                ToggleMapGridButtonContainer(),
                             ],
                             {display: 'flex'},
                         ),
                         Div(
                             ToggleRightPanelButton({onClick: () => {
-                                isRightPanelOpened = !isRightPanelOpened;
+                                toggleRightPanelOpened();
                                 trigger(RIGHT_PANEL_KEY);
                             }}),
                             {display: 'flex', width: RIGHT_PANEL_WIDTH},
@@ -73,38 +80,8 @@ function EditorScreenComponent(params: Params) {
                     {height: TOP_PANEL_HEIGHT}
                 ),
 
-                observableAttrs(
-                    LEFT_PANEL_KEY,
-                    Panel(
-                        HexBrushes(),
-                        {
-                            height: '100%',
-                            overflowY: 'scroll',
-                            padding: '42px 39px',
-                        }
-                    ),
-                    [
-                        {name: 'className', value: () => isLeftPanelOpened ? 'panel opened' : 'panel'}
-                    ]
-                ),
-
-                observableAttrs(
-                    RIGHT_PANEL_KEY,
-                    Panel(
-                        Layers({width: RIGHT_PANEL.innerWidth}),
-                        {
-                            width: RIGHT_PANEL.innerWidth,
-                            height: '100%',
-                            overflowY: 'scroll',
-                            padding: RIGHT_PANEL.padding,
-                            paddingTop: 42,
-                            left: `calc(100% - ${RIGHT_PANEL_WIDTH}px)`
-                        }
-                    ),
-                    [
-                        {name: 'className', value: () => isRightPanelOpened ? 'panel opened' : 'panel'}
-                    ]
-                ),
+                LeftPanelContainer(),
+                RightPanelContainer(),
             ],
             {id: 'editor-screen', className: 'screen', paddingTop: TOP_PANEL_HEIGHT}
         ),

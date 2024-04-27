@@ -3,8 +3,11 @@ import { HEX_CONFIG, HEX_TYPE } from 'const';
 import { Polygon } from 'components/Canvas/Polygon';
 import { Canvas } from 'components/Canvas/Canvas';
 import { MapData } from 'types';
+import { getMapData } from 'state/mapActions';
+import { observable } from 'hoc/observable';
+import { LAYER_IMAGE_KEY } from 'screens/const';
 
-export function ImageContainer(mapData: MapData, width: number, title: string) {
+function ImageComponent(mapData: MapData, width: number, title: string) {
     const hexSize = width / mapData[0].length;
     const halfHexWidth = hexSize / 2;
     const hexRadius = hexSize / Math.sqrt(3);
@@ -45,3 +48,7 @@ export function ImageContainer(mapData: MapData, width: number, title: string) {
         }
     );
 }
+
+export const ImageContainer = observable(LAYER_IMAGE_KEY, ({width, title}: any) => {
+    return ImageComponent(getMapData(), width - 29, title);
+})

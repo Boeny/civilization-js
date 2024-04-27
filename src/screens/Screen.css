@@ -1,3 +1,4 @@
 .screen {
     display: inline-block;
+    overflow: hidden;
 }

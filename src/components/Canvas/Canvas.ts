@@ -6,6 +6,7 @@ interface Params {
     width?: number;
     height?: number;
     title?: string;
+    onClick?: (x: number, y: number) => void;
 }
 
 export function Canvas(content: CanvasComponent | CanvasComponent[], params?: Params) {
@@ -17,6 +18,12 @@ export function Canvas(content: CanvasComponent | CanvasComponent[], params?: Pa
     if (params?.width) canvas.width = params.width;
     if (params?.height) canvas.height = params.height;
     if (params?.title) canvas.title = params.title;
+
+    if (params?.onClick) {
+        canvas.onclick = (e) => {
+            params?.onClick?.(e.clientX, e.clientY);
+        }
+    }
 
     const components = Array.isArray(content) ? content : [content];
 

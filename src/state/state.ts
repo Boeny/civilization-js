@@ -7,6 +7,9 @@ interface State {
     layer: LAYER_TYPE | undefined;
     mapData: MapData;
     hexSize: number;
+    isGridTurnedOn: boolean;
+    isLeftPanelOpened: boolean;
+    isRightPanelOpened: boolean;
 }
 
 export const STATE: State = {
@@ -15,12 +18,7 @@ export const STATE: State = {
     layer: undefined,
     mapData: [],
     hexSize: 0,
-}
-
-export function setHexSizeAction(size: number) {
-    STATE.hexSize = size;
-}
-
-export function getHexSize(): number {
-    return STATE.hexSize;
+    isGridTurnedOn: true,
+    isLeftPanelOpened: true,
+    isRightPanelOpened: true,
 }

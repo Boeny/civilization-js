@@ -1,6 +1,6 @@
 type ContentElement = string | null | undefined | HTMLElement;
 
-export type Content = ContentElement | ContentElement[] | ContentElement[][];
+export type Content = ContentElement | ContentElement[];
 
 export interface CustormFieldSetElement<T> extends HTMLFieldSetElement {
     name: string;

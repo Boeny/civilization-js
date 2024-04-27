@@ -1,41 +1,34 @@
 import { insertContent } from "utils";
 
-const cache: Record<string, () => void> = {};
-
-export function observable(id: string, component: () => HTMLElement | string) {
+export function observable<T>(id: string, component: (params: T) => HTMLElement | string) {
     const container = document.createElement('observable');
-    insertContent(container, component());
+    const cache = {replaceElement: () => {}};
 
-    let callback = cache[id];
+    document.addEventListener(id, () => {
+        cache.replaceElement();
+    });
 
-    if (callback) {
-        document.removeEventListener(id, callback)
-    }
-
-    callback = () => {
-        container.innerHTML = '';
-        insertContent(container, component());
-    }
-
-    document.addEventListener(id, callback);
-    cache[id] = callback;
-
-    return container;
+    return (params?: T) => {
+        cache.replaceElement = () => {
+            container.innerHTML = '';
+            insertContent(container, component(params as any));
+        }
+        cache.replaceElement();
+        return container;
+    };
 }
 
-export function observableAttrs(id: string, element: HTMLElement | string, params: {name: string, value: () => any}[]) {
-    let callback = cache[id];
+export function observableAttrs<T>(id: string, component: (params: T) => HTMLElement, attrs: {name: string, value: () => any}[]) {
+    const cache: Record<string, any> = {element: null, setAttrs: () => {}};
 
-    if (callback) {
-        document.removeEventListener(id, callback)
+    document.addEventListener(id, () => {
+        cache.setAttrs();
+    })
+
+    return (params?: T) => {
+        cache.element = component(params as any);
+        cache.setAttrs = () => attrs.forEach((attr) => cache.element[attr.name] = attr.value());
+        cache.setAttrs();
+        return cache.element;
     }
-
-    callback = () => {
-        params.forEach((param) => (element as any)[param.name] = param.value())
-    }
-
-    document.addEventListener(id, callback);
-    cache[id] = callback;
-
-    return element;
 }
