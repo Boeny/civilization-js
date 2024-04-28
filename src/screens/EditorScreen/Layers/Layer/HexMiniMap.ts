@@ -1,11 +1,11 @@
 import './HexMiniMap.css';
-import { HEX_CONFIG, HEX_TYPE } from 'const';
-import { Polygon } from 'components/Canvas/Polygon';
-import { Canvas } from 'components/Canvas/Canvas';
 import { MapData } from 'types';
+import { HEX_CONFIG, HEX_TYPE } from 'const';
+import { LAYER_IMAGE_KEY } from 'screens/EditorScreen/const';
 import { getMapData } from 'state/mapActions';
 import { observable } from 'hoc/observable';
-import { LAYER_IMAGE_KEY } from 'screens/EditorScreen/const';
+import { Polygon } from 'components/Canvas/Polygon';
+import { Canvas } from 'components/Canvas/Canvas';
 
 function HexMiniMap(mapData: MapData, width: number, title: string) {
     const hexSize = width / mapData[0].length;

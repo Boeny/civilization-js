@@ -1,15 +1,19 @@
 import './HexMap.css';
+
 import { MapData } from "types";
-import { Canvas } from 'components/Canvas/Canvas';
 import { HEX_CONFIG, HEX_TYPE } from 'const';
-import { Polygon } from 'components/Canvas/Polygon';
-import { isGridTurnedOn } from 'state/gridStatusActions';
-import { observable } from 'hoc/observable';
 import { MAP_GRID_KEY } from 'screens/EditorScreen/const';
 import { getMapData } from 'state/mapActions';
 import { getHexSize } from 'state/hexSizeActions';
+import { isGridTurnedOn } from 'state/gridStatusActions';
 
-// TODO: Ctrl+Z
+import { observable } from 'hoc/observable';
+import { Canvas } from 'components/Canvas/Canvas';
+import { Polygon } from 'components/Canvas/Polygon';
+
+// TODO: Ctrl+Z for painting
+// TODO: scroll by wheel
+// TODO: zoom by multitouch
 
 interface Params extends ContainerParams {
     mapData: MapData;
