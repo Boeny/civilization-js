@@ -44,7 +44,7 @@ export function MapSizeBlock(params?: Params) {
                 Label('Width', Input('width', {...MAP_SIZE_INPUT_PROPS, autoFocus, onEnterKeyDown})),
                 Label('Height', Input('height', {...MAP_SIZE_INPUT_PROPS, onEnterKeyDown})),
             ]),
-            Label('Hex size', Input('hexSize', {...HEX_SIZE_INPUT_PROPS, onEnterKeyDown})),
+            Label('Hex size', Input('hexWidth', {...HEX_SIZE_INPUT_PROPS, onEnterKeyDown})),
         ],
         {bordered: true}
     )

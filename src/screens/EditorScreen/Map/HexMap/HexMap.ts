@@ -2,9 +2,9 @@ import './HexMap.css';
 
 import { MapData } from "types";
 import { HEX_CONFIG, HEX_TYPE } from 'const';
-import { MAP_GRID_KEY } from 'screens/EditorScreen/const';
+import { MAP_GRID_KEY, SQRT_3 } from 'screens/EditorScreen/const';
 import { getMapData } from 'state/mapActions';
-import { getHexSize } from 'state/hexSizeActions';
+import { getHexWidth } from 'state/hexWidthActions';
 import { isGridTurnedOn } from 'state/gridStatusActions';
 
 import { observable } from 'hoc/observable';
@@ -17,13 +17,13 @@ import { Polygon } from 'components/Canvas/Polygon';
 
 interface Params extends ContainerParams {
     mapData: MapData;
-    hexSize: number;
+    hexWidth: number;
     isGridTurnedOn: boolean;
 }
 
-function HexMap ({mapData, hexSize, width, height, isGridTurnedOn}: Params) {
-    const halfHexWidth = hexSize / 2;
-    const hexRadius = hexSize / Math.sqrt(3);
+function HexMap ({mapData, hexWidth, width, height, isGridTurnedOn}: Params) {
+    const halfHexWidth = hexWidth / 2;
+    const hexRadius = hexWidth / SQRT_3;
 
     return Canvas(
         (ctx) => {
@@ -33,12 +33,12 @@ function HexMap ({mapData, hexSize, width, height, isGridTurnedOn}: Params) {
             }
 
             for (let y = 0; y < mapData.length; y += 1) {
-                if ((y - 2) * 2 * hexRadius > height) break;
+                if (y * 3 * hexRadius > height) break;
 
                 const row = mapData[y];
 
                 for (let x = 0; x < row.length; x += 1) {
-                    if (x * hexSize > width) break;
+                    if (x * hexWidth > width) break;
 
                     const type: HEX_TYPE = row[x];
 
@@ -50,7 +50,7 @@ function HexMap ({mapData, hexSize, width, height, isGridTurnedOn}: Params) {
                     Polygon({
                         ctx,
                         centerPoint: {
-                            x: x * hexSize + xOffset,
+                            x: x * hexWidth + xOffset,
                             y: y * 3 * hexRadius / 2 + yOffset
                         },
                         startAngle: Math.PI / 2,
@@ -83,7 +83,7 @@ interface ContainerParams {
 export const HexMapContainer = observable(MAP_GRID_KEY, (params: ContainerParams): HTMLElement => {
     return HexMap({
         mapData: getMapData(),
-        hexSize: getHexSize(),
+        hexWidth: getHexWidth(),
         isGridTurnedOn: isGridTurnedOn(),
         ...params,
     });

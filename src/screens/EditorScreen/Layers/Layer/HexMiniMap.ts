@@ -1,16 +1,16 @@
 import './HexMiniMap.css';
 import { MapData } from 'types';
 import { HEX_CONFIG, HEX_TYPE } from 'const';
-import { LAYER_IMAGE_KEY } from 'screens/EditorScreen/const';
+import { LAYER_IMAGE_KEY, SQRT_3 } from 'screens/EditorScreen/const';
 import { getMapData } from 'state/mapActions';
 import { observable } from 'hoc/observable';
 import { Polygon } from 'components/Canvas/Polygon';
 import { Canvas } from 'components/Canvas/Canvas';
 
 function HexMiniMap(mapData: MapData, width: number, title: string) {
-    const hexSize = width / mapData[0].length;
-    const halfHexWidth = hexSize / 2;
-    const hexRadius = hexSize / Math.sqrt(3);
+    const hexWidth = width / mapData[0].length;
+    const halfHexWidth = hexWidth / 2;
+    const hexRadius = hexWidth / SQRT_3;
 
     return Canvas(
         (ctx) => {
@@ -24,7 +24,7 @@ function HexMiniMap(mapData: MapData, width: number, title: string) {
                     Polygon({
                         ctx,
                         centerPoint: {
-                            x: x * hexSize + xOffset,
+                            x: x * hexWidth + xOffset,
                             y: y * 3 * hexRadius / 2 + yOffset
                         },
                         startAngle: Math.PI / 2,

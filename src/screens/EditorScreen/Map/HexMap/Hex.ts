@@ -2,7 +2,7 @@ import './Hex.css';
 
 import { HEX_CONFIG } from 'const';
 import { observable } from 'hoc/observable';
-import { getHexSize } from 'state/hexSizeActions';
+import { getHexWidth } from 'state/hexWidthActions';
 import { getMapPoint, updateMapPointAction } from 'state/mapActions';
 import { getBrush, isAnyBrushSelected } from 'state/brushActions';
 import { isPainting, setPainting } from 'state/paintingActions';
@@ -24,7 +24,7 @@ export function Hex(x: number, y: number) {
             Svg(
                 hex,
                 {
-                    width: getHexSize(),
+                    width: getHexWidth(),
                     color: HEX_CONFIG[getMapPoint(x, y)].color
                 }
             ),

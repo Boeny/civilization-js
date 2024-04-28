@@ -6,7 +6,7 @@ interface State {
     isPainting: boolean;
     layer: LAYER_TYPE;
     mapData: MapData;
-    hexSize: number;
+    hexWidth: number;
     isGridTurnedOn: boolean;
     isLeftPanelOpened: boolean;
     isRightPanelOpened: boolean;
@@ -17,7 +17,7 @@ export const STATE: State = {
     isPainting: false,
     layer: LAYER_TYPE.hex,
     mapData: [],
-    hexSize: 0,
+    hexWidth: 0,
     isGridTurnedOn: true,
     isLeftPanelOpened: true,
     isRightPanelOpened: true,

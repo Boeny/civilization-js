@@ -5,7 +5,7 @@ import { LEFT_PANEL_KEY, RIGHT_PANEL_KEY } from 'screens/EditorScreen/const';
 import { generateEmptyMapData } from "logic";
 import { body, trigger } from "utils";
 
-import { setHexSizeAction } from 'state/hexSizeActions';
+import { setHexWidthAction } from 'state/hexWidthActions';
 import { setMapDataAction } from 'state/mapActions';
 import { setBrushAction } from 'state/brushActions';
 import { setLayerAction } from 'state/layerActions';
@@ -31,12 +31,12 @@ const TOP_PANEL_HEIGHT = 32;
 export interface Params {
     width: number;
     height: number;
-    hexSize: number;
+    hexWidth: number;
 }
 
-function EditorScreenComponent({width, height, hexSize}: Params) {
+function EditorScreenComponent({width, height, hexWidth}: Params) {
     setMapDataAction(generateEmptyMapData(width, height));
-    setHexSizeAction(hexSize);
+    setHexWidthAction(hexWidth);
     setBrushAction(undefined);
     setLayerAction(LAYER_TYPE.hex);
     setGridTurnedOn(true);

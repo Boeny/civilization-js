@@ -7,7 +7,7 @@ import { Div } from "components/Div";
 export interface Params {
     width: number;
     height: number;
-    hexSize: number;
+    hexWidth: number;
 }
 
 export async function GameScreen(params?: Params) {
