@@ -6,12 +6,11 @@ import { getHexSize } from 'state/hexSizeActions';
 import { getMapPoint, updateMapPointAction } from 'state/mapActions';
 import { getBrush, isAnyBrushSelected } from 'state/brushActions';
 import { isPainting, setPainting } from 'state/paintingActions';
-import { getCurrentLayer } from 'state/layerActions';
 
 import hex from 'assets/hex.svg';
 import { Svg } from "components/Svg";
 import { Div } from "components/Div";
-import { LAYER_IMAGE_KEY } from 'screens/const';
+import { LAYER_IMAGE_KEY } from 'screens/EditorScreen/const';
 
 function getHexKey(x: number, y: number): string {
     return 'hex-'+x+'-'+y;

@@ -1,5 +1,5 @@
 import './RightPanel.css';
-import { RIGHT_PANEL_KEY } from "screens/const";
+import { RIGHT_PANEL_KEY } from "screens/EditorScreen/const";
 import { isRightPanelOpened } from 'state/rightPanelActions';
 import { observableAttrs } from "hoc/observable";
 import { Panel } from "components/Panel/Panel";

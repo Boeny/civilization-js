@@ -1,6 +1,6 @@
 import { Button } from "components/Button/Button";
 import { observable } from "hoc/observable";
-import { MAP_GRID_KEY } from "screens/const";
+import { MAP_GRID_KEY } from "screens/EditorScreen/const";
 import { isGridTurnedOn, setGridTurnedOn } from 'state/gridStatusActions';
 import { trigger } from "utils";
 

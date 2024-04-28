@@ -1,7 +1,7 @@
 import '../Screen.css';
 
 import { LAYER_TYPE } from 'const';
-import { LEFT_PANEL_KEY, RIGHT_PANEL_KEY } from 'screens/const';
+import { LEFT_PANEL_KEY, RIGHT_PANEL_KEY } from 'screens/EditorScreen/const';
 import { generateEmptyMapData } from "logic";
 import { body, trigger } from "utils";
 
@@ -10,14 +10,13 @@ import { setMapDataAction } from 'state/mapActions';
 import { setBrushAction } from 'state/brushActions';
 import { setLayerAction } from 'state/layerActions';
 import { setGridTurnedOn } from 'state/gridStatusActions';
-import { isLeftPanelOpened, setLeftPanelOpened, toggleLeftPanelOpened } from 'state/leftPanelActions';
-import { isRightPanelOpened, setRightPanelOpened, toggleRightPanelOpened } from 'state/rightPanelActions';
+import { setLeftPanelOpened, toggleLeftPanelOpened } from 'state/leftPanelActions';
+import { setRightPanelOpened, toggleRightPanelOpened } from 'state/rightPanelActions';
 
 import { cacheParams } from 'hoc/cacheParams';
 
 import { EditorMenu } from "popups/menus/EditorMenu";
 import { Div } from 'components/Div';
-import { MapContainer } from "../Map/Map";
 import { OpenMenuButton } from "../OpenMenuButton";
 import { TopPanel } from './TopPanel/TopPanel';
 import { ToggleLeftPanelButton } from './ToggleLeftPanelButton';
@@ -25,6 +24,7 @@ import { ToggleRightPanelButton } from './ToggleRightPanelButton';
 import { ToggleMapGridButtonContainer } from './ToggleMapGridButton';
 import { LeftPanelContainer } from './LeftPanel/LeftPanel';
 import { RIGHT_PANEL_WIDTH, RightPanelContainer } from './RightPanel/RightPanel';
+import { MapContainer } from './Map/Map';
 
 const TOP_PANEL_HEIGHT = 32;
 
@@ -34,11 +34,8 @@ export interface Params {
     hexSize: number;
 }
 
-function EditorScreenComponent(params: Params) {
-    const mapData = generateEmptyMapData(params.width, params.height);
-    const hexSize = params.hexSize;
-
-    setMapDataAction(mapData);
+function EditorScreenComponent({width, height, hexSize}: Params) {
+    setMapDataAction(generateEmptyMapData(width, height));
     setHexSizeAction(hexSize);
     setBrushAction(undefined);
     setLayerAction(LAYER_TYPE.hex);
@@ -50,10 +47,8 @@ function EditorScreenComponent(params: Params) {
         Div(
             [
                 MapContainer({
-                    mapData,
-                    hexSize,
                     width: window.innerWidth,
-                    height: window.innerHeight - TOP_PANEL_HEIGHT
+                    height: window.innerHeight - TOP_PANEL_HEIGHT,
                 }),
 
                 TopPanel(

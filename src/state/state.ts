@@ -4,7 +4,7 @@ import { MapData } from "types";
 interface State {
     brush: HEX_TYPE | undefined;
     isPainting: boolean;
-    layer: LAYER_TYPE | undefined;
+    layer: LAYER_TYPE;
     mapData: MapData;
     hexSize: number;
     isGridTurnedOn: boolean;
@@ -15,7 +15,7 @@ interface State {
 export const STATE: State = {
     brush: undefined,
     isPainting: false,
-    layer: undefined,
+    layer: LAYER_TYPE.hex,
     mapData: [],
     hexSize: 0,
     isGridTurnedOn: true,

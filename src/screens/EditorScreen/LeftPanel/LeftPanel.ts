@@ -1,5 +1,5 @@
 import './LeftPanel.css';
-import { LEFT_PANEL_KEY } from "screens/const";
+import { LEFT_PANEL_KEY } from "screens/EditorScreen/const";
 import { isLeftPanelOpened } from "state/leftPanelActions";
 import { observableAttrs } from "hoc/observable";
 import { Panel } from "components/Panel/Panel";

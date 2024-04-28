@@ -1,19 +1,23 @@
-import './Map.css';
+import './HexMap.css';
 import { MapData } from "types";
 import { Canvas } from 'components/Canvas/Canvas';
 import { HEX_CONFIG, HEX_TYPE } from 'const';
 import { Polygon } from 'components/Canvas/Polygon';
 import { isGridTurnedOn } from 'state/gridStatusActions';
 import { observable } from 'hoc/observable';
-import { MAP_GRID_KEY } from 'screens/const';
+import { MAP_GRID_KEY } from 'screens/EditorScreen/const';
+import { getMapData } from 'state/mapActions';
+import { getHexSize } from 'state/hexSizeActions';
 
 // TODO: Ctrl+Z
 
 interface Params extends ContainerParams {
+    mapData: MapData;
+    hexSize: number;
     isGridTurnedOn: boolean;
 }
 
-function Map ({mapData, hexSize, width, height, isGridTurnedOn}: Params) {
+function HexMap ({mapData, hexSize, width, height, isGridTurnedOn}: Params) {
     const halfHexWidth = hexSize / 2;
     const hexRadius = hexSize / Math.sqrt(3);
 
@@ -59,7 +63,7 @@ function Map ({mapData, hexSize, width, height, isGridTurnedOn}: Params) {
             }
         },
         {
-            id: 'map',
+            id: 'hex-map',
             width,
             height,
             //onClick: (x, y) => console.log(x, y),
@@ -68,12 +72,15 @@ function Map ({mapData, hexSize, width, height, isGridTurnedOn}: Params) {
 }
 
 interface ContainerParams {
-    mapData: MapData;
-    hexSize: number;
     width: number;
     height: number;
 }
 
-export const MapContainer = observable(MAP_GRID_KEY, (params: ContainerParams): HTMLElement => {
-    return Map({...params, isGridTurnedOn: isGridTurnedOn()});
+export const HexMapContainer = observable(MAP_GRID_KEY, (params: ContainerParams): HTMLElement => {
+    return HexMap({
+        mapData: getMapData(),
+        hexSize: getHexSize(),
+        isGridTurnedOn: isGridTurnedOn(),
+        ...params,
+    });
 });

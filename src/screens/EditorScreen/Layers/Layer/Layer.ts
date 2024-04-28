@@ -6,19 +6,8 @@ import { LAYER_CONFIG, LAYER_TYPE } from 'const';
 import { getClasses } from 'utils';
 
 import { Div } from "components/Div";
-import { ImageContainer } from './ImageContainer';
-
-function Title(title: string) {
-    return Div(title, {className: 'title'})
-}
-
-function getLayerKey(type: LAYER_TYPE) {
-    return 'layer-'+type;
-}
-
-function getLayerClassName(type: LAYER_TYPE): string {
-    return getClasses(['layer', isLayerSelected(type) ? 'selected' : undefined]);
-}
+import { HexMiniMapContainer } from './HexMiniMap';
+import { LAYER_MAP_KEY } from 'screens/EditorScreen/const';
 
 interface Params extends ContainerParams {
     type: LAYER_TYPE;
@@ -30,11 +19,16 @@ function Layer({type, width, onClick}: Params) {
 
     return Div(
         [
-            Title(title),
-            ImageContainer({width, title}),
+            Div(title, {className: 'title'}),
+            type === LAYER_TYPE.hex ? HexMiniMapContainer({width, title}) : null,
         ],
         {onClick}
     )
+}
+
+
+export function getLayerKey(type: LAYER_TYPE) {
+    return 'layer-'+type;
 }
 
 interface ContainerParams {
@@ -46,10 +40,14 @@ export const LayerContainers = Object.keys(LAYER_CONFIG).map((key) => {
 
     return observableAttrs(
         getLayerKey(type),
-        ({width}: {width: number}) => Layer({type, width, onClick: () => selectLayerAction(type, getLayerKey)}),
+        ({width}: {width: number}) => Layer({
+            type,
+            width,
+            onClick: () => selectLayerAction(type, LAYER_MAP_KEY, getLayerKey)
+        }),
         [{
             name: 'className',
-            value: () => getLayerClassName(type),
+            value: () => getClasses(['layer', isLayerSelected(type) ? 'selected' : undefined]),
         }]
     )
 })
