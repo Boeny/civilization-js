@@ -6,7 +6,10 @@ interface Params {
     width?: number;
     height?: number;
     title?: string;
-    onClick?: (x: number, y: number) => void;
+    onClick?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
+    onMouseDown?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
+    onMouseMove?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
+    onMouseUp?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
 }
 
 export function Canvas(content: CanvasComponent | CanvasComponent[], params?: Params) {
@@ -21,7 +24,22 @@ export function Canvas(content: CanvasComponent | CanvasComponent[], params?: Pa
 
     if (params?.onClick) {
         canvas.onclick = (e) => {
-            params?.onClick?.(e.clientX, e.clientY);
+            params?.onClick?.(ctx, e.offsetX, e.offsetY);
+        }
+    }
+    if (params?.onMouseDown) {
+        canvas.onmousedown = (e) => {
+            params?.onMouseDown?.(ctx, e.offsetX, e.offsetY);
+        }
+    }
+    if (params?.onMouseMove) {
+        canvas.onmousemove = (e) => {
+            params?.onMouseMove?.(ctx, e.offsetX, e.offsetY);
+        }
+    }
+    if (params?.onMouseUp) {
+        canvas.onmouseup = (e) => {
+            params?.onMouseUp?.(ctx, e.offsetX, e.offsetY);
         }
     }
 
