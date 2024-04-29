@@ -1,6 +1,6 @@
-export const MAP_GRID_KEY = 'toggle-map-grid';
+export const HEX_MAP_KEY = 'hex-map-update';
 
-export const LAYER_IMAGE_KEY = 'layer-image';
+export const HEX_MINI_MAP_KEY = 'layer-image-update';
 
 export const LEFT_PANEL_KEY = 'toggle-left-panel';
 

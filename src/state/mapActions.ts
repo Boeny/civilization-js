@@ -15,14 +15,6 @@ export function getMapPoint(x: number, y: number): HEX_TYPE {
     return STATE.mapData[y][x];
 }
 
-function setMapPointAction(x: number, y: number, type: HEX_TYPE) {
+export function setMapPointAction(x: number, y: number, type: HEX_TYPE) {
     STATE.mapData[y][x] = type;
-}
-
-export function updateMapPointAction(x: number, y: number, newType: HEX_TYPE, hexKey: string, layerImageKey: string) {
-    if (getMapPoint(x, y) != newType) {
-        setMapPointAction(x, y, newType);
-        trigger(hexKey);
-        trigger(layerImageKey);
-    }
 }

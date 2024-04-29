@@ -1,15 +1,19 @@
 import './HexMap.css';
 
 import { MapData } from "types";
-import { HEX_CONFIG, HEX_TYPE } from 'const';
-import { MAP_GRID_KEY, SQRT_3 } from 'screens/EditorScreen/const';
-import { getMapData } from 'state/mapActions';
+import { HEX_MAP_KEY, HEX_MINI_MAP_KEY, SQRT_3 } from 'screens/EditorScreen/const';
+import { getMapData, getMapPoint, setMapPointAction } from 'state/mapActions';
 import { getHexWidth } from 'state/hexWidthActions';
 import { isGridTurnedOn } from 'state/gridStatusActions';
 
 import { observable } from 'hoc/observable';
 import { Canvas } from 'components/Canvas/Canvas';
-import { Polygon } from 'components/Canvas/Polygon';
+import { getBrush } from 'state/brushActions';
+import { Hex } from './Hex';
+import { getMapCoordinatesFromCursor } from 'logic';
+import { isPainting, setPainting } from 'state/paintingActions';
+import { trigger } from 'utils';
+import { HEX_TYPE } from 'const';
 
 // TODO: Ctrl+Z for painting
 // TODO: scroll by wheel
@@ -19,50 +23,25 @@ interface Params extends ContainerParams {
     mapData: MapData;
     hexWidth: number;
     isGridTurnedOn: boolean;
+    onMouseDown: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
+    onMouseMove: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
+    onMouseUp: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
 }
 
-function HexMap ({mapData, hexWidth, width, height, isGridTurnedOn}: Params) {
-    const halfHexWidth = hexWidth / 2;
-    const hexRadius = hexWidth / SQRT_3;
-
+function HexMap ({mapData, hexWidth, width, height, isGridTurnedOn, onMouseDown, onMouseMove, onMouseUp}: Params) {
     return Canvas(
         (ctx) => {
-            if (isGridTurnedOn) {
-                ctx.strokeStyle = '#000';
-                ctx.lineWidth = 1;
-            }
+            const hexRadius = hexWidth / SQRT_3;
 
             for (let y = 0; y < mapData.length; y += 1) {
-                if (y * 3 * hexRadius > height) break;
+                if (y * hexRadius * 1.5 > height) break;
 
                 const row = mapData[y];
 
                 for (let x = 0; x < row.length; x += 1) {
                     if (x * hexWidth > width) break;
 
-                    const type: HEX_TYPE = row[x];
-
-                    ctx.fillStyle = HEX_CONFIG[type].color;
-
-                    const xOffset = (y % 2 === 0 ? 0 : halfHexWidth) + halfHexWidth;
-                    const yOffset = hexRadius;
-
-                    Polygon({
-                        ctx,
-                        centerPoint: {
-                            x: x * hexWidth + xOffset,
-                            y: y * 3 * hexRadius / 2 + yOffset
-                        },
-                        startAngle: Math.PI / 2,
-                        radius: hexRadius,
-                        sides: 6,
-                    });
-
-                    if (isGridTurnedOn) {
-                        ctx.stroke();
-                    }
-
-                    ctx.fill();
+                    Hex({ctx, x, y, width: hexWidth, radius: hexRadius, type: row[x], isGridTurnedOn})
                 }
             }
         },
@@ -70,9 +49,28 @@ function HexMap ({mapData, hexWidth, width, height, isGridTurnedOn}: Params) {
             id: 'hex-map',
             width,
             height,
-            //onClick: (x, y) => console.log(x, y),
+            onMouseDown,
+            onMouseMove,
+            onMouseUp,
         }
     );
+}
+
+
+function drawHex(ctx: CanvasRenderingContext2D, brushType: HEX_TYPE, x: number, y: number) {
+    const hexWidth = getHexWidth();
+    const hexRadius = hexWidth / SQRT_3;
+
+    const [mapX, mapY] = getMapCoordinatesFromCursor(x, y, hexWidth, hexRadius);
+    if (mapX < 0) return;
+
+    if (getMapPoint(mapX, mapY) === brushType) return;
+
+    console.log(mapX, mapY);
+    Hex({ctx, x: mapX, y: mapY, width: hexWidth, radius: hexRadius, type: brushType, isGridTurnedOn: isGridTurnedOn()});
+
+    setMapPointAction(mapX, mapY, brushType);
+    trigger(HEX_MINI_MAP_KEY);
 }
 
 interface ContainerParams {
@@ -80,11 +78,26 @@ interface ContainerParams {
     height: number;
 }
 
-export const HexMapContainer = observable(MAP_GRID_KEY, (params: ContainerParams): HTMLElement => {
+export const HexMapContainer = observable(HEX_MAP_KEY, (params: ContainerParams): HTMLElement => {
     return HexMap({
         mapData: getMapData(),
         hexWidth: getHexWidth(),
         isGridTurnedOn: isGridTurnedOn(),
         ...params,
+        onMouseDown: (ctx, x, y) => {
+            const brushType = getBrush();
+            if (brushType) {
+                drawHex(ctx, brushType, x, y);
+                setPainting(true);
+            }
+        },
+        onMouseMove: (ctx, x, y) => {
+            if (isPainting()) {
+                drawHex(ctx, getBrush()!, x, y);
+            }
+        },
+        onMouseUp: () => {
+            setPainting(false);
+        },
     });
 });
