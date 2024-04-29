@@ -1,50 +1,29 @@
-import './Hex.css';
+import { HEX_CONFIG, HEX_TYPE } from 'const';
+import { Polygon } from 'components/Canvas/Polygon';
 
-import { HEX_CONFIG } from 'const';
-import { observable } from 'hoc/observable';
-import { getHexWidth } from 'state/hexWidthActions';
-import { getMapPoint, updateMapPointAction } from 'state/mapActions';
-import { getBrush, isAnyBrushSelected } from 'state/brushActions';
-import { isPainting, setPainting } from 'state/paintingActions';
-
-import hex from 'assets/hex.svg';
-import { Svg } from "components/Svg";
-import { Div } from "components/Div";
-import { LAYER_IMAGE_KEY } from 'screens/EditorScreen/const';
-
-function getHexKey(x: number, y: number): string {
-    return 'hex-'+x+'-'+y;
+interface Params {
+    ctx: CanvasRenderingContext2D;
+    x: number;
+    y: number;
+    width: number;
+    radius: number;
+    type: HEX_TYPE;
+    isGridTurnedOn?: boolean;
 }
 
-export function Hex(x: number, y: number) {
-    const key = getHexKey(x, y);
+export function Hex({ctx, x, y, width, radius, type, isGridTurnedOn}: Params) {
+    const xOffset = y % 2 === 0 ? width / 2 : width;
 
-    return Div(
-        observable(key, () =>
-            Svg(
-                hex,
-                {
-                    width: getHexWidth(),
-                    color: HEX_CONFIG[getMapPoint(x, y)].color
-                }
-            ),
-        )(),
-        {
-            className: 'hex',
-            onMouseDown: () => {
-                if (isAnyBrushSelected()) {
-                    setPainting(true);
-                    updateMapPointAction(x, y, getBrush()!, key, LAYER_IMAGE_KEY);
-                }
-            },
-            onMouseMove: () => {
-                if (isPainting()) {
-                    updateMapPointAction(x, y, getBrush()!, key, LAYER_IMAGE_KEY);
-                }
-            },
-            onMouseUp: () => {
-                setPainting(false);
-            },
-        }
-    )
+    Polygon({
+        ctx,
+        centerPoint: {
+            x: x * width + xOffset,
+            y: y * radius * 1.5 + radius,
+        },
+        startAngle: Math.PI / 2,
+        radius,
+        sides: 6,
+        fillColor: HEX_CONFIG[type].color,
+        strokeColor: isGridTurnedOn ? '#000' : undefined,
+    });
 }
