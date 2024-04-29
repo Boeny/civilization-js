@@ -1,6 +1,7 @@
 import './HexMiniMap.css';
 import { MapData } from 'types';
-import { HEX_MINI_MAP_KEY, SQRT_3 } from 'screens/EditorScreen/const';
+import { HEX_MINI_MAP_KEY } from 'screens/EditorScreen/const';
+import { getHexRadius } from 'logic';
 import { getMapData } from 'state/mapActions';
 import { observable } from 'hoc/observable';
 import { Canvas } from 'components/Canvas/Canvas';
@@ -8,7 +9,7 @@ import { Hex } from 'screens/EditorScreen/Map/HexMap/Hex';
 
 function HexMiniMap(mapData: MapData, width: number, title: string) {
     const hexWidth = width / mapData[0].length;
-    const hexRadius = hexWidth / SQRT_3;
+    const hexRadius = getHexRadius(hexWidth);
 
     return Canvas(
         (ctx) => {

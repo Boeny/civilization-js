@@ -1,4 +1,4 @@
-import { HEX_TYPE } from "const";
+import { HEX_TYPE, SQRT_3 } from "const";
 import { MapData } from "types";
 
 export function isValuePositiveNumber(value: number): boolean {
@@ -19,6 +19,10 @@ export function isValueSmallNumber(value: number): boolean {
 
 export function generateEmptyMapData(width: number, height: number): MapData {
     return Array.from({length: height}).map(() => Array.from({length: width}).map(() => HEX_TYPE.ocean));
+}
+
+export function getHexRadius(hexWidth: number): number {
+    return hexWidth / SQRT_3;
 }
 
 export function getMapCoordinatesFromCursor(x: number, y: number, hexWidth: number, hexRadius: number): [number, number] {

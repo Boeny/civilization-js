@@ -1,19 +1,20 @@
 import './HexMap.css';
 
 import { MapData } from "types";
-import { HEX_MAP_KEY, HEX_MINI_MAP_KEY, SQRT_3 } from 'screens/EditorScreen/const';
+import { HEX_TYPE } from 'const';
+import { HEX_MAP_KEY, HEX_MINI_MAP_KEY } from 'screens/EditorScreen/const';
+import { trigger } from 'utils';
+import { getHexRadius, getMapCoordinatesFromCursor } from 'logic';
+
 import { getMapData, getMapPoint, setMapPointAction } from 'state/mapActions';
+import { isPainting, setPainting } from 'state/paintingActions';
+import { getBrush } from 'state/brushActions';
 import { getHexWidth } from 'state/hexWidthActions';
 import { isGridTurnedOn } from 'state/gridStatusActions';
 
 import { observable } from 'hoc/observable';
 import { Canvas } from 'components/Canvas/Canvas';
-import { getBrush } from 'state/brushActions';
 import { Hex } from './Hex';
-import { getMapCoordinatesFromCursor } from 'logic';
-import { isPainting, setPainting } from 'state/paintingActions';
-import { trigger } from 'utils';
-import { HEX_TYPE } from 'const';
 
 // TODO: Ctrl+Z for painting
 // TODO: scroll by wheel
@@ -31,7 +32,7 @@ interface Params extends ContainerParams {
 function HexMap ({mapData, hexWidth, width, height, isGridTurnedOn, onMouseDown, onMouseMove, onMouseUp}: Params) {
     return Canvas(
         (ctx) => {
-            const hexRadius = hexWidth / SQRT_3;
+            const hexRadius = getHexRadius(hexWidth);
 
             for (let y = 0; y < mapData.length; y += 1) {
                 if (y * hexRadius * 1.5 > height) break;
@@ -59,7 +60,7 @@ function HexMap ({mapData, hexWidth, width, height, isGridTurnedOn, onMouseDown,
 
 function drawHex(ctx: CanvasRenderingContext2D, brushType: HEX_TYPE, x: number, y: number) {
     const hexWidth = getHexWidth();
-    const hexRadius = hexWidth / SQRT_3;
+    const hexRadius = getHexRadius(hexWidth);
 
     const [mapX, mapY] = getMapCoordinatesFromCursor(x, y, hexWidth, hexRadius);
     if (mapX < 0) return;

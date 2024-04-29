@@ -74,3 +74,5 @@ export const LAYER_CONFIG: Record<LAYER_TYPE, {title: string}> = {
     [LAYER_TYPE.objects]: {title: 'Objects map'},
     [LAYER_TYPE.borders]: {title: 'Borders'},
 }
+
+export const SQRT_3 = Math.sqrt(3);
