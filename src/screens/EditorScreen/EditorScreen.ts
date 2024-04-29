@@ -1,17 +1,13 @@
 import '../Screen.css';
 
-import { LAYER_TYPE } from 'const';
 import { LEFT_PANEL_KEY, RIGHT_PANEL_KEY } from 'screens/EditorScreen/const';
 import { generateEmptyMapData } from "logic";
 import { body, trigger } from "utils";
 
 import { setHexWidthAction } from 'state/hexWidthActions';
 import { setMapDataAction } from 'state/mapActions';
-import { setBrushAction } from 'state/brushActions';
-import { setLayerAction } from 'state/layerActions';
-import { setGridTurnedOn } from 'state/gridStatusActions';
-import { setLeftPanelOpened, toggleLeftPanelOpened } from 'state/leftPanelActions';
-import { setRightPanelOpened, toggleRightPanelOpened } from 'state/rightPanelActions';
+import { toggleLeftPanelOpened } from 'state/leftPanelActions';
+import { toggleRightPanelOpened } from 'state/rightPanelActions';
 
 import { cacheParams } from 'hoc/cacheParams';
 
@@ -25,6 +21,7 @@ import { ToggleMapGridButtonContainer } from './ToggleMapGridButton';
 import { LeftPanelContainer } from './LeftPanel/LeftPanel';
 import { RIGHT_PANEL_WIDTH, RightPanelContainer } from './RightPanel/RightPanel';
 import { MapContainer } from './Map/Map';
+import { setDefaultStateAction } from 'state/state';
 
 const TOP_PANEL_HEIGHT = 32;
 
@@ -35,13 +32,9 @@ export interface Params {
 }
 
 function EditorScreenComponent({width, height, hexWidth}: Params) {
+    setDefaultStateAction();
     setMapDataAction(generateEmptyMapData(width, height));
     setHexWidthAction(hexWidth);
-    setBrushAction(undefined);
-    setLayerAction(LAYER_TYPE.hex);
-    setGridTurnedOn(true);
-    setLeftPanelOpened(true);
-    setRightPanelOpened(true);
 
     body(
         Div(

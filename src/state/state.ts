@@ -12,7 +12,7 @@ interface State {
     isRightPanelOpened: boolean;
 }
 
-export const STATE: State = {
+const DEFAULT_STATE: State = {
     brush: undefined,
     isPainting: false,
     layer: LAYER_TYPE.hex,
@@ -21,4 +21,12 @@ export const STATE: State = {
     isGridTurnedOn: true,
     isLeftPanelOpened: true,
     isRightPanelOpened: true,
+}
+
+export const STATE: State = {...DEFAULT_STATE};
+
+export function setDefaultStateAction() {
+    for (let key in STATE) {
+        (STATE as any)[key] = (DEFAULT_STATE as any)[key];
+    }
 }

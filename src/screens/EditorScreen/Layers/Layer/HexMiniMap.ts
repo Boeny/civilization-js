@@ -27,6 +27,6 @@ function HexMiniMap(mapData: MapData, width: number, title: string) {
     );
 }
 
-export const HexMiniMapContainer = observable(HEX_MINI_MAP_KEY, ({width, title}: any) => {
+export const HexMiniMapContainer = observable(HEX_MINI_MAP_KEY, ({width, title}: {width: number, title: string}) => {
     return HexMiniMap(getMapData(), width - 29, title);
 })
