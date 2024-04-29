@@ -16,9 +16,11 @@ interface Params {
     startAngle: number;
     radius: number;
     sides: number;
+    fillColor?: string;
+    strokeColor?: string;
 }
 
-export function Polygon({ctx, centerPoint, startAngle, radius, sides}: Params) {
+export function Polygon({ctx, centerPoint, startAngle, radius, sides, fillColor, strokeColor}: Params) {
     ctx.beginPath();
 
     const startPoint = getPointByAngle(centerPoint, startAngle, radius);
@@ -31,4 +33,14 @@ export function Polygon({ctx, centerPoint, startAngle, radius, sides}: Params) {
     }
 
     ctx.closePath();
+
+    if (fillColor) {
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+    }
+
+    if (strokeColor) {
+        ctx.strokeStyle = strokeColor;
+        ctx.stroke();
+    }
 }
