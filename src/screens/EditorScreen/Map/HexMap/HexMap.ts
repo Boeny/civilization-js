@@ -63,11 +63,10 @@ function drawHex(ctx: CanvasRenderingContext2D, brushType: HEX_TYPE, x: number, 
     const hexRadius = getHexRadius(hexWidth);
 
     const [mapX, mapY] = getMapCoordinatesFromCursor(x, y, hexWidth, hexRadius);
-    if (mapX < 0) return;
+    if (mapX < 0 || mapY < 0) return;
 
     if (getMapPoint(mapX, mapY) === brushType) return;
 
-    console.log(mapX, mapY);
     Hex({ctx, x: mapX, y: mapY, width: hexWidth, radius: hexRadius, type: brushType, isGridTurnedOn: isGridTurnedOn()});
 
     setMapPointAction(mapX, mapY, brushType);
