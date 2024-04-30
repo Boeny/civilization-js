@@ -1,6 +1,7 @@
+import { ContentElement } from "types";
 import { insertContent } from "utils";
 
-export function observable<T>(id: string, component: (params: T) => HTMLElement | string) {
+export function observable<T>(id: string, component: (params: T) => ContentElement) {
     const container = document.createElement('observable');
     const cache = {replaceElement: () => {}};
 
@@ -11,14 +12,15 @@ export function observable<T>(id: string, component: (params: T) => HTMLElement 
     return (params?: T) => {
         cache.replaceElement = () => {
             container.innerHTML = '';
-            insertContent(container, component(params as any));
+            const element = component(params as any);
+            if (element) insertContent(container, element);
         }
         cache.replaceElement();
         return container;
     };
 }
 
-export function observableAttrs<T>(id: string, component: (params: T) => HTMLElement, attrs: {name: string, value: () => any}[]) {
+export function observableAttrs<T>(id: string, component: (params: T) => ContentElement, attrs: {name: string, value: () => any}[]) {
     const cache: Record<string, any> = {element: null, setAttrs: () => {}};
 
     document.addEventListener(id, () => {

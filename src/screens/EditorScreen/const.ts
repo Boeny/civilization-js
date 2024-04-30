@@ -10,4 +10,4 @@ export const LEFT_PANEL_KEY = 'toggle-left-panel';
 
 export const RIGHT_PANEL_KEY = 'toggle-right-panel';
 
-export const LAYER_MAP_KEY = 'layer-map';
+export const MAP_KEY = 'map-update';

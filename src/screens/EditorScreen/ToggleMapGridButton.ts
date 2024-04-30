@@ -1,7 +1,12 @@
-import { HEX_MAP_KEY } from "./const";
-import { isGridTurnedOn, setGridTurnedOn } from 'state/gridStatusActions';
+import { LAYER_TYPE } from "const";
+import { HEX_MAP_KEY, MAP_KEY } from "./const";
+
 import { trigger } from "utils";
+import { isGridTurnedOn, setGridTurnedOn } from 'state/gridStatusActions';
+
 import { observable } from "hoc/observable";
+import { showOnLayer } from "hoc/showOnLayer";
+
 import { Button } from "components/Button/Button";
 
 interface Params {
@@ -13,7 +18,7 @@ function ToggleMapGridButton({isGridTurnedOn, onClick}: Params) {
     return Button(`Grid: ${isGridTurnedOn ? 'On' : 'Off'}`, {onClick, padding: '6px 20px'});
 }
 
-export const ToggleMapGridButtonContainer = observable(HEX_MAP_KEY, () => {
+const ButtonClickHandlerContainer = observable(HEX_MAP_KEY, () => {
     const isGridOn = isGridTurnedOn();
 
     return ToggleMapGridButton({
@@ -23,4 +28,6 @@ export const ToggleMapGridButtonContainer = observable(HEX_MAP_KEY, () => {
             trigger(HEX_MAP_KEY);
         },
     },)
-});
+})
+
+export const ToggleMapGridButtonContainer = showOnLayer(MAP_KEY, LAYER_TYPE.hex, ButtonClickHandlerContainer);

@@ -1,13 +1,13 @@
 import './Layer.css';
 
-import { observableAttrs } from 'hoc/observable';
-import { isLayerSelected, selectLayerAction } from 'state/layerActions';
 import { LAYER_CONFIG, LAYER_TYPE } from 'const';
-import { getClasses } from 'utils';
+import { MAP_KEY } from 'screens/EditorScreen/const';
+import { getClasses, trigger } from 'utils';
+import { isLayerSelected, setLayerAction } from 'state/layerActions';
 
+import { observableAttrs } from 'hoc/observable';
 import { Div } from "components/Div";
 import { HexMiniMapContainer } from './HexMiniMap';
-import { LAYER_MAP_KEY } from 'screens/EditorScreen/const';
 
 interface Params extends ContainerParams {
     type: LAYER_TYPE;
@@ -27,8 +27,18 @@ function Layer({type, width, onClick}: Params) {
 }
 
 
-export function getLayerKey(type: LAYER_TYPE) {
+function getLayerKey(type: LAYER_TYPE) {
     return 'layer-'+type;
+}
+
+function selectLayerAction(type: LAYER_TYPE) {
+    if (isLayerSelected(type)) return;
+
+    // some layer is always selected
+    const prevSelectedLayer = setLayerAction(type)!;
+    trigger(getLayerKey(prevSelectedLayer));
+    trigger(getLayerKey(type));
+    trigger(MAP_KEY);
 }
 
 interface ContainerParams {
@@ -43,7 +53,7 @@ export const LayerContainers = Object.keys(LAYER_CONFIG).map((key) => {
         ({width}: {width: number}) => Layer({
             type,
             width,
-            onClick: () => selectLayerAction(type, LAYER_MAP_KEY, getLayerKey)
+            onClick: () => selectLayerAction(type)
         }),
         [{
             name: 'className',

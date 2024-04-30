@@ -6,7 +6,7 @@ export interface Params extends Attrs {
     disabled?: boolean;
 }
 
-export function Button(content: Content, {className, disabled, ...params}: Params) {
+export function Button(content: Content, {className, disabled, ...params}: Params): HTMLElement {
     const el = document.createElement('button');
 
     el.className = getClasses(['button', className]);
