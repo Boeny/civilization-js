@@ -5,39 +5,7 @@ import { Div } from "components/Div";
 import { observable } from "hoc/observable";
 import { IMAGE_MAP_KEY } from "screens/EditorScreen/const";
 import { getImageMapData, setImageMapData } from 'state/imageMapDataActions';
-import { trigger } from 'utils';
-
-async function uploadFile() {
-    try {
-        const [imageFile] = await window.showOpenFilePicker({
-            types: [{
-                description: "Images",
-                accept: {"image/*": [".png", ".gif", ".jpeg", ".jpg"]},
-            }],
-            excludeAcceptAllOption: true,
-            multiple: false,
-        })
-
-        const file = await imageFile.getFile();
-        const img = new Image();
-        img.src = URL.createObjectURL(file);
-
-        img.onerror = function () {
-            URL.revokeObjectURL(this.src);
-            console.error("Cannot load image");
-        };
-
-        return new Promise<HTMLImageElement>(resolve => {
-            img.onload = function () {
-                URL.revokeObjectURL(img.src);
-                resolve(img);
-            }
-        });
-    }
-    catch(e) {
-        console.error(e);
-    }
-}
+import { trigger, uploadFile } from 'utils';
 
 interface Params extends ContainerParams {
     image?: CanvasImageSource;
