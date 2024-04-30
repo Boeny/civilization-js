@@ -1,5 +1,7 @@
 .button {
     cursor: pointer;
-    padding: 5px 20px;
+    padding: 7px 20px;
     user-select: none;
+    border-radius: 5px;
+    border-color: #ccc;
 }

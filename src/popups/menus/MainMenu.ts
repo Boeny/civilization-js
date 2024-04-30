@@ -9,9 +9,9 @@ const SUB_MENU_PARAMS = {openParentMenu: MainMenu};
 export function MainMenu() {
     Popup(({closePopup}) =>
         [
-            Button('New Game', {onClick: [closePopup, () => NewGameParamsPopup(SUB_MENU_PARAMS)]}),
+            Button('New Game', {disabled: true, onClick: [closePopup, () => NewGameParamsPopup(SUB_MENU_PARAMS)]}),
             Button('Editor', {onClick: [closePopup, () => EditorParamsPopup(SUB_MENU_PARAMS)]}),
-            Button('Options', {onClick: [closePopup, () => OptionsPopup(SUB_MENU_PARAMS)]}),
+            Button('Options', {disabled: true, onClick: [closePopup, () => OptionsPopup(SUB_MENU_PARAMS)]}),
         ],
         {id: 'main-menu', reset: true}
     )

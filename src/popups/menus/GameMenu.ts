@@ -14,7 +14,7 @@ export function GameMenu() {
             Button('Back to main menu', {onClick: MainMenu}),
             Button('Restart game', {onClick: GameScreen}),
             Button('New game', {onClick: [closePopup, () => NewGameParamsPopup(SUB_MENU_PARAMS)]}),
-            Button('Options', {onClick: [closePopup, () => OptionsPopup(SUB_MENU_PARAMS)]}),
+            Button('Options', {disabled: true, onClick: [closePopup, () => OptionsPopup(SUB_MENU_PARAMS)]}),
         ],
         {id: 'game-menu'}
     )

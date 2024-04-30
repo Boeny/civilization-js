@@ -14,7 +14,7 @@ export function EditorMenu() {
             Button('Back to main menu', {onClick: MainMenu}),
             Button('Reload map', {onClick: EditorScreen}),
             Button('New map', {onClick: [closePopup, () => EditorParamsPopup(SUB_MENU_PARAMS)]}),
-            Button('Options', {onClick: [closePopup, () => OptionsPopup(SUB_MENU_PARAMS)]}),
+            Button('Options', {disabled: true, onClick: [closePopup, () => OptionsPopup(SUB_MENU_PARAMS)]}),
         ],
         {id: 'editor-menu'}
     )
