@@ -1,12 +1,10 @@
-import './HexMap.css';
-
 import { MapData } from "types";
 import { HEX_TYPE } from 'const';
 import { HEX_MAP_KEY, HEX_MINI_MAP_KEY } from 'screens/EditorScreen/const';
 import { trigger } from 'utils';
 import { getHexRadius, getMapCoordinatesFromCursor } from 'logic';
 
-import { getMapData, getMapPoint, setMapPointAction } from 'state/mapActions';
+import { getHexMapData, getHexFromHexMapData, setMapPointAction } from 'state/mapActions';
 import { isPainting, setPainting } from 'state/paintingActions';
 import { getBrush } from 'state/brushActions';
 import { getHexWidth } from 'state/hexWidthActions';
@@ -21,7 +19,7 @@ import { Hex } from './Hex';
 // TODO: zoom by multitouch
 
 interface Params extends ContainerParams {
-    mapData: MapData;
+    hexMapData: MapData;
     hexWidth: number;
     isGridTurnedOn: boolean;
     onMouseDown: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
@@ -29,15 +27,15 @@ interface Params extends ContainerParams {
     onMouseUp: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
 }
 
-function HexMap ({mapData, hexWidth, width, height, isGridTurnedOn, onMouseDown, onMouseMove, onMouseUp}: Params) {
+function HexMap({hexMapData, hexWidth, width, height, isGridTurnedOn, onMouseDown, onMouseMove, onMouseUp}: Params) {
     return Canvas(
         (ctx) => {
             const hexRadius = getHexRadius(hexWidth);
 
-            for (let y = 0; y < mapData.length; y += 1) {
+            for (let y = 0; y < hexMapData.length; y += 1) {
                 if (y * hexRadius * 1.5 > height) break;
 
-                const row = mapData[y];
+                const row = hexMapData[y];
 
                 for (let x = 0; x < row.length; x += 1) {
                     if (x * hexWidth > width) break;
@@ -58,14 +56,14 @@ function HexMap ({mapData, hexWidth, width, height, isGridTurnedOn, onMouseDown,
 }
 
 
-function drawHex(ctx: CanvasRenderingContext2D, brushType: HEX_TYPE, x: number, y: number) {
+function drawHex(ctx: CanvasRenderingContext2D, brushType: HEX_TYPE, x: number, y: number, mapWidth: number, mapHeight: number) {
     const hexWidth = getHexWidth();
     const hexRadius = getHexRadius(hexWidth);
 
     const [mapX, mapY] = getMapCoordinatesFromCursor(x, y, hexWidth, hexRadius);
-    if (mapX < 0 || mapY < 0) return;
+    if (mapX < 0 || mapY < 0 || mapX >= mapWidth || mapY >= mapHeight) return;
 
-    if (getMapPoint(mapX, mapY) === brushType) return;
+    if (getHexFromHexMapData(mapX, mapY) === brushType) return;
 
     Hex({ctx, x: mapX, y: mapY, width: hexWidth, radius: hexRadius, type: brushType, isGridTurnedOn: isGridTurnedOn()});
 
@@ -79,21 +77,25 @@ interface ContainerParams {
 }
 
 export const HexMapContainer = observable(HEX_MAP_KEY, (params: ContainerParams): HTMLElement => {
+    const hexMapData = getHexMapData();
+    const mapHeight = hexMapData.length;
+    const mapWidth = hexMapData[0].length;
+
     return HexMap({
-        mapData: getMapData(),
+        hexMapData,
         hexWidth: getHexWidth(),
         isGridTurnedOn: isGridTurnedOn(),
         ...params,
         onMouseDown: (ctx, x, y) => {
             const brushType = getBrush();
             if (brushType) {
-                drawHex(ctx, brushType, x, y);
+                drawHex(ctx, brushType, x, y, mapWidth, mapHeight);
                 setPainting(true);
             }
         },
         onMouseMove: (ctx, x, y) => {
             if (isPainting()) {
-                drawHex(ctx, getBrush()!, x, y);
+                drawHex(ctx, getBrush()!, x, y, mapWidth, mapHeight);
             }
         },
         onMouseUp: () => {

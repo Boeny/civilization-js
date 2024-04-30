@@ -5,7 +5,8 @@ interface State {
     brush: HEX_TYPE | undefined;
     isPainting: boolean;
     layer: LAYER_TYPE;
-    mapData: MapData;
+    hexMapData: MapData;
+    imageMapData?: CanvasImageSource;
     hexWidth: number;
     isGridTurnedOn: boolean;
     isLeftPanelOpened: boolean;
@@ -16,7 +17,8 @@ const DEFAULT_STATE: State = {
     brush: undefined,
     isPainting: false,
     layer: LAYER_TYPE.hex,
-    mapData: [],
+    hexMapData: [],
+    imageMapData: undefined,
     hexWidth: 0,
     isGridTurnedOn: true,
     isLeftPanelOpened: true,

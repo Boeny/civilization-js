@@ -4,6 +4,7 @@ import { observable } from "hoc/observable";
 import { LAYER_MAP_KEY } from "../const";
 import { HexMapContainer } from "./HexMap/HexMap";
 import { getLayer } from "state/layerActions";
+import { ImageMapContainer } from "./ImageMap/ImageMap";
 
 interface Params extends ContainerParams {
     layer: LAYER_TYPE
@@ -11,7 +12,8 @@ interface Params extends ContainerParams {
 
 function Map({layer, width, height}: Params) {
     switch (layer) {
-        case LAYER_TYPE.hex: return HexMapContainer({width, height})
+        case LAYER_TYPE.image: return ImageMapContainer({width, height});
+        case LAYER_TYPE.hex: return HexMapContainer({width, height});
         default: return Canvas(() => {}, {width, height})
     }
 }

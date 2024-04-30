@@ -5,7 +5,7 @@ import { generateEmptyMapData } from "logic";
 import { body, trigger } from "utils";
 
 import { setHexWidthAction } from 'state/hexWidthActions';
-import { setMapDataAction } from 'state/mapActions';
+import { setHexMapDataAction } from 'state/mapActions';
 import { toggleLeftPanelOpened } from 'state/leftPanelActions';
 import { toggleRightPanelOpened } from 'state/rightPanelActions';
 
@@ -33,7 +33,7 @@ export interface Params {
 
 function EditorScreenComponent({width, height, hexWidth}: Params) {
     setDefaultStateAction();
-    setMapDataAction(generateEmptyMapData(width, height));
+    setHexMapDataAction(generateEmptyMapData(width, height));
     setHexWidthAction(hexWidth);
 
     body(

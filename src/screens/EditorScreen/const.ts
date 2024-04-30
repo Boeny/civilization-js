@@ -1,3 +1,7 @@
+export const IMAGE_MAP_KEY = 'image-map-update';
+
+export const IMAGE_MINI_MAP_KEY = 'image-mini-map-update';
+
 export const HEX_MAP_KEY = 'hex-map-update';
 
 export const HEX_MINI_MAP_KEY = 'hex-mini-map-update';
