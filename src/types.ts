@@ -1,4 +1,4 @@
-export type ContentElement = string | null | undefined | HTMLElement;
+export type ContentElement = string | null | undefined | HTMLElement | HTMLElement[];
 
 export type Content = ContentElement | ContentElement[];
 

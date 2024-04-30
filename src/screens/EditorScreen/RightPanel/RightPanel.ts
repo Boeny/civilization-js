@@ -1,7 +1,8 @@
 import './RightPanel.css';
-import { RIGHT_PANEL_KEY } from "screens/EditorScreen/const";
+import { RIGHT_PANEL_TOGGLE_EVENT } from "screens/EditorScreen/const";
 import { isRightPanelOpened } from 'state/rightPanelActions';
 import { observableAttrs } from "hoc/observable";
+
 import { Panel } from "components/Panel/Panel";
 import { Layers } from '../Layers/Layers';
 
@@ -23,7 +24,7 @@ function RightPanel() {
 }
 
 export const RightPanelContainer = observableAttrs(
-    RIGHT_PANEL_KEY,
+    RIGHT_PANEL_TOGGLE_EVENT,
     RightPanel,
     [{
         name: 'className',

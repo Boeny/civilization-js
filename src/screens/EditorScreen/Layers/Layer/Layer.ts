@@ -1,7 +1,7 @@
 import './Layer.css';
 
 import { LAYER_CONFIG, LAYER_TYPE } from 'const';
-import { MAP_KEY } from 'screens/EditorScreen/const';
+import { LAYER_CHANGE_EVENT } from 'screens/EditorScreen/const';
 import { getClasses, trigger } from 'utils';
 import { isLayerSelected, setLayerAction } from 'state/layerActions';
 
@@ -38,7 +38,7 @@ function selectLayerAction(type: LAYER_TYPE) {
     const prevSelectedLayer = setLayerAction(type)!;
     trigger(getLayerKey(prevSelectedLayer));
     trigger(getLayerKey(type));
-    trigger(MAP_KEY);
+    trigger(LAYER_CHANGE_EVENT);
 }
 
 interface ContainerParams {

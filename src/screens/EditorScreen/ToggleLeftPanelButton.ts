@@ -1,11 +1,6 @@
-import arrow from 'assets/arrow_down.svg';
-import { Button } from "components/Button/Button";
-import { Svg } from "components/Svg";
+import { LAYER_TYPE } from 'const';
+import { LAYER_CHANGE_EVENT } from './const';
+import { showOnLayer } from 'hoc/showOnLayer';
+import { ArrowButton } from 'components/ArrowButton';
 
-interface Params {
-    onClick: () => void;
-}
-
-export function ToggleLeftPanelButton({onClick}: Params) {
-    return Button(Svg(arrow, {width: 20}), {onClick, padding: '0 11px'});
-}
+export const ToggleLeftPanelButtonContainer = showOnLayer(LAYER_CHANGE_EVENT, LAYER_TYPE.hex, ArrowButton)

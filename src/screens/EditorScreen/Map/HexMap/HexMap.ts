@@ -1,6 +1,8 @@
+import './HexMap.css';
+
 import { MapData } from "types";
-import { HEX_TYPE } from 'const';
-import { HEX_MAP_KEY, HEX_MINI_MAP_KEY } from 'screens/EditorScreen/const';
+import { HEX_TYPE, LAYER_TYPE } from 'const';
+import { HEX_MAP_UPDATE_EVENT, HEX_MINI_MAP_UPDATE_EVENT, LAYER_CHANGE_EVENT } from 'screens/EditorScreen/const';
 import { trigger } from 'utils';
 import { getHexRadius, getMapCoordinatesFromCursor } from 'logic';
 
@@ -9,8 +11,9 @@ import { isPainting, setPainting } from 'state/paintingActions';
 import { getBrush } from 'state/brushActions';
 import { getHexWidth } from 'state/hexWidthActions';
 import { isGridTurnedOn } from 'state/gridStatusActions';
+import { getLayer } from 'state/layerActions';
 
-import { observable } from 'hoc/observable';
+import { observable, observableAttrs } from 'hoc/observable';
 import { Canvas } from 'components/Canvas/Canvas';
 import { Hex } from './Hex';
 
@@ -22,12 +25,12 @@ interface Params extends ContainerParams {
     hexMapData: MapData;
     hexWidth: number;
     isGridTurnedOn: boolean;
-    onMouseDown: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
-    onMouseMove: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
-    onMouseUp: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
+    onMouseDown?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
+    onMouseMove?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
+    onMouseUp?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
 }
 
-function HexMap({hexMapData, hexWidth, width, height, isGridTurnedOn, onMouseDown, onMouseMove, onMouseUp}: Params) {
+function HexMap({ width, height, hexMapData, hexWidth, isGridTurnedOn, onMouseDown, onMouseMove, onMouseUp}: Params) {
     return Canvas(
         (ctx) => {
             const hexRadius = getHexRadius(hexWidth);
@@ -55,6 +58,16 @@ function HexMap({hexMapData, hexWidth, width, height, isGridTurnedOn, onMouseDow
     );
 }
 
+const HexMapLayerChangeContainer = observableAttrs<Params>(
+    LAYER_CHANGE_EVENT,
+    HexMap,
+    [
+        {name: 'onMouseDown', value: ({onMouseDown}) => getLayer() === LAYER_TYPE.hex ? onMouseDown : undefined},
+        {name: 'onMouseMove', value: ({onMouseMove}) => getLayer() === LAYER_TYPE.hex ? onMouseMove : undefined},
+        {name: 'onMouseUp', value: ({onMouseUp}) => getLayer() === LAYER_TYPE.hex ? onMouseUp : undefined},
+    ]
+)
+
 
 function drawHex(ctx: CanvasRenderingContext2D, brushType: HEX_TYPE, x: number, y: number, mapWidth: number, mapHeight: number) {
     const hexWidth = getHexWidth();
@@ -68,7 +81,7 @@ function drawHex(ctx: CanvasRenderingContext2D, brushType: HEX_TYPE, x: number, 
     Hex({ctx, x: mapX, y: mapY, width: hexWidth, radius: hexRadius, type: brushType, isGridTurnedOn: isGridTurnedOn()});
 
     setMapPointAction(mapX, mapY, brushType);
-    trigger(HEX_MINI_MAP_KEY);
+    trigger(HEX_MINI_MAP_UPDATE_EVENT);
 }
 
 interface ContainerParams {
@@ -76,18 +89,19 @@ interface ContainerParams {
     height: number;
 }
 
-export const HexMapContainer = observable(HEX_MAP_KEY, (params: ContainerParams): HTMLElement => {
+export const HexMapContainer = observable(HEX_MAP_UPDATE_EVENT, (params: ContainerParams): HTMLElement => {
     const hexMapData = getHexMapData();
     const mapHeight = hexMapData.length;
     const mapWidth = hexMapData[0].length;
 
-    return HexMap({
+    return HexMapLayerChangeContainer({
         hexMapData,
         hexWidth: getHexWidth(),
         isGridTurnedOn: isGridTurnedOn(),
         ...params,
         onMouseDown: (ctx, x, y) => {
             const brushType = getBrush();
+            console.log(ctx, x, y, brushType);
             if (brushType) {
                 drawHex(ctx, brushType, x, y, mapWidth, mapHeight);
                 setPainting(true);

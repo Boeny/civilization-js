@@ -1,5 +1,5 @@
 import { ContentElement } from "types";
-import { insertContent } from "utils";
+import { adaptAndSetAttrs, insertContent } from "utils";
 
 export function observable<T>(id: string, component: (params: T) => ContentElement) {
     const container = document.createElement('observable');
@@ -20,7 +20,7 @@ export function observable<T>(id: string, component: (params: T) => ContentEleme
     };
 }
 
-export function observableAttrs<T>(id: string, component: (params: T) => ContentElement, attrs: {name: string, value: () => any}[]) {
+export function observableAttrs<T>(id: string, component: (params: T) => ContentElement, attrs: {name: string, value: (params: T) => any}[]) {
     const cache: Record<string, any> = {element: null, setAttrs: () => {}};
 
     document.addEventListener(id, () => {
@@ -29,7 +29,7 @@ export function observableAttrs<T>(id: string, component: (params: T) => Content
 
     return (params?: T) => {
         cache.element = component(params as any);
-        cache.setAttrs = () => attrs.forEach((attr) => cache.element[attr.name] = attr.value());
+        cache.setAttrs = () => adaptAndSetAttrs(cache.element, params as any, attrs);
         cache.setAttrs();
         return cache.element;
     }

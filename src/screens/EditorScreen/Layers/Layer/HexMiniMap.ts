@@ -1,8 +1,10 @@
 import './HexMiniMap.css';
+
 import { MapData } from 'types';
-import { HEX_MINI_MAP_KEY } from 'screens/EditorScreen/const';
+import { HEX_MINI_MAP_UPDATE_EVENT } from 'screens/EditorScreen/const';
 import { getHexRadius } from 'logic';
 import { getHexMapData } from 'state/mapActions';
+
 import { observable } from 'hoc/observable';
 import { Canvas } from 'components/Canvas/Canvas';
 import { Hex } from 'screens/EditorScreen/Map/HexMap/Hex';
@@ -28,6 +30,6 @@ function HexMiniMap(mapData: MapData, width: number, title: string) {
     );
 }
 
-export const HexMiniMapContainer = observable(HEX_MINI_MAP_KEY, ({width, title}: {width: number, title: string}) => {
+export const HexMiniMapContainer = observable(HEX_MINI_MAP_UPDATE_EVENT, ({width, title}: {width: number, title: string}) => {
     return HexMiniMap(getHexMapData(), width - 29, title);
 })

@@ -1,9 +1,10 @@
 import '../Screen.css';
 
-import { LEFT_PANEL_KEY, RIGHT_PANEL_KEY } from 'screens/EditorScreen/const';
+import { LEFT_PANEL_TOGGLE_EVENT, RIGHT_PANEL_TOGGLE_EVENT } from 'screens/EditorScreen/const';
 import { generateEmptyMapData } from "logic";
 import { body, trigger } from "utils";
 
+import { setDefaultStateAction } from 'state/state';
 import { setHexWidthAction } from 'state/hexWidthActions';
 import { setHexMapDataAction } from 'state/mapActions';
 import { toggleLeftPanelOpened } from 'state/leftPanelActions';
@@ -15,13 +16,12 @@ import { EditorMenu } from "popups/menus/EditorMenu";
 import { Div } from 'components/Div';
 import { OpenMenuButton } from "../OpenMenuButton";
 import { TopPanel } from './TopPanel/TopPanel';
-import { ToggleLeftPanelButton } from './ToggleLeftPanelButton';
-import { ToggleRightPanelButton } from './ToggleRightPanelButton';
+import { ToggleLeftPanelButtonContainer } from './ToggleLeftPanelButton';
 import { ToggleMapGridButtonContainer } from './ToggleMapGridButton';
 import { LeftPanelContainer } from './LeftPanel/LeftPanel';
 import { RIGHT_PANEL_WIDTH, RightPanelContainer } from './RightPanel/RightPanel';
-import { MapContainer } from './Map/Map';
-import { setDefaultStateAction } from 'state/state';
+import { Map } from './Map/Map';
+import { ArrowButton } from 'components/ArrowButton';
 
 const TOP_PANEL_HEIGHT = 32;
 
@@ -39,7 +39,7 @@ function EditorScreenComponent({width, height, hexWidth}: Params) {
     body(
         Div(
             [
-                MapContainer({
+                Map({
                     width: window.innerWidth,
                     height: window.innerHeight - TOP_PANEL_HEIGHT,
                 }),
@@ -49,18 +49,18 @@ function EditorScreenComponent({width, height, hexWidth}: Params) {
                         Div(
                             [
                                 OpenMenuButton({openMenu: EditorMenu}),
-                                ToggleLeftPanelButton({onClick: () => {
+                                ToggleLeftPanelButtonContainer({onClick: () => {
                                     toggleLeftPanelOpened();
-                                    trigger(LEFT_PANEL_KEY);
+                                    trigger(LEFT_PANEL_TOGGLE_EVENT);
                                 }}),
                                 ToggleMapGridButtonContainer(),
                             ],
                             {display: 'flex'},
                         ),
                         Div(
-                            ToggleRightPanelButton({onClick: () => {
+                            ArrowButton({onClick: () => {
                                 toggleRightPanelOpened();
-                                trigger(RIGHT_PANEL_KEY);
+                                trigger(RIGHT_PANEL_TOGGLE_EVENT);
                             }}),
                             {display: 'flex', width: RIGHT_PANEL_WIDTH},
                         ),

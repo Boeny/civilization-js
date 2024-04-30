@@ -2,7 +2,7 @@ import { Attrs, Content } from "types";
 
 export function insertContent(container: HTMLElement, content: Content) {
     if (Array.isArray(content))
-        content.forEach(item => insertContent(container, item));
+        content.flat().forEach(item => insertContent(container, item));
     else if (typeof content === 'object' && content)
         container.appendChild(content);
     else if (content)
@@ -68,40 +68,49 @@ function getStyleAttr(attr: string | number): string {
     return typeof attr === 'number' ? `${attr}px` : attr;
 }
 
-function applyStyleAttr(el: HTMLElement, param: string | number | undefined, styleAttr: string) {
-    if (param !== undefined) (el.style as any)[styleAttr] = getStyleAttr(param);
+function applyStyleAttr(element: HTMLElement, param: string | number | undefined, styleAttr: string) {
+    if (param !== undefined) (element.style as any)[styleAttr] = getStyleAttr(param);
 }
 
-export function applyCommonAttrs(el: HTMLElement, params?: Attrs) {
-    if (params?.id) el.id = params.id;
-    if (params?.className) el.className = params.className;
-    if (params?.display) el.style.display = params.display;
+export function adaptAndSetAttrs<T>(element: HTMLElement, params: T, attrs: {name: string, value: (params: T) => any}[]) {
+    const adaptedAttrs = attrs.reduce<Attrs>((acc, attr) => {
+        (acc as any)[attr.name] = attr.value(params);
+        return acc;
+    }, {});
 
-    applyStyleAttr(el, params?.margin, 'margin');
-    applyStyleAttr(el, params?.marginLeft, 'marginLeft');
-    applyStyleAttr(el, params?.marginRight, 'marginRight');
-    applyStyleAttr(el, params?.marginTop, 'marginTop');
-    applyStyleAttr(el, params?.marginBottom, 'marginBottom');
+    applyCommonAttrs(element, adaptedAttrs);
+}
 
-    applyStyleAttr(el, params?.padding, 'padding');
-    applyStyleAttr(el, params?.paddingLeft, 'paddingLeft');
-    applyStyleAttr(el, params?.paddingRight, 'paddingRight');
-    applyStyleAttr(el, params?.paddingTop, 'paddingTop');
-    applyStyleAttr(el, params?.paddingBottom, 'paddingBottom');
+export function applyCommonAttrs(element: HTMLElement, params?: Attrs) {
+    if (params?.id) element.id = params.id;
+    if (params?.className) element.className = params.className;
+    if (params?.display) element.style.display = params.display;
 
-    applyStyleAttr(el, params?.left, 'left');
-    applyStyleAttr(el, params?.top, 'top');
-    applyStyleAttr(el, params?.width, 'width');
-    applyStyleAttr(el, params?.height, 'height');
+    applyStyleAttr(element, params?.margin, 'margin');
+    applyStyleAttr(element, params?.marginLeft, 'marginLeft');
+    applyStyleAttr(element, params?.marginRight, 'marginRight');
+    applyStyleAttr(element, params?.marginTop, 'marginTop');
+    applyStyleAttr(element, params?.marginBottom, 'marginBottom');
+
+    applyStyleAttr(element, params?.padding, 'padding');
+    applyStyleAttr(element, params?.paddingLeft, 'paddingLeft');
+    applyStyleAttr(element, params?.paddingRight, 'paddingRight');
+    applyStyleAttr(element, params?.paddingTop, 'paddingTop');
+    applyStyleAttr(element, params?.paddingBottom, 'paddingBottom');
+
+    applyStyleAttr(element, params?.left, 'left');
+    applyStyleAttr(element, params?.top, 'top');
+    applyStyleAttr(element, params?.width, 'width');
+    applyStyleAttr(element, params?.height, 'height');
 
     if (params?.onClick) {
-        el.onclick = Array.isArray(params?.onClick) ?
+        element.onclick = Array.isArray(params?.onClick) ?
             () => (params.onClick as (() => void)[]).forEach((callback) => callback()) :
             () => (params.onClick as () => void)();
     }
-    if (params?.onMouseDown) el.onmousedown = params.onMouseDown;
-    if (params?.onMouseUp) el.onmouseup = params.onMouseUp;
-    if (params?.onMouseMove) el.onmousemove = params.onMouseMove;
+    if (params?.onMouseDown) element.onmousedown = params.onMouseDown;
+    if (params?.onMouseUp) element.onmouseup = params.onMouseUp;
+    if (params?.onMouseMove) element.onmousemove = params.onMouseMove;
 }
 
 export async function uploadFile() {
