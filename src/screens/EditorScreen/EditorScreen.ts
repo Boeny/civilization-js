@@ -1,80 +1,53 @@
-import '../Screen.css';
+import '../Screen.css'
+import { RIGHT_PANEL_TOGGLE_EVENT } from 'screens/EditorScreen/const'
+import { trigger } from "utils"
+import { toggleRightPanelOpened } from 'state/rightPanelActions'
 
-import { LEFT_PANEL_TOGGLE_EVENT, RIGHT_PANEL_TOGGLE_EVENT } from 'screens/EditorScreen/const';
-import { generateEmptyMapData } from "logic";
-import { body, trigger } from "utils";
+import { ArrowButton } from 'components/ArrowButton'
+import { Div } from 'components/base/Div'
+import { OpenMenuButton } from "../OpenMenuButton"
+import { TopPanel } from './TopPanel/TopPanel'
+import { ToggleLeftPanelButtonContainer } from './TopPanel/ToggleLeftPanelButton'
+import { ToggleMapGridButtonContainer } from './TopPanel/ToggleMapGridButton'
+import { LeftPanelContainer } from './LeftPanel/LeftPanel'
+import { RIGHT_PANEL_WIDTH, RightPanelContainer } from './RightPanel/RightPanel'
+import { Map } from './Map/Map'
 
-import { setDefaultStateAction } from 'state/state';
-import { setHexWidthAction } from 'state/hexWidthActions';
-import { setHexMapDataAction } from 'state/mapActions';
-import { toggleLeftPanelOpened } from 'state/leftPanelActions';
-import { toggleRightPanelOpened } from 'state/rightPanelActions';
+const TOP_PANEL_HEIGHT = 32
 
-import { cacheParams } from 'hoc/cacheParams';
+export function EditorScreen({openMenu}: {openMenu: () => void}) {
+    return Div(
+        [
+            Map({
+                width: window.innerWidth,
+                height: window.innerHeight - TOP_PANEL_HEIGHT,
+            }),
 
-import { EditorMenu } from "popups/menus/EditorMenu";
-import { Div } from 'components/Div';
-import { OpenMenuButton } from "../OpenMenuButton";
-import { TopPanel } from './TopPanel/TopPanel';
-import { ToggleLeftPanelButtonContainer } from './ToggleLeftPanelButton';
-import { ToggleMapGridButtonContainer } from './ToggleMapGridButton';
-import { LeftPanelContainer } from './LeftPanel/LeftPanel';
-import { RIGHT_PANEL_WIDTH, RightPanelContainer } from './RightPanel/RightPanel';
-import { Map } from './Map/Map';
-import { ArrowButton } from 'components/ArrowButton';
+            TopPanel(
+                [
+                    Div(
+                        [
+                            OpenMenuButton({openMenu}),
+                            ToggleLeftPanelButtonContainer(),
+                            ToggleMapGridButtonContainer(),
+                        ],
+                        {style: {display: 'flex'}}
+                    ),
 
-const TOP_PANEL_HEIGHT = 32;
+                    Div(
+                        ArrowButton({onClick: () => {
+                            toggleRightPanelOpened()
+                            trigger(RIGHT_PANEL_TOGGLE_EVENT)
+                        }}),
+                        {style: {display: 'flex', width: RIGHT_PANEL_WIDTH}}
+                    ),
+                ],
+                {style: {height: TOP_PANEL_HEIGHT}}
+            ),
 
-export interface Params {
-    width: number;
-    height: number;
-    hexWidth: number;
+            LeftPanelContainer(),
+            RightPanelContainer(),
+        ],
+        {className: 'screen', style: {paddingTop: TOP_PANEL_HEIGHT}}
+    )
 }
-
-function EditorScreenComponent({width, height, hexWidth}: Params) {
-    setDefaultStateAction();
-    setHexMapDataAction(generateEmptyMapData(width, height));
-    setHexWidthAction(hexWidth);
-
-    body(
-        Div(
-            [
-                Map({
-                    width: window.innerWidth,
-                    height: window.innerHeight - TOP_PANEL_HEIGHT,
-                }),
-
-                TopPanel(
-                    [
-                        Div(
-                            [
-                                OpenMenuButton({openMenu: EditorMenu}),
-                                ToggleLeftPanelButtonContainer({onClick: () => {
-                                    toggleLeftPanelOpened();
-                                    trigger(LEFT_PANEL_TOGGLE_EVENT);
-                                }}),
-                                ToggleMapGridButtonContainer(),
-                            ],
-                            {display: 'flex'},
-                        ),
-                        Div(
-                            ArrowButton({onClick: () => {
-                                toggleRightPanelOpened();
-                                trigger(RIGHT_PANEL_TOGGLE_EVENT);
-                            }}),
-                            {display: 'flex', width: RIGHT_PANEL_WIDTH},
-                        ),
-                    ],
-                    {height: TOP_PANEL_HEIGHT}
-                ),
-
-                LeftPanelContainer(),
-                RightPanelContainer(),
-            ],
-            {id: 'editor-screen', className: 'screen', paddingTop: TOP_PANEL_HEIGHT}
-        ),
-        true
-    );
-}
-
-export const EditorScreen = cacheParams(EditorScreenComponent);

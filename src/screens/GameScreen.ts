@@ -1,21 +1,10 @@
-import './Screen.css';
-import { body } from "utils";
-import { GameMenu } from "popups/menus/GameMenu";
-import { OpenMenuButton } from "screens/OpenMenuButton";
-import { Div } from "components/Div";
+import './Screen.css'
+import { Div } from "components/base/Div"
+import { OpenMenuButton } from "screens/OpenMenuButton"
 
-export interface Params {
-    width: number;
-    height: number;
-    hexWidth: number;
-}
-
-export async function GameScreen(params?: Params) {
-    body(
-        Div(
-            OpenMenuButton({openMenu: GameMenu}),
-            {id: 'game-screen', className: 'screen'}
-        ),
-        true
-    );
+export function GameScreen({openMenu}: {openMenu: () => void}) {
+    return Div(
+        OpenMenuButton({openMenu}),
+        {id: 'game-screen', className: 'screen'}
+    )
 }

@@ -1,7 +1,10 @@
-import './Layout.css';
-import { Div, Params as DivParams } from "components/Div";
-import { Content } from "types";
+import './Layout.css'
+import { Div, Params as DivParams } from "components/base/Div"
+import { Content } from "types"
 
-export function Layout(content: Content, params?: DivParams) {
-    return Div(content, {...params, id: 'layout'});
+export interface Params extends DivParams {
+}
+
+export function Layout(content: Content, params?: Params) {
+    return Div(content, {...params, id: 'layout'})
 }

@@ -1,3 +1,17 @@
+export enum MENU_TYPE {
+    main,
+    newGameParams,
+    editorParams,
+    options,
+    editorScreen,
+    gameScreen,
+}
+
+export enum SCREEN_TYPE {
+    editor,
+    game,
+}
+
 export enum KEY_CODE {
     esc = 'Escape',
     enter = 'Enter',
@@ -75,4 +89,20 @@ export const LAYER_CONFIG: Record<LAYER_TYPE, {title: string}> = {
     [LAYER_TYPE.borders]: {title: 'Borders'},
 }
 
-export const SQRT_3 = Math.sqrt(3);
+export const SQRT_3 = Math.sqrt(3)
+
+export const ATTRS_MAP = {
+    id: 'id',
+    className: 'className',
+    width: 'width',
+    height: 'height',
+    disabled: 'disabled',
+    alt: 'alt',
+    title: 'title',
+    type: 'type',
+    autoFocus: 'autofocus',
+    onClick: 'onclick',
+    onMouseDown: 'onmousedown',
+    onMouseUp: 'onmouseup',
+    onMouseMove: 'onmousemove',
+} as const

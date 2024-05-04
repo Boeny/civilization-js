@@ -1,42 +1,50 @@
-import './BrushButton.css';
-import { observableAttrs } from 'hoc/observable';
-import { isBrushSelected, selectBrushAction } from 'state/brushActions';
-import { HEX_CONFIG, HEX_TYPE } from "const";
-import { getClasses } from 'utils';
-import { Div } from "components/Div";
+import './BrushButton.css'
+import { HEX_CONFIG, HEX_TYPE } from "const"
+import { isAnyBrushSelected, isBrushSelected, setBrushAction, toggleBrushAction } from 'state/brushActions'
+import { getClasses, trigger } from 'utils'
+import { observableAttrs } from 'hoc/observable'
+import { Div } from "components/base/Div"
 
-
-function getBrushKey(type: HEX_TYPE): string {
-    return 'brush-button' + type;
+function getBrushEvent(type: HEX_TYPE): string {
+    return 'brush-button' + type
 }
 
 function getBrushClassName(type: HEX_TYPE): string {
-    return getClasses(['brush', isBrushSelected(type) ? 'selected' : undefined]);
+    return getClasses(['brush', isBrushSelected(type) ? 'selected' : undefined])
 }
 
 interface Params {
-    type: HEX_TYPE;
-    onClick: () => void;
+    type: HEX_TYPE
+    onClick: () => void
 }
 
 function BrushButton({type, onClick}: Params) {
-    const {title, color} = HEX_CONFIG[type];
+    const {title, color} = HEX_CONFIG[type]
 
     return Div(
         title,
         {
-            background: color,
+            style: {background: color},
             onClick
         }
     )
 }
 
 export const BrushButtonContainers = Object.keys(HEX_CONFIG).map((key) => {
-    const type = parseInt(key);
+    const type = parseInt(key)
+    const event = getBrushEvent(type)
 
-    return observableAttrs(
-        getBrushKey(type),
-        () => BrushButton({type, onClick: () => selectBrushAction(type, getBrushKey)}),
+    return observableAttrs(event,
+        () => BrushButton({type, onClick: () => {
+            if (isAnyBrushSelected() && !isBrushSelected(type)) {
+                const prevSelectedBrush = setBrushAction(type)!
+                trigger(getBrushEvent(prevSelectedBrush))
+            } else {
+                toggleBrushAction(type)
+            }
+
+            trigger(event)
+        }}),
         [{
             name: 'className',
             value: () => getBrushClassName(type),
