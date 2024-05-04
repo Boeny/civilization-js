@@ -1,4 +1,5 @@
-import { STATE, ScreenParams } from "./state"
+import { ScreenParams } from "types"
+import { STATE } from "./state"
 
 export function getScreenParams(): ScreenParams | null {
     return STATE.screenParams

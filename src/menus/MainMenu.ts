@@ -1,7 +1,7 @@
+import { MenuParams } from "types"
 import { MENU_TYPE } from "const"
 import { Button } from "components/base/Button/Button"
 import { Fragment } from "components/base/Fragment"
-import { MenuParams } from "state/state"
 
 interface Params {
     onClick: (current: MenuParams['current']) => void

@@ -1,3 +1,6 @@
+export const MENU_EVENT = 'open-menu'
+export const SCREEN_EVENT = 'screen-update'
+
 export enum MENU_TYPE {
     main,
     newGameParams,

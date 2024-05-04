@@ -1,17 +1,5 @@
-import { HEX_TYPE, LAYER_TYPE, MENU_TYPE, SCREEN_TYPE } from "const"
-import { MapData } from "types"
-
-export interface MenuParams {
-    current: MENU_TYPE | null
-    parent: MENU_TYPE | null
-}
-
-export interface ScreenParams {
-    type: SCREEN_TYPE
-    width: number
-    height: number
-    hexWidth: number
-}
+import { HEX_TYPE, LAYER_TYPE, MENU_TYPE } from "const"
+import { MapData, MenuParams, ScreenParams } from "types"
 
 export interface State {
     brush: HEX_TYPE | null

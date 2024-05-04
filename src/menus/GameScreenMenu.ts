@@ -1,10 +1,10 @@
+import { OpenMenuCallback } from "types"
 import { MENU_TYPE } from "const"
 import { Button } from "components/base/Button/Button"
 import { Fragment } from "components/base/Fragment"
-import { MenuParams } from "state/state"
 
 interface Params {
-    openMenu: (current: MenuParams['current'], parent: MenuParams['parent']) => void
+    openMenu: OpenMenuCallback
     onRestart: () => void
 }
 

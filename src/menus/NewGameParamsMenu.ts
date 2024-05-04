@@ -1,8 +1,8 @@
-import { ScreenParams } from "state/state"
 import { SCREEN_TYPE } from "const"
 import { Button } from "components/base/Button/Button"
 import { MapSizeBlock } from "./MapSizeBlock/MapSizeBlock"
 import { Fragment } from "components/base/Fragment"
+import { ScreenParams } from "types"
 
 function checkValidity() {
     return true

@@ -1,4 +1,4 @@
-import { ScreenParams } from "state/state"
+import { ScreenParams } from "types"
 import { SCREEN_TYPE } from "const"
 import { Button } from "components/base/Button/Button"
 import { MapSizeBlock } from "./MapSizeBlock/MapSizeBlock"

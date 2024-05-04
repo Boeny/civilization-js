@@ -1,3 +1,19 @@
+import { MENU_TYPE, SCREEN_TYPE } from "const"
+
+export interface MenuParams {
+    current: MENU_TYPE | null
+    parent: MENU_TYPE | null
+}
+
+export interface ScreenParams {
+    type: SCREEN_TYPE
+    width: number
+    height: number
+    hexWidth: number
+}
+
+export type OpenMenuCallback = (current: MenuParams['current'], parent: MenuParams['parent']) => void
+
 export type Content = string | Component | Component[] | (() => void)
 
 export interface FragmentComponent {
