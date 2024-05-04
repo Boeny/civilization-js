@@ -67,22 +67,35 @@ export interface CSSProperties {
     paddingBottom?: string | number
 }
 
-export interface Attrs {
+interface EventAttrs {
+    onClick?: (e: MouseEvent) => void
+    onMouseDown?: (e: MouseEvent) => void
+    onMouseUp?: (e: MouseEvent) => void
+    onMouseMove?: (e: MouseEvent) => void
+    onKeyPress?: (e: KeyboardEvent) => void
+    onKeyDown?: (e: KeyboardEvent) => void
+    onKeyUp?: (e: KeyboardEvent) => void
+}
+
+export interface SameAttrs {
     id?: string
     className?: string
     disabled?: boolean
     alt?: string
     title?: string
-    autoFocus?: boolean
     type?: string
-    style?: CSSProperties
-    onClick?: (e: MouseEvent) => void
-    onMouseDown?: (e: MouseEvent) => void
-    onMouseUp?: (e: MouseEvent) => void
-    onMouseMove?: (e: MouseEvent) => void
+    width?: string | number
+    height?: string | number
 }
 
+export interface Attrs extends SameAttrs, EventAttrs {
+    style?: CSSProperties
+    autoFocus?: boolean
+}
+
+export type NonStyleAttrs = Omit<Attrs, 'style'>
+
 export interface ObservableAttr<T> {
-    name: string
+    name: keyof Attrs
     value: (params: T) => any
 }

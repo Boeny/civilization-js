@@ -1,3 +1,5 @@
+import { NonStyleAttrs, SameAttrs } from "types"
+
 export const MENU_EVENT = 'open-menu'
 export const SCREEN_EVENT = 'screen-update'
 
@@ -94,7 +96,7 @@ export const LAYER_CONFIG: Record<LAYER_TYPE, {title: string}> = {
 
 export const SQRT_3 = Math.sqrt(3)
 
-export const ATTRS_MAP = {
+export const ATTRS_MAP: Record<keyof NonStyleAttrs, keyof GlobalEventHandlers | keyof SameAttrs | 'autofocus'> = {
     id: 'id',
     className: 'className',
     width: 'width',
@@ -108,4 +110,7 @@ export const ATTRS_MAP = {
     onMouseDown: 'onmousedown',
     onMouseUp: 'onmouseup',
     onMouseMove: 'onmousemove',
-} as const
+    onKeyPress: 'onkeypress',
+    onKeyDown: 'onkeydown',
+    onKeyUp: 'onkeyup',
+}

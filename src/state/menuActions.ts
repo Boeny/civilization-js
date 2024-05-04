@@ -1,10 +1,10 @@
-import { MENU_TYPE } from "const"
-import { STATE, State } from "./state"
+import { STATE } from "./state"
+import { MenuParams, OpenMenuCallback } from "types"
 
-export function getOpenedMenu(): State['openedMenu'] {
+export function getOpenedMenu(): MenuParams {
     return STATE.openedMenu
 }
 
-export function setOpenedMenuAction(current: MENU_TYPE | null, parent: MENU_TYPE | null) {
+export const setOpenedMenuAction: OpenMenuCallback = (current, parent) => {
     STATE.openedMenu = {current, parent}
 }

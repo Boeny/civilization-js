@@ -1,4 +1,4 @@
-import { Attrs, BaseComponent, CSSProperties, Component, Content, FragmentComponent, ObservableAttr, StringComponent } from "types"
+import { Attrs, BaseComponent, CSSProperties, Component, Content, FragmentComponent, NonStyleAttrs, ObservableAttr, StringComponent } from "types"
 import { ATTRS_MAP } from "const"
 
 export function getFragmentComponent(content: Component[]): FragmentComponent {
@@ -95,20 +95,20 @@ export function trigger(event: string) {
 
 export function adaptAndSetAttrs<T>(element: HTMLElement, params: T, attrs: ObservableAttr<T>[]) {
     const adaptedAttrs = attrs.reduce<Attrs>((acc, attr) => {
-        (acc as any)[attr.name] = attr.value(params)
+        acc[attr.name] = attr.value(params)
         return acc
     }, {})
 
     applyBaseComponentAttrs(element, adaptedAttrs)
 }
 
-function applyAttrs(element: HTMLElement, params: Attrs) {
+function applyAttrs(element: any, params: NonStyleAttrs) {
     for (let field in params) {
-        const value = params[field as keyof Attrs]
-        const adaptedField = (ATTRS_MAP as any)[field]
+        const value = params[field as keyof NonStyleAttrs]
+        const adaptedField = ATTRS_MAP[field as keyof NonStyleAttrs]
 
         if (value !== undefined && adaptedField !== undefined) {
-            (element as any)[adaptedField] = value
+            element[adaptedField] = value
         }
     }
 }
@@ -124,7 +124,7 @@ function applyStyle(element: HTMLElement, style?: CSSProperties) {
         const value = style[field as keyof CSSProperties]
 
         if (value !== undefined) {
-            (element.style as any)[field] = getStyleAttr(value)
+            element.style[field as keyof CSSProperties] = getStyleAttr(value)
         }
     }
 }
@@ -132,8 +132,9 @@ function applyStyle(element: HTMLElement, style?: CSSProperties) {
 export function applyBaseComponentAttrs(element: HTMLElement, params?: Attrs) {
     if (!params) return
 
-    applyAttrs(element, params)
-    applyStyle(element, params.style)
+    const {style, ...rest} = params
+    applyAttrs(element, rest)
+    applyStyle(element, style)
 }
 
 export async function uploadFile() {
