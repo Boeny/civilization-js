@@ -1,6 +1,6 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const isProduction = process.env.NODE_ENV == 'production';
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const isProduction = process.env.NODE_ENV == 'production'
 
 module.exports = {
     // amd: undefined,
@@ -14,11 +14,11 @@ module.exports = {
         //onBeforeSetupMiddleware: (app) => { // IS DEPRECATED for webpack 5.0
             // app.app.get("/", function(req, res){
             //     res.json({})
-            // });
+            // })
 
             // app.post("/post/some-data", bodyParser.json(), function(req, res){
             //     res.send("POST res sent from webpack dev server")
-            // });
+            // })
         //},
         // allowedHosts: undefined,
         // bonjour: undefined,
@@ -204,4 +204,4 @@ module.exports = {
     // target: undefined,
     // watch: undefined,
     // watchOptions: undefined,
-};
+}

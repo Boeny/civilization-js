@@ -1,9 +1,9 @@
-import { Button } from "components/Button/Button";
+import { Button } from "components/base/Button/Button"
 
 interface Params {
-    openMenu: (() => void) | (() => void)[];
+    openMenu: () => void
 }
 
 export function OpenMenuButton({openMenu}: Params) {
-    return Button('Open menu', {id: 'open-menu-button', onClick: openMenu});
+    return Button('Open menu', {id: 'open-menu-button', onClick: openMenu})
 }

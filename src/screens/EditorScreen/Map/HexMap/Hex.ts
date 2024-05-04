@@ -1,18 +1,18 @@
-import { HEX_CONFIG, HEX_TYPE } from 'const';
-import { Polygon } from 'components/Canvas/Polygon';
+import { HEX_CONFIG, HEX_TYPE } from 'const'
+import { Polygon } from 'screens/EditorScreen/Map/HexMap/Polygon'
 
 interface Params {
-    ctx: CanvasRenderingContext2D;
-    x: number;
-    y: number;
-    width: number;
-    radius: number;
-    type: HEX_TYPE;
-    isGridTurnedOn?: boolean;
+    ctx: CanvasRenderingContext2D
+    x: number
+    y: number
+    width: number
+    radius: number
+    type: HEX_TYPE
+    isGridTurnedOn?: boolean
 }
 
 export function Hex({ctx, x, y, width, radius, type, isGridTurnedOn}: Params) {
-    const xOffset = y % 2 === 0 ? width / 2 : width;
+    const xOffset = y % 2 === 0 ? width / 2 : width
 
     Polygon({
         ctx,
@@ -25,5 +25,5 @@ export function Hex({ctx, x, y, width, radius, type, isGridTurnedOn}: Params) {
         sides: 6,
         fillColor: HEX_CONFIG[type].color,
         strokeColor: isGridTurnedOn ? '#000' : undefined,
-    });
+    })
 }

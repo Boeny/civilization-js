@@ -1,19 +1,19 @@
-import { MapData } from "types";
-import { STATE } from "./state";
-import { HEX_TYPE } from "const";
+import { MapData } from "types"
+import { STATE } from "./state"
+import { HEX_TYPE } from "const"
 
 export function setHexMapDataAction(data: MapData) {
-    STATE.hexMapData = data;
+    STATE.hexMapData = data
 }
 
 export function getHexMapData(): MapData {
-    return STATE.hexMapData;
+    return STATE.hexMapData
 }
 
 export function getHexFromHexMapData(x: number, y: number): HEX_TYPE {
-    return STATE.hexMapData[y][x];
+    return STATE.hexMapData[y][x]
 }
 
 export function setMapPointAction(x: number, y: number, type: HEX_TYPE) {
-    STATE.hexMapData[y][x] = type;
+    STATE.hexMapData[y][x] = type
 }

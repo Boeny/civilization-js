@@ -1,8 +1,11 @@
-import './TopPanel.css';
-import { Panel, Params as PanelParams } from "components/Panel/Panel";
-import { Content } from "types";
+import './TopPanel.css'
+import { Content } from "types"
+import { Panel, Params as PanelParams } from "components/Panel/Panel"
 
-export function TopPanel(content: Content, params?: PanelParams) {
+export interface Params extends PanelParams {
+}
+
+export function TopPanel(content: Content, params?: Params) {
     return Panel(
         content,
         {id: 'top-panel', ...params}
