@@ -26,7 +26,7 @@ function Layer({type, width, onClick}: Params) {
 }
 
 
-function getLayerKey(type: LAYER_TYPE) {
+function getLayerEvent(type: LAYER_TYPE) {
     return 'layer-' + type
 }
 
@@ -35,8 +35,8 @@ function selectLayerAction(type: LAYER_TYPE) {
 
     // some layer is always selected
     const prevSelectedLayer = setLayerAction(type)!
-    trigger(getLayerKey(prevSelectedLayer))
-    trigger(getLayerKey(type))
+    trigger(getLayerEvent(prevSelectedLayer))
+    trigger(getLayerEvent(type))
     trigger(LAYER_CHANGE_EVENT)
 }
 
@@ -47,9 +47,9 @@ interface ContainerParams {
 export const LayerContainers = Object.keys(LAYER_CONFIG).map((key) => {
     const type = parseInt(key)
 
-    return observableAttrs(
-        getLayerKey(type),
-        ({width}: {width: number}) => Layer({
+    return observableAttrs<{width: number}>(
+        getLayerEvent(type),
+        ({width}) => Layer({
             type,
             width,
             onClick: () => selectLayerAction(type)

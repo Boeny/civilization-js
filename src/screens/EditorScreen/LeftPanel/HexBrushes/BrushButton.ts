@@ -30,21 +30,24 @@ function BrushButton({type, onClick}: Params) {
     )
 }
 
+
+function selectBrushAction(type: HEX_TYPE) {
+    if (isAnyBrushSelected() && !isBrushSelected(type)) {
+        const prevSelectedBrush = setBrushAction(type)!
+        trigger(getBrushEvent(prevSelectedBrush))
+    } else {
+        toggleBrushAction(type)
+    }
+
+    trigger(getBrushEvent(type))
+}
+
 export const BrushButtonContainers = Object.keys(HEX_CONFIG).map((key) => {
     const type = parseInt(key)
     const event = getBrushEvent(type)
 
     return observableAttrs(event,
-        () => BrushButton({type, onClick: () => {
-            if (isAnyBrushSelected() && !isBrushSelected(type)) {
-                const prevSelectedBrush = setBrushAction(type)!
-                trigger(getBrushEvent(prevSelectedBrush))
-            } else {
-                toggleBrushAction(type)
-            }
-
-            trigger(event)
-        }}),
+        () => BrushButton({type, onClick: () => selectBrushAction(type)}),
         [{
             name: 'className',
             value: () => getBrushClassName(type),
