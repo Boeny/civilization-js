@@ -47,5 +47,5 @@ export function Input<T = string>(name: string, params?: Params<T>) {
         }
     }
 
-    return getBaseComponent(element, undefined, params)
+    return getBaseComponent(element, null, params)
 }

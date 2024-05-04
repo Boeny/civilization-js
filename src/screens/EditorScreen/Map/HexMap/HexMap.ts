@@ -100,7 +100,7 @@ export const HexMapContainer = observable(HEX_MAP_UPDATE_EVENT, (params: Contain
         onMouseDown: (ctx, x, y) => {
             const brushType = getBrush()
 
-            if (brushType) {
+            if (brushType !== null) {
                 drawHex(ctx, brushType, x, y, mapWidth, mapHeight, hexWidth)
                 setPainting(true)
             }

@@ -8,5 +8,5 @@ export function Img(src: string, params?: Params) {
     const element = document.createElement('img')
     element.src = src
 
-    return getBaseComponent(element, undefined, params)
+    return getBaseComponent(element, null, params)
 }
