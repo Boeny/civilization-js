@@ -14,6 +14,6 @@ export function GameScreenMenu({openMenu, onRestart}: Params) {
         Button('Back to main menu', {onClick: () => openMenu(MENU_TYPE.main, null)}),
         Button('Restart game', {onClick: onRestart}),
         Button('New game', {onClick: () => openMenu(MENU_TYPE.newGameParams, MENU_TYPE.gameScreen)}),
-        Button('Options', {disabled: true, onClick: () => openMenu(MENU_TYPE.options, MENU_TYPE.gameScreen)}),
+        Button('Options', {onClick: () => openMenu(MENU_TYPE.options, MENU_TYPE.gameScreen), disabled: true}),
     ])
 }

@@ -9,8 +9,8 @@ interface Params {
 
 export function MainMenu({onClick}: Params) {
     return Fragment([
-        Button('New Game', {onClick: () => onClick(MENU_TYPE.newGameParams)}),//, disabled: true
+        Button('New Game', {onClick: () => onClick(MENU_TYPE.newGameParams), disabled: true}),
         Button('Editor', {onClick: () => onClick(MENU_TYPE.editorParams)}),
-        Button('Options', {onClick: () => onClick(MENU_TYPE.options)}),//, disabled: true
+        Button('Options', {onClick: () => onClick(MENU_TYPE.options), disabled: true}),
     ])
 }
