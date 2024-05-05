@@ -48,7 +48,7 @@ interface Params {
     openMenu: OpenMenuCallback
 }
 
-export const Menu = observable<Params>(MENU_EVENT, ({openMenu}) => {
+export const Menu = observable(MENU_EVENT, ({openMenu}: Params) => {
     const menu = getOpenedMenu()
     const menuContent = MenuContent({menu, openMenu})
 

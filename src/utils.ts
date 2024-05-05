@@ -77,10 +77,6 @@ export function body(content: Content, reset = false) {
     insertContent(document.body, content)
 }
 
-export function onLoad(callback: () => void) {
-    document.addEventListener('DOMContentLoaded', callback)
-}
-
 export function getClasses(classes: (string | boolean | undefined)[]): string {
     return classes.filter(Boolean).join(' ')
 }
