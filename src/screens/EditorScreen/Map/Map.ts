@@ -1,5 +1,5 @@
 import { Fragment } from "components/base/Fragment"
-import { HexMapContainer } from "./HexMap/HexMap"
+import { HexMapLayerChangeContainer } from "./HexMap/HexMap"
 import { ImageMapContainer } from "./ImageMap/ImageMap"
 
 interface Params {
@@ -10,6 +10,6 @@ interface Params {
 export function Map({width, height}: Params) {
     return Fragment([
         ImageMapContainer({width, height}),
-        HexMapContainer({width, height}),
+        HexMapLayerChangeContainer({width, height}),
     ])
 }

@@ -18,7 +18,6 @@ export function observable<T>(id: string, component: (params: T) => Component) {
         return {
             element: container,
             content: component(initialParams as T),
-            params: initialParams
         } as BaseComponent
     }
 }
