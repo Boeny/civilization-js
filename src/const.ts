@@ -105,6 +105,7 @@ export const ATTRS_MAP: Record<keyof NonStyleAttrs, keyof GlobalEventHandlers | 
     alt: 'alt',
     title: 'title',
     type: 'type',
+    value: 'value',
     autoFocus: 'autofocus',
     onClick: 'onclick',
     onMouseDown: 'onmousedown',

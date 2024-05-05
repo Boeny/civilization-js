@@ -37,7 +37,7 @@ document.addEventListener('keydown', (e) => {
             case MENU_TYPE.options: openMenu(parent, null); return
             case MENU_TYPE.gameScreen: openMenu(null, null); return
             case MENU_TYPE.editorScreen: openMenu(null, null); return
-            case null:
+            case null: // is closed
                 const screen = getScreenParams()
                 if (!screen) throw new Error('there should be main menu without any screen')
 

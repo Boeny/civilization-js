@@ -1,9 +1,3 @@
-label {
-    padding-left: 5px;
-}
-label > input {
-    margin: 10px;
-}
 :root {
     --selected-color: #ff2800;
     --hover-color: #1f6ada;

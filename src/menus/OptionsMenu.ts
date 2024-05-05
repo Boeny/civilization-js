@@ -8,7 +8,7 @@ interface Params {
 
 export function OptionsMenu({onBackClick}: Params) {
     return Fragment([
-        Button('Back to main menu', {id: 'close-menu-button', onClick: onBackClick}),
+        Button('Back to main menu', {onClick: onBackClick}),
         Block(),
         Button('Save', {onClick: onBackClick}),
     ])

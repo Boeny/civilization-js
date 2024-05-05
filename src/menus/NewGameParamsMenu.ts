@@ -1,33 +1,31 @@
 import { ScreenParams } from "types"
 import { SCREEN_TYPE } from "const"
 import { Button } from "components/base/Button/Button"
-import { MapSizeBlock } from "./MapSizeBlock/MapSizeBlock"
+import { MapParamsBlock, getState, setDefaultStateAction, updateFields } from "./MapParamsBlock/MapParamsBlock"
 import { Fragment } from "components/base/Fragment"
-
-function checkValidity() {
-    return true
-}
-function getFormValues() {
-    return {width: 100, height: 100, hexWidth: 10}
-}
-
-function submit(onSubmit: (params: ScreenParams) => void) {
-    if (!checkValidity()) {
-        return
-    }
-
-    onSubmit({...getFormValues(), type: SCREEN_TYPE.game})
-}
+import { checkSubmitValidity } from "./MapParamsBlock/logic"
 
 interface Params {
+    screenParams?: ScreenParams
     onBackClick: () => void
     onSubmit: (params: ScreenParams) => void
 }
 
-export function NewGameParamsMenu({onBackClick, onSubmit}: Params) {
+export function NewGameParamsMenu({screenParams, onBackClick, onSubmit}: Params) {
+    setDefaultStateAction(screenParams)
+
+    const submit = () => {
+        const errors = checkSubmitValidity(getState())
+        if (errors.length > 0) {
+            updateFields()
+            return
+        }
+        onSubmit({...getState(), type: SCREEN_TYPE.game})
+    }
+
     return Fragment([
         Button('Back to main menu', {onClick: onBackClick}),
-        MapSizeBlock({autoFocus: true, onEnterKeyDown: () => submit(onSubmit)}),
-        Button('Play', {onClick: () => submit(onSubmit)}),
+        MapParamsBlock({onEnterKeyDown: submit}),
+        Button('Play', {onClick: submit}),
     ])
 }

@@ -29,11 +29,9 @@ const DEFAULT_STATE: State = {
 
 export const STATE: State = {...DEFAULT_STATE}
 
-export function setDefaultStateAction(params?: Partial<State>) {
-    for (let key in DEFAULT_STATE) {
-        (STATE as any)[key] = (DEFAULT_STATE as any)[key]
-    }
-    for (let key in params) {
-        (STATE as any)[key] = (params as any)[key]
+export function setDefaultStateAction(params: Partial<State> = {}) {
+    for (let key in STATE) {
+        const field = key as keyof State
+        (STATE as any)[field] = field in params ? params[field] : DEFAULT_STATE[field]
     }
 }

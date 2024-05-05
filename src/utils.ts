@@ -91,7 +91,7 @@ export function trigger(event: string) {
 
 export function adaptAndSetAttrs<T>(element: HTMLElement, params: T, attrs: ObservableAttr<T>[]) {
     const adaptedAttrs = attrs.reduce<Attrs>((acc, attr) => {
-        acc[attr.name] = attr.value(params)
+        (acc as any)[attr.name] = attr.value(params)
         return acc
     }, {})
 

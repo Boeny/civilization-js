@@ -32,15 +32,6 @@ export interface BaseComponent {
 
 export type Component = FragmentComponent | BaseComponent | StringComponent | null
 
-export interface CustormFieldSetElement<T> extends HTMLFieldSetElement {
-    name: string
-    value: string
-    getValue: () => T
-    checkSubmitValidity: () => boolean
-    setSubmitError: () => void
-    removeSubmitError: () => void
-}
-
 export type MapData = number[][]
 
 export type MapDataRow = number[]
@@ -86,6 +77,7 @@ export interface SameAttrs {
     type?: string
     width?: string | number
     height?: string | number
+    value?: string
 }
 
 export interface Attrs extends SameAttrs, EventAttrs {
@@ -97,5 +89,5 @@ export type NonStyleAttrs = Omit<Attrs, 'style'>
 
 export interface ObservableAttr<T> {
     name: keyof Attrs
-    value: (params: T) => any
+    value: (params: T) => Attrs[keyof Attrs]
 }

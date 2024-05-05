@@ -23,16 +23,19 @@ interface Params extends ContainerParams {
 }
 
 function Menu({menu, screenParams, openMenu, onSubmit}: Params) {
-    const {current, parent} = menu;
+    const {current, parent} = menu
+    const savedScreenParams = parent === MENU_TYPE.main ? undefined : screenParams || undefined
+    const openParentMenu = () => openMenu(parent, null)
+    const recreateMap = () => onSubmit(screenParams)
 
     switch (current) {
         case MENU_TYPE.main: return MainMenu({onClick: (item) => openMenu(item, MENU_TYPE.main)})
-        case MENU_TYPE.newGameParams: return NewGameParamsMenu({onBackClick: () => openMenu(parent, null), onSubmit})
-        case MENU_TYPE.editorParams: return EditorParamsMenu({onBackClick: () => openMenu(parent, null), onSubmit})
-        case MENU_TYPE.options: return OptionsMenu({onBackClick: () => openMenu(parent, null)})
-        case MENU_TYPE.gameScreen: return GameScreenMenu({openMenu, onRestart: () => onSubmit(screenParams)})
-        case MENU_TYPE.editorScreen: return EditorScreenMenu({openMenu, onRestart: () => onSubmit(screenParams)})
-        case null: return null
+        case MENU_TYPE.newGameParams: return NewGameParamsMenu({screenParams: savedScreenParams, onBackClick: openParentMenu, onSubmit})
+        case MENU_TYPE.editorParams: return EditorParamsMenu({screenParams: savedScreenParams, onBackClick: openParentMenu, onSubmit})
+        case MENU_TYPE.options: return OptionsMenu({onBackClick: openParentMenu})
+        case MENU_TYPE.gameScreen: return GameScreenMenu({openMenu, onRestart: recreateMap})
+        case MENU_TYPE.editorScreen: return EditorScreenMenu({openMenu, onRestart: recreateMap})
+        case null: return null // is closed
         default: throw new Error('unknown menu type')
     }
 }
