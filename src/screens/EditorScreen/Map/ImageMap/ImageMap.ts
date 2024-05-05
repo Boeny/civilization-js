@@ -1,5 +1,5 @@
 import './ImageMap.css'
-import { LAYER_TYPE } from 'const'
+import { LAYER_CONFIG, LAYER_TYPE } from 'const'
 import { IMAGE_MAP_UPDATE_EVENT, LAYER_CHANGE_EVENT } from "screens/EditorScreen/const"
 import { trigger, uploadFile } from 'utils'
 import { getImageMapData, setImageMapData } from 'state/imageMapDataActions'
@@ -26,7 +26,12 @@ function ImageMap({width, height, image, onLoadButtonClick}: Params) {
     return image ?
         Canvas(
             (ctx) => {ctx.drawImage(image, 0, 0)},
-            {id: 'image-map', width, height}
+            {
+                id: 'image-map',
+                width,
+                height,
+                style: {zIndex: LAYER_CONFIG[LAYER_TYPE.image].zIndex},
+            }
         )
     :
         Div(

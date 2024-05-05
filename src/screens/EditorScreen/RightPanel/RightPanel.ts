@@ -1,4 +1,5 @@
 import './RightPanel.css'
+import { PANEL_CONFIG } from 'const'
 import { RIGHT_PANEL_TOGGLE_EVENT } from "screens/EditorScreen/const"
 import { isRightPanelOpened } from 'state/rightPanelActions'
 import { observable } from "hoc/observable"
@@ -18,7 +19,8 @@ function RightPanel() {
                 paddingLeft: RIGHT_PANEL.padding,
                 paddingRight: RIGHT_PANEL.padding,
                 paddingBottom: RIGHT_PANEL.padding,
-                left: `calc(100% - ${RIGHT_PANEL_WIDTH}px)`
+                left: `calc(100% - ${RIGHT_PANEL_WIDTH}px)`,
+                zIndex: PANEL_CONFIG.right.zIndex,
             }
         }
     )

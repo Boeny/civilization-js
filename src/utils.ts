@@ -81,6 +81,10 @@ export function getClasses(classes: (string | boolean | undefined)[]): string {
     return classes.filter(Boolean).join(' ')
 }
 
+export function getStyle(initialStyle: CSSProperties, style: CSSProperties = {}): CSSProperties {
+    return {...initialStyle, ...style}
+}
+
 export function convertToInteger(value: string): number {
     return value.includes('.') ? NaN : Number(value)
 }
@@ -116,11 +120,12 @@ function getStyleAttr(attr: string | number): string {
 function applyStyle(element: HTMLElement, style?: CSSProperties) {
     if (!style) return
 
-    for (let field in style) {
-        const value = style[field as keyof CSSProperties]
+    for (let key in style) {
+        const field = key as keyof CSSProperties
+        const value = style[field]
 
         if (value !== undefined) {
-            element.style[field as keyof CSSProperties] = getStyleAttr(value)
+            element.style[field] = field === 'zIndex' ? String(value) : getStyleAttr(value)
         }
     }
 }

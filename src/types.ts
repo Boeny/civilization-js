@@ -37,6 +37,7 @@ export type MapData = number[][]
 export type MapDataRow = number[]
 
 export interface CSSProperties {
+    zIndex?: number
     left?: string | number
     top?: string | number
     width?: string | number

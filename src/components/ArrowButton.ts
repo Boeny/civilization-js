@@ -1,14 +1,19 @@
+import { getStyle } from 'utils'
 import arrow from 'assets/arrow_down.svg'
-import { Button, Params as ButtonParams } from "components/base/Button/Button"
 import { Svg } from "components/base/Svg"
+import { Button, Params as ButtonParams } from "components/base/Button/Button"
 
 export interface Params extends ButtonParams {
     onClick: () => void
 }
 
-export function ArrowButton({onClick, ...params}: Params) {
+export function ArrowButton({onClick, style, ...params}: Params) {
     return Button(
         Svg(arrow, {width: 20}),
-        {onClick, style: {padding: '4px 11px'}, ...params}
+        {
+            ...params,
+            onClick,
+            style: getStyle({padding: '4px 10px 0px'}, style),
+        }
     )
 }

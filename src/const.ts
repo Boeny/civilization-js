@@ -86,13 +86,20 @@ export enum LAYER_TYPE {
     borders,
 }
 
-export const LAYER_CONFIG: Record<LAYER_TYPE, {title: string}> = {
-    [LAYER_TYPE.image]: {title: 'Image'},
-    [LAYER_TYPE.continuous]: {title: 'Continuous map'},
-    [LAYER_TYPE.hex]: {title: 'Hexagonal base map'},
-    [LAYER_TYPE.objects]: {title: 'Objects map'},
-    [LAYER_TYPE.borders]: {title: 'Borders'},
+export const LAYER_CONFIG: Record<LAYER_TYPE, {title: string, zIndex: number}> = {
+    [LAYER_TYPE.image]: {title: 'Image', zIndex: 0},
+    [LAYER_TYPE.continuous]: {title: 'Continuous map', zIndex: 1},
+    [LAYER_TYPE.hex]: {title: 'Hexagonal base map', zIndex: 2},
+    [LAYER_TYPE.objects]: {title: 'Objects map', zIndex: 3},
+    [LAYER_TYPE.borders]: {title: 'Borders', zIndex: 4},
 }
+
+export const PANEL_CONFIG = {
+    left: {zIndex: 10},
+    right: {zIndex: 10},
+    top: {zIndex: 11},
+    layout: {zIndex: 12},
+} as const
 
 export const SQRT_3 = Math.sqrt(3)
 

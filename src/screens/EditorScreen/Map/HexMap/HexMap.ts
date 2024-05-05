@@ -1,7 +1,6 @@
 import './HexMap.css'
-
 import { MapData } from "types"
-import { HEX_TYPE, LAYER_TYPE } from 'const'
+import { LAYER_CONFIG, LAYER_TYPE } from 'const'
 import { HEX_MAP_UPDATE_EVENT, HEX_MINI_MAP_UPDATE_EVENT, LAYER_CHANGE_EVENT } from 'screens/EditorScreen/const'
 import { trigger } from 'utils'
 import { getHexRadius, getMapCoordinatesFromCursor } from 'logic'
@@ -48,6 +47,7 @@ function HexMap({ width, height, hexMapData, hexWidth, isGridTurnedOn, onMouseDo
             id: 'hex-map',
             width,
             height,
+            style: {zIndex: LAYER_CONFIG[LAYER_TYPE.hex].zIndex},
             onMouseDown,
             onMouseMove,
             onMouseUp,

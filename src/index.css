@@ -2,3 +2,10 @@
     --selected-color: #ff2800;
     --hover-color: #1f6ada;
 }
+body {
+    background: #595959;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: 'Arial';
+}
