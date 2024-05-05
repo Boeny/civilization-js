@@ -9,12 +9,14 @@ interface Params {
     openMenu: OpenMenuCallback
 }
 
-export const Screen = observable<Params>(SCREEN_EVENT, ({openMenu}) => {
+export const ScreenContainer = observable<Params>(SCREEN_EVENT, ({openMenu}) => {
     const params = getScreenParams()
 
-    switch (params?.type) {
+    if (!params) return null
+
+    switch (params.type) {
         case SCREEN_TYPE.game: return GameScreen({openMenu: () => openMenu(MENU_TYPE.gameScreen, null)})
         case SCREEN_TYPE.editor: return EditorScreen({openMenu: () => openMenu(MENU_TYPE.editorScreen, null)})
-        default: return null
+        default: throw new Error('unknown screen type')
     }
 })

@@ -5,8 +5,8 @@ import { body, trigger } from "utils"
 import { setDefaultStateAction } from 'state/state'
 import { getOpenedMenu, setOpenedMenuAction } from 'state/menuActions'
 import { getScreenParams } from 'state/screenParamsActions'
-import { Menu } from 'menus/Menu'
-import { Screen } from 'screens/Screen'
+import { MenuContainer } from 'menus/Menu'
+import { ScreenContainer } from 'screens/Screen'
 
 const openMenu: OpenMenuCallback = (current, parent) => {
     if (current === MENU_TYPE.main) {
@@ -21,8 +21,8 @@ const openMenu: OpenMenuCallback = (current, parent) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     body([
-        Menu({openMenu}),
-        Screen({openMenu}),
+        MenuContainer({openMenu}),
+        ScreenContainer({openMenu}),
     ])
 })
 
@@ -39,7 +39,7 @@ document.addEventListener('keydown', (e) => {
             case MENU_TYPE.editorScreen: openMenu(null, null); return
             case null:
                 const screen = getScreenParams()
-                if (!screen) throw new Error('without any screen there should be main menu')
+                if (!screen) throw new Error('there should be main menu without any screen')
 
                 switch (screen.type) {
                     case SCREEN_TYPE.game: openMenu(MENU_TYPE.gameScreen, null); return
