@@ -1,0 +1,17 @@
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: bold;
+    border-bottom: 1px solid #bab8b8;
+    padding: 4px 7px 5px;
+}
+.eye {
+    border-radius: 5px;
+    padding: 0 1px;
+    margin-bottom: -1px;
+}
+.eye:hover {
+    outline: 3px solid #7c7c7c;
+}

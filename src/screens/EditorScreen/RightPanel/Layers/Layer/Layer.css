@@ -10,9 +10,3 @@
 .layer.selected, .layer.selected:hover {
     outline: 4px solid var(--selected-color);
 }
-.title {
-    font-size: 13px;
-    font-weight: bold;
-    border-bottom: 1px solid #bab8b8;
-    padding: 4px 7px;
-}

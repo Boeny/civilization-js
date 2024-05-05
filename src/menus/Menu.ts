@@ -1,4 +1,4 @@
-import { MenuParams, OpenMenuCallback, ScreenParams } from "types"
+import { OpenMenuCallback, ScreenParams } from "types"
 import { MENU_EVENT, MENU_TYPE, SCREEN_EVENT } from "const"
 import { trigger } from "utils"
 import { generateEmptyMapData } from "logic"
@@ -17,13 +17,13 @@ import { GameScreenMenu } from "./GameScreenMenu"
 import { EditorScreenMenu } from "./EditorScreenMenu"
 
 interface Params extends ContainerParams {
-    menu: MenuParams
+    current: MENU_TYPE,
+    parent: MENU_TYPE | null,
     screenParams: ScreenParams | null
     onSubmit: (screenParams: ScreenParams | null) => void
 }
 
-function Menu({menu, screenParams, openMenu, onSubmit}: Params) {
-    const {current, parent} = menu
+function Menu({current, parent, screenParams, openMenu, onSubmit}: Params) {
     const savedScreenParams = parent === MENU_TYPE.main ? undefined : screenParams || undefined
     const openParentMenu = () => openMenu(parent, null)
     const recreateMap = () => onSubmit(screenParams)
@@ -35,7 +35,6 @@ function Menu({menu, screenParams, openMenu, onSubmit}: Params) {
         case MENU_TYPE.options: return OptionsMenu({onBackClick: openParentMenu})
         case MENU_TYPE.gameScreen: return GameScreenMenu({openMenu, onRestart: recreateMap})
         case MENU_TYPE.editorScreen: return EditorScreenMenu({openMenu, onRestart: recreateMap})
-        case null: return null // is closed
         default: throw new Error('unknown menu type')
     }
 }
@@ -58,18 +57,19 @@ interface ContainerParams {
 }
 
 export const MenuContainer = observable(MENU_EVENT, ({openMenu}: ContainerParams) => {
-    const menuContent = Menu({
-        menu: getOpenedMenu(),
-        screenParams: getScreenParams(),
-        openMenu,
-        onSubmit: createScreenAction
-    })
+    const {current, parent} = getOpenedMenu()
 
-    if (!menuContent) return null
+    if (current === null) return null // is closed
 
     return Popup(
         Block(
-            menuContent,
+            Menu({
+                current,
+                parent,
+                screenParams: getScreenParams(),
+                openMenu,
+                onSubmit: createScreenAction
+            }),
             {className: 'flex-column'}
         )
     )

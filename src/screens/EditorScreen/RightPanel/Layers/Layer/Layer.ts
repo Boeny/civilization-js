@@ -6,7 +6,9 @@ import { isLayerSelected, setLayerAction } from 'state/layerActions'
 
 import { observableAttrs } from 'hoc/observable'
 import { Div } from "components/base/Div"
-import { HexMiniMapContainer } from './HexMiniMap'
+import { MiniMap } from './MiniMap/MiniMap'
+import { setPainting } from 'state/paintingActions'
+import { Title } from './Title'
 
 interface Params extends ContainerParams {
     type: LAYER_TYPE
@@ -18,8 +20,8 @@ function Layer({type, width, onClick}: Params) {
 
     return Div(
         [
-            Div(title, {className: 'title'}),
-            type === LAYER_TYPE.hex ? HexMiniMapContainer({width, title}) : null,
+            Title({title}),
+            MiniMap({type, width, title}),
         ],
         {onClick}
     )
@@ -32,6 +34,8 @@ function getLayerEvent(type: LAYER_TYPE) {
 
 function selectLayerAction(type: LAYER_TYPE) {
     if (isLayerSelected(type)) return
+
+    setPainting(false)
 
     // some layer is always selected
     const prevSelectedLayer = setLayerAction(type)!
