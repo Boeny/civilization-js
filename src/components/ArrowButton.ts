@@ -1,5 +1,5 @@
 import { getStyle } from 'utils'
-import arrow from 'assets/arrow_down.svg'
+import arrow from 'assets/arrow-down.svg'
 import { Svg } from "components/base/Svg"
 import { Button, Params as ButtonParams } from "components/base/Button/Button"
 
