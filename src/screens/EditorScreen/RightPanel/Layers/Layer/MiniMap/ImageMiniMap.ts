@@ -1,18 +1,12 @@
 import { Canvas } from "components/base/Canvas";
 import { observable } from "hoc/observable";
 import { IMAGE_MAP_UPDATE_EVENT } from "screens/EditorScreen/const";
-import { getImageMapData } from "state/imageMapDataActions";
+import { editorScreenStore } from "screens/EditorScreen/store";
 
-interface Params {
-    width: number
-    title: string
+interface Params extends ObservableParams {
+    image: CanvasImageSource
 }
-
-export const ImageMiniMapContainer = observable(IMAGE_MAP_UPDATE_EVENT, ({width, title}: Params) => {
-    const image = getImageMapData()
-
-    if (!image) return null
-
+function ImageMiniMap({image, width, title}: Params) {
     return Canvas(
         (ctx) => {ctx.drawImage(image, 0, 0, width - 29, width > 170 ? 170 : width)},
         {
@@ -21,4 +15,15 @@ export const ImageMiniMapContainer = observable(IMAGE_MAP_UPDATE_EVENT, ({width,
             height: width > 170 ? 170 : width,
         }
     )
+}
+
+
+interface ObservableParams {
+    width: number
+    title: string
+}
+export const ImageMiniMapToggleObservable = observable(IMAGE_MAP_UPDATE_EVENT, ({width, title}: ObservableParams) => {
+    const {imageMapData} = editorScreenStore
+
+    return imageMapData.value ? ImageMiniMap({image: imageMapData.value, width, title}) : null
 })

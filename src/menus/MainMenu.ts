@@ -1,16 +1,18 @@
-import { MenuParams } from "types"
-import { MENU_TYPE } from "const"
-import { Button } from "components/base/Button/Button"
+import { Button } from "components/base/Button"
 import { Fragment } from "components/base/Fragment"
+import { MENU_TYPE, OpenMenuCallback } from "./types"
 
-interface Params {
-    onClick: (current: MenuParams['current']) => void
+function onClick(openMenu: OpenMenuCallback, current: MENU_TYPE.gameParams | MENU_TYPE.editorParams | MENU_TYPE.options) {
+    openMenu({current, parent: MENU_TYPE.main})
 }
 
-export function MainMenu({onClick}: Params) {
+interface Params {
+    openMenu: OpenMenuCallback
+}
+export function MainMenu({openMenu}: Params) {
     return Fragment([
-        Button('New Game', {onClick: () => onClick(MENU_TYPE.newGameParams), disabled: true}),
-        Button('Editor', {onClick: () => onClick(MENU_TYPE.editorParams)}),
-        Button('Options', {onClick: () => onClick(MENU_TYPE.options), disabled: true}),
+        Button('New Game', {onClick: () => onClick(openMenu, MENU_TYPE.gameParams), disabled: true}),
+        Button('Editor', {onClick: () => onClick(openMenu, MENU_TYPE.editorParams)}),
+        Button('Options', {onClick: () => onClick(openMenu, MENU_TYPE.options), disabled: true}),
     ])
 }

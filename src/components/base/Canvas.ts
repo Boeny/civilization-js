@@ -1,7 +1,5 @@
-import { Attrs } from "types"
-import { getBaseComponent } from "utils"
-
-type CanvasComponent = (ctx: CanvasRenderingContext2D) => void
+import { Attrs } from "types/components"
+import { getBaseComponent } from "utils/components"
 
 export interface Params extends Omit<Attrs, 'onClick' | 'onMouseDown' | 'onMouseMove' | 'onMouseUp'> {
     width?: number
@@ -11,8 +9,7 @@ export interface Params extends Omit<Attrs, 'onClick' | 'onMouseDown' | 'onMouse
     onMouseMove?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void
     onMouseUp?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void
 }
-
-export function Canvas(content: CanvasComponent, params?: Params) {
+export function Canvas(content: (ctx: CanvasRenderingContext2D) => void, params?: Params) {
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')!
 

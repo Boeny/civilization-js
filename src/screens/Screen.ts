@@ -1,22 +1,20 @@
-import { MENU_TYPE, SCREEN_EVENT, SCREEN_TYPE } from "const"
+import { SCREEN_EVENT } from "const"
 import { observable } from "hoc/observable"
-import { getScreenParams } from "state/screenParamsActions"
+import { globalStore } from "store"
 import { GameScreen } from "./GameScreen"
-import { EditorScreen } from "./EditorScreen/EditorScreen"
-import { OpenMenuCallback } from "types"
+import { EditorScreen } from "./EditorScreen"
+import { SCREEN_TYPE } from "types"
 
 interface Params {
-    openMenu: OpenMenuCallback
+    openParentMenu: () => void
 }
+export const ScreenSwitchObservable = observable<Params>(SCREEN_EVENT, ({openParentMenu}) => {
+    const {screen} = globalStore
+    if (screen === null) return null
 
-export const ScreenContainer = observable<Params>(SCREEN_EVENT, ({openMenu}) => {
-    const params = getScreenParams()
-
-    if (!params) return null
-
-    switch (params.type) {
-        case SCREEN_TYPE.game: return GameScreen({openMenu: () => openMenu(MENU_TYPE.gameScreen, null)})
-        case SCREEN_TYPE.editor: return EditorScreen({openMenu: () => openMenu(MENU_TYPE.editorScreen, null)})
+    switch (screen) {
+        case SCREEN_TYPE.game: return GameScreen({openMenu: openParentMenu})
+        case SCREEN_TYPE.editor: return EditorScreen({openMenu: openParentMenu})
         default: throw new Error('unknown screen type')
     }
 })

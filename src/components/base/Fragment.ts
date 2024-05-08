@@ -1,5 +1,5 @@
-import { Component } from "types"
-import { getFragmentComponent } from "utils"
+import { Component } from "types/components"
+import { getFragmentComponent } from "utils/components"
 
 export function Fragment(content: Component[]) {
     return getFragmentComponent(content)

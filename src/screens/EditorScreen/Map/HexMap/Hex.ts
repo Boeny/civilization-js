@@ -1,5 +1,6 @@
-import { HEX_CONFIG, HEX_TYPE } from 'const'
 import { Polygon } from 'screens/EditorScreen/Map/HexMap/Polygon'
+import { HEX_CONFIG } from 'screens/EditorScreen/const'
+import { HEX_TYPE } from 'screens/EditorScreen/types'
 
 interface Params {
     ctx: CanvasRenderingContext2D

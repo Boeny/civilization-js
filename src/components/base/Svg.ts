@@ -1,10 +1,9 @@
-import { getStringComponent } from "utils"
+import { getStringComponent } from "utils/components"
 
 export interface Params {
     width?: number
     color?: string
 }
-
 export function Svg(source: string, params?: Params) {
     if (params?.width) {
         source = source.replace('width=""', `width="${params.width}"`)

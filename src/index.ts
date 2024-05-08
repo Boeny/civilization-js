@@ -1,52 +1,41 @@
 import './index.css'
-import { OpenMenuCallback } from 'types'
-import { KEY_CODE, MENU_EVENT, MENU_TYPE, SCREEN_EVENT, SCREEN_TYPE } from 'const'
-import { body, trigger } from "utils"
-import { setDefaultStateAction } from 'state/state'
-import { getOpenedMenu, setOpenedMenuAction } from 'state/menuActions'
-import { getScreenParams } from 'state/screenParamsActions'
-import { MenuContainer } from 'menus/Menu'
-import { ScreenContainer } from 'screens/Screen'
+import { globalStore, resetGlobalStore } from 'store'
+import { MenuSwitchObservable } from 'menus/Menu'
+import { ScreenSwitchObservable } from 'screens/Screen'
+import { MENU_TYPE, MenuOption } from 'menus/types'
+import { SCREEN_EVENT } from 'const'
+import { KEY_CODE } from 'types'
+import { MENU_SWITCH_EVENT } from 'menus/const'
+import { body, trigger } from 'utils/components'
+import { getParentMenu } from 'menus/utils'
 
-const openMenu: OpenMenuCallback = (current, parent) => {
-    if (current === MENU_TYPE.main) {
-        setDefaultStateAction()
+const openMenu = (newMenu: MenuOption) => {
+    if (newMenu.current === MENU_TYPE.main) {
+        resetGlobalStore()
         trigger(SCREEN_EVENT)
     } else {
-        setOpenedMenuAction(current, parent)
+        globalStore.menu = newMenu
     }
 
-    trigger(MENU_EVENT)
+    trigger(MENU_SWITCH_EVENT)
+}
+
+function openParentMenu() {
+    const parentMenu = getParentMenu(globalStore.menu)
+    if (parentMenu) {
+        openMenu(parentMenu)
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     body([
-        MenuContainer({openMenu}),
-        ScreenContainer({openMenu}),
+        MenuSwitchObservable({openMenu, openParentMenu}),
+        ScreenSwitchObservable({openParentMenu}),
     ])
 })
 
 document.addEventListener('keydown', (e) => {
     if (e.key === KEY_CODE.esc) {
-        const {current, parent} = getOpenedMenu()
-
-        switch (current) {
-            case MENU_TYPE.main: return
-            case MENU_TYPE.newGameParams: openMenu(parent, null); return
-            case MENU_TYPE.editorParams: openMenu(parent, null); return
-            case MENU_TYPE.options: openMenu(parent, null); return
-            case MENU_TYPE.gameScreen: openMenu(null, null); return
-            case MENU_TYPE.editorScreen: openMenu(null, null); return
-            case null: // is closed
-                const screen = getScreenParams()
-                if (!screen) throw new Error('there should be main menu without any screen')
-
-                switch (screen.type) {
-                    case SCREEN_TYPE.game: openMenu(MENU_TYPE.gameScreen, null); return
-                    case SCREEN_TYPE.editor: openMenu(MENU_TYPE.editorScreen, null); return
-                    default: throw new Error('unknown screen type')
-                }
-            default: throw new Error('unknown menu type')
-        }
+        openParentMenu()
     }
 })

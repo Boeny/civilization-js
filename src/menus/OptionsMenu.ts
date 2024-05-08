@@ -1,15 +1,14 @@
-import { Block } from "components/Block/Block"
-import { Button } from "components/base/Button/Button"
+import { Block } from "components/Block"
+import { Button } from "components/base/Button"
 import { Fragment } from "components/base/Fragment"
 
 interface Params {
-    onBackClick: () => void
+    openParentMenu: () => void
 }
-
-export function OptionsMenu({onBackClick}: Params) {
+export function OptionsMenu({openParentMenu}: Params) {
     return Fragment([
-        Button('Back to main menu', {onClick: onBackClick}),
+        Button('Back to main menu', {onClick: openParentMenu}),
         Block(),
-        Button('Save', {onClick: onBackClick}),
+        Button('Save', {onClick: openParentMenu}),
     ])
 }

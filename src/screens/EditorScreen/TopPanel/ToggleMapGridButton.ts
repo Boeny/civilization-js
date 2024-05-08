@@ -1,17 +1,15 @@
-import { LAYER_TYPE } from "const"
 import { HEX_MAP_UPDATE_EVENT, LAYER_CHANGE_EVENT } from "../const"
-import { trigger } from "utils"
-import { isGridTurnedOn, setGridTurnedOn } from 'state/gridStatusActions'
-
+import { trigger } from "utils/components"
+import { editorScreenStore } from "../store"
 import { observable } from "hoc/observable"
 import { showOnLayer } from "hoc/showOnLayer"
-import { Button } from "components/base/Button/Button"
+import { Button } from "components/base/Button"
+import { LAYER_TYPE } from "../types"
 
 interface Params {
     isGridTurnedOn: boolean
     onClick: () => void
 }
-
 function ToggleMapGridButton({isGridTurnedOn, onClick}: Params) {
     return Button(
         `Grid: ${isGridTurnedOn ? 'On' : 'Off'}`,
@@ -19,16 +17,18 @@ function ToggleMapGridButton({isGridTurnedOn, onClick}: Params) {
     )
 }
 
-const ToggleMapButtonHandlerContainer = observable(HEX_MAP_UPDATE_EVENT, () => {
-    const isGridOn = isGridTurnedOn()
+
+const ToggleGridMapButtonClickHandleObservable = observable(HEX_MAP_UPDATE_EVENT, () => {
+    const {isGridTurnedOn} = editorScreenStore
 
     return ToggleMapGridButton({
-        isGridTurnedOn: isGridOn,
+        isGridTurnedOn: isGridTurnedOn.value,
         onClick: () => {
-            setGridTurnedOn(!isGridOn)
+            isGridTurnedOn.value = !isGridTurnedOn.value
             trigger(HEX_MAP_UPDATE_EVENT)
         }
     })
 })
 
-export const ToggleMapGridButtonContainer = showOnLayer(LAYER_CHANGE_EVENT, LAYER_TYPE.hex, ToggleMapButtonHandlerContainer)
+
+export const ToggleMapGridButtonToggleObservable = showOnLayer(LAYER_CHANGE_EVENT, LAYER_TYPE.hex, ToggleGridMapButtonClickHandleObservable)

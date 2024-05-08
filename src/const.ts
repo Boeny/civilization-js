@@ -1,107 +1,6 @@
-import { NonStyleAttrs, SameAttrs } from "types"
+import { NonStyleAttrs, SameAttrs } from './types/components'
 
-export const MENU_EVENT = 'open-menu'
 export const SCREEN_EVENT = 'screen-update'
-
-export enum MENU_TYPE {
-    main,
-    newGameParams,
-    editorParams,
-    options,
-    editorScreen,
-    gameScreen,
-}
-
-export enum SCREEN_TYPE {
-    editor,
-    game,
-}
-
-export enum KEY_CODE {
-    esc = 'Escape',
-    enter = 'Enter',
-}
-
-export enum HEX_TYPE {
-    ocean,
-    sea,
-    desert,
-    dirt,
-    meadow,
-    tundra,
-    snow,
-    ice,
-    mountain,
-    hill,
-}
-
-export const HEX_CONFIG: Record<HEX_TYPE, {color: string, title: string}> = {
-    [HEX_TYPE.ocean]: {
-        color: 'rgb(0 138 134)',
-        title: 'Ocean',
-    },
-    [HEX_TYPE.sea]: {
-        color: '#02acd2',
-        title: 'Sea',
-    },
-    [HEX_TYPE.desert]: {
-        color: '#f2be00',
-        title: 'Desert',
-    },
-    [HEX_TYPE.dirt]: {
-        color: '#6c3700',
-        title: 'Dirt',
-    },
-    [HEX_TYPE.meadow]: {
-        color: '#008c00',
-        title: 'Meadow',
-    },
-    [HEX_TYPE.tundra]: {
-        color: '#a1daa1',
-        title: 'Tundra',
-    },
-    [HEX_TYPE.snow]: {
-        color: '#cffaff',
-        title: 'Snow',
-    },
-    [HEX_TYPE.ice]: {
-        color: '#ffffff',
-        title: 'Ice',
-    },
-    [HEX_TYPE.mountain]: {
-        color: '#a37070',
-        title: 'Mountain',
-    },
-    [HEX_TYPE.hill]: {
-        color: '#b0d700',
-        title: 'Hill',
-    },
-}
-
-export enum LAYER_TYPE {
-    image,
-    continuous,
-    hex,
-    objects,
-    borders,
-}
-
-export const LAYER_CONFIG: Record<LAYER_TYPE, {title: string, zIndex: number}> = {
-    [LAYER_TYPE.image]: {title: 'Image', zIndex: 0},
-    [LAYER_TYPE.continuous]: {title: 'Continuous map', zIndex: 1},
-    [LAYER_TYPE.hex]: {title: 'Hexagonal base map', zIndex: 2},
-    [LAYER_TYPE.objects]: {title: 'Objects map', zIndex: 3},
-    [LAYER_TYPE.borders]: {title: 'Borders', zIndex: 4},
-}
-
-export const PANEL_CONFIG = {
-    left: {zIndex: 10},
-    right: {zIndex: 10},
-    top: {zIndex: 11},
-    layout: {zIndex: 12},
-} as const
-
-export const SQRT_3 = Math.sqrt(3)
 
 export const ATTRS_MAP: Record<keyof NonStyleAttrs, keyof GlobalEventHandlers | keyof SameAttrs | 'autofocus'> = {
     id: 'id',
@@ -122,3 +21,10 @@ export const ATTRS_MAP: Record<keyof NonStyleAttrs, keyof GlobalEventHandlers | 
     onKeyDown: 'onkeydown',
     onKeyUp: 'onkeyup',
 }
+
+export const Z_INDEX_CONFIG = {
+    left: {zIndex: 10},
+    right: {zIndex: 10},
+    top: {zIndex: 11},
+    layout: {zIndex: 12},
+} as const

@@ -1,5 +1,5 @@
-import { BaseComponent, Component, ObservableAttr } from "types"
-import { adaptAndSetAttrs, insertContent } from "utils"
+import { BaseComponent, Component, ObservableAttr } from "types/components"
+import { adaptAndSetAttrs, insertContent } from "utils/components"
 
 export function observable<T>(id: string, component: (params: T) => Component) {
     const container = document.createElement('observable')
