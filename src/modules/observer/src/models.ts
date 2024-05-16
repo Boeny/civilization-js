@@ -1,4 +1,4 @@
-import { type BaseElement, type Content, type ICommonElement, insertContent } from "modules/renderer"
+import { type BaseElement, type ICommonElement, insertContent } from "modules/renderer"
 import { FComponent } from "./types"
 
 export class SimpleValueStore<T> {

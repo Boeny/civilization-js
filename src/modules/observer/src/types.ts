@@ -1,4 +1,4 @@
-import { IAttrs, Element } from "modules/renderer";
+import { IAttrs, Element } from "modules/renderer"
 
 export type FComponent<T> = (params: T) => Element
 
