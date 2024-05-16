@@ -12,21 +12,12 @@ export function observer<T>(id: string, component: FComponent<T>) {
     }
 }
 
-interface AttrsCache {
-    element: HTMLElement
-    setAttrs: () => void
-}
-
 export function observerAttrs<T>(id: string, component: FComponent<T>, attrs: IObserverAttr<T>[]) {
-    const cache: AttrsCache = {element: null!, setAttrs: () => {}}
-
-    document.addEventListener(id, () => cache.setAttrs())
-
     return (params?: T) => {
-        const baseComponent = component(params as T)
-        //cache.element = baseComponent.element
-        cache.setAttrs = () => adaptAndSetAttrs(cache.element, params as T, attrs)
-        cache.setAttrs()
-        return baseComponent
+        return new ObserverElement(
+            id,
+            component,
+            params,
+        )
     }
 }
