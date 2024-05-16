@@ -129,10 +129,6 @@ export class BaseElement extends AppendableElement {
         public params?: IAttrs
     ) {
         super()
-
-        if (type === 'body') {
-            this.element = document.body
-        }
     }
 
     insertSelfIntoContainer(container: BaseElement) {
@@ -149,6 +145,16 @@ export class BaseElement extends AppendableElement {
         this.element = document.createElement(this.type)
         applyBaseComponentAttrs(this.element, this.params)
     }
+}
+
+export class BodyElement extends BaseElement {
+    element = document.body
+
+    constructor() {
+        super('')
+    }
+
+    createElement() {}
 }
 
 export type Element = ICommonElement | null

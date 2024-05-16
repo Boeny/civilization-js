@@ -1,5 +1,5 @@
 import { ATTRS_MAP } from "./const"
-import { BaseElement, Content } from "./models"
+import { BaseElement, BodyElement, Content } from "./models"
 import { IAttrs, ICSSProperties, INonStyleAttrs } from "./types"
 
 export function getClasses(classes: (string | boolean | undefined)[]): string {
@@ -59,5 +59,5 @@ export function insertContent(container: BaseElement, content?: Content) {
 }
 
 export function render(content?: Content) {
-    insertContent(new BaseElement('body'), content)
+    insertContent(new BodyElement(), content)
 }
