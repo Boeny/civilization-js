@@ -42,6 +42,7 @@ export interface ISameAttrs {
     height?: string | number
     value?: string
     src?: string
+    fill?: string
 }
 
 export interface IAttrs extends ISameAttrs, IEventAttrs {

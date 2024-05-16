@@ -14,7 +14,7 @@ export class FragmentElement implements ICommonElement {
 }
 
 export abstract class AppendableElement implements ICommonElement {
-    abstract element: HTMLElement | Text | null
+    abstract element: HTMLElement | Text | string | null
 
     insertSelfIntoContainer(container: BaseElement) {
         if (!this.element) this.createElement() // create self as a child content
@@ -34,6 +34,36 @@ export class TextElement extends AppendableElement {
     createElement() {
         this.element = document.createTextNode('')
         this.element.nodeValue = this.content
+    }
+}
+
+export interface ISvgParams {
+    width?: number
+    color?: string
+}
+export class SvgElement extends AppendableElement {
+    element: string | null = null
+
+    constructor(public content: string, public params?: ISvgParams) {
+        super()
+    }
+
+    insertSelfIntoContainer(container: BaseElement) {
+        if (!this.element) this.createElement() // create self as a child content
+        container.element!.innerHTML = this.element!
+    }
+
+    createElement() {
+        const {width, color} = this.params || {}
+
+        if (width) {
+            this.content = this.content.replace('width=""', `width="${width}"`)
+        }
+        if (color) {
+            this.content = this.content.replace('fill="none"', `fill="${color}"`)
+        }
+
+        this.element = this.content
     }
 }
 
@@ -106,13 +136,13 @@ export class BaseElement extends AppendableElement {
     }
 
     insertSelfIntoContainer(container: BaseElement) {
-        insertContent(this, this.content)
-        super.insertSelfIntoContainer(container)
+        insertContent(this, this.content) // create self and add children
+        super.insertSelfIntoContainer(container) // create and add self to the container
     }
 
     append(content: ICommonElement) {
-        if (!this.element) this.createElement() // create self as a parent container
-        content.insertSelfIntoContainer(this)
+        if (!this.element) this.createElement() // create self
+        content.insertSelfIntoContainer(this) // create child and add to this element
     }
 
     createElement() {

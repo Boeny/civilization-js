@@ -11,6 +11,7 @@ export const ATTRS_MAP: Record<keyof INonStyleAttrs, keyof GlobalEventHandlers |
     type: 'type',
     value: 'value',
     src: 'src',
+    fill: 'fill',
     autoFocus: 'autofocus',
     onClick: 'onclick',
     onMouseDown: 'onmousedown',

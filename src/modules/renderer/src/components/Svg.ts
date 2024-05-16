@@ -1,16 +1,7 @@
-import {Text} from './Text'
+import { SvgElement, ISvgParams } from '../models'
 
-export interface ISvgParams {
-    width?: number
-    color?: string
-}
+export type {ISvgParams}
+
 export function Svg(source: string, params?: ISvgParams) {
-    if (params?.width) {
-        source = source.replace('width=""', `width="${params.width}"`)
-    }
-    if (params?.color) {
-        source = source.replace('fill="none"', `fill="${params.color}"`)
-    }
-
-    return Text(source)
+    return new SvgElement(source, params)
 }
