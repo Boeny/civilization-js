@@ -4,6 +4,7 @@ import { applyBaseComponentAttrs, insertContent } from "./utils"
 export interface ICommonElement {
     insertSelfIntoContainer(container: BaseElement): void
 }
+
 export class FragmentElement implements ICommonElement {
     constructor(public content: Element[]) {}
 
@@ -12,13 +13,27 @@ export class FragmentElement implements ICommonElement {
     }
 }
 
-export class TextElement implements ICommonElement {
-    constructor(public content: string) {}
+export abstract class AppendableElement implements ICommonElement {
+    abstract element: HTMLElement | Text | null
 
     insertSelfIntoContainer(container: BaseElement) {
-        const element = document.createTextNode('')
-        element.nodeValue = this.content
-        document.createElement(container.type).append(element)
+        if (!this.element) this.createElement() // create self as a child content
+        container.element!.append(this.element!)
+    }
+
+    abstract createElement(): void
+}
+
+export class TextElement extends AppendableElement {
+    element: Text | null = null
+
+    constructor(public content: string) {
+        super()
+    }
+
+    createElement() {
+        this.element = document.createTextNode('')
+        this.element.nodeValue = this.content
     }
 }
 
@@ -30,58 +45,79 @@ export interface ICanvasParams extends Omit<IAttrs, 'onClick' | 'onMouseDown' | 
     onMouseMove?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void
     onMouseUp?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void
 }
-export class CanvasElement implements ICommonElement {
-    constructor(public content: (ctx: CanvasRenderingContext2D) => void, public params?: ICanvasParams) {}
+export class CanvasElement extends AppendableElement {
+    element: HTMLCanvasElement | null = null
 
-    insertSelfIntoContainer(container: BaseElement) {
-        const element = document.createElement('canvas')
-        const ctx = element.getContext('2d')!
+    constructor(public content: (ctx: CanvasRenderingContext2D) => void, public params?: ICanvasParams) {
+        super()
+    }
+
+    createElement() {
+        this.element = document.createElement('canvas')
+        const ctx = this.element.getContext('2d')!
         this.content(ctx)
 
         const {onClick, onMouseDown, onMouseMove, onMouseUp} = this.params || {}
 
-        applyBaseComponentAttrs(element, {
+        applyBaseComponentAttrs(this.element, {
             ...this.params,
             onClick: onClick ? (e) => onClick(ctx, e.offsetX, e.offsetY) : undefined,
             onMouseDown: onMouseDown ? (e) => onMouseDown(ctx, e.offsetX, e.offsetY) : undefined,
             onMouseMove: onMouseMove ? (e) => onMouseMove(ctx, e.offsetX, e.offsetY) : undefined,
             onMouseUp: onMouseUp ? (e) => onMouseUp(ctx, e.offsetX, e.offsetY) : undefined,
         })
-        document.createElement(container.type).append(element)
     }
 }
 
 export interface IInputParams extends IAttrs {
     onChange: (value: string, key: string) => void
 }
-export class InputElement implements ICommonElement {
-    constructor(public params?: IInputParams) {}
+export class InputElement extends AppendableElement {
+    element: HTMLInputElement | null = null
 
-    insertSelfIntoContainer(container: BaseElement) {
+    constructor(public params?: IInputParams) {
+        super()
+    }
+
+    createElement() {
         const {onChange} = this.params || {}
-        const element = document.createElement('input')
+        this.element = document.createElement('input')
 
-        applyBaseComponentAttrs(element, {
+        applyBaseComponentAttrs(this.element, {
             ...this.params,
-            onKeyUp: onChange ? (e) => onChange(element.value, e.key) : undefined
+            onKeyUp: onChange ? (e) => onChange(this.element!.value, e.key) : undefined
         })
-        document.createElement(container.type).append(element)
     }
 }
 
-export class BaseElement implements ICommonElement {
+export class BaseElement extends AppendableElement {
+    element: HTMLElement | null = null
+
     constructor(
         public type: string,
         public content?: Content,
         public params?: IAttrs
-    ) {}
+    ) {
+        super()
 
-    insertSelfIntoContainer(container: BaseElement): void {
+        if (type === 'body') {
+            this.element = document.body
+        }
+    }
+
+    insertSelfIntoContainer(container: BaseElement) {
         insertContent(this, this.content)
+        super.insertSelfIntoContainer(container)
+    }
 
-        const element = document.createElement(this.type)
-        applyBaseComponentAttrs(element, this.params)
-        document.createElement(container.type).append(element)
+    append(content: ICommonElement) {
+        if (!this.element) this.createElement() // create self as a parent container
+        content.insertSelfIntoContainer(this)
+    }
+
+    createElement() {
+        this.element = document.createElement(this.type)
+        applyBaseComponentAttrs(this.element, this.params)
     }
 }
 

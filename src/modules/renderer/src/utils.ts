@@ -55,7 +55,7 @@ export function insertContent(container: BaseElement, content?: Content) {
         return
     }
 
-    content.insertSelfIntoContainer(container)
+    container.append(content)
 }
 
 export function render(content?: Content) {
