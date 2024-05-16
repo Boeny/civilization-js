@@ -1,14 +1,14 @@
-import { Fragment } from "components/base/Fragment"
-import { HexMapLayerChangeObservable } from "./HexMap"
-import { ImageMapToggleObservable } from "./ImageMap"
+import { Fragment } from "modules/renderer"
+import { HexMapLayerChangeObserver } from "./HexMap"
+import { ImageMapToggleObserver } from "./ImageMap"
 
-interface Params {
+interface IParams {
     width: number
     height: number
 }
-export function Map({width, height}: Params) {
+export function Map({width, height}: IParams) {
     return Fragment([
-        ImageMapToggleObservable({width, height}),
-        HexMapLayerChangeObservable({width, height}),
+        ImageMapToggleObserver({width, height}),
+        HexMapLayerChangeObserver({width, height}),
     ])
 }

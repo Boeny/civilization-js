@@ -1,32 +1,32 @@
-import { EditorMenuOption, EditorParamsMenuOption, GameMenuOption, GameParamsMenuOption, MENU_TYPE, MainMenuOption, MenuOption, OptionsMenuOption } from "./types"
+import { IEditorMenuOption, IEditorParamsMenuOption, IGameMenuOption, IGameParamsMenuOption, MENU_TYPE, IMainMenuOption, IMenuOption, IOptionsMenuOption } from "./types"
 
 // menus
-export function isMenuOptionMain(menu: MenuOption): menu is MainMenuOption {
+export function isMenuOptionMain(menu: IMenuOption): menu is IMainMenuOption {
     return menu.current === MENU_TYPE.main
 }
 
-export function isMenuOptionGame(menu: MenuOption): menu is GameMenuOption {
+export function isMenuOptionGame(menu: IMenuOption): menu is IGameMenuOption {
     return menu.current === MENU_TYPE.gameScreen
 }
 
-export function isMenuOptionEditor(menu: MenuOption): menu is EditorMenuOption {
+export function isMenuOptionEditor(menu: IMenuOption): menu is IEditorMenuOption {
     return menu.current === MENU_TYPE.editorScreen
 }
 
 // submenus
-export function isMenuOptionGameParams(menu: MenuOption): menu is GameParamsMenuOption {
+export function isMenuOptionGameParams(menu: IMenuOption): menu is IGameParamsMenuOption {
     return menu.current === MENU_TYPE.gameParams
 }
 
-export function isMenuOptionEditorParams(menu: MenuOption): menu is EditorParamsMenuOption {
+export function isMenuOptionEditorParams(menu: IMenuOption): menu is IEditorParamsMenuOption {
     return menu.current === MENU_TYPE.editorParams
 }
 
-export function isMenuOptionOptions(menu: MenuOption): menu is OptionsMenuOption {
+export function isMenuOptionOptions(menu: IMenuOption): menu is IOptionsMenuOption {
     return menu.current === MENU_TYPE.options
 }
 
-export function getParentMenu(menu: MenuOption): MenuOption | null {
+export function getParentMenu(menu: IMenuOption): IMenuOption | null {
     if (isMenuOptionMain(menu)) {
         return null
     }

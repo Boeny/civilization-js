@@ -1,24 +1,23 @@
-import { HEX_MAP_UPDATE_EVENT, LAYER_CHANGE_EVENT } from "../const"
-import { trigger } from "utils/components"
-import { editorScreenStore } from "../store"
-import { observable } from "hoc/observable"
-import { showOnLayer } from "hoc/showOnLayer"
-import { Button } from "components/base/Button"
+import { Button, Text } from "modules/renderer"
+import { observer, trigger } from "modules/observer"
 import { LAYER_TYPE } from "../types"
+import { HEX_MAP_UPDATE_EVENT, LAYER_CHANGE_EVENT } from "../const"
+import { editorScreenStore } from "../store"
+import { showOnLayer } from "hoc/showOnLayer"
 
-interface Params {
+interface IParams {
     isGridTurnedOn: boolean
     onClick: () => void
 }
-function ToggleMapGridButton({isGridTurnedOn, onClick}: Params) {
+function ToggleMapGridButton({isGridTurnedOn, onClick}: IParams) {
     return Button(
-        `Grid: ${isGridTurnedOn ? 'On' : 'Off'}`,
+        Text(`Grid: ${isGridTurnedOn ? 'On' : 'Off'}`),
         {onClick, style: {padding: '6px 20px'}}
     )
 }
 
 
-const ToggleGridMapButtonClickHandleObservable = observable(HEX_MAP_UPDATE_EVENT, () => {
+const ToggleGridMapButtonClickHandlerObserver = observer(HEX_MAP_UPDATE_EVENT, () => {
     const {isGridTurnedOn} = editorScreenStore
 
     return ToggleMapGridButton({
@@ -31,4 +30,4 @@ const ToggleGridMapButtonClickHandleObservable = observable(HEX_MAP_UPDATE_EVENT
 })
 
 
-export const ToggleMapGridButtonToggleObservable = showOnLayer(LAYER_CHANGE_EVENT, LAYER_TYPE.hex, ToggleGridMapButtonClickHandleObservable)
+export const ToggleMapGridButtonToggleObserver = showOnLayer(LAYER_CHANGE_EVENT, LAYER_TYPE.hex, ToggleGridMapButtonClickHandlerObserver)

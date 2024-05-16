@@ -1,27 +1,31 @@
 import './TopPanel.css'
+import { Div, IAttrs } from 'modules/renderer'
+import { trigger } from 'modules/observer'
+
 import { Z_INDEX_CONFIG } from 'const'
 import { RIGHT_PANEL_TOGGLE_EVENT } from '../const'
-import { ArrowButton } from 'components/ArrowButton'
-import { Panel, Params as PanelParams } from "components/Panel"
-import { Div } from 'components/base/Div'
-import { OpenMenuButton } from 'screens/OpenMenuButton'
-import { ToggleLeftPanelButtonContainer } from './ToggleLeftPanelButton'
-import { ToggleMapGridButtonToggleObservable } from './ToggleMapGridButton'
+import { getStyle } from 'modules/renderer/src/utils'
 import { editorScreenStore } from '../store'
-import { getStyle, trigger } from 'utils/components'
 
-export interface Params extends PanelParams {
+import { ArrowButton } from 'components/ArrowButton'
+import { Panel } from "components/Panel"
+import { OpenMenuButton } from 'screens/OpenMenuButton'
+import { ToggleLeftPanelButtonObserver } from './ToggleLeftPanelButton'
+import { ToggleMapGridButtonToggleObserver } from './ToggleMapGridButton'
+
+
+export interface ITopPanelParams extends IAttrs {
     rightPanelWidth: number
     openMenu: () => void
 }
-export function TopPanel({rightPanelWidth, openMenu, ...params}: Params) {
+export function TopPanel({rightPanelWidth, openMenu, ...params}: ITopPanelParams) {
     return Panel(
         [
             Div(
                 [
                     OpenMenuButton({openMenu}),
-                    ToggleLeftPanelButtonContainer(),
-                    ToggleMapGridButtonToggleObservable(),
+                    ToggleLeftPanelButtonObserver(),
+                    ToggleMapGridButtonToggleObserver(),
                 ],
                 {style: {display: 'flex'}}
             ),

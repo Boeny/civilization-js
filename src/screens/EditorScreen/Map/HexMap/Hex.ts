@@ -1,8 +1,8 @@
-import { Polygon } from 'screens/EditorScreen/Map/HexMap/Polygon'
-import { HEX_CONFIG } from 'screens/EditorScreen/const'
 import { HEX_TYPE } from 'screens/EditorScreen/types'
+import { HEX_CONFIG } from 'screens/EditorScreen/const'
+import { Polygon } from './Polygon'
 
-interface Params {
+interface IParams {
     ctx: CanvasRenderingContext2D
     x: number
     y: number
@@ -11,8 +11,7 @@ interface Params {
     type: HEX_TYPE
     isGridTurnedOn?: boolean
 }
-
-export function Hex({ctx, x, y, width, radius, type, isGridTurnedOn}: Params) {
+export function Hex({ctx, x, y, width, radius, type, isGridTurnedOn}: IParams) {
     const xOffset = y % 2 === 0 ? width / 2 : width
 
     Polygon({

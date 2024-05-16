@@ -1,18 +1,16 @@
 import './Title.css'
 import eyeOpened from 'assets/eye-opened.svg'
 import eyeClosed from 'assets/eye-closed.svg'
-import { Div } from "components/base/Div"
-import { Svg } from "components/base/Svg"
-import { observable } from 'hoc/observable'
-import { trigger } from 'utils/components'
-import { editorScreenStore } from 'screens/EditorScreen/store'
+import { Div, Svg, Text } from 'modules/renderer'
+import { observer, trigger } from 'modules/observer'
 import { LAYER_TYPE_TO_MAP_STORE } from 'screens/EditorScreen/const'
+import { editorScreenStore } from 'screens/EditorScreen/store'
 
-interface Params {
+interface IParams {
     image: string
     onClick: (e: MouseEvent) => void
 }
-function EyeButton({image, onClick}: Params) {
+function EyeButton({image, onClick}: IParams) {
     return Div(
         Svg(image, {width: 20}),
         {className: 'eye', onClick}
@@ -22,7 +20,7 @@ function EyeButton({image, onClick}: Params) {
 
 const EYE_BUTTON_EVENT = 'toggle-eye-button'
 
-const EyeButtonHandleObservable = observable(EYE_BUTTON_EVENT, () => {
+const EyeButtonHandleObserver = observer(EYE_BUTTON_EVENT, () => {
     const mapType = LAYER_TYPE_TO_MAP_STORE[editorScreenStore.layer.value]
     if (!mapType) return null
 
@@ -42,8 +40,8 @@ const EyeButtonHandleObservable = observable(EYE_BUTTON_EVENT, () => {
 export function Title({title}: {title: string}) {
     return Div(
         [
-            Div(title),
-            EyeButtonHandleObservable(),
+            Div(Text(title)),
+            EyeButtonHandleObserver(),
         ],
         {className: 'title'}
     )

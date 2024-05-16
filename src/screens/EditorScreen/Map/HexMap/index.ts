@@ -1,23 +1,22 @@
 import './HexMap.css'
-import { HEX_MAP_UPDATE_EVENT, HEX_MINI_MAP_UPDATE_EVENT, LAYER_CHANGE_EVENT, LAYER_CONFIG } from '../../const'
-import { editorScreenStore } from '../../store'
-import { observable } from 'hoc/observable'
-import { Canvas } from 'components/base/Canvas'
-import { Hex } from './Hex'
+import { Canvas } from 'modules/renderer'
+import { observer, trigger } from 'modules/observer'
 import { LAYER_TYPE, MapData } from 'screens/EditorScreen/types'
+import { HEX_MAP_UPDATE_EVENT, HEX_MINI_MAP_UPDATE_EVENT, LAYER_CHANGE_EVENT, LAYER_CONFIG } from '../../const'
 import { getHexRadius, getMapCoordinatesFromCursor } from 'screens/EditorScreen/utils'
-import { trigger } from 'utils/components'
+import { editorScreenStore } from '../../store'
+import { Hex } from './Hex'
 
 // TODO: Ctrl+Z for painting
 // TODO: scroll by wheel
 // TODO: zoom by multitouch
 
-interface Params extends ToggleObservableParams {
+interface IParams extends IToggleParams {
     hexMapData: MapData
     hexWidth: number
     isGridTurnedOn: boolean
 }
-function HexMap({ width, height, hexMapData, hexWidth, isGridTurnedOn, onMouseDown, onMouseMove, onMouseUp}: Params) {
+function HexMap({ width, height, hexMapData, hexWidth, isGridTurnedOn, onMouseDown, onMouseMove, onMouseUp}: IParams) {
     return Canvas(
         (ctx) => {
             const hexRadius = getHexRadius(hexWidth)
@@ -47,12 +46,12 @@ function HexMap({ width, height, hexMapData, hexWidth, isGridTurnedOn, onMouseDo
 }
 
 
-interface ToggleObservableParams extends ObservableParams {
+interface IToggleParams extends ILayerChangeParams {
     onMouseDown?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void
     onMouseMove?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void
     onMouseUp?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void
 }
-const HexMapToggleObservable = observable(HEX_MAP_UPDATE_EVENT, (params: ToggleObservableParams) => {
+const HexMapToggleObserver = observer(HEX_MAP_UPDATE_EVENT, (params: IToggleParams) => {
     const {hexMapData, isGridTurnedOn, hexWidth} = editorScreenStore
 
     if (!hexMapData.value) return null
@@ -66,7 +65,7 @@ const HexMapToggleObservable = observable(HEX_MAP_UPDATE_EVENT, (params: ToggleO
 })
 
 
-function drawHex(ctx: CanvasRenderingContext2D, x: number, y: number, params: ObservableParams) {
+function drawHex(ctx: CanvasRenderingContext2D, x: number, y: number, params: ILayerChangeParams) {
     const {width: mapWidth, height: mapHeight} = params
     const {brush, hexMapData, isGridTurnedOn, hexWidth} = editorScreenStore
     const hexRadius = getHexRadius(hexWidth.value)
@@ -81,14 +80,14 @@ function drawHex(ctx: CanvasRenderingContext2D, x: number, y: number, params: Ob
     trigger(HEX_MINI_MAP_UPDATE_EVENT)
 }
 
-interface ObservableParams {
+interface ILayerChangeParams {
     width: number
     height: number
 }
-export const HexMapLayerChangeObservable = observable(LAYER_CHANGE_EVENT, (params: ObservableParams) => {
+export const HexMapLayerChangeObserver = observer(LAYER_CHANGE_EVENT, (params: ILayerChangeParams) => {
     const {layer, brush, isPainting} = editorScreenStore
 
-    return HexMapToggleObservable({
+    return HexMapToggleObserver({
         ...params,
         ...(layer.value === LAYER_TYPE.hex ? {
             onMouseDown: (ctx, x, y) => {

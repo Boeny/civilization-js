@@ -1,7 +1,7 @@
-import { PreviousValueStore, SimpleValueStore } from "types/stores"
+import { PreviousValueStore, SimpleValueStore } from "modules/observer"
 import { HEX_TYPE, HexMapStore, LAYER_TYPE, MapData } from "./types"
 
-interface State {
+interface IState {
     brush: HEX_TYPE | null
     layer: LAYER_TYPE
     isPainting: boolean
@@ -13,7 +13,7 @@ interface State {
     isRightPanelOpened: boolean,
 }
 
-const DEFAULT_STATE: State = {
+const DEFAULT_STATE: IState = {
     brush: null,
     layer: LAYER_TYPE.image,
     isPainting: false,
@@ -37,9 +37,9 @@ export const editorScreenStore = {
     isRightPanelOpened: new SimpleValueStore<boolean>(DEFAULT_STATE.isRightPanelOpened),
 }
 
-export function resetEditorScreenStore(params: Partial<State> = {}) {
+export function resetEditorScreenStore(params: Partial<IState> = {}) {
     for (let key in DEFAULT_STATE) {
-        const field = key as keyof State
+        const field = key as keyof IState
         editorScreenStore[field].value = params[field] !== undefined ? params[field]! : DEFAULT_STATE[field]
     }
 }

@@ -1,14 +1,14 @@
-import { SCREEN_EVENT } from "const"
-import { observable } from "hoc/observable"
+import { observer } from "modules/observer"
+import { SCREEN_TYPE } from "types"
+import { SCREEN_EVENT } from "./const"
 import { globalStore } from "store"
 import { GameScreen } from "./GameScreen"
 import { EditorScreen } from "./EditorScreen"
-import { SCREEN_TYPE } from "types"
 
-interface Params {
+interface IParams {
     openParentMenu: () => void
 }
-export const ScreenSwitchObservable = observable<Params>(SCREEN_EVENT, ({openParentMenu}) => {
+export const ScreenSwitchObserver = observer<IParams>(SCREEN_EVENT, ({openParentMenu}) => {
     const {screen} = globalStore
     if (screen === null) return null
 

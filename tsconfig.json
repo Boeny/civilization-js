@@ -15,11 +15,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": true,
-    "outDir": "build"
+    "outDir": "dist"
   },
   "include": ["src", "index.d.ts"],
-  "exclude": ["node_modules/**/*", "**/*.spec.ts"]
+  "exclude": ["node_modules/**/*", "**/*.spec.ts"],
 }

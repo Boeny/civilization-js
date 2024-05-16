@@ -1,12 +1,8 @@
 import './Popup.css'
-import { Content } from "types/components"
-import { getClasses } from "utils/components"
-import { Div, Params as DivParams } from "../base/Div"
+import { Content, Div, IAttrs, getClasses } from 'modules/renderer'
 import { Layout } from 'components/Layout'
 
-interface Params extends DivParams {
-}
-export function Popup(content: Content, params?: Params) {
+export function Popup(content: Content, params?: IAttrs) {
     return Layout(
         Div(content, {
             ...params,

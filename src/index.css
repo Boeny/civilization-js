@@ -9,3 +9,10 @@ body {
     font-size: 16px;
     font-family: 'Arial';
 }
+button {
+    cursor: pointer;
+    padding: 7px 20px;
+    user-select: none;
+    border-radius: 5px;
+    border-color: #ccc;
+}

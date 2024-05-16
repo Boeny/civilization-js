@@ -1,4 +1,4 @@
-import { HexMapField, HexMapParams } from "screens/EditorScreen/types"
+import { HexMapField, IHexMapParams } from "screens/EditorScreen/types"
 
 function isValuePositiveNumber(value: number): boolean {
     return value > 0
@@ -30,7 +30,7 @@ export function checkSubmitValidityForField(value: number): boolean {
     return isValuePositiveNumber(value)
 }
 
-export function checkSubmitValidity(hexMapParams: HexMapParams): HexMapField[] {
+export function checkSubmitValidity(hexMapParams: IHexMapParams): HexMapField[] {
     const errorFields: HexMapField[] = []
 
     for (let key in hexMapParams) {

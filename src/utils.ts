@@ -1,4 +1,3 @@
-
 export async function uploadFile() {
     try {
         const [imageFile] = await window.showOpenFilePicker({

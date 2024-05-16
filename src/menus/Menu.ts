@@ -1,5 +1,9 @@
+import { observer } from "modules/observer"
+import { IClosedMenuOption, IMenuOption, FOpenMenuCallback } from "./types"
+import { MENU_SWITCH_EVENT } from "./const"
+import { isMenuOptionEditor, isMenuOptionEditorParams, isMenuOptionGame, isMenuOptionGameParams, isMenuOptionMain, isMenuOptionOptions } from "./utils"
 import { globalStore } from "store"
-import { observable } from "hoc/observable"
+
 import { Block } from "components/Block"
 import { Popup } from "components/Popup"
 import { MainMenu } from "./MainMenu"
@@ -8,18 +12,15 @@ import { EditorParamsMenu } from "./EditorParamsMenu"
 import { OptionsMenu } from "./OptionsMenu"
 import { GameScreenMenu } from "./GameScreenMenu"
 import { EditorScreenMenu } from "./EditorScreenMenu"
-import { ClosedMenuOption, MenuOption, OpenMenuCallback } from "./types"
-import { isMenuOptionEditor, isMenuOptionEditorParams, isMenuOptionGame, isMenuOptionGameParams, isMenuOptionMain, isMenuOptionOptions } from "./utils"
-import { MENU_SWITCH_EVENT } from "./const"
 
-interface Params extends SwitchObservableParams {
-    menu: Exclude<MenuOption, ClosedMenuOption>
+interface IParams extends ISwitchParams {
+    menu: Exclude<IMenuOption, IClosedMenuOption>
     openParentMenu: () => void
 }
-function MenuContent({menu, openMenu, openParentMenu}: Params) {
+function MenuContent({menu, openMenu, openParentMenu}: IParams) {
     // menus
     if (isMenuOptionMain(menu)) {
-        return MainMenu({openMenu});
+        return MainMenu({openMenu})
     }
     if (isMenuOptionGame(menu)) {
         return GameScreenMenu({openMenu, closeMenu: openParentMenu})
@@ -41,11 +42,11 @@ function MenuContent({menu, openMenu, openParentMenu}: Params) {
 }
 
 
-interface SwitchObservableParams {
-    openMenu: OpenMenuCallback
+interface ISwitchParams {
+    openMenu: FOpenMenuCallback
     openParentMenu: () => void
 }
-export const MenuSwitchObservable = observable(MENU_SWITCH_EVENT, (params: SwitchObservableParams) => {
+export const MenuSwitchObserver = observer(MENU_SWITCH_EVENT, (params: ISwitchParams) => {
     const {menu} = globalStore
     if (menu.current === null) return null
 

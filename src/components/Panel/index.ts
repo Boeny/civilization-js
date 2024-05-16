@@ -1,10 +1,7 @@
 import './Panel.css'
-import { Div, Params as DivParams } from "components/base/Div"
-import { Content } from "types/components"
+import { Div, Content, IAttrs } from 'modules/renderer'
 
-export interface Params extends DivParams {
-}
-export function Panel(content?: Content, params?: Params) {
+export function Panel(content?: Content, params?: IAttrs) {
     return Div(
         content,
         {

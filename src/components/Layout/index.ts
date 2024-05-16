@@ -1,12 +1,8 @@
 import './Layout.css'
-import { Content } from "types/components"
-import { getStyle } from 'utils/components'
-import { Div, Params as DivParams } from "components/base/Div"
+import { Content, Div, IAttrs, getStyle } from 'modules/renderer'
 import { Z_INDEX_CONFIG } from 'const'
 
-export interface Params extends DivParams {
-}
-export function Layout(content: Content, params?: Params) {
+export function Layout(content: Content, params?: IAttrs) {
     return Div(
         content,
         {

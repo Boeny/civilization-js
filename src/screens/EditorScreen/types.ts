@@ -1,4 +1,4 @@
-import { PreviousValueStore } from "types/stores"
+import { PreviousValueStore } from "modules/observer"
 
 export enum HEX_TYPE {
     ocean,
@@ -21,13 +21,13 @@ export enum LAYER_TYPE {
     borders,
 }
 
-export interface HexMapParams {
+export interface IHexMapParams {
     width: number
     height: number
     hexWidth: number
 }
 
-export type HexMapField = keyof HexMapParams
+export type HexMapField = keyof IHexMapParams
 
 export type MapData = number[][]
 

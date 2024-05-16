@@ -1,21 +1,20 @@
 import './NumberInput.css'
 import { checkValidity, convertToInteger } from "../utils"
 import { getErrorValue, getEvent, getValue, setValue } from "../store"
-import { observableAttrs } from "hoc/observable"
-import { Input, Params as InputParams } from "components/base/Input"
 import { HexMapField } from 'screens/EditorScreen/types'
 import { KEY_CODE } from 'types'
-import { getClasses, trigger } from 'utils/components'
+import { IInputParams, Input, getClasses } from 'modules/renderer'
+import { observerAttrs, trigger } from 'modules/observer'
 
-type Params = Omit<InputParams, 'className' | 'value' | 'onChange'> & {
+type IParams = Omit<IInputParams, 'className' | 'value' | 'onChange'> & {
     onEnterKeyDown: () => void
 }
 export const getNumberInput = (field: HexMapField) => {
     const event = getEvent(field)
 
-    return observableAttrs(
+    return observerAttrs(
         event,
-        ({onEnterKeyDown, ...params}: Params) => {
+        ({onEnterKeyDown, ...params}: IParams) => {
             return Input({
                 ...params,
                 onChange: (value, key) => {

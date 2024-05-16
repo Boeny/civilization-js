@@ -1,8 +1,8 @@
-import { Button } from "components/base/Button"
+import { Button, Text } from "modules/renderer"
 
-interface Params {
+interface IParams {
     openMenu: () => void
 }
-export function OpenMenuButton({openMenu}: Params) {
-    return Button('Open menu', {onClick: openMenu})
+export function OpenMenuButton({openMenu}: IParams) {
+    return Button(Text('Open menu'), {onClick: openMenu})
 }

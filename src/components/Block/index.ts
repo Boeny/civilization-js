@@ -1,13 +1,11 @@
 import './Block.css'
-import { getClasses } from "utils/components"
-import { Div, Params as DivParams } from "../base/Div"
-import { Content } from 'types/components'
+import { Div, IAttrs, Content, getClasses } from 'modules/renderer'
 
-export interface Params extends DivParams {
+export interface IBlockParams extends IAttrs {
     bordered?: boolean
     alignedVertically?: boolean
 }
-export function Block(content?: Content, params?: Params) {
+export function Block(content?: Content, params?: IBlockParams) {
     const {bordered, alignedVertically, className, ...rest} = params || {}
 
     return Div(

@@ -1,10 +1,13 @@
 import './Layers.css'
-import { Div } from "components/base/Div"
-import { LayersClickHandlerObservableAttrs } from './Layer'
+import { Div } from "modules/renderer"
+import { LayersClickHandlerObserver } from './Layer'
 
-export function Layers({width}: {width: number}) {
+interface IParams {
+    width: number
+}
+export function Layers({width}: IParams) {
     return Div(
-        LayersClickHandlerObservableAttrs.map((component) => component({width})),
+        LayersClickHandlerObserver.map((component) => component({width})),
         {className: 'layers'}
     )
 }

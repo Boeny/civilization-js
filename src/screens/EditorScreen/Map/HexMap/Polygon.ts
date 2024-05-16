@@ -1,26 +1,25 @@
-interface Point {
+interface IPoint {
     x: number
     y: number
 }
 
-function getPointByAngle(offset: Point, angle: number, radius: number): Point {
+function getPointByAngle(offset: IPoint, angle: number, radius: number): IPoint {
     return {
         x: offset.x + radius * Math.cos(angle),
         y: offset.y + radius * Math.sin(angle),
     }
 }
 
-interface Params {
+interface IParams {
     ctx: CanvasRenderingContext2D
-    centerPoint: Point
+    centerPoint: IPoint
     startAngle: number
     radius: number
     sides: number
     fillColor?: string
     strokeColor?: string
 }
-
-export function Polygon({ctx, centerPoint, startAngle, radius, sides, fillColor, strokeColor}: Params) {
+export function Polygon({ctx, centerPoint, startAngle, radius, sides, fillColor, strokeColor}: IParams) {
     ctx.beginPath()
 
     const startPoint = getPointByAngle(centerPoint, startAngle, radius)

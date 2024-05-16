@@ -1,16 +1,16 @@
 import './HexMiniMap.css'
-import { HEX_MINI_MAP_UPDATE_EVENT } from 'screens/EditorScreen/const'
-import { observable } from 'hoc/observable'
-import { Canvas } from 'components/base/Canvas'
-import { Hex } from 'screens/EditorScreen/Map/HexMap/Hex'
-import { editorScreenStore } from 'screens/EditorScreen/store'
+import { Canvas } from 'modules/renderer'
+import { observer } from 'modules/observer'
 import { MapData } from 'screens/EditorScreen/types'
+import { HEX_MINI_MAP_UPDATE_EVENT } from 'screens/EditorScreen/const'
 import { getHexRadius } from 'screens/EditorScreen/utils'
+import { editorScreenStore } from 'screens/EditorScreen/store'
+import { Hex } from 'screens/EditorScreen/Map/HexMap/Hex'
 
-interface Params extends ObservableParams {
+interface IParams extends IToggleParams {
     mapData: MapData
 }
-function HexMiniMap({mapData, width, title}: Params) {
+function HexMiniMap({mapData, width, title}: IParams) {
     const hexWidth = width / mapData[0].length
     const hexRadius = getHexRadius(hexWidth)
 
@@ -31,11 +31,11 @@ function HexMiniMap({mapData, width, title}: Params) {
     )
 }
 
-interface ObservableParams {
+interface IToggleParams {
     width: number
     title: string
 }
-export const HexMiniMapToggleObservable = observable(HEX_MINI_MAP_UPDATE_EVENT, ({width, title}: ObservableParams) => {
+export const HexMiniMapToggleObserver = observer(HEX_MINI_MAP_UPDATE_EVENT, ({width, title}: IToggleParams) => {
     const {hexMapData} = editorScreenStore
     if (!hexMapData.value) return null
 

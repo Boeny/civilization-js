@@ -1,13 +1,13 @@
-import { trigger } from "utils/components"
+import { trigger } from "modules/observer"
+import { HexMapField, IHexMapParams, LAYER_TYPE } from "screens/EditorScreen/types"
 import { checkSubmitValidityForField } from "./utils"
-import { HexMapField, HexMapParams, LAYER_TYPE } from "screens/EditorScreen/types"
 
-export interface EditorParamsMenuState {
-    hexMapParams: HexMapParams
+export interface IEditorParamsMenuState {
+    hexMapParams: IHexMapParams
     layer: LAYER_TYPE
 }
 
-const DEFAULT_STATE: EditorParamsMenuState = {
+const DEFAULT_STATE: IEditorParamsMenuState = {
     hexMapParams: {
         width: 100,
         height: 100,
@@ -16,11 +16,11 @@ const DEFAULT_STATE: EditorParamsMenuState = {
     layer: LAYER_TYPE.image,
 }
 
-export const editorParamsMenuStore: EditorParamsMenuState = {...DEFAULT_STATE}
+export const editorParamsMenuStore: IEditorParamsMenuState = {...DEFAULT_STATE}
 
-export function resetEditorParamsMenuStore(params: Partial<EditorParamsMenuState> = {}) {
+export function resetEditorParamsMenuStore(params: Partial<IEditorParamsMenuState> = {}) {
     for (let key in DEFAULT_STATE) {
-        const field = key as keyof EditorParamsMenuState
+        const field = key as keyof IEditorParamsMenuState
         (editorParamsMenuStore as any)[field] = params[field] !== undefined ? params[field] : DEFAULT_STATE[field]
     }
 }

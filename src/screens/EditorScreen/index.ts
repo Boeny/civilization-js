@@ -1,16 +1,16 @@
 import '../Screen.css'
-import { Div } from 'components/base/Div'
+import { Div } from 'modules/renderer'
 import { TopPanel } from './TopPanel'
 import { LeftPanelContainer } from './LeftPanel'
-import { RIGHT_PANEL_WIDTH, RightPanelToggleObservable } from './RightPanel'
+import { RIGHT_PANEL_WIDTH, RightPanelToggleObserver } from './RightPanel'
 import { Map } from './Map'
 
 const TOP_PANEL_HEIGHT = 32
 
-interface Params {
+interface IParams {
     openMenu: () => void
 }
-export function EditorScreen({openMenu}: Params) {
+export function EditorScreen({openMenu}: IParams) {
     return Div(
         [
             Map({
@@ -20,7 +20,7 @@ export function EditorScreen({openMenu}: Params) {
 
             TopPanel({openMenu, rightPanelWidth: RIGHT_PANEL_WIDTH, style: {height: TOP_PANEL_HEIGHT}}),
             LeftPanelContainer(),
-            RightPanelToggleObservable(),
+            RightPanelToggleObserver(),
         ],
         {className: 'screen', style: {paddingTop: TOP_PANEL_HEIGHT}}
     )

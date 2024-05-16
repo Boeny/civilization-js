@@ -1,8 +1,11 @@
 import './Screen.css'
-import { Div } from "components/base/Div"
+import { Div } from "modules/renderer"
 import { OpenMenuButton } from "screens/OpenMenuButton"
 
-export function GameScreen({openMenu}: {openMenu: () => void}) {
+interface IParams {
+    openMenu: () => void
+}
+export function GameScreen({openMenu}: IParams) {
     return Div(
         OpenMenuButton({openMenu}),
         {id: 'game-screen', className: 'screen'}

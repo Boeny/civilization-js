@@ -1,17 +1,16 @@
 import './HexMapParamsBlock.css'
-import { Div } from 'components/base/Div'
 import { Block } from "components/Block"
-import { Label } from "components/base/Label"
 import { getNumberInput } from './NumberInput'
+import { Div, Label } from 'modules/renderer'
 
 const WidthNumberInput = getNumberInput('width')
 const HeightNumberInput = getNumberInput('height')
 const HexWidthNumberInput = getNumberInput('hexWidth')
 
-interface Params {
+interface IParams {
     onEnterKeyDown: () => void
 }
-export function HexMapParamsBlock({onEnterKeyDown}: Params) {
+export function HexMapParamsBlock({onEnterKeyDown}: IParams) {
     return Block(
         [
             Div([

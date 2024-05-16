@@ -1,22 +1,22 @@
-import { MAIN_MENU_OPTION } from "menus/const"
-import { MenuOption } from "menus/types"
+import { IMenuOption } from "menus/types"
 import { SCREEN_TYPE } from "types"
+import { MAIN_MENU_OPTION } from "menus/const"
 
-export interface State {
+export interface IState {
     screen: SCREEN_TYPE | null
-    menu: MenuOption
+    menu: IMenuOption
 }
 
-const DEFAULT_STATE: State = {
+const DEFAULT_STATE: IState = {
     screen: null,
     menu: MAIN_MENU_OPTION,
 }
 
-export const globalStore: State = {...DEFAULT_STATE}
+export const globalStore: IState = {...DEFAULT_STATE}
 
-export function resetGlobalStore(params: Partial<State> = {}) {
+export function resetGlobalStore(params: Partial<IState> = {}) {
     for (let key in DEFAULT_STATE) {
-        const field = key as keyof State
+        const field = key as keyof IState
         (globalStore as any)[field] = params[field] !== undefined ? params[field] : DEFAULT_STATE[field]
     }
 }

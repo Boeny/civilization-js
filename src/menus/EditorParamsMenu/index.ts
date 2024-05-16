@@ -1,19 +1,21 @@
-import { checkSubmitValidity } from "./utils"
-import { editorParamsMenuStore, resetEditorParamsMenuStore, updateFields } from "./store"
-import { Button } from "components/base/Button"
-import { HexMapParamsBlock } from "./HexMapParamsBlock"
-import { Fragment } from "components/base/Fragment"
-import { Block } from "components/Block"
-import { resetEditorScreenStore } from "screens/EditorScreen/store"
-import { resetGlobalStore } from "store"
-import { LAYER_TYPE } from "screens/EditorScreen/types"
+import { Button, Fragment, Text } from "modules/renderer"
+import { trigger } from "modules/observer"
+
 import { SCREEN_TYPE } from "types"
-import { EditorParamsMenuOption, MENU_TYPE } from "menus/types"
-import { SCREEN_EVENT } from "const"
+import { IEditorParamsMenuOption, MENU_TYPE } from "menus/types"
+import { LAYER_TYPE } from "screens/EditorScreen/types"
 import { MENU_SWITCH_EVENT } from "menus/const"
-import { trigger } from "utils/components"
+import { SCREEN_EVENT } from "screens/const"
 import { generateEmptyMapData } from "screens/EditorScreen/utils"
-import { StartFromLayerButtonObservable } from "./StartFromLayerButton"
+import { checkSubmitValidity } from "./utils"
+
+import { resetGlobalStore } from "store"
+import { resetEditorScreenStore } from "screens/EditorScreen/store"
+import { editorParamsMenuStore, resetEditorParamsMenuStore, updateFields } from "./store"
+
+import { Block } from "components/Block"
+import { StartFromLayerButtonObserver } from "./StartFromLayerButton"
+import { HexMapParamsBlock } from "./HexMapParamsBlock"
 
 function submit() {
     const errors = checkSubmitValidity(editorParamsMenuStore.hexMapParams)
@@ -40,17 +42,17 @@ function submit() {
     trigger(MENU_SWITCH_EVENT)
 }
 
-interface Params {
-    parent: EditorParamsMenuOption['parent']
+interface IParams {
+    parent: IEditorParamsMenuOption['parent']
     openParentMenu: () => void
 }
-export function EditorParamsMenu({parent, openParentMenu}: Params) {
+export function EditorParamsMenu({parent, openParentMenu}: IParams) {
     resetEditorParamsMenuStore()
 
     return Fragment([
-        Button(`Back to ${parent === MENU_TYPE.main ? 'main' : 'editor'} menu`, {onClick: openParentMenu}),
+        Button(Text(`Back to ${parent === MENU_TYPE.main ? 'main' : 'editor'} menu`), {onClick: openParentMenu}),
         HexMapParamsBlock({onEnterKeyDown: submit}),
-        Block(StartFromLayerButtonObservable(), {bordered: true}),
-        Button('Create map', {onClick: submit}),
+        Block(StartFromLayerButtonObserver(), {bordered: true}),
+        Button(Text('Create map'), {onClick: submit}),
     ])
 }

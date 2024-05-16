@@ -1,15 +1,18 @@
 import './index.css'
-import { globalStore, resetGlobalStore } from 'store'
-import { MenuSwitchObservable } from 'menus/Menu'
-import { ScreenSwitchObservable } from 'screens/Screen'
-import { MENU_TYPE, MenuOption } from 'menus/types'
-import { SCREEN_EVENT } from 'const'
-import { KEY_CODE } from 'types'
-import { MENU_SWITCH_EVENT } from 'menus/const'
-import { body, trigger } from 'utils/components'
-import { getParentMenu } from 'menus/utils'
+import { render } from 'modules/renderer'
+import { trigger } from 'modules/observer'
 
-const openMenu = (newMenu: MenuOption) => {
+import { KEY_CODE } from 'types'
+import { MENU_TYPE, IMenuOption } from 'menus/types'
+import { MENU_SWITCH_EVENT } from 'menus/const'
+import { SCREEN_EVENT } from 'screens/const'
+import { getParentMenu } from 'menus/utils'
+import { globalStore, resetGlobalStore } from 'store'
+
+import { MenuSwitchObserver } from 'menus/Menu'
+import { ScreenSwitchObserver } from 'screens/Screen'
+
+const openMenu = (newMenu: IMenuOption) => {
     if (newMenu.current === MENU_TYPE.main) {
         resetGlobalStore()
         trigger(SCREEN_EVENT)
@@ -28,9 +31,10 @@ function openParentMenu() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    body([
-        MenuSwitchObservable({openMenu, openParentMenu}),
-        ScreenSwitchObservable({openParentMenu}),
+    // TODO: implement render with fiber mechanizm
+    render([
+        MenuSwitchObserver({openMenu, openParentMenu}),
+        ScreenSwitchObserver({openParentMenu}),
     ])
 })
 

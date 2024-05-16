@@ -1,10 +1,10 @@
 import './RightPanel.css'
+import { observer } from 'modules/observer'
 import { Z_INDEX_CONFIG } from 'const'
 import { RIGHT_PANEL_TOGGLE_EVENT } from "screens/EditorScreen/const"
-import { observable } from "hoc/observable"
+import { editorScreenStore } from '../store'
 import { Panel } from "components/Panel"
 import { Layers } from './Layers'
-import { editorScreenStore } from '../store'
 
 const RIGHT_PANEL = {innerWidth: 200, padding: 20}
 export const RIGHT_PANEL_WIDTH = RIGHT_PANEL.innerWidth + RIGHT_PANEL.padding * 2
@@ -26,6 +26,6 @@ function RightPanel() {
     )
 }
 
-export const RightPanelToggleObservable = observable(RIGHT_PANEL_TOGGLE_EVENT, () =>
+export const RightPanelToggleObserver = observer(RIGHT_PANEL_TOGGLE_EVENT, () =>
     editorScreenStore.isRightPanelOpened.value ? RightPanel() : null
 )

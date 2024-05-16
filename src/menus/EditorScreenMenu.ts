@@ -1,12 +1,11 @@
-import { Button } from "components/base/Button"
-import { Fragment } from "components/base/Fragment"
-import { trigger } from "utils/components"
-import { globalStore } from "store"
-import { editorScreenStore, resetEditorScreenStore } from "screens/EditorScreen/store"
-import { SCREEN_EVENT } from "const"
-import { MENU_TYPE, OpenMenuCallback } from "./types"
+import { Button, Fragment, Text } from "modules/renderer"
+import { trigger } from "modules/observer"
+import { MENU_TYPE, FOpenMenuCallback } from "./types"
+import { SCREEN_EVENT } from "screens/const"
 import { MAIN_MENU_OPTION, MENU_SWITCH_EVENT } from "./const"
 import { generateEmptyMapData } from "screens/EditorScreen/utils"
+import { globalStore } from "store"
+import { editorScreenStore, resetEditorScreenStore } from "screens/EditorScreen/store"
 
 function reload() {
     const {hexMapData, layer, hexWidth} = editorScreenStore
@@ -22,20 +21,20 @@ function reload() {
     trigger(MENU_SWITCH_EVENT)
 }
 
-function onClick(openMenu: OpenMenuCallback, current: MENU_TYPE.editorParams | MENU_TYPE.options) {
+function onClick(openMenu: FOpenMenuCallback, current: MENU_TYPE.editorParams | MENU_TYPE.options) {
     openMenu({current, parent: MENU_TYPE.editorScreen})
 }
 
-interface Params {
-    openMenu: OpenMenuCallback
+interface IParams {
+    openMenu: FOpenMenuCallback
     closeMenu: () => void
 }
-export function EditorScreenMenu({openMenu, closeMenu}: Params) {
+export function EditorScreenMenu({openMenu, closeMenu}: IParams) {
     return Fragment([
-        Button('Back to editing', {onClick: closeMenu}),
-        Button('Back to main menu', {onClick: () => openMenu(MAIN_MENU_OPTION)}),
-        Button('Reload map', {onClick: reload}),
-        Button('New map', {onClick: () => onClick(openMenu, MENU_TYPE.editorParams)}),
-        Button('Options', {onClick: () => onClick(openMenu, MENU_TYPE.options), disabled: true}),
+        Button(Text('Back to editing'), {onClick: closeMenu}),
+        Button(Text('Back to main menu'), {onClick: () => openMenu(MAIN_MENU_OPTION)}),
+        Button(Text('Reload map'), {onClick: reload}),
+        Button(Text('New map'), {onClick: () => onClick(openMenu, MENU_TYPE.editorParams)}),
+        Button(Text('Options'), {onClick: () => onClick(openMenu, MENU_TYPE.options), disabled: true}),
     ])
 }

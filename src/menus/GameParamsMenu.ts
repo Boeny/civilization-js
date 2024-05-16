@@ -1,12 +1,11 @@
-import { Button } from "components/base/Button"
-import { Fragment } from "components/base/Fragment"
+import { Button, Fragment, Text } from "modules/renderer"
 
-interface Params {
+interface IParams {
     openParentMenu: () => void
 }
-export function GameParamsMenu({openParentMenu}: Params) {
+export function GameParamsMenu({openParentMenu}: IParams) {
     return Fragment([
-        Button('Back to main menu', {onClick: openParentMenu}),
-        Button('Play', {onClick: () => {}}),
+        Button(Text('Back to main menu'), {onClick: openParentMenu}),
+        Button(Text('Play'), {onClick: () => {}}),
     ])
 }
