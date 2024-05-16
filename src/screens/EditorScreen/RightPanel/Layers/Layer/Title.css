@@ -8,6 +8,7 @@
     padding: 4px 7px 6px;
 }
 .eye {
+    cursor: pointer;
     border-radius: 5px;
     padding: 0 1px;
     margin-bottom: -1px;

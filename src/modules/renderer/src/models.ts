@@ -77,24 +77,29 @@ export interface ICanvasParams extends Omit<IAttrs, 'onClick' | 'onMouseDown' | 
 }
 export class CanvasElement extends AppendableElement {
     element: HTMLCanvasElement | null = null
+    ctx: CanvasRenderingContext2D | null = null
 
     constructor(public content: (ctx: CanvasRenderingContext2D) => void, public params?: ICanvasParams) {
         super()
     }
 
+    insertSelfIntoContainer(container: BaseElement) {
+        super.insertSelfIntoContainer(container)
+        this.content(this.ctx!)
+    }
+
     createElement() {
         this.element = document.createElement('canvas')
-        const ctx = this.element.getContext('2d')!
-        this.content(ctx)
+        this.ctx = this.element.getContext('2d')!
 
         const {onClick, onMouseDown, onMouseMove, onMouseUp} = this.params || {}
 
         applyBaseComponentAttrs(this.element, {
             ...this.params,
-            onClick: onClick ? (e) => onClick(ctx, e.offsetX, e.offsetY) : undefined,
-            onMouseDown: onMouseDown ? (e) => onMouseDown(ctx, e.offsetX, e.offsetY) : undefined,
-            onMouseMove: onMouseMove ? (e) => onMouseMove(ctx, e.offsetX, e.offsetY) : undefined,
-            onMouseUp: onMouseUp ? (e) => onMouseUp(ctx, e.offsetX, e.offsetY) : undefined,
+            onClick: onClick ? (e) => onClick(this.ctx!, e.offsetX, e.offsetY) : undefined,
+            onMouseDown: onMouseDown ? (e) => onMouseDown(this.ctx!, e.offsetX, e.offsetY) : undefined,
+            onMouseMove: onMouseMove ? (e) => onMouseMove(this.ctx!, e.offsetX, e.offsetY) : undefined,
+            onMouseUp: onMouseUp ? (e) => onMouseUp(this.ctx!, e.offsetX, e.offsetY) : undefined,
         })
     }
 }

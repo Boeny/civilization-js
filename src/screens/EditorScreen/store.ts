@@ -29,7 +29,7 @@ export const editorScreenStore = {
     brush: new SimpleValueStore<HEX_TYPE | null>(DEFAULT_STATE.brush),
     layer: new SimpleValueStore<LAYER_TYPE>(DEFAULT_STATE.layer),
     isPainting: new SimpleValueStore<boolean>(DEFAULT_STATE.isPainting),
-    hexWidth: new SimpleValueStore<number>(0),
+    hexWidth: new SimpleValueStore<number>(DEFAULT_STATE.hexWidth),
     hexMapData: new HexMapStore(DEFAULT_STATE.hexMapData),
     imageMapData: new PreviousValueStore<CanvasImageSource | null>(DEFAULT_STATE.imageMapData),
     isGridTurnedOn: new SimpleValueStore<boolean>(DEFAULT_STATE.isGridTurnedOn),

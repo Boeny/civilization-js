@@ -24,9 +24,12 @@ export class PreviousValueStore<T> extends SimpleValueStore<T> {
         this.prev = defaultValue
     }
 
+    get value(): T {
+        return this._value
+    }
     set value(v: T) {
-        this.prev = super.value
-        super.value = v
+        this.prev = this._value
+        this._value = v
     }
 }
 
