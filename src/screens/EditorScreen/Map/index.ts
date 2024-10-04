@@ -1,4 +1,4 @@
-import { Fragment } from "modules/renderer"
+import { Div } from "modules/renderer"
 import { HexMapLayerChangeObserver } from "./HexMap"
 import { ImageMapToggleObserver } from "./ImageMap"
 
@@ -7,7 +7,7 @@ interface IParams {
     height: number
 }
 export function Map({width, height}: IParams) {
-    return Fragment([
+    return Div([
         ImageMapToggleObserver({width, height}),
         HexMapLayerChangeObserver({width, height}),
     ])

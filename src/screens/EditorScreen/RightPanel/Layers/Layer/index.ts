@@ -34,9 +34,9 @@ export const LayersClickHandlerObserver = Object.keys(LAYER_CONFIG).map((key) =>
     const {layer, isPainting} = editorScreenStore
     const type = parseInt(key) as LAYER_TYPE
 
-    return observerAttrs<{width: number}>(
+    return observerAttrs(
         getLayerEvent(type),
-        ({width}) => Layer({
+        ({width}: {width: number}) => Layer({
             type,
             width,
             title: LAYER_CONFIG[type].title,

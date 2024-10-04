@@ -1,8 +1,7 @@
-import {INonStyleAttrs, ISameAttrs} from './types'
+import {IEventAttrs, INonStyleAttrs, ISameAttrs} from './types'
 
-export const ATTRS_MAP: Record<keyof INonStyleAttrs, keyof GlobalEventHandlers | keyof ISameAttrs | 'autofocus'> = {
+const SAME_ATTRS: Record<keyof ISameAttrs, keyof ISameAttrs> = {
     id: 'id',
-    className: 'className',
     width: 'width',
     height: 'height',
     disabled: 'disabled',
@@ -12,7 +11,10 @@ export const ATTRS_MAP: Record<keyof INonStyleAttrs, keyof GlobalEventHandlers |
     value: 'value',
     src: 'src',
     fill: 'fill',
-    autoFocus: 'autofocus',
+    key: 'key',
+}
+
+export const EVENT_HANDLERS: Record<keyof IEventAttrs, keyof GlobalEventHandlers> = {
     onClick: 'onclick',
     onMouseDown: 'onmousedown',
     onMouseUp: 'onmouseup',
@@ -20,4 +22,11 @@ export const ATTRS_MAP: Record<keyof INonStyleAttrs, keyof GlobalEventHandlers |
     onKeyPress: 'onkeypress',
     onKeyDown: 'onkeydown',
     onKeyUp: 'onkeyup',
+}
+
+export const ATTRS_MAP: Record<keyof INonStyleAttrs, keyof GlobalEventHandlers | keyof ISameAttrs | 'autofocus' | 'class'> = {
+    autoFocus: 'autofocus',
+    className: 'class',
+    ...SAME_ATTRS,
+    ...EVENT_HANDLERS,
 }

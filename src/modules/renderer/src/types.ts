@@ -21,7 +21,7 @@ export interface ICSSProperties {
     paddingBottom?: string | number
 }
 
-interface IEventAttrs {
+export interface IEventAttrs {
     onClick?: (e: MouseEvent) => void
     onMouseDown?: (e: MouseEvent) => void
     onMouseUp?: (e: MouseEvent) => void
@@ -33,7 +33,6 @@ interface IEventAttrs {
 
 export interface ISameAttrs {
     id?: string
-    className?: string
     disabled?: boolean
     alt?: string
     title?: string
@@ -43,11 +42,13 @@ export interface ISameAttrs {
     value?: string
     src?: string
     fill?: string
+    key?: string
 }
 
 export interface IAttrs extends ISameAttrs, IEventAttrs {
     style?: ICSSProperties
     autoFocus?: boolean
+    className?: string
 }
 
 export type INonStyleAttrs = Omit<IAttrs, 'style'>

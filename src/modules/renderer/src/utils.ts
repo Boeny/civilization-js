@@ -1,6 +1,6 @@
-import { ATTRS_MAP } from "./const"
-import { BaseElement, BodyElement, Content } from "./models"
-import { IAttrs, ICSSProperties, INonStyleAttrs } from "./types"
+import { ATTRS_MAP, EVENT_HANDLERS } from "./const"
+import { BodyElement, Content, IContainerElement } from "./models"
+import { IAttrs, ICSSProperties, IEventAttrs, INonStyleAttrs } from "./types"
 
 export function getClasses(classes: (string | boolean | undefined)[]): string {
     return classes.filter(Boolean).join(' ')
@@ -10,14 +10,18 @@ export function getStyle(initialStyle: ICSSProperties, style: ICSSProperties = {
     return {...initialStyle, ...style}
 }
 
-function applyAttrs(element: any, params: INonStyleAttrs) {
+function applyAttrs(element: HTMLElement, params: INonStyleAttrs) {
     for (let key in params) {
         const field = key as keyof INonStyleAttrs
         const value = params[field]
         const adaptedField = ATTRS_MAP[field]
 
         if (value !== undefined && adaptedField !== undefined) {
-            element[adaptedField] = value
+            if (field in EVENT_HANDLERS) {
+                element[EVENT_HANDLERS[field as keyof IEventAttrs]] = value as any // because (e: MouseEvent) => void is not compatible with (this: GlobalEventHandlers, ev: UIEvent) => void
+            } else {
+                element.setAttribute(adaptedField, String(value))
+            }
         }
     }
 }
@@ -47,15 +51,15 @@ export function applyBaseComponentAttrs(element: HTMLElement, params?: IAttrs) {
     applyStyle(element, style)
 }
 
-export function insertContent(container: BaseElement, content?: Content) {
+export function insertContent(container: IContainerElement, content?: Content, contentIndex?: number) {
     if (!container || !content) return
 
     if (Array.isArray(content)) {
-        content.forEach(item => insertContent(container, item))
+        content.forEach((item, i) => insertContent(container, item, i))
         return
     }
 
-    container.append(content)
+    container.append(content, contentIndex)
 }
 
 export function render(content?: Content) {

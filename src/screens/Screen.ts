@@ -8,7 +8,7 @@ import { EditorScreen } from "./EditorScreen"
 interface IParams {
     openParentMenu: () => void
 }
-export const ScreenSwitchObserver = observer<IParams>(SCREEN_EVENT, ({openParentMenu}) => {
+export const ScreenSwitchObserver = observer(SCREEN_EVENT, ({openParentMenu}: IParams) => {
     const {screen} = globalStore
     if (screen === null) return null
 

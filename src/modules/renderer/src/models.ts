@@ -2,39 +2,70 @@ import { IAttrs } from "./types"
 import { applyBaseComponentAttrs, insertContent } from "./utils"
 
 export interface ICommonElement {
-    insertSelfIntoContainer(container: BaseElement): void
+    readonly type: string
+    insertSelfIntoContainer(container: IContainerElement, selfIndex?: number): void
+    componentWillUnmount(): void
+}
+
+export interface IContainerElement extends ICommonElement {
+    element: HTMLElement | undefined
+    append(content: ICommonElement | IContainerElement, contentIndex?: number): void
 }
 
 export class FragmentElement implements ICommonElement {
+    readonly type = 'fragment'
     constructor(public content: Element[]) {}
 
-    insertSelfIntoContainer(container: BaseElement) {
+    insertSelfIntoContainer(container: IContainerElement, selfIndex?: number) {
+        if (!container.element) throw new Error('Container element should be created')
+        if (selfIndex !== undefined) throw new Error('Fragment element should not have index')
+        if (container.element.children.length > 0) throw new Error('Fragment element should be only one in the container')
         insertContent(container, this.content)
+    }
+
+    componentWillUnmount = () => {
+        if (!this.content) return
+        this.content.forEach((c) => c?.componentWillUnmount())
     }
 }
 
 export abstract class AppendableElement implements ICommonElement {
-    abstract element: HTMLElement | Text | string | null
+    abstract readonly type: string
+    abstract element: HTMLElement | Text | string | undefined
 
-    insertSelfIntoContainer(container: BaseElement) {
-        if (!this.element) this.createElement() // create self as a child content
-        container.element!.append(this.element!)
+    insertSelfIntoContainer(container: IContainerElement, selfIndex?: number) {
+        if (!this.element) this.createElement(selfIndex) // create self as a child content
+        if (!container.element) throw new Error('Container element should be created')
+        container.element.append(this.element!)
     }
 
-    abstract createElement(): void
+    abstract createElement(selfIndex?: number): void
+    abstract componentWillUnmount(): void
 }
 
 export class TextElement extends AppendableElement {
-    element: Text | null = null
+    readonly type = 'text'
+    element: Text | undefined
 
     constructor(public content: string) {
         super()
     }
 
-    createElement() {
+    insertSelfIntoContainer(container: IContainerElement, selfIndex?: number) {
+        if (!this.element) this.createElement() // create self as a child content
+        if (!container.element) throw new Error('Container element should be created')
+        if (selfIndex !== undefined) throw new Error('Text element should not have index')
+        if (container.element.children.length > 0) throw new Error('Text element should be only one in the container')
+        container.element.append(this.element!)
+    }
+
+    createElement(selfIndex?: number) {
+        if (selfIndex !== undefined) throw new Error('Text element should not have index')
         this.element = document.createTextNode('')
         this.element.nodeValue = this.content
     }
+
+    componentWillUnmount = () => {}
 }
 
 export interface ISvgParams {
@@ -42,18 +73,16 @@ export interface ISvgParams {
     color?: string
 }
 export class SvgElement extends AppendableElement {
-    element: string | null = null
+    readonly type = 'svg'
+    element: string | undefined
 
     constructor(public content: string, public params?: ISvgParams) {
         super()
     }
 
-    insertSelfIntoContainer(container: BaseElement) {
-        if (!this.element) this.createElement() // create self as a child content
-        container.element!.innerHTML = this.element!
-    }
+    createElement(selfIndex?: number) {
+        if (selfIndex !== undefined) throw new Error('Svg element should not have index')
 
-    createElement() {
         const {width, color} = this.params || {}
 
         if (width) {
@@ -65,6 +94,16 @@ export class SvgElement extends AppendableElement {
 
         this.element = this.content
     }
+
+    insertSelfIntoContainer(container: BaseElement, selfIndex?: number) {
+        if (!this.element) this.createElement() // create self as a child content
+        if (!container.element) throw new Error('Container element should be created')
+        if (selfIndex !== undefined) throw new Error('Svg element should not have index')
+        if (container.element.children.length > 0) throw new Error('Svg element should be only one in the container')
+        container.element.innerHTML = this.element!
+    }
+
+    componentWillUnmount = () => {}
 }
 
 export interface ICanvasParams extends Omit<IAttrs, 'onClick' | 'onMouseDown' | 'onMouseMove' | 'onMouseUp'> {
@@ -76,91 +115,114 @@ export interface ICanvasParams extends Omit<IAttrs, 'onClick' | 'onMouseDown' | 
     onMouseUp?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void
 }
 export class CanvasElement extends AppendableElement {
-    element: HTMLCanvasElement | null = null
-    ctx: CanvasRenderingContext2D | null = null
+    readonly type = 'canvas'
+    element: HTMLCanvasElement | undefined
+    ctx!: CanvasRenderingContext2D
 
     constructor(public content: (ctx: CanvasRenderingContext2D) => void, public params?: ICanvasParams) {
         super()
     }
 
-    insertSelfIntoContainer(container: BaseElement) {
-        super.insertSelfIntoContainer(container)
-        this.content(this.ctx!)
-    }
-
-    createElement() {
-        this.element = document.createElement('canvas')
+    createElement(selfIndex?: number) {
+        this.element = document.createElement(this.type)
         this.ctx = this.element.getContext('2d')!
 
         const {onClick, onMouseDown, onMouseMove, onMouseUp} = this.params || {}
 
         applyBaseComponentAttrs(this.element, {
             ...this.params,
-            onClick: onClick ? (e) => onClick(this.ctx!, e.offsetX, e.offsetY) : undefined,
-            onMouseDown: onMouseDown ? (e) => onMouseDown(this.ctx!, e.offsetX, e.offsetY) : undefined,
-            onMouseMove: onMouseMove ? (e) => onMouseMove(this.ctx!, e.offsetX, e.offsetY) : undefined,
-            onMouseUp: onMouseUp ? (e) => onMouseUp(this.ctx!, e.offsetX, e.offsetY) : undefined,
+            key: selfIndex === undefined ? undefined : String(selfIndex),
+            onClick: onClick ? (e) => onClick(this.ctx, e.offsetX, e.offsetY) : undefined,
+            onMouseDown: onMouseDown ? (e) => onMouseDown(this.ctx, e.offsetX, e.offsetY) : undefined,
+            onMouseMove: onMouseMove ? (e) => onMouseMove(this.ctx, e.offsetX, e.offsetY) : undefined,
+            onMouseUp: onMouseUp ? (e) => onMouseUp(this.ctx, e.offsetX, e.offsetY) : undefined,
         })
     }
+
+    insertSelfIntoContainer(container: BaseElement, selfIndex?: number) {
+        super.insertSelfIntoContainer(container, selfIndex)
+        this.content(this.ctx)
+    }
+
+    componentWillUnmount = () => {}
 }
 
 export interface IInputParams extends IAttrs {
     onChange: (value: string, key: string) => void
 }
 export class InputElement extends AppendableElement {
-    element: HTMLInputElement | null = null
+    readonly type = 'input'
+    element: HTMLInputElement | undefined
 
     constructor(public params?: IInputParams) {
         super()
     }
 
-    createElement() {
+    createElement(selfIndex?: number) {
         const {onChange} = this.params || {}
-        this.element = document.createElement('input')
+        this.element = document.createElement(this.type)
 
         applyBaseComponentAttrs(this.element, {
             ...this.params,
+            key: selfIndex === undefined ? undefined : String(selfIndex),
             onKeyUp: onChange ? (e) => onChange(this.element!.value, e.key) : undefined
         })
     }
+
+    componentWillUnmount = () => {}
 }
 
-export class BaseElement extends AppendableElement {
-    element: HTMLElement | null = null
+export class BaseElement extends AppendableElement implements IContainerElement {
+    element: HTMLElement | undefined
 
     constructor(
-        public type: string,
+        public readonly type: string,
         public content?: Content,
         public params?: IAttrs
     ) {
         super()
     }
 
-    insertSelfIntoContainer(container: BaseElement) {
-        insertContent(this, this.content) // create self and add children
-        super.insertSelfIntoContainer(container) // create and add self to the container
-    }
-
-    append(content: ICommonElement) {
-        if (!this.element) this.createElement() // create self
-        content.insertSelfIntoContainer(this) // create child and add to this element
-    }
-
-    createElement() {
+    createElement(selfIndex?: number) {
         this.element = document.createElement(this.type)
-        applyBaseComponentAttrs(this.element, this.params)
+        applyBaseComponentAttrs(this.element, {...this.params, key: selfIndex === undefined ? undefined : String(selfIndex)})
+    }
+
+    append(content: ICommonElement, contentIndex?: number) {
+        content.insertSelfIntoContainer(this, contentIndex) // create child and add to this element
+    }
+
+    insertSelfIntoContainer(container: BaseElement, selfIndex?: number) {
+        if (!this.element) this.createElement(selfIndex) // create self as a content
+        insertContent(this, this.content) // add children
+
+        // add self to the container
+        if (!container.element) throw new Error('Container element should be created')
+        container.element.append(this.element!)
+    }
+
+    componentWillUnmount = () => {
+        if (!this.content) return
+
+        if (this.content instanceof Array) {
+            this.content.forEach(c => c?.componentWillUnmount())
+        } else {
+            this.content.componentWillUnmount()
+        }
     }
 }
 
-export class BodyElement extends BaseElement {
+export class BodyElement implements IContainerElement {
+    readonly type = 'body'
     element = document.body
 
-    constructor() {
-        super('')
+    append(content: ICommonElement, contentIndex?: number) {
+        content.insertSelfIntoContainer(this, contentIndex) // create child and add to this element
     }
 
-    createElement() {}
+    insertSelfIntoContainer(container: IContainerElement, selfIndex?: number | undefined) {}
+    componentWillUnmount() {}
 }
 
-export type Element = ICommonElement | null
+export type Element = IContainerElement | ICommonElement | null
 export type Content = Element | Element[]
