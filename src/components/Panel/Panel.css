@@ -1,0 +1,7 @@
+.panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #ccc;
+    box-shadow: -2px 0px 16px #000;
+}

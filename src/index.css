@@ -1,0 +1,18 @@
+:root {
+    --selected-color: #ff2800;
+    --hover-color: #1f6ada;
+}
+body {
+    background: #595959;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: 'Arial';
+}
+button {
+    cursor: pointer;
+    padding: 7px 20px;
+    user-select: none;
+    border-radius: 5px;
+    border-color: #ccc;
+}

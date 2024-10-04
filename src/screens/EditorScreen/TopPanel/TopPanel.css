@@ -1,0 +1,6 @@
+#top-panel {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: none;
+}

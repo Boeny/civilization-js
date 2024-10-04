@@ -1,0 +1,5 @@
+#right-panel {
+    height: 100%;
+    overflow-y: scroll;
+    padding-top: 42px;
+}

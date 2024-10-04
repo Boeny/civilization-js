@@ -1,0 +1,13 @@
+.block {
+    margin: 5px 0;
+    background-color: white;
+    border-radius: 7px;
+    padding: 20px 30px;
+}
+.block.bordered {
+    border: 1px solid #ccc;
+}
+.block.flex-column {
+    display: flex;
+    flex-direction: column;
+}
