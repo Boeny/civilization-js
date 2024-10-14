@@ -1,13 +1,13 @@
-import './Layers.css'
-import { Div } from "modules/renderer"
-import { LayersClickHandlerObserver } from './Layer'
+// import './styles.css';
 
-interface IParams {
-    width: number
-}
-export function Layers({width}: IParams) {
-    return Div(
-        LayersClickHandlerObserver.map((component) => component({width})),
-        {className: 'layers'}
-    )
-}
+// import { LayersClickHandlerObserver } from './Layer';
+
+// interface IParams {
+//     width: number;
+// }
+// export function Layers({ width }: IParams) {
+//     return Div(
+//         LayersClickHandlerObserver.map((component) => component({ width })),
+//         { className: 'layers' },
+//     );
+// }

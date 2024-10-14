@@ -1,5 +1,3 @@
-import { PreviousValueStore } from "modules/observer"
-
 export enum HEX_TYPE {
     ocean,
     sea,
@@ -22,29 +20,29 @@ export enum LAYER_TYPE {
 }
 
 export interface IHexMapParams {
-    width: number
-    height: number
-    hexWidth: number
+    width: number;
+    height: number;
+    hexWidth: number;
 }
 
-export type HexMapField = keyof IHexMapParams
+export type HexMapField = keyof IHexMapParams;
 
-export type MapData = number[][]
+export type MapData = number[][];
 
-export type MapDataRow = number[]
+// export type MapDataRow = number[];
 
-export class HexMapStore extends PreviousValueStore<MapData | null> {
-    getHex(x: number, y: number): HEX_TYPE {
-        const map = this.value
-        if (!map) throw new Error('Hex map is not set')
+// export class HexMapStore extends PreviousValueStore<MapData | null> {
+//     getHex(x: number, y: number): HEX_TYPE {
+//         const map = this.value;
+//         if (!map) throw new Error('Hex map is not set');
 
-        return map[y][x]
-    }
+//         return map[y][x];
+//     }
 
-    setHex(x: number, y: number, type: HEX_TYPE) {
-        const map = this.value
-        if (!map) throw new Error('Hex map is not set')
+//     setHex(x: number, y: number, type: HEX_TYPE) {
+//         const map = this.value;
+//         if (!map) throw new Error('Hex map is not set');
 
-        map[y][x] = type
-    }
-}
+//         map[y][x] = type;
+//     }
+// }

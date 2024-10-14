@@ -7,6 +7,7 @@
 .layer:hover {
     outline: 3px solid var(--hover-color);
 }
-.layer.selected, .layer.selected:hover {
+.layer.selected,
+.layer.selected:hover {
     outline: 4px solid var(--selected-color);
 }
