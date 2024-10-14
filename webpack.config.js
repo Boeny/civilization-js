@@ -1,6 +1,8 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const isProduction = process.env.NODE_ENV == 'production'
+const path = require('path');
+
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
     // amd: undefined,
@@ -47,7 +49,7 @@ module.exports = {
         // webSocketServer: undefined,
     },
     // devtool: undefined,
-    entry: path.resolve(__dirname, 'src/index.ts'),
+    entry: path.resolve(__dirname, 'src/index.tsx'),
     // entry: {
     //     home: './home.js',
     //     shared: ['react', 'react-dom', 'redux', 'react-redux'],
@@ -86,9 +88,11 @@ module.exports = {
         // parser: undefined,
         rules: [
             {
-                test: /\.(ts)$/i,
+                test: /\.(tsx?)$/i,
                 loader: 'ts-loader',
-                exclude: ['/node_modules/'],
+                exclude: [
+                    path.resolve(__dirname, 'node_modules'),
+                ],
                 options: {
                     compilerOptions: {
                         noEmit: false,
@@ -148,7 +152,7 @@ module.exports = {
         // descriptionFiles: ['package.json'], // The JSON files to use for descriptions
         // enforceExtension: false, // If true, it will not allow extension-less files
         // exportsFields: ['exports', 'myCompanyExports'], // Fields in package.json that are used for resolving module requests
-        extensions: ['.ts', '.js'], // Attempt to resolve these extensions in order. Use '...' to access the default extensions. JS is important to resolve node_modules!
+        extensions: ['.tsx', '.ts', '.jsx', '.js'], // Attempt to resolve these extensions in order. Use '...' to access the default extensions. JS is important to resolve node_modules!
         // extensionAlias: {'.js': ['.ts', '.js']}, // An object which maps extension to extension aliases
         // fallback: { // Redirect module requests when normal resolving fails
         //     abc: false, // do not include a polyfill for abc,

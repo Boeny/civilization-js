@@ -15,8 +15,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": true,
+    "sourceMap": true,
     "outDir": "dist"
   },
   "include": ["src", "index.d.ts"],
