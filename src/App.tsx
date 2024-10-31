@@ -1,82 +1,90 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
-import { Menu } from 'menus';
-import { EDITOR_MENU_OPTION_CLOSED, GAME_MENU_OPTION_CLOSED } from 'menus/const';
+import { EditorMenu } from 'menus/EditorMenu';
 import { DEFAULT_EDITOR_PARAMS, IEditorParamsMenuState } from 'menus/EditorParamsMenu/store';
-import { IMenuOption } from 'menus/types';
-import { getParentMenu } from 'menus/utils';
-import { Screen } from 'screens';
-import { DEFAULT_MENU_STATE } from 'store';
-import { KEY_CODE, SCREEN_TYPE } from 'types';
+import { GameMenu } from 'menus/GameMenu';
+import { MainMenu } from 'menus/MainMenu';
+import { EditorScreen } from 'screens/EditorScreen';
+import { GameScreen } from 'screens/GameScreen';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const callbackContainerForMount = { openParentMenu: () => {} };
+enum SCREEN_TYPE {
+    game,
+    editor,
+}
 
 export function App() {
-    const [menu, setMenu] = useState<IMenuOption>(DEFAULT_MENU_STATE.menu);
     const [screen, setScreen] = useState<SCREEN_TYPE | null>(null);
     const [editorParams, setEditorParams] = useState<IEditorParamsMenuState>(DEFAULT_EDITOR_PARAMS);
     const [reloadFlag, setReloadFlag] = useState(false);
 
-    const setDefaultstate = useCallback(() => {
-        setMenu(DEFAULT_MENU_STATE.menu);
-        setScreen(DEFAULT_MENU_STATE.screen);
-    }, []);
-
-    callbackContainerForMount.openParentMenu = useCallback(() => {
-        const parentMenu = getParentMenu(menu);
-        if (parentMenu) setMenu(parentMenu);
-    }, [menu]);
-
-    useEffect(() => {
-        document.addEventListener('keydown', (e) => {
-            if (e.key === KEY_CODE.esc) {
-                callbackContainerForMount.openParentMenu();
-            }
-        });
-    }, []);
-
-    const createEditorScreen = useCallback(
-        (params: IEditorParamsMenuState) => {
-            setEditorParams(params);
-            setScreen(SCREEN_TYPE.editor);
+    const switchScreen = useCallback(
+        (screenType: SCREEN_TYPE | null) => {
+            setScreen(screenType);
             setReloadFlag(!reloadFlag);
         },
         [reloadFlag],
     );
 
-    const createGameScreen = useCallback(() => {
-        setScreen(SCREEN_TYPE.game);
-        setReloadFlag(!reloadFlag);
-    }, [reloadFlag]);
+    const createEditorScreen = useCallback(
+        (params: IEditorParamsMenuState) => {
+            setEditorParams(params);
+            switchScreen(SCREEN_TYPE.editor);
+        },
+        [switchScreen],
+    );
 
-    const reloadGameScreen = useCallback(() => {
-        setMenu(GAME_MENU_OPTION_CLOSED);
-        setReloadFlag(!reloadFlag);
-    }, [reloadFlag]);
+    const menuElement = useMemo(() => {
+        if (screen === SCREEN_TYPE.game) {
+            return (
+                <GameMenu
+                    onReload={() => setReloadFlag(!reloadFlag)}
+                    createGameScreen={() => switchScreen(SCREEN_TYPE.game)}
+                    applyParams={() => {}}
+                    exitToMainMenu={() => switchScreen(null)}
+                />
+            );
+        }
+        if (screen === SCREEN_TYPE.editor) {
+            return (
+                <EditorMenu
+                    onReload={() => setReloadFlag(!reloadFlag)}
+                    createEditorScreen={createEditorScreen}
+                    applyParams={() => {}}
+                    exitToMainMenu={() => switchScreen(null)}
+                />
+            );
+        }
 
-    const reloadEditorScreen = useCallback(() => {
-        setMenu(EDITOR_MENU_OPTION_CLOSED);
-        setReloadFlag(!reloadFlag);
-    }, [reloadFlag]);
+        return (
+            <MainMenu
+                createGameScreen={() => switchScreen(SCREEN_TYPE.game)}
+                createEditorScreen={createEditorScreen}
+                applyParams={() => {}}
+            />
+        );
+    }, [screen, createEditorScreen, switchScreen, reloadFlag]);
+
+    const screenElement = useMemo(() => {
+        if (screen === SCREEN_TYPE.game) {
+            return <GameScreen key={String(reloadFlag)} />;
+        }
+
+        if (screen === SCREEN_TYPE.editor) {
+            return (
+                <EditorScreen
+                    key={String(reloadFlag)}
+                    {...editorParams}
+                />
+            );
+        }
+
+        return null;
+    }, [editorParams, reloadFlag, screen]);
 
     return (
         <>
-            <Menu
-                menu={menu}
-                openMenu={setMenu}
-                openParentMenu={callbackContainerForMount.openParentMenu}
-                exitToMainMenu={setDefaultstate}
-                createEditorScreen={createEditorScreen}
-                createGameScreen={createGameScreen}
-                reloadGameScreen={reloadGameScreen}
-                reloadEditorScreen={reloadEditorScreen}
-            />
-            <Screen
-                key={String(reloadFlag)}
-                screen={screen}
-                editorParams={editorParams}
-            />
+            {menuElement}
+            {screenElement}
         </>
     );
 }

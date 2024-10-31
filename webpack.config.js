@@ -14,13 +14,13 @@ module.exports = {
         open: true, // open default browser
         host: 'localhost',
         //onBeforeSetupMiddleware: (app) => { // IS DEPRECATED for webpack 5.0
-            // app.app.get("/", function(req, res){
-            //     res.json({})
-            // })
+        // app.app.get("/", function(req, res){
+        //     res.json({})
+        // })
 
-            // app.post("/post/some-data", bodyParser.json(), function(req, res){
-            //     res.send("POST res sent from webpack dev server")
-            // })
+        // app.post("/post/some-data", bodyParser.json(), function(req, res){
+        //     res.send("POST res sent from webpack dev server")
+        // })
         //},
         // allowedHosts: undefined,
         // bonjour: undefined,
@@ -39,7 +39,7 @@ module.exports = {
         // ipc: undefined,
         // liveReload: undefined,
         // onListening: undefined,
-        // port: 80,
+        port: 8080,
         // proxy: undefined,
         // server: undefined,
         // setupExitSignals: undefined,
@@ -90,9 +90,7 @@ module.exports = {
             {
                 test: /\.(tsx?)$/i,
                 loader: 'ts-loader',
-                exclude: [
-                    path.resolve(__dirname, 'node_modules'),
-                ],
+                exclude: [path.resolve(__dirname, 'node_modules')],
                 options: {
                     compilerOptions: {
                         noEmit: false,
@@ -209,4 +207,4 @@ module.exports = {
     // target: undefined,
     // watch: undefined,
     // watchOptions: undefined,
-}
+};

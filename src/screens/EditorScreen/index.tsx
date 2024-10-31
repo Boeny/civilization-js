@@ -38,7 +38,6 @@ export const EditorScreen = memo(() => {
                 height={window.innerHeight - TOP_PANEL_HEIGHT}
             />
             <TopPanel
-                openMenu={openMenu}
                 rightPanelWidth={RIGHT_PANEL_WIDTH}
                 style={{ height: TOP_PANEL_HEIGHT }}
             />

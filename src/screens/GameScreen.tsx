@@ -1,10 +1,15 @@
+import { MenuItem } from 'components/Menu/MenuItem';
+
 export function GameScreen() {
     return (
         <div
             id="game-screen"
             className="screen"
         >
-            {/* <button onClick={openMenu}>Open menu</button> */}
+            <MenuItem
+                name="Open menu"
+                action="back"
+            />
         </div>
     );
 }

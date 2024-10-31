@@ -17,7 +17,7 @@ function isValueSmallNumber(value: number): boolean {
 }
 
 /**
- * checks if value a number in diapazone
+ * checks if value a number and it's in range
  * @param value number or NaN
  * @returns boolean
  */

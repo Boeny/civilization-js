@@ -2,9 +2,9 @@ import { Block } from 'components/Block';
 import { MenuItem } from 'components/Menu/MenuItem';
 
 interface IProps {
-    onApply: () => void;
+    onPlay: () => void;
 }
-export function OptionsMenu({ onApply }: IProps) {
+export function NewGameMenu({ onPlay }: IProps) {
     return (
         <>
             <MenuItem
@@ -15,9 +15,8 @@ export function OptionsMenu({ onApply }: IProps) {
             <Block />
 
             <MenuItem
-                name="Apply"
-                onClick={onApply}
-                action="back"
+                name="Play"
+                onClick={onPlay}
             />
         </>
     );

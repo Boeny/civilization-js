@@ -5,32 +5,43 @@ import { MenuPopup } from 'components/MenuPopup';
 
 import { EditorParamsMenu } from './EditorParamsMenu';
 import { IEditorParamsMenuState } from './EditorParamsMenu/store';
-import { NewGameMenu } from './NewGameMenu';
 import { OptionsMenu } from './OptionsMenu';
 
 interface IProps {
-    createGameScreen: () => void;
+    onReload: () => void;
     createEditorScreen: (params: IEditorParamsMenuState) => void;
     applyParams: () => void;
+    exitToMainMenu: () => void;
 }
-export function MainMenu({ createGameScreen, createEditorScreen, applyParams }: IProps) {
+export function EditorMenu({ onReload, createEditorScreen, applyParams, exitToMainMenu }: IProps) {
     return (
         <Menu
-            isOpen
+            closeOnBackAction
             component={MenuPopup}
             item={Button}
         >
-            <MenuItem name="New Game">
-                <NewGameMenu onPlay={createGameScreen} />
-            </MenuItem>
+            <MenuItem
+                name="Back to the editor"
+                action="back"
+            />
+            <MenuItem
+                name="Reload map"
+                onClick={onReload}
+                action="back"
+            />
 
-            <MenuItem name="Editor">
+            <MenuItem name="New map">
                 <EditorParamsMenu onSubmit={createEditorScreen} />
             </MenuItem>
 
-            <MenuItem name="Options">
+            <MenuItem name="Editor options">
                 <OptionsMenu onApply={applyParams} />
             </MenuItem>
+
+            <MenuItem
+                name="Back to main menu"
+                onClick={exitToMainMenu}
+            />
         </Menu>
     );
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Block } from 'components/Block';
-import { IEditorParamsMenuOption, MENU_TYPE } from 'menus/types';
+import { MenuItem } from 'components/Menu/MenuItem';
 import { LAYER_TYPE } from 'screens/EditorScreen/types';
 
 import { HexMapParamsBlock } from './HexMapParamsBlock';
@@ -10,11 +10,9 @@ import { DEFAULT_EDITOR_PARAMS, IEditorParamsMenuState } from './store';
 import { checkSubmitValidity } from './utils';
 
 interface IProps {
-    parent: IEditorParamsMenuOption['parent'];
-    openParentMenu: () => void;
     onSubmit: (params: IEditorParamsMenuState) => void;
 }
-export const EditorParamsMenu = ({ parent, openParentMenu, onSubmit }: IProps) => {
+export const EditorParamsMenu = ({ onSubmit }: IProps) => {
     const [layer, setLayer] = useState(DEFAULT_EDITOR_PARAMS.layer);
     const [width, setWidth] = useState(DEFAULT_EDITOR_PARAMS.width);
     const [height, setHeight] = useState(DEFAULT_EDITOR_PARAMS.height);
@@ -30,7 +28,10 @@ export const EditorParamsMenu = ({ parent, openParentMenu, onSubmit }: IProps) =
 
     return (
         <>
-            <button onClick={openParentMenu}>Back to {parent === MENU_TYPE.main ? 'main' : 'editor'} menu</button>
+            <MenuItem
+                name="Back"
+                action="back"
+            />
 
             <HexMapParamsBlock
                 disabled={layer === LAYER_TYPE.image}
@@ -50,7 +51,10 @@ export const EditorParamsMenu = ({ parent, openParentMenu, onSubmit }: IProps) =
                 />
             </Block>
 
-            <button onClick={submitHandler}>Create map</button>
+            <MenuItem
+                name="Create map"
+                onClick={submitHandler}
+            />
         </>
     );
 };

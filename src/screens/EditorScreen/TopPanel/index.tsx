@@ -1,5 +1,9 @@
 // import './styles.css';
 
+// import { useContext } from "react";
+
+// import { menuContext } from "components/Menu";
+
 // import { CSSProperties } from 'react';
 
 // import { ArrowButton } from 'components/ArrowButton';
@@ -15,9 +19,9 @@
 // export interface ITopPanelParams {
 //     style?: CSSProperties;
 //     rightPanelWidth: number;
-//     openMenu: () => void;
 // }
-// export function TopPanel({ rightPanelWidth, openMenu, style }: ITopPanelParams) {
+// export function TopPanel({ rightPanelWidth, style }: ITopPanelParams) {
+// const {openMenu} = useContext(menuContext);
 //     return <Panel style={{ ...style }}></Panel>;
 
 //     return Panel(
