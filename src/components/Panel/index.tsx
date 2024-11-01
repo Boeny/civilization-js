@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unused-modules */
 import { CSSProperties } from 'react';
 import './styles.css';
 

@@ -1,6 +1,8 @@
-/* eslint-disable import/no-unused-modules */
 import arrow from 'assets/arrow-down.svg';
 
+import { Svg } from './Svg';
+
+// TODO: figure out how to import svg as a react component
 interface IProps {
     onClick: () => void;
 }
@@ -10,9 +12,14 @@ export function ArrowButton(props: IProps) {
             {...props}
             style={{ padding: '4px 10px 0px' }}
         >
-            <img
+            {/* <Arrow /> */}
+            {/* <img
                 src={arrow}
                 width={20}
+            /> */}
+            <Svg
+                width={20}
+                src={arrow}
             />
         </button>
     );

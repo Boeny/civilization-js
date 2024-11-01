@@ -1,50 +1,44 @@
-// import './styles.css';
+import './styles.css';
 
-// import { useContext } from "react";
+import { memo } from 'react';
 
-// import { menuContext } from "components/Menu";
+import { ArrowButton } from 'components/ArrowButton';
+import { MenuItem } from 'components/Menu/MenuItem';
+import { Panel } from 'components/Panel';
+import { Z_INDEX_CONFIG } from 'const';
 
-// import { CSSProperties } from 'react';
+import { RIGHT_PANEL_WIDTH, TOP_PANEL_HEIGHT } from '../const';
 
-// import { ArrowButton } from 'components/ArrowButton';
-// import { Panel } from 'components/Panel';
-// import { Z_INDEX_CONFIG } from 'const';
+import { ToggleGridButton } from './ToggleGridButton';
 
-// import { RIGHT_PANEL_TOGGLE_EVENT } from '../const';
-// import { editorScreenStore } from '../store';
+interface IProps {
+    isHex: boolean;
+    toggleLeftPanel: () => void;
+    toggleRightPanel: () => void;
+}
+export const TopPanel = memo(({ isHex, toggleLeftPanel, toggleRightPanel }: IProps) => {
+    return (
+        <Panel
+            id="top-panel"
+            style={{ zIndex: Z_INDEX_CONFIG.top.zIndex, height: TOP_PANEL_HEIGHT }}
+        >
+            <div style={{ display: 'flex' }}>
+                <MenuItem
+                    name="Open menu"
+                    action="back"
+                />
 
-// import { ToggleLeftPanelButtonObserver } from './ToggleLeftPanelButton';
-// import { ToggleMapGridButtonToggleObserver } from './ToggleMapGridButton';
+                {isHex && (
+                    <>
+                        <ArrowButton onClick={toggleLeftPanel} />
+                        <ToggleGridButton />
+                    </>
+                )}
+            </div>
 
-// export interface ITopPanelParams {
-//     style?: CSSProperties;
-//     rightPanelWidth: number;
-// }
-// export function TopPanel({ rightPanelWidth, style }: ITopPanelParams) {
-// const {openMenu} = useContext(menuContext);
-//     return <Panel style={{ ...style }}></Panel>;
-
-//     return Panel(
-//         [
-//             Div([<button onClick={openMenu}>Open menu</button>, ToggleLeftPanelButtonObserver(), ToggleMapGridButtonToggleObserver()], {
-//                 style: { display: 'flex' },
-//             }),
-
-//             Div(
-//                 ArrowButton({
-//                     onClick: () => {
-//                         const { isRightPanelOpened } = editorScreenStore;
-//                         isRightPanelOpened.value = !isRightPanelOpened.value;
-//                         trigger(RIGHT_PANEL_TOGGLE_EVENT);
-//                     },
-//                 }),
-//                 { style: { display: 'flex', width: rightPanelWidth } },
-//             ),
-//         ],
-//         {
-//             ...params,
-//             id: 'top-panel',
-//             style: getStyle({ zIndex: Z_INDEX_CONFIG.top.zIndex }, params?.style),
-//         },
-//     );
-// }
+            <div style={{ display: 'flex', width: RIGHT_PANEL_WIDTH }}>
+                <ArrowButton onClick={toggleRightPanel} />
+            </div>
+        </Panel>
+    );
+});
