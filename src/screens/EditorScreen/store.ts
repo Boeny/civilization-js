@@ -1,26 +1,26 @@
-/* eslint-disable import/no-unused-modules */
+import { useStore } from 'hoc/useStore';
+
 import { HEX_TYPE, LAYER_TYPE, MapData } from './types';
 
-interface IState {
+interface IStore {
     brush: HEX_TYPE | null;
     layer: LAYER_TYPE;
     isPainting: boolean;
     hexWidth: number;
-    hexMapData: MapData | null;
-    imageMapData: CanvasImageSource | null;
-    isGridTurnedOn: boolean;
-    isLeftPanelOpened: boolean;
-    isRightPanelOpened: boolean;
+    data: Partial<Record<LAYER_TYPE, MapData | CanvasImageSource | null>>;
+    visibility: Partial<Record<LAYER_TYPE, boolean>>;
 }
 
-export const DEFAULT_STATE: IState = {
+const store: IStore = {
     brush: null,
     layer: LAYER_TYPE.image,
     isPainting: false,
     hexWidth: 0,
-    hexMapData: null,
-    imageMapData: null,
-    isGridTurnedOn: true,
-    isLeftPanelOpened: true,
-    isRightPanelOpened: true,
+    data: {},
+    visibility: {},
 };
+
+const [useEditorStore, useEditorStoreWithoutUpdate] = useStore(store);
+
+// eslint-disable-next-line import/no-unused-modules
+export { useEditorStore, useEditorStoreWithoutUpdate };
