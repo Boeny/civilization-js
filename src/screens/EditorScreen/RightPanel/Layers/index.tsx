@@ -1,10 +1,10 @@
 import './styles.css';
 
+import { LAYER_CONFIG } from 'screens/EditorScreen/const';
 import { useEditorStore } from 'screens/EditorScreen/store';
 import { LAYER_TYPE } from 'screens/EditorScreen/types';
 import { getClasses } from 'utils';
 
-import { LAYER_CONFIG } from './config';
 import { EyeButton } from './EyeButton';
 
 interface IParams {
@@ -28,7 +28,7 @@ export const Layers = ({ width }: IParams) => {
     return (
         <div className="layers">
             {layers.map((type) => {
-                const { title, component: MiniMap } = LAYER_CONFIG[type];
+                const { title, miniMapComponent: MiniMap } = LAYER_CONFIG[type];
                 const isSelected = layer === type;
                 const mapData = data[type];
 

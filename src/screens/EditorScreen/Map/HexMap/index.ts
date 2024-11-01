@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // import './styles.css';
 
-// import { LAYER_TYPE, MapData } from 'screens/EditorScreen/types';
+import { LAYER_TYPE, MapData } from 'screens/EditorScreen/types';
 // import { getHexRadius, getMapCoordinatesFromCursor } from 'screens/EditorScreen/utils';
 
 // import { HEX_MAP_UPDATE_EVENT, HEX_MINI_MAP_UPDATE_EVENT, LAYER_CHANGE_EVENT, LAYER_CONFIG } from '../../const';
@@ -12,65 +13,54 @@
 // // TODO: scroll by wheel
 // // TODO: zoom by multitouch
 
-// interface IParams extends IToggleParams {
-//     hexMapData: MapData;
-//     hexWidth: number;
-//     isGridTurnedOn: boolean;
-// }
-// function HexMap({ width, height, hexMapData, hexWidth, isGridTurnedOn, onMouseDown, onMouseMove, onMouseUp }: IParams) {
-//     return Canvas(
-//         (ctx) => {
-//             const hexRadius = getHexRadius(hexWidth);
+interface IParams {
+    data: MapData;
+    width: number;
+    height: number;
+}
+export function HexMap() {
+    return null;
+    //     return Canvas(
+    //         (ctx) => {
+    //             const hexRadius = getHexRadius(hexWidth);
 
-//             for (let y = 0; y < hexMapData.length; y += 1) {
-//                 if (y * hexRadius * 1.5 > height) break;
+    //             for (let y = 0; y < data.length; y += 1) {
+    //                 if (y * hexRadius * 1.5 > height) break;
 
-//                 const row = hexMapData[y];
+    //                 const row = data[y];
 
-//                 for (let x = 0; x < row.length; x += 1) {
-//                     if (x * hexWidth > width) break;
+    //                 for (let x = 0; x < row.length; x += 1) {
+    //                     if (x * hexWidth > width) break;
 
-//                     Hex({
-//                         ctx,
-//                         x,
-//                         y,
-//                         width: hexWidth,
-//                         radius: hexRadius,
-//                         type: row[x],
-//                         isGridTurnedOn,
-//                     });
-//                 }
-//             }
-//         },
-//         {
-//             id: 'hex-map',
-//             width,
-//             height,
-//             style: { zIndex: LAYER_CONFIG[LAYER_TYPE.hex].zIndex },
-//             onMouseDown,
-//             onMouseMove,
-//             onMouseUp,
-//         },
-//     );
-// }
+    //                     Hex({
+    //                         ctx,
+    //                         x,
+    //                         y,
+    //                         width: hexWidth,
+    //                         radius: hexRadius,
+    //                         type: row[x],
+    //                         isGridTurnedOn,
+    //                     });
+    //                 }
+    //             }
+    //         },
+    //         {
+    //             id: 'hex-map',
+    //             width,
+    //             height,
+    //             style: { zIndex: LAYER_CONFIG[LAYER_TYPE.hex].zIndex },
+    //             onMouseDown,
+    //             onMouseMove,
+    //             onMouseUp,
+    //         },
+    //     );
+}
 
 // interface IToggleParams extends ILayerChangeParams {
 //     onMouseDown?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
 //     onMouseMove?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
 //     onMouseUp?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
 // }
-// const HexMapToggleObserver = observer(HEX_MAP_UPDATE_EVENT, (params: IToggleParams) => {
-//     const { hexMapData, isGridTurnedOn, hexWidth } = editorScreenStore;
-
-//     if (!hexMapData.value) return null;
-
-//     return HexMap({
-//         ...params,
-//         hexWidth: hexWidth.value,
-//         hexMapData: hexMapData.value,
-//         isGridTurnedOn: isGridTurnedOn.value,
-//     });
-// });
 
 // function drawHex(ctx: CanvasRenderingContext2D, x: number, y: number, params: ILayerChangeParams) {
 //     const { width: mapWidth, height: mapHeight } = params;

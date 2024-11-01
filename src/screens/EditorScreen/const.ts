@@ -1,5 +1,9 @@
-/* eslint-disable import/no-unused-modules */
-import { HEX_TYPE } from './types';
+import { LAYER_TYPE, HEX_TYPE } from 'screens/EditorScreen/types';
+
+import { HexMap } from './Map/HexMap';
+import { ImageMap } from './Map/ImageMap';
+import { HexMiniMap } from './RightPanel/Layers/MiniMap/HexMiniMap';
+import { ImageMiniMap } from './RightPanel/Layers/MiniMap/ImageMiniMap';
 
 export const HEX_CONFIG: Record<HEX_TYPE, { color: string; title: string }> = {
     [HEX_TYPE.ocean]: {
@@ -42,6 +46,17 @@ export const HEX_CONFIG: Record<HEX_TYPE, { color: string; title: string }> = {
         color: '#b0d700',
         title: 'Hill',
     },
+};
+
+export const LAYER_CONFIG: Record<
+    LAYER_TYPE,
+    { title: string; zIndex: number; miniMapComponent?: React.FC<any>; mapComponent?: React.FC<any> }
+> = {
+    [LAYER_TYPE.image]: { title: 'Image', zIndex: 0, miniMapComponent: ImageMiniMap, mapComponent: ImageMap },
+    [LAYER_TYPE.continuous]: { title: 'Continuous map', zIndex: 1 },
+    [LAYER_TYPE.hex]: { title: 'Hexagonal base map', zIndex: 2, miniMapComponent: HexMiniMap, mapComponent: HexMap },
+    [LAYER_TYPE.objects]: { title: 'Objects map', zIndex: 3 },
+    [LAYER_TYPE.borders]: { title: 'Borders', zIndex: 4 },
 };
 
 export const SQRT_3 = Math.sqrt(3);
