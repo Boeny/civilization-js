@@ -4,3 +4,39 @@
     gap: 10px;
     padding-bottom: 80px;
 }
+
+.layer {
+    user-select: none;
+    border: 3px solid #c0bcbc;
+    border-radius: 10px;
+}
+.layer.implemented {
+    cursor: pointer;
+}
+.layer.implemented:hover {
+    outline: 3px solid var(--hover-color);
+}
+.layer.selected,
+.layer.selected:hover {
+    outline: 4px solid var(--selected-color);
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: bold;
+    border-bottom: 1px solid #bab8b8;
+    padding: 4px 7px 6px;
+}
+
+.eye {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 0 1px;
+    margin-bottom: -1px;
+}
+.eye:hover {
+    outline: 3px solid #7c7c7c;
+}
