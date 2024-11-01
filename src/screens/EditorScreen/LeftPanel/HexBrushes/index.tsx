@@ -1,6 +1,6 @@
 import './styles.css';
 
-import { HEX_CONFIG } from 'screens/EditorScreen/const';
+import { HEX_CONFIG } from 'screens/EditorScreen/hexConfig';
 import { useEditorStore } from 'screens/EditorScreen/store';
 import { HEX_TYPE } from 'screens/EditorScreen/types';
 import { getClasses } from 'utils';

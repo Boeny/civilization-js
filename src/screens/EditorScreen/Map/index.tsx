@@ -1,4 +1,4 @@
-import { LAYER_CONFIG } from '../const';
+import { LAYER_CONFIG } from '../layersConfig';
 import { useEditorStore } from '../store';
 import { LAYER_TYPE } from '../types';
 

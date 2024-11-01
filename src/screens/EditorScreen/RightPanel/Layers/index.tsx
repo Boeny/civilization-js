@@ -1,6 +1,6 @@
 import './styles.css';
 
-import { LAYER_CONFIG } from 'screens/EditorScreen/const';
+import { LAYER_CONFIG } from 'screens/EditorScreen/layersConfig';
 import { useEditorStore } from 'screens/EditorScreen/store';
 import { LAYER_TYPE } from 'screens/EditorScreen/types';
 import { getClasses } from 'utils';

@@ -27,7 +27,7 @@ export interface IHexMapParams {
 
 export type HexMapField = keyof IHexMapParams;
 
-export type MapData = number[][];
+export type MapData = HEX_TYPE[][];
 
 // export type MapDataRow = number[];
 
