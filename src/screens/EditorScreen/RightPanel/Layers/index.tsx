@@ -47,13 +47,16 @@ export const Layers = ({ width }: IParams) => {
                                 />
                             )}
                         </div>
-                        {MiniMap && mapData && (
-                            <MiniMap
-                                data={mapData}
-                                width={width}
-                                title={title}
-                            />
-                        )}
+
+                        <div className="mini-map">
+                            {MiniMap && mapData && (
+                                <MiniMap
+                                    data={mapData}
+                                    width={width}
+                                    title={title}
+                                />
+                            )}
+                        </div>
                     </div>
                 );
             })}

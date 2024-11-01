@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 
 interface IProps {
     className?: string;
     title?: string;
     width?: number;
     height?: number;
+    style?: CSSProperties;
     onClick?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
     onMouseDown?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
     onMouseMove?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;

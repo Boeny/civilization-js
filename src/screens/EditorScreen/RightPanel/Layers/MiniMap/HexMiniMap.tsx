@@ -1,4 +1,3 @@
-import './styles.css';
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { HEX_CONFIG } from 'screens/EditorScreen/hexConfig';
@@ -13,15 +12,15 @@ interface IProps {
 export function HexMiniMap({ data, width, title }: IProps) {
     if (!data?.length) return null;
 
-    const hexWidth = width / data[0].length;
+    const hexWidth = width / (data[0].length + 10);
     const hexRadius = getHexRadius(hexWidth);
 
     return (
         <Canvas
-            className="hex-mini-map"
             title={title}
             width={width + hexWidth / 2}
             height={(3 * hexRadius * data.length) / 2 + hexRadius / 2}
+            style={{ maxHeight: 170 }}
         >
             {(ctx) => {
                 data.forEach((row, y) => {

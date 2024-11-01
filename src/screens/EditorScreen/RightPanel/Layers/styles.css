@@ -40,3 +40,8 @@
 .eye:hover {
     outline: 3px solid #7c7c7c;
 }
+
+.mini-map {
+    min-height: 90px;
+    max-height: 170px;
+}
