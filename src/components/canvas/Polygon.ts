@@ -10,7 +10,7 @@ function getPointByAngle(offset: IPoint, angle: number, radius: number): IPoint 
     };
 }
 
-interface IParams {
+interface IProps {
     ctx: CanvasRenderingContext2D;
     centerPoint: IPoint;
     startAngle: number;
@@ -19,7 +19,7 @@ interface IParams {
     fillColor?: string;
     strokeColor?: string;
 }
-export function Polygon({ ctx, centerPoint, startAngle, radius, sides, fillColor, strokeColor }: IParams) {
+export function Polygon({ ctx, centerPoint, startAngle, radius, sides, fillColor, strokeColor }: IProps) {
     ctx.beginPath();
 
     const startPoint = getPointByAngle(centerPoint, startAngle, radius);

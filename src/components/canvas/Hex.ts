@@ -1,19 +1,15 @@
-/* eslint-disable import/no-unused-modules */
-import { HEX_CONFIG } from 'screens/EditorScreen/const';
-import { HEX_TYPE } from 'screens/EditorScreen/types';
-
 import { Polygon } from './Polygon';
 
-interface IParams {
+interface IProps {
     ctx: CanvasRenderingContext2D;
     x: number;
     y: number;
     width: number;
     radius: number;
-    type: HEX_TYPE;
+    color: string;
     isGridTurnedOn?: boolean;
 }
-export function Hex({ ctx, x, y, width, radius, type, isGridTurnedOn }: IParams) {
+export function Hex({ ctx, x, y, width, radius, color, isGridTurnedOn }: IProps) {
     const xOffset = y % 2 === 0 ? width / 2 : width;
 
     Polygon({
@@ -25,7 +21,7 @@ export function Hex({ ctx, x, y, width, radius, type, isGridTurnedOn }: IParams)
         startAngle: Math.PI / 2,
         radius,
         sides: 6,
-        fillColor: HEX_CONFIG[type].color,
+        fillColor: color,
         strokeColor: isGridTurnedOn ? '#000' : undefined,
     });
 }
