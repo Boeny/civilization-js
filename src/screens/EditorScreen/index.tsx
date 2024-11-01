@@ -1,3 +1,4 @@
+import '../styles.css';
 import { useCallback, useEffect, useState } from 'react';
 
 import { IEditorParamsMenuState } from 'menus/EditorParamsMenu/store';

@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { HEX_CONFIG } from 'screens/EditorScreen/hexConfig';
@@ -9,7 +11,7 @@ interface IProps {
     width: number;
     title: string;
 }
-export function HexMiniMap({ data, width, title }: IProps) {
+export const HexMiniMap = memo(({ data, width, title }: IProps) => {
     if (!data?.length) return null;
 
     const hexWidth = width / (data[0].length + 10);
@@ -31,4 +33,4 @@ export function HexMiniMap({ data, width, title }: IProps) {
             }}
         </Canvas>
     );
-}
+});

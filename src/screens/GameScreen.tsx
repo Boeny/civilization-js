@@ -1,3 +1,4 @@
+import './styles.css';
 import { MenuItem } from 'components/Menu/MenuItem';
 
 export function GameScreen() {
