@@ -1,48 +1,62 @@
-import { memo } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-// import { LeftPanelContainer } from './LeftPanel';
-// import { Map } from './Map';
-// import { RIGHT_PANEL_WIDTH, RightPanelToggleObserver } from './RightPanel';
-// import { TopPanel } from './TopPanel';
-// import { IEditorParamsMenuState } from 'menus/EditorParamsMenu/store';
+import { IEditorParamsMenuState } from 'menus/EditorParamsMenu/store';
 
-// import { DEFAULT_STATE } from './store';
-// import { LAYER_TYPE } from './types';
-// import { generateEmptyMapData } from './utils';
+import { RIGHT_PANEL, TOP_PANEL_HEIGHT } from './const';
+import { LeftPanel } from './LeftPanel';
+import { HexBrushes } from './LeftPanel/HexBrushes';
+import { Map } from './Map';
+import { RightPanel } from './RightPanel';
+import { Layers } from './RightPanel/Layers';
+import { useEditorStore } from './store';
+import { TopPanel } from './TopPanel';
+import { LAYER_TYPE } from './types';
+import { generateEmptyMapData } from './utils';
 
-const TOP_PANEL_HEIGHT = 32;
+export const EditorScreen = ({ hexWidth, layer: defaultLayer, width, height }: IEditorParamsMenuState) => {
+    const [store, setStore] = useEditorStore();
 
-// interface IProps extends IEditorParamsMenuState {
-// }
-//{ width, height, hexWidth: defaultHexWidth, layer: defaultLayer }: IProps
-export const EditorScreen = memo(() => {
-    // const [brush, setBrush] = useState(DEFAULT_STATE.brush);
-    // const [layer, setLayer] = useState(defaultLayer);
-    // const [isPainting, setPainting] = useState(DEFAULT_STATE.isPainting);
-    // const [hexWidth, setHexWidth] = useState(defaultHexWidth);
-    // const [hexMapData, setHexMapData] = useState(() =>
-    //     defaultLayer === LAYER_TYPE.hex ? generateEmptyMapData(width, height) : DEFAULT_STATE.hexMapData,
-    // );
-    // const [imageMapData, setImageMapData] = useState(DEFAULT_STATE.imageMapData);
-    // const [isGridTurnedOn, setGridTurnedOn] = useState(DEFAULT_STATE.isGridTurnedOn);
-    // const [isLeftPanelOpened, setLeftPanelOpened] = useState(DEFAULT_STATE.isLeftPanelOpened);
-    // const [isRightPanelOpened, setRightPanelOpened] = useState(DEFAULT_STATE.isRightPanelOpened);
+    useEffect(() => {
+        if (defaultLayer === LAYER_TYPE.hex) {
+            store.data[LAYER_TYPE.hex] = generateEmptyMapData(width, height);
+        }
+        store.visibility[defaultLayer] = true;
+
+        setStore({ hexWidth, layer: defaultLayer });
+    }, [height, hexWidth, defaultLayer, setStore, store, width]);
+
+    const isHex = store.layer === LAYER_TYPE.hex;
+
+    const [isLeftPanelShown, setLeftPanelShown] = useState(defaultLayer === LAYER_TYPE.hex);
+    const [isRightPanelShown, setRightPanelShown] = useState(defaultLayer === LAYER_TYPE.hex);
+
+    const toggleLeftPanel = useCallback(() => setLeftPanelShown(!isLeftPanelShown), [isLeftPanelShown]);
+    const toggleRightPanel = useCallback(() => setRightPanelShown(!isRightPanelShown), [isRightPanelShown]);
 
     return (
         <div
             className="screen"
             style={{ paddingTop: TOP_PANEL_HEIGHT }}
         >
-            {/* <Map
+            <Map
                 width={window.innerWidth}
                 height={window.innerHeight - TOP_PANEL_HEIGHT}
             />
             <TopPanel
-                rightPanelWidth={RIGHT_PANEL_WIDTH}
-                style={{ height: TOP_PANEL_HEIGHT }}
+                isHex={isHex}
+                toggleLeftPanel={toggleLeftPanel}
+                toggleRightPanel={toggleRightPanel}
             />
-            <LeftPanelContainer />
-            <RightPanelToggleObserver /> */}
+            {isHex && isLeftPanelShown && (
+                <LeftPanel>
+                    <HexBrushes />
+                </LeftPanel>
+            )}
+            {isRightPanelShown && (
+                <RightPanel>
+                    <Layers width={RIGHT_PANEL.innerWidth} />
+                </RightPanel>
+            )}
         </div>
     );
-});
+};
