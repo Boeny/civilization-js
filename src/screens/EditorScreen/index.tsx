@@ -29,7 +29,7 @@ export const EditorScreen = ({ hexWidth, layer: defaultLayer, width, height }: I
     const isHex = store.layer === LAYER_TYPE.hex;
 
     const [isLeftPanelShown, setLeftPanelShown] = useState(defaultLayer === LAYER_TYPE.hex);
-    const [isRightPanelShown, setRightPanelShown] = useState(defaultLayer === LAYER_TYPE.hex);
+    const [isRightPanelShown, setRightPanelShown] = useState(true);
 
     const toggleLeftPanel = useCallback(() => setLeftPanelShown(!isLeftPanelShown), [isLeftPanelShown]);
     const toggleRightPanel = useCallback(() => setRightPanelShown(!isRightPanelShown), [isRightPanelShown]);
