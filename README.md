@@ -1,7 +1,7 @@
 # Civilisation project
 To run dev server:
 ```
-*npm start*
+npm start
 ```
 To check how it works:
 ```
