@@ -23,7 +23,6 @@ export const Map = memo(({ width, height }: IProps) => {
     return (
         <div>
             {layers.map((type) => {
-                console.log(type);
                 const mapConfig = LAYER_CONFIG[type];
                 const MapLayer = mapConfig.mapComponent;
                 const mapData = data[type];

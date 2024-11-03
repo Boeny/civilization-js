@@ -1,12 +1,16 @@
 import './styles.css';
 
-import { HEX_CONFIG } from 'screens/EditorScreen/hexConfig';
-import { useEditorStore } from 'screens/EditorScreen/store';
+import { useStore } from 'hoc/useStore';
+import { getBrushes, HEX_CONFIG } from 'screens/EditorScreen/hexConfig';
 import { HEX_TYPE } from 'screens/EditorScreen/types';
 import { getClasses } from 'utils';
 
+const [useBrushStore] = useStore<{ brush: HEX_TYPE | null }>({ brush: null });
+
+export { useBrushStore };
+
 export function HexBrushes() {
-    const [{ brush }, setStore] = useEditorStore();
+    const [{ brush }, setStore] = useBrushStore();
 
     const handleBrushClick = (type: HEX_TYPE) => {
         if (brush === null || brush !== type) {
@@ -16,7 +20,7 @@ export function HexBrushes() {
         }
     };
 
-    const brushes = Object.keys(HEX_CONFIG).map(Number) as HEX_TYPE[];
+    const brushes = getBrushes();
 
     return (
         <div style={{ paddingBottom: 80 }}>

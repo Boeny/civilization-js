@@ -7,7 +7,6 @@ import { IMapProps } from '../types';
 import { LoadImageButton } from './LoadImageButton';
 
 export function ImageMap({ isEditable, width, height, data, zIndex, onDataUpdate }: IMapProps<HTMLImageElement>) {
-    console.log('image map', data);
     if (!data) {
         return (
             <div

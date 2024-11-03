@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
+import { useBrushStore } from 'screens/EditorScreen/HexBrushes';
 import { HEX_CONFIG } from 'screens/EditorScreen/hexConfig';
 import { useEditorStore } from 'screens/EditorScreen/store';
 import { useGridStore } from 'screens/EditorScreen/TopPanel/ToggleGridButton';
@@ -20,7 +21,8 @@ import { getMapCoordinatesFromCursor } from './utils';
 
 export function HexMap({ isEditable, width, height, data, zIndex, onDataUpdate }: IMapProps<MapData>) {
     const [isPainting, setPainting] = useState(false);
-    const [{ hexWidth, brush }] = useEditorStore();
+    const [{ hexWidth }] = useEditorStore();
+    const [{ brush }] = useBrushStore();
     const [{ isGridTurnedOn }] = useGridStore();
 
     if (!data?.length) return null;

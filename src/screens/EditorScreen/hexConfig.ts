@@ -42,3 +42,7 @@ export const HEX_CONFIG: Record<HEX_TYPE, { color: string; title: string }> = {
         title: 'Hill',
     },
 };
+
+export function getBrushes(): HEX_TYPE[] {
+    return Object.keys(HEX_CONFIG).map(Number);
+}
