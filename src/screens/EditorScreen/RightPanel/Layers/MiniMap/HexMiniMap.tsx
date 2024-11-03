@@ -1,17 +1,12 @@
-import { memo } from 'react';
-
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { HEX_CONFIG } from 'screens/EditorScreen/hexConfig';
 import { MapData } from 'screens/EditorScreen/types';
 import { getHexRadius } from 'screens/EditorScreen/utils';
 
-interface IProps {
-    data: MapData;
-    width: number;
-    title: string;
-}
-export const HexMiniMap = memo(({ data, width, title }: IProps) => {
+import { IMiniMapProps } from './types';
+
+export const HexMiniMap = ({ data, width, title }: IMiniMapProps<MapData>) => {
     if (!data?.length) return null;
 
     const hexWidth = width / (data[0].length + 10);
@@ -33,4 +28,4 @@ export const HexMiniMap = memo(({ data, width, title }: IProps) => {
             }}
         </Canvas>
     );
-});
+};

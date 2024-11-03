@@ -8539,25 +8539,7 @@
     function Ne(e, n, t, r) {
         return t < (e ? n / ie : r - n / ie);
     }
-    const ze = (0, k.memo)(({ data: e, width: n, title: t }) => {
-            if (!e?.length) return null;
-            const l = n / (e[0].length + 10),
-                a = Pe(l);
-            return (0, r.jsx)(xe, {
-                title: t,
-                width: n + l / 2,
-                height: (3 * a * e.length) / 2 + a / 2,
-                style: { maxHeight: 170 },
-                children: (n) => {
-                    e.forEach((e, t) => {
-                        e.forEach((e, r) => {
-                            Ee({ ctx: n, x: r, y: t, width: l, radius: a, color: ge[e].color });
-                        });
-                    });
-                },
-            });
-        }),
-        Te = (0, k.memo)(({ data: e, title: n, ...t }) => {
+    const ze = (0, k.memo)(({ data: e, title: n, ...t }) => {
             const l = t.width - 29,
                 a = t.width > 170 ? 170 : t.width;
             return (0, r.jsx)(xe, {
@@ -8570,11 +8552,11 @@
                 },
             });
         }),
-        Le = {
+        Te = {
             [V.image]: {
                 title: 'Image',
                 zIndex: 0,
-                miniMapComponent: Te,
+                miniMapComponent: ze,
                 mapComponent: function ({ width: e, height: n, data: t, zIndex: r }) {
                     return null;
                 },
@@ -8583,15 +8565,31 @@
             [V.hex]: {
                 title: 'Hexagonal base map',
                 zIndex: 2,
-                miniMapComponent: ze,
-                mapComponent: function ({ width: e, height: n, data: t, zIndex: l }) {
-                    const [a, o] = (0, k.useState)(!1),
-                        [{ hexWidth: i, ...u }, s] = ye(),
+                miniMapComponent: ({ data: e, width: n, title: t }) => {
+                    if (!e?.length) return null;
+                    const l = n / (e[0].length + 10),
+                        a = Pe(l);
+                    return (0, r.jsx)(xe, {
+                        title: t,
+                        width: n + l / 2,
+                        height: (3 * a * e.length) / 2 + a / 2,
+                        style: { maxHeight: 170 },
+                        children: (n) => {
+                            e.forEach((e, t) => {
+                                e.forEach((e, r) => {
+                                    Ee({ ctx: n, x: r, y: t, width: l, radius: a, color: ge[e].color });
+                                });
+                            });
+                        },
+                    });
+                },
+                mapComponent: function ({ width: e, height: n, data: t, zIndex: l, onDataUpdate: a }) {
+                    const [o, i] = (0, k.useState)(!1),
+                        [{ hexWidth: u, brush: s }] = ye(),
                         [{ isGridTurnedOn: c }] = Ce(),
-                        d = u.brush,
-                        f = Pe(i),
-                        p = (r, l) => {
-                            const [a, o] = (function (e, n, t, r) {
+                        d = Pe(u),
+                        f = (r, l) => {
+                            const [o, i] = (function (e, n, t, r) {
                                 const l = 3 * r,
                                     a = Math.floor(n / l);
                                 let o = a * l;
@@ -8622,14 +8620,8 @@
                                               ? [s, c]
                                               : [s, c + 1])
                                       : (e < f && (s -= 1), [s, c + 1]);
-                            })(r, l, i, f);
-                            !t[o] ||
-                                t[o]?.[a] === d ||
-                                a < 0 ||
-                                o < 0 ||
-                                a >= e ||
-                                o >= n ||
-                                ((t[o][a] = d), s({ data: { ...u.data, [V.hex]: t } }));
+                            })(r, l, u, d);
+                            !t[i] || t[i]?.[o] === s || o < 0 || i < 0 || o >= e || i >= n || ((t[i][o] = s), a(t));
                         };
                     return (0, r.jsx)(xe, {
                         id: 'hex-map',
@@ -8637,19 +8629,19 @@
                         height: n,
                         style: { zIndex: l },
                         onMouseDown: (e, n, t) => {
-                            null !== d && (p(n, t), o(!0));
+                            null !== s && (f(n, t), i(!0));
                         },
                         onMouseMove: (e, n, t) => {
-                            a && p(n, t);
+                            o && f(n, t);
                         },
                         onMouseUp: () => {
-                            o(!1);
+                            i(!1);
                         },
                         children: (r) => {
-                            for (let l = 0; l < t.length && !(l * f * 1.5 > n); l += 1) {
+                            for (let l = 0; l < t.length && !(l * d * 1.5 > n); l += 1) {
                                 const n = t[l];
-                                for (let t = 0; t < n.length && !(t * i > e); t += 1)
-                                    Ee({ ctx: r, x: t, y: l, width: i, radius: f, color: ge[n[t]].color, isGridTurnedOn: c });
+                                for (let t = 0; t < n.length && !(t * u > e); t += 1)
+                                    Ee({ ctx: r, x: t, y: l, width: u, radius: d, color: ge[n[t]].color, isGridTurnedOn: c });
                             }
                         },
                     });
@@ -8658,36 +8650,41 @@
             [V.objects]: { title: 'Objects map', zIndex: 3 },
             [V.borders]: { title: 'Borders', zIndex: 4 },
         },
-        Me = (0, k.memo)(({ width: e, height: n }) => {
-            const [{ data: t, visibility: l }] = ye(),
-                a = Object.keys(t).map(Number);
+        Le = (0, k.memo)(({ width: e, height: n }) => {
+            const [{ data: t, visibility: l }, a] = ye(),
+                o = Object.keys(t).map(Number),
+                i = (0, k.useCallback)((e, n) => {
+                    a({ data: { ...t, [e]: n } });
+                }, []);
             return (0, r.jsx)('div', {
-                children: a.map((a) => {
-                    const o = Le[a],
-                        i = o.mapComponent,
-                        u = t[a],
-                        s = l[a];
-                    return i && u && s ? (0, r.jsx)(i, { data: u, width: e, height: n, zIndex: o.zIndex }, a) : null;
+                children: o.map((a) => {
+                    const o = Te[a],
+                        u = o.mapComponent,
+                        s = t[a],
+                        c = l[a];
+                    return u && s && c
+                        ? (0, r.jsx)(u, { data: s, width: e, height: n, zIndex: o.zIndex, onDataUpdate: (e) => i(a, e) }, a)
+                        : null;
                 }),
             });
         });
-    var je = t(114),
-        Ae = {};
-    (Ae.styleTagTransform = m()),
-        (Ae.setAttributes = d()),
-        (Ae.insert = s().bind(null, 'head')),
-        (Ae.domAPI = i()),
-        (Ae.insertStyleElement = p()),
-        a()(je.A, Ae),
-        je.A && je.A.locals && je.A.locals;
-    const Oe = { width: 200, paddingLeft: 20, paddingRight: 20, paddingBottom: 20, left: 'calc(100% - 240px)', zIndex: 10 },
-        Ie = (0, k.memo)(({ children: e }) => (0, r.jsx)(fe, { id: 'right-panel', style: Oe, children: e }));
-    var Re = t(433),
-        Fe = {};
-    function De({ width: e, src: n }) {
+    var Me = t(114),
+        je = {};
+    (je.styleTagTransform = m()),
+        (je.setAttributes = d()),
+        (je.insert = s().bind(null, 'head')),
+        (je.domAPI = i()),
+        (je.insertStyleElement = p()),
+        a()(Me.A, je),
+        Me.A && Me.A.locals && Me.A.locals;
+    const Ae = { width: 200, paddingLeft: 20, paddingRight: 20, paddingBottom: 20, left: 'calc(100% - 240px)', zIndex: 10 },
+        Oe = (0, k.memo)(({ children: e }) => (0, r.jsx)(fe, { id: 'right-panel', style: Ae, children: e }));
+    var Ie = t(433),
+        Re = {};
+    function Fe({ width: e, src: n }) {
         return (0, r.jsx)('div', { style: { width: e }, dangerouslySetInnerHTML: { __html: n } });
     }
-    function Ue({ isVisible: e, toggleVisibility: n }) {
+    function De({ isVisible: e, toggleVisibility: n }) {
         const t = e
             ? '<svg width="20" viewBox="0 0 512 400">\n    <path d="m494.8,241.4l-50.6-49.4c-50.1-48.9-116.9-75.8-188.2-75.8s-138.1,26.9-188.2,75.8l-50.6,49.4c-11.3,12.3-4.3,25.4 0,29.2l50.6,49.4c50.1,48.9 116.9,75.8 188.2,75.8s138.1-26.9 188.2-75.8l50.6-49.4c4-3.8 11.7-16.4 0-29.2zm-238.8,84.4c-38.5,0-69.8-31.3-69.8-69.8 0-38.5 31.3-69.8 69.8-69.8 38.5,0 69.8,31.3 69.8,69.8 0,38.5-31.3,69.8-69.8,69.8zm-195.3-69.8l35.7-34.8c27-26.4 59.8-45.2 95.7-55.4-28.2,20.1-46.6,53-46.6,90.1 0,37.1 18.4,70.1 46.6,90.1-35.9-10.2-68.7-29-95.7-55.3l-35.7-34.7zm355,34.8c-27,26.3-59.8,45.1-95.7,55.3 28.2-20.1 46.6-53 46.6-90.1 0-37.2-18.4-70.1-46.6-90.1 35.9,10.2 68.7,29 95.7,55.4l35.6,34.8-35.6,34.7z"></path>\n</svg>\n'
             : '<svg width="20" viewBox="0 4 24 19">\n    <path stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21.0006 12.0007C19.2536 15.5766 15.8779 18 12 18M12 18C8.12204 18 4.7463 15.5766 2.99977 12.0002M12 18L12 21M19.4218 14.4218L21.4999 16.5M16.2304 16.9687L17.5 19.5M4.57812 14.4218L2.5 16.5M7.76953 16.9687L6.5 19.5"></path>\n</svg>\n';
@@ -8696,23 +8693,23 @@
             onClick: (e) => {
                 e.stopPropagation(), n();
             },
-            children: (0, r.jsx)(De, { src: t, width: 20 }),
+            children: (0, r.jsx)(Fe, { src: t, width: 20 }),
         });
     }
-    (Fe.styleTagTransform = m()),
-        (Fe.setAttributes = d()),
-        (Fe.insert = s().bind(null, 'head')),
-        (Fe.domAPI = i()),
-        (Fe.insertStyleElement = p()),
-        a()(Re.A, Fe),
-        Re.A && Re.A.locals && Re.A.locals;
-    const Be = ({ width: e }) => {
+    (Re.styleTagTransform = m()),
+        (Re.setAttributes = d()),
+        (Re.insert = s().bind(null, 'head')),
+        (Re.domAPI = i()),
+        (Re.insertStyleElement = p()),
+        a()(Ie.A, Re),
+        Ie.A && Ie.A.locals && Ie.A.locals;
+    const Ue = ({ width: e }) => {
         const [{ layer: n, data: t, visibility: l }, a] = ye(),
-            o = Object.keys(Le).map(Number);
+            o = Object.keys(Te).map(Number);
         return (0, r.jsx)('div', {
             className: 'layers',
             children: o.map((o) => {
-                const { title: i, miniMapComponent: u } = Le[o],
+                const { title: i, miniMapComponent: u } = Te[o],
                     s = n === o,
                     c = t[o];
                 return (0, r.jsxs)(
@@ -8731,7 +8728,7 @@
                                 children: [
                                     i,
                                     c &&
-                                        (0, r.jsx)(Ue, {
+                                        (0, r.jsx)(De, {
                                             isVisible: !!l[o],
                                             toggleVisibility: () =>
                                                 ((e) => {
@@ -8751,26 +8748,26 @@
             }),
         });
     };
-    var He = t(677),
-        Ve = {};
-    function We(e) {
+    var Be = t(677),
+        He = {};
+    function Ve(e) {
         return (0, r.jsx)('button', {
             ...e,
             style: { padding: '4px 10px 0px' },
-            children: (0, r.jsx)(De, {
+            children: (0, r.jsx)(Fe, {
                 width: 20,
                 src: '<svg width="20" viewBox="0 0 330 330">\n    <path d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"></path>\n</svg>\n',
             }),
         });
     }
-    (Ve.styleTagTransform = m()),
-        (Ve.setAttributes = d()),
-        (Ve.insert = s().bind(null, 'head')),
-        (Ve.domAPI = i()),
-        (Ve.insertStyleElement = p()),
-        a()(He.A, Ve),
-        He.A && He.A.locals && He.A.locals;
-    const $e = (0, k.memo)(({ isHex: e, toggleLeftPanel: n, toggleRightPanel: t }) =>
+    (He.styleTagTransform = m()),
+        (He.setAttributes = d()),
+        (He.insert = s().bind(null, 'head')),
+        (He.domAPI = i()),
+        (He.insertStyleElement = p()),
+        a()(Be.A, He),
+        Be.A && Be.A.locals && Be.A.locals;
+    const We = (0, k.memo)(({ isHex: e, toggleLeftPanel: n, toggleRightPanel: t }) =>
             (0, r.jsxs)(fe, {
                 id: 'top-panel',
                 style: { zIndex: O, height: 32 },
@@ -8779,14 +8776,14 @@
                         style: { display: 'flex' },
                         children: [
                             (0, r.jsx)(P, { name: 'Open menu', action: 'back' }),
-                            e && (0, r.jsxs)(r.Fragment, { children: [(0, r.jsx)(We, { onClick: n }), (0, r.jsx)(_e, {})] }),
+                            e && (0, r.jsxs)(r.Fragment, { children: [(0, r.jsx)(Ve, { onClick: n }), (0, r.jsx)(_e, {})] }),
                         ],
                     }),
-                    (0, r.jsx)('div', { style: { display: 'flex', width: 240 }, children: (0, r.jsx)(We, { onClick: t }) }),
+                    (0, r.jsx)('div', { style: { display: 'flex', width: 240 }, children: (0, r.jsx)(Ve, { onClick: t }) }),
                 ],
             }),
         ),
-        Qe = ({ hexWidth: e, layer: n, width: t, height: l }) => {
+        $e = ({ hexWidth: e, layer: n, width: t, height: l }) => {
             const [a, o] = ye();
             (0, k.useEffect)(() => {
                 n === V.hex &&
@@ -8805,27 +8802,27 @@
                 className: 'screen',
                 style: { paddingTop: 32 },
                 children: [
-                    (0, r.jsx)(Me, { width: window.innerWidth, height: window.innerHeight - 32 }),
-                    (0, r.jsx)($e, { isHex: i, toggleLeftPanel: f, toggleRightPanel: p }),
+                    (0, r.jsx)(Le, { width: window.innerWidth, height: window.innerHeight - 32 }),
+                    (0, r.jsx)(We, { isHex: i, toggleLeftPanel: f, toggleRightPanel: p }),
                     i && u && (0, r.jsx)(pe, { children: (0, r.jsx)(be, {}) }),
-                    c && (0, r.jsx)(Ie, { children: (0, r.jsx)(Be, { width: 200 }) }),
+                    c && (0, r.jsx)(Oe, { children: (0, r.jsx)(Ue, { width: 200 }) }),
                 ],
             });
         };
-    function Ke() {
+    function Qe() {
         return (0, r.jsx)('div', {
             id: 'game-screen',
             className: 'screen',
             children: (0, r.jsx)(P, { name: 'Open menu', action: 'back' }),
         });
     }
-    var qe;
+    var Ke;
     !(function (e) {
         (e[(e.game = 0)] = 'game'), (e[(e.editor = 1)] = 'editor');
-    })(qe || (qe = {}));
-    const Ye = document.createElement('div');
-    document.querySelector('body').appendChild(Ye),
-        (0, b.H)(Ye).render(
+    })(Ke || (Ke = {}));
+    const qe = document.createElement('div');
+    document.querySelector('body').appendChild(qe),
+        (0, b.H)(qe).render(
             (0, r.jsx)(function () {
                 const [e, n] = (0, k.useState)(null),
                     [t, l] = (0, k.useState)(Z),
@@ -8838,32 +8835,32 @@
                     ),
                     u = (0, k.useCallback)(
                         (e) => {
-                            l(e), i(qe.editor);
+                            l(e), i(Ke.editor);
                         },
                         [i],
                     ),
                     s = (0, k.useMemo)(
                         () =>
-                            e === qe.game
+                            e === Ke.game
                                 ? (0, r.jsx)(re, {
                                       onReload: () => o(!a),
-                                      createGameScreen: () => i(qe.game),
+                                      createGameScreen: () => i(Ke.game),
                                       applyParams: () => {},
                                       exitToMainMenu: () => i(null),
                                   })
-                                : e === qe.editor
+                                : e === Ke.editor
                                   ? (0, r.jsx)(ne, {
                                         onReload: () => o(!a),
                                         createEditorScreen: u,
                                         applyParams: () => {},
                                         exitToMainMenu: () => i(null),
                                     })
-                                  : (0, r.jsx)(le, { createGameScreen: () => i(qe.game), createEditorScreen: u, applyParams: () => {} }),
+                                  : (0, r.jsx)(le, { createGameScreen: () => i(Ke.game), createEditorScreen: u, applyParams: () => {} }),
                         [e, u, i, a],
                     ),
                     c = (0, k.useMemo)(
                         () =>
-                            e === qe.game ? (0, r.jsx)(Ke, {}, String(a)) : e === qe.editor ? (0, r.jsx)(Qe, { ...t }, String(a)) : null,
+                            e === Ke.game ? (0, r.jsx)(Qe, {}, String(a)) : e === Ke.editor ? (0, r.jsx)($e, { ...t }, String(a)) : null,
                         [t, a, e],
                     );
                 return (0, r.jsxs)(r.Fragment, { children: [s, c] });

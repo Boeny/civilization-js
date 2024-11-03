@@ -1,18 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // import './styles.css';
 
+import { IMapProps } from '../types';
+
 // import { LAYER_CONFIG } from 'screens/EditorScreen/const';
 // import { LAYER_TYPE } from 'screens/EditorScreen/types';
 
 // import { LoadImageButtonToggleObserver } from './LoadImageButton';
 
-interface IProps {
-    data: CanvasImageSource | null;
-    width: number;
-    height: number;
-    zIndex: number;
-}
-export function ImageMap({ width, height, data, zIndex }: IProps) {
+export function ImageMap({ width, height, data, zIndex }: IMapProps<ImageBitmap>) {
     return null;
 
     // return image

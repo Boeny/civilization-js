@@ -1,12 +1,21 @@
+import { FC } from 'react';
+
 import { HexMap } from './Map/HexMap';
 import { ImageMap } from './Map/ImageMap';
+import { IMapProps } from './Map/types';
 import { HexMiniMap } from './RightPanel/Layers/MiniMap/HexMiniMap';
 import { ImageMiniMap } from './RightPanel/Layers/MiniMap/ImageMiniMap';
+import { IMiniMapProps } from './RightPanel/Layers/MiniMap/types';
 import { LAYER_TYPE } from './types';
 
 export const LAYER_CONFIG: Record<
     LAYER_TYPE,
-    { title: string; zIndex: number; miniMapComponent?: React.FC<any>; mapComponent?: React.FC<any> }
+    {
+        title: string;
+        zIndex: number;
+        miniMapComponent?: FC<IMiniMapProps<any>>;
+        mapComponent?: FC<IMapProps<any>>;
+    }
 > = {
     [LAYER_TYPE.image]: { title: 'Image', zIndex: 0, miniMapComponent: ImageMiniMap, mapComponent: ImageMap },
     [LAYER_TYPE.continuous]: { title: 'Continuous map', zIndex: 1 },

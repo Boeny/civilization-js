@@ -7,8 +7,10 @@ import { Hex } from 'components/canvas/Hex';
 import { HEX_CONFIG } from 'screens/EditorScreen/hexConfig';
 import { useEditorStore } from 'screens/EditorScreen/store';
 import { useGridStore } from 'screens/EditorScreen/TopPanel/ToggleGridButton';
-import { HEX_TYPE, LAYER_TYPE, MapData } from 'screens/EditorScreen/types';
+import { MapData } from 'screens/EditorScreen/types';
 import { getHexRadius } from 'screens/EditorScreen/utils';
+
+import { IMapProps } from '../types';
 
 import { getMapCoordinatesFromCursor } from './utils';
 
@@ -16,18 +18,11 @@ import { getMapCoordinatesFromCursor } from './utils';
 // TODO: scroll by wheel
 // TODO: zoom by multitouch
 
-interface IProps {
-    data: MapData;
-    width: number;
-    height: number;
-    zIndex: number;
-}
-export function HexMap({ width, height, data, zIndex }: IProps) {
+export function HexMap({ width, height, data, zIndex, onDataUpdate }: IMapProps<MapData>) {
     const [isPainting, setPainting] = useState(false);
-    const [{ hexWidth, ...store }, setStore] = useEditorStore();
+    const [{ hexWidth, brush }] = useEditorStore();
     const [{ isGridTurnedOn }] = useGridStore();
 
-    const brush = store.brush as HEX_TYPE;
     const hexRadius = getHexRadius(hexWidth);
 
     const updateMap = (x: number, y: number) => {
@@ -37,9 +32,9 @@ export function HexMap({ width, height, data, zIndex }: IProps) {
             return;
         }
 
-        data[mapY][mapX] = brush;
+        data[mapY][mapX] = brush!;
 
-        setStore({ data: { ...store.data, [LAYER_TYPE.hex]: data } });
+        onDataUpdate(data);
     };
 
     return (

@@ -2,12 +2,9 @@ import { memo } from 'react';
 
 import { Canvas } from 'components/canvas/Canvas';
 
-interface IProps {
-    data: CanvasImageSource;
-    width: number;
-    title: string;
-}
-export const ImageMiniMap = memo(({ data, title, ...props }: IProps) => {
+import { IMiniMapProps } from './types';
+
+export const ImageMiniMap = memo(({ data, title, ...props }: IMiniMapProps<ImageBitmap>) => {
     const width = props.width - 29;
     const height = props.width > 170 ? 170 : props.width;
 
