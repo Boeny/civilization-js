@@ -4,11 +4,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { IEditorParamsMenuState } from 'menus/EditorParamsMenu/store';
 
 import { RIGHT_PANEL, TOP_PANEL_HEIGHT } from './const';
+import { HexBrushes } from './HexBrushes';
+import { Layers } from './Layers';
 import { LeftPanel } from './LeftPanel';
-import { HexBrushes } from './LeftPanel/HexBrushes';
 import { Map } from './Map';
 import { RightPanel } from './RightPanel';
-import { Layers } from './RightPanel/Layers';
 import { useEditorStore } from './store';
 import { TopPanel } from './TopPanel';
 import { LAYER_TYPE } from './types';
@@ -18,9 +18,7 @@ export const EditorScreen = ({ hexWidth, layer: defaultLayer, width, height }: I
     const [store, setStore] = useEditorStore();
 
     useEffect(() => {
-        if (defaultLayer === LAYER_TYPE.hex) {
-            store.data[LAYER_TYPE.hex] = generateEmptyMapData(width, height);
-        }
+        store.data[LAYER_TYPE.hex] = defaultLayer === LAYER_TYPE.hex ? generateEmptyMapData(width, height) : null;
         store.visibility[defaultLayer] = true;
 
         setStore({ hexWidth, layer: defaultLayer });

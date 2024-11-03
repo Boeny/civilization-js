@@ -6,7 +6,7 @@ interface IStore {
     brush: HEX_TYPE | null;
     layer: LAYER_TYPE;
     hexWidth: number;
-    data: Partial<Record<LAYER_TYPE, MapData | ImageBitmap | null>>;
+    data: Partial<Record<LAYER_TYPE, MapData | HTMLImageElement | null>>;
     visibility: Partial<Record<LAYER_TYPE, boolean>>;
 }
 

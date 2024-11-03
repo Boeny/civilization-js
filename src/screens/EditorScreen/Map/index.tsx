@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react';
 
-import { LAYER_CONFIG } from '../layersConfig';
+import { getLayers, LAYER_CONFIG } from '../layersConfig';
 import { useEditorStore } from '../store';
 import { LAYER_TYPE, MapData } from '../types';
 
@@ -11,23 +11,28 @@ interface IProps {
 export const Map = memo(({ width, height }: IProps) => {
     const [{ data, visibility }, setStore] = useEditorStore();
 
-    const layers = Object.keys(data).map(Number) as LAYER_TYPE[];
+    const layers = getLayers();
 
-    const handleDataUpdate = useCallback((type: LAYER_TYPE, newData: MapData | ImageBitmap) => {
-        setStore({ data: { ...data, [type]: newData } });
-    }, []);
+    const handleDataUpdate = useCallback(
+        (type: LAYER_TYPE, newData: MapData | HTMLImageElement) => {
+            setStore({ data: { ...data, [type]: newData } });
+        },
+        [data, setStore],
+    );
 
     return (
         <div>
             {layers.map((type) => {
+                console.log(type);
                 const mapConfig = LAYER_CONFIG[type];
                 const MapLayer = mapConfig.mapComponent;
                 const mapData = data[type];
-                const isVisible = visibility[type];
+                const isVisible = visibility[type] === undefined || visibility[type];
 
-                if (!MapLayer || !mapData || !isVisible) {
+                if (!MapLayer || !isVisible) {
                     return null;
                 }
+                console.log(type, isVisible);
 
                 return (
                     <MapLayer

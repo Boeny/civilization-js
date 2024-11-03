@@ -1,6 +1,6 @@
 import './styles.css';
 
-import { LAYER_CONFIG } from 'screens/EditorScreen/layersConfig';
+import { getLayers, LAYER_CONFIG } from 'screens/EditorScreen/layersConfig';
 import { useEditorStore } from 'screens/EditorScreen/store';
 import { LAYER_TYPE } from 'screens/EditorScreen/types';
 import { getClasses } from 'utils';
@@ -23,7 +23,7 @@ export const Layers = ({ width }: IParams) => {
         setStore({ visibility: { ...visibility, [type]: !visibility[type] } });
     };
 
-    const layers = Object.keys(LAYER_CONFIG).map(Number) as LAYER_TYPE[];
+    const layers = getLayers();
 
     return (
         <div className="layers">
@@ -42,7 +42,7 @@ export const Layers = ({ width }: IParams) => {
                             {title}
                             {mapData && (
                                 <EyeButton
-                                    isVisible={!!visibility[type]}
+                                    isVisible={visibility[type] === undefined || visibility[type]}
                                     toggleVisibility={() => toggleVisibility(type)}
                                 />
                             )}

@@ -1,5 +1,5 @@
 export interface IMapProps<T> {
-    data: T;
+    data?: T | null;
     width: number;
     height: number;
     zIndex: number;

@@ -1,11 +1,11 @@
 import { FC } from 'react';
 
+import { HexMiniMap } from './Layers/MiniMap/HexMiniMap';
+import { ImageMiniMap } from './Layers/MiniMap/ImageMiniMap';
+import { IMiniMapProps } from './Layers/MiniMap/types';
 import { HexMap } from './Map/HexMap';
 import { ImageMap } from './Map/ImageMap';
 import { IMapProps } from './Map/types';
-import { HexMiniMap } from './RightPanel/Layers/MiniMap/HexMiniMap';
-import { ImageMiniMap } from './RightPanel/Layers/MiniMap/ImageMiniMap';
-import { IMiniMapProps } from './RightPanel/Layers/MiniMap/types';
 import { LAYER_TYPE } from './types';
 
 export const LAYER_CONFIG: Record<
@@ -23,3 +23,7 @@ export const LAYER_CONFIG: Record<
     [LAYER_TYPE.objects]: { title: 'Objects map', zIndex: 3 },
     [LAYER_TYPE.borders]: { title: 'Borders', zIndex: 4 },
 };
+
+export function getLayers(): LAYER_TYPE[] {
+    return Object.keys(LAYER_CONFIG).map(Number);
+}

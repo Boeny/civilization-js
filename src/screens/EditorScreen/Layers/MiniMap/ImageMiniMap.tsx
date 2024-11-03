@@ -4,7 +4,7 @@ import { Canvas } from 'components/canvas/Canvas';
 
 import { IMiniMapProps } from './types';
 
-export const ImageMiniMap = memo(({ data, title, ...props }: IMiniMapProps<ImageBitmap>) => {
+export const ImageMiniMap = memo(({ data, title, ...props }: IMiniMapProps<HTMLImageElement>) => {
     const width = props.width - 29;
     const height = props.width > 170 ? 170 : props.width;
 

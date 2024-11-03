@@ -23,6 +23,8 @@ export function HexMap({ width, height, data, zIndex, onDataUpdate }: IMapProps<
     const [{ hexWidth, brush }] = useEditorStore();
     const [{ isGridTurnedOn }] = useGridStore();
 
+    if (!data?.length) return null;
+
     const hexRadius = getHexRadius(hexWidth);
 
     const updateMap = (x: number, y: number) => {
