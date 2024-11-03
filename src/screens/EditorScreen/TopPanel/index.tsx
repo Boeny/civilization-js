@@ -12,11 +12,11 @@ import { RIGHT_PANEL_WIDTH, TOP_PANEL_HEIGHT } from '../const';
 import { ToggleGridButton } from './ToggleGridButton';
 
 interface IProps {
-    isHex: boolean;
+    showLeftPanelSwitcher: boolean;
     toggleLeftPanel: () => void;
     toggleRightPanel: () => void;
 }
-export const TopPanel = memo(({ isHex, toggleLeftPanel, toggleRightPanel }: IProps) => {
+export const TopPanel = memo(({ showLeftPanelSwitcher, toggleLeftPanel, toggleRightPanel }: IProps) => {
     return (
         <Panel
             id="top-panel"
@@ -28,7 +28,7 @@ export const TopPanel = memo(({ isHex, toggleLeftPanel, toggleRightPanel }: IPro
                     action="back"
                 />
 
-                {isHex && (
+                {showLeftPanelSwitcher && (
                     <>
                         <ArrowButton onClick={toggleLeftPanel} />
                         <ToggleGridButton />

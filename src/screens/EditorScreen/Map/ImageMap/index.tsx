@@ -6,14 +6,18 @@ import { IMapProps } from '../types';
 
 import { LoadImageButton } from './LoadImageButton';
 
-export function ImageMap({ width, height, data, zIndex, onDataUpdate }: IMapProps<HTMLImageElement>) {
+export function ImageMap({ isEditable, width, height, data, zIndex, onDataUpdate }: IMapProps<HTMLImageElement>) {
+    console.log('image map', data);
     if (!data) {
         return (
             <div
                 id="image-map"
                 style={{ height: 'calc(100% - 32px)' }}
             >
-                <LoadImageButton onDataUpdate={onDataUpdate} />
+                <LoadImageButton
+                    disabled={!isEditable}
+                    onDataUpdate={onDataUpdate}
+                />
             </div>
         );
     }

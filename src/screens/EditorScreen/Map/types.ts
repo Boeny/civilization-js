@@ -1,4 +1,5 @@
 export interface IMapProps<T> {
+    isEditable: boolean;
     data?: T | null;
     width: number;
     height: number;

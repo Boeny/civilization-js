@@ -1,9 +1,10 @@
 import { uploadFile } from './utils';
 
 interface IProps {
+    disabled?: boolean;
     onDataUpdate: (data: HTMLImageElement) => void;
 }
-export function LoadImageButton({ onDataUpdate }: IProps) {
+export function LoadImageButton({ disabled, onDataUpdate }: IProps) {
     const handleClick = async () => {
         const data = await uploadFile();
 
@@ -12,5 +13,12 @@ export function LoadImageButton({ onDataUpdate }: IProps) {
         }
     };
 
-    return <button onClick={handleClick}>Load Image</button>;
+    return (
+        <button
+            disabled={disabled}
+            onClick={handleClick}
+        >
+            Load Image
+        </button>
+    );
 }

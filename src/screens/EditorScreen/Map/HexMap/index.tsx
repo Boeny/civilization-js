@@ -18,7 +18,7 @@ import { getMapCoordinatesFromCursor } from './utils';
 // TODO: scroll by wheel
 // TODO: zoom by multitouch
 
-export function HexMap({ width, height, data, zIndex, onDataUpdate }: IMapProps<MapData>) {
+export function HexMap({ isEditable, width, height, data, zIndex, onDataUpdate }: IMapProps<MapData>) {
     const [isPainting, setPainting] = useState(false);
     const [{ hexWidth, brush }] = useEditorStore();
     const [{ isGridTurnedOn }] = useGridStore();
@@ -45,20 +45,32 @@ export function HexMap({ width, height, data, zIndex, onDataUpdate }: IMapProps<
             width={width}
             height={height}
             style={{ zIndex }}
-            onMouseDown={(ctx, x, y) => {
-                if (brush !== null) {
-                    updateMap(x, y);
-                    setPainting(true);
-                }
-            }}
-            onMouseMove={(ctx, x, y) => {
-                if (isPainting) {
-                    updateMap(x, y);
-                }
-            }}
-            onMouseUp={() => {
-                setPainting(false);
-            }}
+            onMouseDown={
+                isEditable
+                    ? (ctx, x, y) => {
+                          if (brush !== null) {
+                              updateMap(x, y);
+                              setPainting(true);
+                          }
+                      }
+                    : undefined
+            }
+            onMouseMove={
+                isEditable
+                    ? (ctx, x, y) => {
+                          if (isPainting) {
+                              updateMap(x, y);
+                          }
+                      }
+                    : undefined
+            }
+            onMouseUp={
+                isEditable
+                    ? () => {
+                          setPainting(false);
+                      }
+                    : undefined
+            }
         >
             {(ctx) => {
                 for (let y = 0; y < data.length; y += 1) {

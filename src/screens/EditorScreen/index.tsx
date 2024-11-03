@@ -1,36 +1,38 @@
 import '../styles.css';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { IEditorParamsMenuState } from 'menus/EditorParamsMenu/store';
 
 import { RIGHT_PANEL, TOP_PANEL_HEIGHT } from './const';
 import { HexBrushes } from './HexBrushes';
 import { Layers } from './Layers';
+import { getVisibility } from './layersConfig';
 import { LeftPanel } from './LeftPanel';
 import { Map } from './Map';
 import { RightPanel } from './RightPanel';
-import { useEditorStore } from './store';
+import { DEFAULT_EDITOR_STATE, useEditorStore } from './store';
 import { TopPanel } from './TopPanel';
 import { LAYER_TYPE } from './types';
 import { generateEmptyMapData } from './utils';
 
 export const EditorScreen = ({ hexWidth, layer: defaultLayer, width, height }: IEditorParamsMenuState) => {
-    const [store, setStore] = useEditorStore();
+    const isDefaultLayerHex = defaultLayer === LAYER_TYPE.hex;
 
-    useEffect(() => {
-        store.data[LAYER_TYPE.hex] = defaultLayer === LAYER_TYPE.hex ? generateEmptyMapData(width, height) : null;
-        store.visibility[defaultLayer] = true;
+    const [{ layer }] = useEditorStore({
+        ...DEFAULT_EDITOR_STATE,
+        hexWidth,
+        layer: defaultLayer,
+        data: { [defaultLayer]: isDefaultLayerHex ? generateEmptyMapData(width, height) : null },
+        visibility: getVisibility(true),
+    });
 
-        setStore({ hexWidth, layer: defaultLayer });
-    }, [height, hexWidth, defaultLayer, setStore, store, width]);
+    const isCurrentLayerHex = layer === LAYER_TYPE.hex;
 
-    const isHex = store.layer === LAYER_TYPE.hex;
-
-    const [isLeftPanelShown, setLeftPanelShown] = useState(defaultLayer === LAYER_TYPE.hex);
+    const [isLeftPanelShown, setLeftPanelShown] = useState(isDefaultLayerHex);
     const [isRightPanelShown, setRightPanelShown] = useState(true);
 
-    const toggleLeftPanel = useCallback(() => setLeftPanelShown(!isLeftPanelShown), [isLeftPanelShown]);
-    const toggleRightPanel = useCallback(() => setRightPanelShown(!isRightPanelShown), [isRightPanelShown]);
+    const toggleLeftPanel = () => setLeftPanelShown(!isLeftPanelShown);
+    const toggleRightPanel = () => setRightPanelShown(!isRightPanelShown);
 
     return (
         <div
@@ -42,11 +44,11 @@ export const EditorScreen = ({ hexWidth, layer: defaultLayer, width, height }: I
                 height={window.innerHeight - TOP_PANEL_HEIGHT}
             />
             <TopPanel
-                isHex={isHex}
+                showLeftPanelSwitcher={isCurrentLayerHex}
                 toggleLeftPanel={toggleLeftPanel}
                 toggleRightPanel={toggleRightPanel}
             />
-            {isHex && isLeftPanelShown && (
+            {isLeftPanelShown && isCurrentLayerHex && (
                 <LeftPanel>
                     <HexBrushes />
                 </LeftPanel>

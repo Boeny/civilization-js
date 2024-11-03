@@ -42,7 +42,7 @@ export const Layers = ({ width }: IParams) => {
                             {title}
                             {mapData && (
                                 <EyeButton
-                                    isVisible={visibility[type] === undefined || visibility[type]}
+                                    isVisible={visibility[type]}
                                     toggleVisibility={() => toggleVisibility(type)}
                                 />
                             )}
