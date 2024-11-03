@@ -16,7 +16,7 @@ export const Layers = ({ width }: IParams) => {
     const handleLayerClick = (type: LAYER_TYPE) => {
         if (layer === type) return;
 
-        setStore({ layer: type, isPainting: false });
+        setStore({ layer: type });
     };
 
     const toggleVisibility = (type: LAYER_TYPE) => {

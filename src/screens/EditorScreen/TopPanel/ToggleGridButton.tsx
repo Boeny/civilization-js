@@ -2,9 +2,8 @@ import { memo } from 'react';
 
 import { useStore } from 'hoc/useStore';
 
-const [useGridStore] = useStore({ isGridTurnedOn: false });
+const [useGridStore] = useStore({ isGridTurnedOn: true });
 
-// eslint-disable-next-line import/no-unused-modules
 export { useGridStore };
 
 export const ToggleGridButton = memo(() => {

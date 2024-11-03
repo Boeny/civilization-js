@@ -16,7 +16,8 @@ export const Map = memo(({ width, height }: IProps) => {
     return (
         <div>
             {layers.map((type) => {
-                const MapLayer = LAYER_CONFIG[type].mapComponent;
+                const mapConfig = LAYER_CONFIG[type];
+                const MapLayer = mapConfig.mapComponent;
                 const mapData = data[type];
 
                 if (!MapLayer || !mapData) {
@@ -29,6 +30,7 @@ export const Map = memo(({ width, height }: IProps) => {
                         data={mapData}
                         width={width}
                         height={height}
+                        zIndex={mapConfig.zIndex}
                     />
                 );
             })}

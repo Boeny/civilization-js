@@ -1,0 +1,99 @@
+import './styles.css';
+
+import { useState } from 'react';
+
+import { Canvas } from 'components/canvas/Canvas';
+import { Hex } from 'components/canvas/Hex';
+import { HEX_CONFIG } from 'screens/EditorScreen/hexConfig';
+import { useEditorStore } from 'screens/EditorScreen/store';
+import { useGridStore } from 'screens/EditorScreen/TopPanel/ToggleGridButton';
+import { HEX_TYPE, LAYER_TYPE, MapData } from 'screens/EditorScreen/types';
+import { getHexRadius } from 'screens/EditorScreen/utils';
+
+import { getMapCoordinatesFromCursor } from './utils';
+
+// TODO: Ctrl+Z for painting
+// TODO: scroll by wheel
+// TODO: zoom by multitouch
+
+interface IProps {
+    data: MapData;
+    width: number;
+    height: number;
+    zIndex: number;
+}
+export function HexMap({ width, height, data, zIndex }: IProps) {
+    const [isPainting, setPainting] = useState(false);
+    const [{ hexWidth, ...store }, setStore] = useEditorStore();
+    const [{ isGridTurnedOn }] = useGridStore();
+
+    const brush = store.brush as HEX_TYPE;
+    const hexRadius = getHexRadius(hexWidth);
+
+    const draw = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
+        const [mapX, mapY] = getMapCoordinatesFromCursor(x, y, hexWidth, hexRadius);
+
+        if (!data[mapY] || data[mapY]?.[mapX] === brush || mapX < 0 || mapY < 0 || mapX >= width || mapY >= height) {
+            return;
+        }
+
+        data[mapY][mapX] = brush;
+
+        setStore({ data: { ...store.data, [LAYER_TYPE.hex]: data } });
+
+        Hex({
+            ctx,
+            x: mapX,
+            y: mapY,
+            width: hexWidth,
+            radius: hexRadius,
+            color: HEX_CONFIG[brush].color,
+            isGridTurnedOn,
+        });
+    };
+
+    return (
+        <Canvas
+            id="hex-map"
+            width={width}
+            height={height}
+            style={{ zIndex }}
+            onMouseDown={(ctx, x, y) => {
+                if (brush !== null) {
+                    draw(ctx, x, y);
+                    setPainting(true);
+                }
+            }}
+            onMouseMove={(ctx, x, y) => {
+                if (isPainting) {
+                    draw(ctx, x, y);
+                }
+            }}
+            onMouseUp={() => {
+                setPainting(false);
+            }}
+        >
+            {(ctx) => {
+                for (let y = 0; y < data.length; y += 1) {
+                    if (y * hexRadius * 1.5 > height) break;
+
+                    const row = data[y];
+
+                    for (let x = 0; x < row.length; x += 1) {
+                        if (x * hexWidth > width) break;
+
+                        Hex({
+                            ctx,
+                            x,
+                            y,
+                            width: hexWidth,
+                            radius: hexRadius,
+                            color: HEX_CONFIG[row[x]].color,
+                            isGridTurnedOn,
+                        });
+                    }
+                }
+            }}
+        </Canvas>
+    );
+}

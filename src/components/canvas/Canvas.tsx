@@ -1,6 +1,7 @@
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 
 interface IProps {
+    id?: string;
     className?: string;
     title?: string;
     width?: number;
@@ -28,10 +29,10 @@ export function Canvas({ children, onClick, onMouseDown, onMouseMove, onMouseUp,
         <canvas
             ref={ref}
             {...props}
-            onClick={onClick && ctx ? (e: any) => onClick(ctx, e.offsetX, e.offsetY) : undefined}
-            onMouseDown={onMouseDown && ctx ? (e: any) => onMouseDown(ctx, e.offsetX, e.offsetY) : undefined}
-            onMouseMove={onMouseMove && ctx ? (e: any) => onMouseMove(ctx, e.offsetX, e.offsetY) : undefined}
-            onMouseUp={onMouseUp && ctx ? (e: any) => onMouseUp(ctx, e.offsetX, e.offsetY) : undefined}
+            onClick={onClick && ctx ? (e) => onClick(ctx, e.nativeEvent.offsetX, e.nativeEvent.offsetY) : undefined}
+            onMouseDown={onMouseDown && ctx ? (e) => onMouseDown(ctx, e.nativeEvent.offsetX, e.nativeEvent.offsetY) : undefined}
+            onMouseMove={onMouseMove && ctx ? (e) => onMouseMove(ctx, e.nativeEvent.offsetX, e.nativeEvent.offsetY) : undefined}
+            onMouseUp={onMouseUp && ctx ? (e) => onMouseUp(ctx, e.nativeEvent.offsetX, e.nativeEvent.offsetY) : undefined}
         />
     );
 }

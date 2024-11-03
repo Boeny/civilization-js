@@ -10,8 +10,9 @@ interface IProps {
     data: CanvasImageSource | null;
     width: number;
     height: number;
+    zIndex: number;
 }
-export function ImageMap({ width, height, data }: IProps) {
+export function ImageMap({ width, height, data, zIndex }: IProps) {
     return null;
 
     // return image

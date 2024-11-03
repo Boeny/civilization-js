@@ -28,21 +28,3 @@ export interface IHexMapParams {
 export type HexMapField = keyof IHexMapParams;
 
 export type MapData = HEX_TYPE[][];
-
-// export type MapDataRow = number[];
-
-// export class HexMapStore extends PreviousValueStore<MapData | null> {
-//     getHex(x: number, y: number): HEX_TYPE {
-//         const map = this.value;
-//         if (!map) throw new Error('Hex map is not set');
-
-//         return map[y][x];
-//     }
-
-//     setHex(x: number, y: number, type: HEX_TYPE) {
-//         const map = this.value;
-//         if (!map) throw new Error('Hex map is not set');
-
-//         map[y][x] = type;
-//     }
-// }
