@@ -30,7 +30,7 @@ export function HexMap({ width, height, data, zIndex }: IProps) {
     const brush = store.brush as HEX_TYPE;
     const hexRadius = getHexRadius(hexWidth);
 
-    const draw = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
+    const updateMap = (x: number, y: number) => {
         const [mapX, mapY] = getMapCoordinatesFromCursor(x, y, hexWidth, hexRadius);
 
         if (!data[mapY] || data[mapY]?.[mapX] === brush || mapX < 0 || mapY < 0 || mapX >= width || mapY >= height) {
@@ -40,16 +40,6 @@ export function HexMap({ width, height, data, zIndex }: IProps) {
         data[mapY][mapX] = brush;
 
         setStore({ data: { ...store.data, [LAYER_TYPE.hex]: data } });
-
-        Hex({
-            ctx,
-            x: mapX,
-            y: mapY,
-            width: hexWidth,
-            radius: hexRadius,
-            color: HEX_CONFIG[brush].color,
-            isGridTurnedOn,
-        });
     };
 
     return (
@@ -60,13 +50,13 @@ export function HexMap({ width, height, data, zIndex }: IProps) {
             style={{ zIndex }}
             onMouseDown={(ctx, x, y) => {
                 if (brush !== null) {
-                    draw(ctx, x, y);
+                    updateMap(x, y);
                     setPainting(true);
                 }
             }}
             onMouseMove={(ctx, x, y) => {
                 if (isPainting) {
-                    draw(ctx, x, y);
+                    updateMap(x, y);
                 }
             }}
             onMouseUp={() => {

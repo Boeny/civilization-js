@@ -9,7 +9,7 @@ interface IProps {
     height: number;
 }
 export const Map = memo(({ width, height }: IProps) => {
-    const [{ data }] = useEditorStore();
+    const [{ data, visibility }] = useEditorStore();
 
     const layers = Object.keys(data).map(Number) as LAYER_TYPE[];
 
@@ -19,8 +19,9 @@ export const Map = memo(({ width, height }: IProps) => {
                 const mapConfig = LAYER_CONFIG[type];
                 const MapLayer = mapConfig.mapComponent;
                 const mapData = data[type];
+                const isVisible = visibility[type];
 
-                if (!MapLayer || !mapData) {
+                if (!MapLayer || !mapData || !isVisible) {
                     return null;
                 }
 
