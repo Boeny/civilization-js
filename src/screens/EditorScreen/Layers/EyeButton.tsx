@@ -1,17 +1,27 @@
-import { MouseEvent } from 'react';
+import { memo, MouseEvent } from 'react';
 
 import eyeClosed from 'assets/eye-closed.svg';
 import eyeOpened from 'assets/eye-opened.svg';
 import { Svg } from 'components/Svg';
+import { useStore } from 'hooks/useStore';
+
+import { getLayersObject } from '../layersConfig';
+import { LAYER_TYPE } from '../types';
+
+const [useVisibilityStore] = useStore({ visibility: getLayersObject(true) });
+
+export { useVisibilityStore };
 
 interface IProps {
-    isVisible: boolean;
-    toggleVisibility: () => void;
+    layer: LAYER_TYPE;
 }
-export function EyeButton({ isVisible, toggleVisibility }: IProps) {
+export const EyeButton = memo(({ layer }: IProps) => {
+    const [{ visibility }, setStore] = useVisibilityStore();
+    const isVisible = visibility[layer];
+
     const toggleEye = (e: MouseEvent) => {
         e.stopPropagation();
-        toggleVisibility();
+        setStore({ visibility: { ...visibility, [layer]: !isVisible } });
     };
 
     const image = isVisible ? eyeOpened : eyeClosed;
@@ -27,4 +37,4 @@ export function EyeButton({ isVisible, toggleVisibility }: IProps) {
             />
         </div>
     );
-}
+});

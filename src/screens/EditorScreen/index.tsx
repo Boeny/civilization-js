@@ -6,7 +6,6 @@ import { IEditorParamsMenuState } from 'menus/EditorParamsMenu/store';
 import { RIGHT_PANEL, TOP_PANEL_HEIGHT } from './const';
 import { HexBrushes } from './HexBrushes';
 import { Layers } from './Layers';
-import { getVisibility } from './layersConfig';
 import { LeftPanel } from './LeftPanel';
 import { Map } from './Map';
 import { RightPanel } from './RightPanel';
@@ -23,7 +22,6 @@ export const EditorScreen = ({ hexWidth, layer: defaultLayer, width, height }: I
         hexWidth,
         layer: defaultLayer,
         data: { [defaultLayer]: isDefaultLayerHex ? generateEmptyMapData(width, height) : null },
-        visibility: getVisibility(true),
     });
 
     const isCurrentLayerHex = layer === LAYER_TYPE.hex;

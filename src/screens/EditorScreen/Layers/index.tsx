@@ -5,22 +5,20 @@ import { useEditorStore } from 'screens/EditorScreen/store';
 import { LAYER_TYPE } from 'screens/EditorScreen/types';
 import { getClasses } from 'utils';
 
-import { EyeButton } from './EyeButton';
+import { EyeButton, useVisibilityStore } from './EyeButton';
+import { OpacityBar } from './OpacityBar';
 
 interface IParams {
     width: number;
 }
 export const Layers = ({ width }: IParams) => {
-    const [{ layer, data, visibility }, setStore] = useEditorStore();
+    const [{ layer, data }, setStore] = useEditorStore();
+    const [{ visibility }] = useVisibilityStore();
 
     const handleLayerClick = (type: LAYER_TYPE) => {
         if (layer === type) return;
 
         setStore({ layer: type });
-    };
-
-    const toggleVisibility = (type: LAYER_TYPE) => {
-        setStore({ visibility: { ...visibility, [type]: !visibility[type] } });
     };
 
     const layers = getLayers();
@@ -31,6 +29,7 @@ export const Layers = ({ width }: IParams) => {
                 const { title, miniMapComponent: MiniMap } = LAYER_CONFIG[type];
                 const isSelected = layer === type;
                 const mapData = data[type];
+                const isVisible = visibility[type];
 
                 return (
                     <div
@@ -40,13 +39,10 @@ export const Layers = ({ width }: IParams) => {
                     >
                         <div className="title">
                             {title}
-                            {mapData && (
-                                <EyeButton
-                                    isVisible={visibility[type]}
-                                    toggleVisibility={() => toggleVisibility(type)}
-                                />
-                            )}
+                            {mapData && <EyeButton layer={type} />}
                         </div>
+
+                        {mapData && isVisible && <OpacityBar layer={type} />}
 
                         <div className="mini-map">
                             {MiniMap && mapData && (

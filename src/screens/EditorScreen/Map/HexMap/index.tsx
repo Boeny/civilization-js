@@ -20,7 +20,7 @@ import { getMapCoordinatesFromCursor } from './utils';
 // TODO: scroll by wheel
 // TODO: zoom by multitouch
 
-export function HexMap({ isEditable, width, height, data, zIndex, onDataUpdate }: IMapProps<MapData>) {
+export function HexMap({ isEditable, opacity, width, height, data, zIndex, onDataUpdate }: IMapProps<MapData>) {
     const [{ hexWidth }] = useEditorStore();
     const [{ brush }] = useBrushStore();
     const [{ isGridTurnedOn }] = useGridStore();
@@ -58,7 +58,7 @@ export function HexMap({ isEditable, width, height, data, zIndex, onDataUpdate }
             id="hex-map"
             width={width}
             height={height}
-            style={{ zIndex }}
+            style={{ zIndex, opacity }}
             onMouseDown={
                 isEditable
                     ? (ctx, x, y) => {

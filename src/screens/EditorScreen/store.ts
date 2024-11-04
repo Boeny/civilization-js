@@ -7,7 +7,6 @@ interface IStore {
     layer: LAYER_TYPE;
     hexWidth: number;
     data: Partial<Record<LAYER_TYPE, MapData | HTMLImageElement | null>>;
-    visibility: Record<LAYER_TYPE, boolean>;
 }
 
 export const DEFAULT_EDITOR_STATE: IStore = {
@@ -15,7 +14,6 @@ export const DEFAULT_EDITOR_STATE: IStore = {
     layer: LAYER_TYPE.image,
     hexWidth: 0,
     data: {},
-    visibility: {} as Record<LAYER_TYPE, boolean>,
 };
 
 const [useEditorStore] = useStore<IStore>({ ...DEFAULT_EDITOR_STATE });

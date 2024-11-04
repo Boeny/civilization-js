@@ -28,13 +28,13 @@ export function getLayers(): LAYER_TYPE[] {
     return Object.keys(LAYER_CONFIG).map(Number);
 }
 
-export function getVisibility(value: boolean): Record<LAYER_TYPE, boolean> {
+export function getLayersObject<T>(value: T): Record<LAYER_TYPE, T> {
     return getLayers().reduce(
         (acc, type) => {
             acc[type] = value;
 
             return acc;
         },
-        {} as Record<LAYER_TYPE, boolean>,
+        {} as Record<LAYER_TYPE, T>,
     );
 }

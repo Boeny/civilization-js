@@ -6,12 +6,12 @@ import { IMapProps } from '../types';
 
 import { LoadImageButton } from './LoadImageButton';
 
-export function ImageMap({ isEditable, width, height, data, zIndex, onDataUpdate }: IMapProps<HTMLImageElement>) {
+export function ImageMap({ isEditable, opacity, width, height, data, zIndex, onDataUpdate }: IMapProps<HTMLImageElement>) {
     if (!data) {
         return (
             <div
                 id="image-map"
-                style={{ height: 'calc(100% - 32px)' }}
+                style={{ height: 'calc(100% - 32px)', zIndex, opacity }}
             >
                 <LoadImageButton
                     disabled={!isEditable}
@@ -26,7 +26,7 @@ export function ImageMap({ isEditable, width, height, data, zIndex, onDataUpdate
             id="image-map"
             width={width}
             height={height}
-            style={{ zIndex }}
+            style={{ zIndex, opacity }}
         >
             {(ctx) => ctx.drawImage(data, 0, 0)}
         </Canvas>

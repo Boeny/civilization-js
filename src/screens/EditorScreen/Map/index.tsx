@@ -1,5 +1,7 @@
 import { memo, useCallback } from 'react';
 
+import { useVisibilityStore } from '../Layers/EyeButton';
+import { useOpacityStore } from '../Layers/OpacityBar';
 import { getLayers, LAYER_CONFIG } from '../layersConfig';
 import { useEditorStore } from '../store';
 import { LAYER_TYPE, MapData } from '../types';
@@ -9,7 +11,9 @@ interface IProps {
     height: number;
 }
 export const Map = memo(({ width, height }: IProps) => {
-    const [{ data, visibility, layer }, setStore] = useEditorStore();
+    const [{ data, layer }, setStore] = useEditorStore();
+    const [{ visibility }] = useVisibilityStore();
+    const [{ opacity }] = useOpacityStore();
 
     const layers = getLayers();
 
@@ -36,6 +40,7 @@ export const Map = memo(({ width, height }: IProps) => {
                     <MapLayer
                         key={type}
                         isEditable={layer === type}
+                        opacity={opacity[type]}
                         data={mapData}
                         width={width}
                         height={height}
