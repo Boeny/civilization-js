@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
 
+import { useEsc } from 'hooks/useEsc';
+
 import { Children, MenuItemComponent } from './types';
-import { useEsc } from './useEsc';
 import { useMenuStore } from './useMenuStore';
 
 interface IProps {

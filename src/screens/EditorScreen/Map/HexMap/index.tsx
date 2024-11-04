@@ -1,9 +1,10 @@
 import './styles.css';
 
-import { useState } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
+import { useMouseMove } from 'hooks/useMouseMove';
 import { useBrushStore } from 'screens/EditorScreen/HexBrushes';
 import { HEX_CONFIG } from 'screens/EditorScreen/hexConfig';
 import { useEditorStore } from 'screens/EditorScreen/store';
@@ -20,26 +21,37 @@ import { getMapCoordinatesFromCursor } from './utils';
 // TODO: zoom by multitouch
 
 export function HexMap({ isEditable, width, height, data, zIndex, onDataUpdate }: IMapProps<MapData>) {
-    const [isPainting, setPainting] = useState(false);
     const [{ hexWidth }] = useEditorStore();
     const [{ brush }] = useBrushStore();
     const [{ isGridTurnedOn }] = useGridStore();
 
+    const config = useMemo(() => ({ updateMap: (_x: number, _y: number) => {} }), []);
+
+    const { startMoving } = useMouseMove((e) => {
+        config.updateMap(e.offsetX, e.offsetY);
+    }, isEditable);
+
+    const hexRadius = useMemo(() => getHexRadius(hexWidth), [hexWidth]);
+    const hexHeight = useMemo(() => hexRadius * 1.5, [hexRadius]);
+
+    config.updateMap = useCallback(
+        (x: number, y: number) => {
+            if (!data?.length) return;
+
+            const [mapX, mapY] = getMapCoordinatesFromCursor(x, y, hexWidth, hexRadius);
+
+            if (mapX < 0 || mapY < 0 || mapY >= data.length || mapX >= data[mapY].length || data[mapY][mapX] === brush!) {
+                return;
+            }
+
+            data[mapY][mapX] = brush!;
+
+            onDataUpdate(data);
+        },
+        [brush, data, hexRadius, hexWidth],
+    );
+
     if (!data?.length) return null;
-
-    const hexRadius = getHexRadius(hexWidth);
-
-    const updateMap = (x: number, y: number) => {
-        const [mapX, mapY] = getMapCoordinatesFromCursor(x, y, hexWidth, hexRadius);
-
-        if (!data[mapY] || data[mapY]?.[mapX] === brush || mapX < 0 || mapY < 0 || mapX >= width || mapY >= height) {
-            return;
-        }
-
-        data[mapY][mapX] = brush!;
-
-        onDataUpdate(data);
-    };
 
     return (
         <Canvas
@@ -51,37 +63,23 @@ export function HexMap({ isEditable, width, height, data, zIndex, onDataUpdate }
                 isEditable
                     ? (ctx, x, y) => {
                           if (brush !== null) {
-                              updateMap(x, y);
-                              setPainting(true);
+                              config.updateMap(x, y);
+                              startMoving();
                           }
-                      }
-                    : undefined
-            }
-            onMouseMove={
-                isEditable
-                    ? (ctx, x, y) => {
-                          if (isPainting) {
-                              updateMap(x, y);
-                          }
-                      }
-                    : undefined
-            }
-            onMouseUp={
-                isEditable
-                    ? () => {
-                          setPainting(false);
                       }
                     : undefined
             }
         >
             {(ctx) => {
                 for (let y = 0; y < data.length; y += 1) {
-                    if (y * hexRadius * 1.5 > height) break;
+                    if (y * hexHeight > height) break;
 
                     const row = data[y];
 
                     for (let x = 0; x < row.length; x += 1) {
                         if (x * hexWidth > width) break;
+
+                        const hexType = row[x];
 
                         Hex({
                             ctx,
@@ -89,7 +87,7 @@ export function HexMap({ isEditable, width, height, data, zIndex, onDataUpdate }
                             y,
                             width: hexWidth,
                             radius: hexRadius,
-                            color: HEX_CONFIG[row[x]].color,
+                            color: HEX_CONFIG[hexType].color,
                             isGridTurnedOn,
                         });
                     }
