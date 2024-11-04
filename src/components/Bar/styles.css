@@ -1,0 +1,18 @@
+.bar-container {
+    height: 25px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.bar {
+    height: 5px;
+    width: 100%;
+    background: #7c7c7c;
+}
+.bar-button {
+    outline: 2px solid #656565;
+    border-radius: 50%;
+    position: absolute;
+    top: 4px;
+    background: #ccc;
+}
