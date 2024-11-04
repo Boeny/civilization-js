@@ -1,6 +1,6 @@
 import './styles.css';
 
-import { useStore } from 'hoc/useStore';
+import { useStore } from 'hooks/useStore';
 import { getBrushes, HEX_CONFIG } from 'screens/EditorScreen/hexConfig';
 import { HEX_TYPE } from 'screens/EditorScreen/types';
 import { getClasses } from 'utils';

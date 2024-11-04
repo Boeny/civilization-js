@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { useStore } from 'hoc/useStore';
+import { useStore } from 'hooks/useStore';
 
 const [useGridStore] = useStore({ isGridTurnedOn: true });
 

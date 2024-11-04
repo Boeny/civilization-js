@@ -1,16 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { KEY_CODE } from 'types';
 
-const callbackContainerForMount = {} as any;
-
 export function useEsc(callback: () => void) {
-    callbackContainerForMount.openParentMenu = callback;
+    const callbackContainerForMount = useMemo(() => ({ callback }), []);
 
     useEffect(() => {
         function escHandler(e: KeyboardEvent) {
             if (e.key === KEY_CODE.esc) {
-                callbackContainerForMount.openParentMenu();
+                callbackContainerForMount.callback();
             }
         }
 

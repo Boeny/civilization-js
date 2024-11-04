@@ -1,4 +1,4 @@
-import { useStore } from 'hoc/useStore';
+import { useStore } from 'hooks/useStore';
 
 import { Children, MenuItemComponent } from './types';
 
@@ -9,8 +9,6 @@ interface IStore {
     menuItemComponent: MenuItemComponent;
 }
 
-const store = {} as IStore;
-
-const [useMenuStore, useMenuStoreWithoutUpdate] = useStore(store);
+const [useMenuStore, useMenuStoreWithoutUpdate] = useStore({} as IStore);
 
 export { useMenuStore, useMenuStoreWithoutUpdate };

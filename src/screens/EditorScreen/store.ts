@@ -1,4 +1,4 @@
-import { useStore } from 'hoc/useStore';
+import { useStore } from 'hooks/useStore';
 
 import { HEX_TYPE, LAYER_TYPE, MapData } from './types';
 
@@ -18,8 +18,6 @@ export const DEFAULT_EDITOR_STATE: IStore = {
     visibility: {} as Record<LAYER_TYPE, boolean>,
 };
 
-const store: IStore = { ...DEFAULT_EDITOR_STATE };
-
-const [useEditorStore] = useStore(store);
+const [useEditorStore] = useStore<IStore>({ ...DEFAULT_EDITOR_STATE });
 
 export { useEditorStore };
