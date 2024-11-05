@@ -25,16 +25,14 @@ export function HexMap({ isEditable, opacity, width, height, data, zIndex, onDat
     const [{ brush }] = useBrushStore();
     const [{ isGridTurnedOn }] = useGridStore();
 
-    const config = useMemo(() => ({ updateMap: (_x: number, _y: number) => {} }), []);
+    const container = useMemo(() => ({ updateMap: (_x: number, _y: number) => {} }), []);
 
-    const { startMoving } = useMouseMove((e) => {
-        config.updateMap(e.offsetX, e.offsetY);
-    }, isEditable);
+    const { startMoving } = useMouseMove((e) => container.updateMap(e.offsetX, e.offsetY), isEditable);
 
     const hexRadius = useMemo(() => getHexRadius(hexWidth), [hexWidth]);
     const hexHeight = useMemo(() => hexRadius * 1.5, [hexRadius]);
 
-    config.updateMap = useCallback(
+    container.updateMap = useCallback(
         (x: number, y: number) => {
             if (!data?.length) return;
 
@@ -63,7 +61,7 @@ export function HexMap({ isEditable, opacity, width, height, data, zIndex, onDat
                 isEditable
                     ? (ctx, x, y) => {
                           if (brush !== null) {
-                              config.updateMap(x, y);
+                              container.updateMap(x, y);
                               startMoving();
                           }
                       }

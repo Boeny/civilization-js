@@ -13,10 +13,10 @@ interface IProps {
 export const Bar = memo(({ width, buttonSize, defaultValue = 0, onChange }: IProps) => {
     const [offset, setOffset] = useState(defaultValue * width);
 
-    const config = useMemo(() => ({ startingPoint: 0 }), []);
+    const container = useMemo(() => ({ startingPoint: 0 }), []);
 
     const { startMoving } = useMouseMove((e) => {
-        let newOffset = e.clientX - config.startingPoint;
+        let newOffset = e.clientX - container.startingPoint;
 
         if (newOffset < 0) newOffset = 0;
         if (newOffset > width) newOffset = width;
@@ -33,7 +33,7 @@ export const Bar = memo(({ width, buttonSize, defaultValue = 0, onChange }: IPro
                 style={{ left: offset, width: buttonSize, height: buttonSize }}
                 onMouseDown={(e) => {
                     e.stopPropagation();
-                    config.startingPoint = e.clientX - offset;
+                    container.startingPoint = e.clientX - offset;
                     startMoving();
                 }}
             />
