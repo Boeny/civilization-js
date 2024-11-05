@@ -45,7 +45,7 @@ export const Layers = ({ width }: IParams) => {
                         {mapData && isVisible && <OpacityBar layer={type} />}
 
                         <div className="mini-map">
-                            {MiniMap && mapData && (
+                            {MiniMap && (
                                 <MiniMap
                                     data={mapData}
                                     width={width}

@@ -1,5 +1,5 @@
 export interface IMiniMapProps<T> {
-    data: T;
+    data?: T;
     width: number;
     title: string;
 }
