@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useMemo } from 'react';
 
 export function useMouseMove(callback: (e: MouseEvent) => void, enabled = true) {
@@ -21,12 +22,18 @@ export function useMouseMove(callback: (e: MouseEvent) => void, enabled = true) 
             container.moving = false;
         }
 
+        document.addEventListener('touchmove', moveHandler as any);
+        document.addEventListener('touchend', upHandler as any);
+
         document.addEventListener('mousemove', moveHandler);
         document.addEventListener('mouseup', upHandler);
 
         return () => {
             document.removeEventListener('mousemove', moveHandler);
             document.removeEventListener('mouseup', upHandler);
+
+            document.removeEventListener('touchmove', moveHandler as any);
+            document.removeEventListener('touchend', upHandler as any);
         };
     }, []);
 
