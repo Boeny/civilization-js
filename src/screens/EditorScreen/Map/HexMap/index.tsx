@@ -46,7 +46,7 @@ export function HexMap({ isEditable, opacity, width, height, data, zIndex, onDat
 
             onDataUpdate(data);
         },
-        [brush, data, hexRadius, hexWidth],
+        [brush, data, hexRadius, hexWidth, onDataUpdate],
     );
 
     if (!data?.length) return null;

@@ -123,7 +123,7 @@
         "no-dupe-keys": "error",
         "no-else-return": "error",
         "no-empty": "warn",
-        "@typescript-eslint/no-empty-function": "warn",
+        "@typescript-eslint/no-empty-function": "off",
         "no-multi-assign": "off",
         "no-multiple-empty-lines": ["warn", { "max": 1, "maxBOF": 0, "maxEOF": 1 }],
         "no-nested-ternary": "warn",

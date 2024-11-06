@@ -19,8 +19,8 @@ export function Menu({ isOpen, closeOnBackAction, component: MenuComponent, item
     store.back = useCallback(() => {
         if (store.children !== topLevelMenu) {
             setStore({ children: topLevelMenu });
-        } // top level menu
-        else if (closeOnBackAction) {
+        } else if (closeOnBackAction) {
+            // top level menu
             setStore({ isOpen: !store.isOpen });
         }
     }, [closeOnBackAction, setStore, store.children, store.isOpen, topLevelMenu]);
