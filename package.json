@@ -16,7 +16,7 @@
         "typecheck": "tsc --noEmit",
         "prebuild": "rimraf dist",
         "build:dev": "webpack --mode=development",
-        "build:prod": "webpack --mode=production --node-env=production",
+        "build": "webpack --mode=production --node-env=production",
         "prepare": "husky && chmod ug+x .husky/*",
         "lint-staged": "lint-staged --concurrent false"
     },
