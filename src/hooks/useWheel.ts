@@ -1,21 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 
-export function useWheel(callback: (dx: number, dy: number) => void) {
+export function useWheel(callback: (e: WheelEvent) => void) {
     useEffect(() => {
-        let ticking = false;
-
         function handleScroll(e: WheelEvent) {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    callback(e.deltaX, e.deltaY);
-                    ticking = false;
-                });
-            }
+            e.preventDefault();
 
-            ticking = true;
+            requestAnimationFrame(() => callback(e));
         }
 
-        document.addEventListener('wheel', handleScroll);
+        document.addEventListener('wheel', handleScroll, { passive: false });
 
         return () => {
             document.removeEventListener('wheel', handleScroll);
