@@ -1,6 +1,6 @@
 {
     "name": "civilization-js",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "description": "civilization on javascript",
     "author": "boeny",
     "license": "MIT",
@@ -14,7 +14,6 @@
         "format": "prettier -c src",
         "format:fix": "prettier -w src",
         "typecheck": "tsc --noEmit",
-        "prebuild": "rimraf dist",
         "build:dev": "webpack --mode=development",
         "build": "webpack --mode=production --node-env=production",
         "prepare": "husky && chmod ug+x .husky/*",
