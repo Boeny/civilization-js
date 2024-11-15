@@ -2,9 +2,9 @@ import { Button } from 'components/Button';
 import { Menu } from 'components/Menu';
 import { MenuItem } from 'components/Menu/MenuItem';
 import { MenuPopup } from 'components/MenuPopup';
+import { IEditorParamsMenuState } from 'types';
 
-import { EditorParamsMenu } from './EditorParamsMenu';
-import { IEditorParamsMenuState } from './EditorParamsMenu/store';
+import { EditorParamsMenuItem } from './EditorParamsMenuItem';
 import { NewGameMenu } from './NewGameMenu';
 import { OptionsMenu } from './OptionsMenu';
 
@@ -24,9 +24,10 @@ export function MainMenu({ createGameScreen, createEditorScreen, applyParams }: 
                 <NewGameMenu onPlay={createGameScreen} />
             </MenuItem>
 
-            <MenuItem name="Editor">
-                <EditorParamsMenu onSubmit={createEditorScreen} />
-            </MenuItem>
+            <EditorParamsMenuItem
+                itemName="Editor"
+                onSubmit={createEditorScreen}
+            />
 
             <MenuItem name="Options">
                 <OptionsMenu onApply={applyParams} />

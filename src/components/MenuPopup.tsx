@@ -1,12 +1,16 @@
+import { CSSProperties } from 'react';
+
 import { Block } from './Block';
 import { Popup } from './Popup';
+import { Children } from './types';
 
 interface IProps {
-    children: any;
+    children: Children;
+    style?: CSSProperties;
 }
-export function MenuPopup({ children }: IProps) {
+export function MenuPopup({ children, style }: IProps) {
     return (
-        <Popup>
+        <Popup style={style}>
             <Block alignedVertically>{children}</Block>
         </Popup>
     );

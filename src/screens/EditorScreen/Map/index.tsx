@@ -1,10 +1,12 @@
 import { memo, useCallback } from 'react';
 
+import { LAYER_TYPE } from 'types';
+
 import { useVisibilityStore } from '../Layers/EyeButton';
 import { useOpacityStore } from '../Layers/OpacityBar';
 import { getLayers, LAYER_CONFIG } from '../layersConfig';
 import { useEditorStore } from '../store';
-import { LAYER_TYPE, MapData } from '../types';
+import { MapData } from '../types';
 
 interface IProps {
     width: number;

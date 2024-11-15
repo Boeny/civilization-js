@@ -1,12 +1,13 @@
 import { FC } from 'react';
 
+import { LAYER_TYPE } from 'types';
+
 import { HexMiniMap } from './Layers/MiniMap/HexMiniMap';
 import { ImageMiniMap } from './Layers/MiniMap/ImageMiniMap';
 import { IMiniMapProps } from './Layers/MiniMap/types';
 import { HexMap } from './Map/HexMap';
 import { ImageMap } from './Map/ImageMap';
 import { IMapProps } from './Map/types';
-import { LAYER_TYPE } from './types';
 
 export const LAYER_CONFIG: Record<
     LAYER_TYPE,

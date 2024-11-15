@@ -2,9 +2,9 @@ import { memo } from 'react';
 
 import { Bar } from 'components/Bar';
 import { useStore } from 'hooks/useStore';
+import { LAYER_TYPE } from 'types';
 
 import { getLayersObject } from '../layersConfig';
-import { LAYER_TYPE } from '../types';
 
 const [useOpacityStore] = useStore({ opacity: getLayersObject(1) });
 

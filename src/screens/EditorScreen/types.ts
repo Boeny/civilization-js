@@ -11,20 +11,4 @@ export enum HEX_TYPE {
     hill,
 }
 
-export enum LAYER_TYPE {
-    image,
-    continuous,
-    hex,
-    objects,
-    borders,
-}
-
-export interface IHexMapParams {
-    width: number;
-    height: number;
-    hexWidth: number;
-}
-
-export type HexMapField = keyof IHexMapParams;
-
 export type MapData = HEX_TYPE[][];

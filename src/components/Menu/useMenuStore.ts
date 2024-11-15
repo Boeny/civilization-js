@@ -1,12 +1,16 @@
+import { CSSProperties } from 'react';
+
+import { Children } from 'components/types';
 import { useStore } from 'hooks/useStore';
 
-import { Children, MenuItemComponent } from './types';
+import { MenuItemComponent } from './types';
 
 interface IStore {
     isOpen: boolean;
     children: Children;
     back: () => void;
     menuItemComponent: MenuItemComponent;
+    menuStyle?: CSSProperties;
 }
 
 const [useMenuStore, useMenuStoreWithoutUpdate] = useStore({} as IStore);

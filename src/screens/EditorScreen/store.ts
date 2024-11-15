@@ -1,6 +1,7 @@
 import { useStore } from 'hooks/useStore';
+import { LAYER_TYPE } from 'types';
 
-import { HEX_TYPE, LAYER_TYPE, MapData } from './types';
+import { HEX_TYPE, MapData } from './types';
 
 interface IStore {
     brush: HEX_TYPE | null;

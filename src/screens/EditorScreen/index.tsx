@@ -1,7 +1,7 @@
 import '../styles.css';
 import { useState } from 'react';
 
-import { IEditorParamsMenuState } from 'menus/EditorParamsMenu/store';
+import { IEditorParamsMenuState, LAYER_TYPE } from 'types';
 
 import { RIGHT_PANEL, TOP_PANEL_HEIGHT } from './const';
 import { HexBrushes } from './HexBrushes';
@@ -11,17 +11,15 @@ import { Map } from './Map';
 import { RightPanel } from './RightPanel';
 import { DEFAULT_EDITOR_STATE, useEditorStore } from './store';
 import { TopPanel } from './TopPanel';
-import { LAYER_TYPE } from './types';
 import { generateEmptyMapData } from './utils';
 
-export const EditorScreen = ({ hexWidth, layer: defaultLayer, width, height }: IEditorParamsMenuState) => {
-    const isDefaultLayerHex = defaultLayer === LAYER_TYPE.hex;
+export const EditorScreen = (props: IEditorParamsMenuState) => {
+    const isDefaultLayerHex = props.layer === LAYER_TYPE.hex;
 
     const [{ layer }] = useEditorStore({
         ...DEFAULT_EDITOR_STATE,
-        hexWidth,
-        layer: defaultLayer,
-        data: { [defaultLayer]: isDefaultLayerHex ? generateEmptyMapData(width, height) : null },
+        layer: props.layer,
+        data: { [props.layer]: isDefaultLayerHex ? generateEmptyMapData(props.width, props.height) : null },
     });
 
     const isCurrentLayerHex = layer === LAYER_TYPE.hex;

@@ -1,9 +1,21 @@
 import './styles.css';
 
 import { KEY_CODE } from 'types';
-import { getClasses } from 'utils';
+import { getClasses, isValueNonNegativeNumber, isValueNumber, isValueSmallNumber } from 'utils';
 
-import { checkValidity, convertToInteger } from '../../menus/EditorParamsMenu/utils';
+function convertToInteger(value: string): number {
+    return value.includes('.') ? NaN : Number(value);
+}
+
+/**
+ * checks if value a number and it's in range
+ * @param value number or NaN
+ * @returns boolean
+ */
+function checkValidity(value: number): boolean {
+    // 0 is necessary for deleting numbers, but you still can't submit it
+    return isValueNumber(value) && isValueNonNegativeNumber(value) && isValueSmallNumber(value);
+}
 
 type IProps = {
     isError: boolean;

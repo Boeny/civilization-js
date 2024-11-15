@@ -4,9 +4,9 @@ import eyeClosed from 'assets/eye-closed.svg';
 import eyeOpened from 'assets/eye-opened.svg';
 import { Svg } from 'components/Svg';
 import { useStore } from 'hooks/useStore';
+import { LAYER_TYPE } from 'types';
 
 import { getLayersObject } from '../layersConfig';
-import { LAYER_TYPE } from '../types';
 
 const [useVisibilityStore] = useStore({ visibility: getLayersObject(true) });
 

@@ -1,40 +1,49 @@
-import { memo } from 'react';
+import { CSSProperties, memo } from 'react';
 
-import { Children } from './types';
+import { Children } from 'components/types';
+
 import { useMenuStoreWithoutUpdate } from './useMenuStore';
 
 interface IProps {
     name: string;
     children?: Children;
     action?: 'back' | 'close';
+    alignRight?: boolean;
+    style?: CSSProperties;
+    menuStyle?: CSSProperties;
     onClick?: () => void;
 }
-export const MenuItem = memo(({ name, children, action, onClick }: IProps) => {
+export const MenuItem = memo(({ name, children, action, alignRight, style, menuStyle, onClick }: IProps) => {
     const [store, setStore] = useMenuStoreWithoutUpdate();
 
     return (
-        <store.menuItemComponent
-            onClick={() => {
-                onClick?.();
+        <div style={{ display: 'flex', justifyContent: alignRight ? 'flex-end' : undefined, ...style }}>
+            <store.menuItemComponent
+                onClick={() => {
+                    onClick?.();
 
-                if (children) {
-                    setStore({ children });
+                    if (children) {
+                        setStore({
+                            children,
+                            menuStyle,
+                        });
 
-                    return;
-                }
-                if (action === 'back') {
-                    store.back();
+                        return;
+                    }
+                    if (action === 'back') {
+                        store.back();
 
-                    return;
-                }
-                if (action === 'close') {
-                    setStore({ isOpen: false });
+                        return;
+                    }
+                    if (action === 'close') {
+                        setStore({ isOpen: false, menuStyle: undefined });
 
-                    return;
-                }
-            }}
-        >
-            {name}
-        </store.menuItemComponent>
+                        return;
+                    }
+                }}
+            >
+                {name}
+            </store.menuItemComponent>
+        </div>
     );
 });

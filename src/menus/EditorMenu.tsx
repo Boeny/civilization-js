@@ -2,9 +2,9 @@ import { Button } from 'components/Button';
 import { Menu } from 'components/Menu';
 import { MenuItem } from 'components/Menu/MenuItem';
 import { MenuPopup } from 'components/MenuPopup';
+import { IEditorParamsMenuState } from 'types';
 
-import { EditorParamsMenu } from './EditorParamsMenu';
-import { IEditorParamsMenuState } from './EditorParamsMenu/store';
+import { EditorParamsMenuItem } from './EditorParamsMenuItem';
 import { OptionsMenu } from './OptionsMenu';
 
 interface IProps {
@@ -30,9 +30,10 @@ export function EditorMenu({ onReload, createEditorScreen, applyParams, exitToMa
                 action="back"
             />
 
-            <MenuItem name="New map">
-                <EditorParamsMenu onSubmit={createEditorScreen} />
-            </MenuItem>
+            <EditorParamsMenuItem
+                itemName="New map"
+                onSubmit={createEditorScreen}
+            />
 
             <MenuItem name="Editor options">
                 <OptionsMenu onApply={applyParams} />

@@ -4,7 +4,7 @@ import { Canvas } from 'components/canvas/Canvas';
 import { LoadImageButton } from 'screens/EditorScreen/Map/ImageMap/LoadImageButton';
 import { uploadFile } from 'screens/EditorScreen/Map/ImageMap/utils';
 import { useEditorStore } from 'screens/EditorScreen/store';
-import { LAYER_TYPE } from 'screens/EditorScreen/types';
+import { LAYER_TYPE } from 'types';
 
 import { IMiniMapProps } from './types';
 

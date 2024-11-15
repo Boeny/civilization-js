@@ -1,2 +1,7 @@
-export type Children = JSX.Element | JSX.Element[];
-export type MenuItemComponent = (props: { children: Children | string; onClick: () => void }) => JSX.Element;
+import { CSSProperties } from 'react';
+
+import { Children } from 'components/types';
+
+export type MenuComponent = (props: { style?: CSSProperties; children: Children }) => JSX.Element;
+
+export type MenuItemComponent = (props: { style?: CSSProperties; children: Children | string; onClick: () => void }) => JSX.Element;
