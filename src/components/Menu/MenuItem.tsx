@@ -11,14 +11,16 @@ interface IProps {
     alignRight?: boolean;
     style?: CSSProperties;
     menuStyle?: CSSProperties;
+    disabled?: boolean;
     onClick?: () => void;
 }
-export const MenuItem = memo(({ name, children, action, alignRight, style, menuStyle, onClick }: IProps) => {
+export const MenuItem = memo(({ name, children, action, alignRight, style, menuStyle, disabled, onClick }: IProps) => {
     const [store, setStore] = useMenuStoreWithoutUpdate();
 
     return (
         <div style={{ display: 'flex', justifyContent: alignRight ? 'flex-end' : undefined, ...style }}>
             <store.menuItemComponent
+                disabled={disabled}
                 onClick={() => {
                     onClick?.();
 

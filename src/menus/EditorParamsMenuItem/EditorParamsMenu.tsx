@@ -1,25 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { MenuItem } from 'components/Menu/MenuItem';
-import { IEditorParamsMenuState, IHexMapParams, LAYER_TYPE } from 'types';
-import { isValuePositiveNumber } from 'utils';
+import { IEditorParamsMenuState, LAYER_TYPE } from 'types';
 
 import { HexMapParamsBlock } from './HexMapParamsBlock';
 import { LayerSwitcher } from './LayerSwitcher';
-
-type HexMapField = keyof IHexMapParams;
-
-function isValid(data: IHexMapParams): HexMapField[] {
-    const errorFields: HexMapField[] = [];
-
-    (Object.keys(data) as HexMapField[]).forEach((field) => {
-        if (!isValuePositiveNumber(data[field])) {
-            errorFields.push(field);
-        }
-    });
-
-    return errorFields;
-}
 
 interface IProps {
     onSubmit: (params: IEditorParamsMenuState) => void;
@@ -30,20 +15,23 @@ export const EditorParamsMenu = ({ onSubmit }: IProps) => {
     const [height, setHeight] = useState(100);
 
     const isHex = layer === LAYER_TYPE.hex;
+    const isValid = !isHex || (width && height);
 
-    function submitHandler() {
-        if (!isHex) {
-            onSubmit({ layer: LAYER_TYPE.image });
+    const handleLayerChange = useCallback((newLayer: LAYER_TYPE) => {
+        setLayer(newLayer);
+        setWidth(100);
+        setHeight(100);
+    }, []);
 
-            return;
+    const handleImageSubmit = useCallback(() => {
+        onSubmit({ layer: LAYER_TYPE.image });
+    }, []);
+
+    const handleHexSubmit = useCallback(() => {
+        if (isValid) {
+            onSubmit({ width, height, layer: LAYER_TYPE.hex });
         }
-
-        const errors = isValid({ width, height });
-
-        if (errors.length === 0) {
-            onSubmit({ width, height, layer });
-        }
-    }
+    }, [isValid, width, height]);
 
     return (
         <>
@@ -55,22 +43,25 @@ export const EditorParamsMenu = ({ onSubmit }: IProps) => {
 
             <LayerSwitcher
                 layer={layer}
-                onLayerChange={setLayer}
+                onLayerChange={handleLayerChange}
             >
                 {isHex && (
                     <HexMapParamsBlock
+                        width={width}
+                        height={height}
                         setWidth={setWidth}
                         setHeight={setHeight}
-                        onEnterKeyDown={submitHandler}
+                        onEnterKeyDown={handleHexSubmit}
                     />
                 )}
             </LayerSwitcher>
 
             <MenuItem
+                disabled={!isValid}
                 alignRight
                 name="Create map"
                 style={{ marginTop: 24 }}
-                onClick={submitHandler}
+                onClick={isHex ? handleHexSubmit : handleImageSubmit}
             />
         </>
     );

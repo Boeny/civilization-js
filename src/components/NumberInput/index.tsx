@@ -21,13 +21,12 @@ function isValid(value: number): boolean {
 type IProps = {
     disabled?: boolean;
     autoFocus?: boolean;
-    defaultValue: number;
+    value: number;
     onChange: (value: number) => void;
     onEnterKeyDown: () => void;
 };
-export const NumberInput = ({ disabled, autoFocus, defaultValue, onEnterKeyDown, onChange }: IProps) => {
-    const [isError, setError] = useState(false);
-    const [value, setValue] = useState(defaultValue);
+export const NumberInput = ({ disabled, autoFocus, value, onEnterKeyDown, onChange }: IProps) => {
+    const [isError, setError] = useState(() => !isValuePositiveNumber(value));
 
     return (
         <input
@@ -43,11 +42,7 @@ export const NumberInput = ({ disabled, autoFocus, defaultValue, onEnterKeyDown,
                     return;
                 }
 
-                if (!isValuePositiveNumber(num)) {
-                    setError(true);
-                }
-
-                setValue(num);
+                setError(!isValuePositiveNumber(num));
                 onChange(num);
             }}
         />
