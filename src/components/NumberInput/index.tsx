@@ -1,31 +1,34 @@
+import { useState } from 'react';
 import './styles.css';
 
 import { KEY_CODE } from 'types';
-import { getClasses, isValueNonNegativeNumber, isValueNumber, isValueSmallNumber } from 'utils';
+import { getClasses, isValueNonNegativeNumber, isValueNumber, isValuePositiveNumber, isValueSmallNumber } from 'utils';
 
 function convertToInteger(value: string): number {
     return value.includes('.') ? NaN : Number(value);
 }
 
 /**
- * checks if value a number and it's in range
+ * checks if value is a number and it's in range
  * @param value number or NaN
  * @returns boolean
  */
-function checkValidity(value: number): boolean {
+function isValid(value: number): boolean {
     // 0 is necessary for deleting numbers, but you still can't submit it
     return isValueNumber(value) && isValueNonNegativeNumber(value) && isValueSmallNumber(value);
 }
 
 type IProps = {
-    isError: boolean;
     disabled?: boolean;
     autoFocus?: boolean;
-    value: number;
+    defaultValue: number;
     onChange: (value: number) => void;
     onEnterKeyDown: () => void;
 };
-export const NumberInput = ({ disabled, autoFocus, isError, value, onEnterKeyDown, onChange }: IProps) => {
+export const NumberInput = ({ disabled, autoFocus, defaultValue, onEnterKeyDown, onChange }: IProps) => {
+    const [isError, setError] = useState(false);
+    const [value, setValue] = useState(defaultValue);
+
     return (
         <input
             disabled={disabled}
@@ -36,9 +39,16 @@ export const NumberInput = ({ disabled, autoFocus, isError, value, onEnterKeyDow
             onChange={(e) => {
                 const num = convertToInteger(e.target.value);
 
-                if (checkValidity(num)) {
-                    onChange(num);
+                if (!isValid(num)) {
+                    return;
                 }
+
+                if (!isValuePositiveNumber(num)) {
+                    setError(true);
+                }
+
+                setValue(num);
+                onChange(num);
             }}
         />
     );

@@ -20,7 +20,7 @@ export const RadioItem = memo(({ label, value: currentValue, children }: IProps)
             setStore({ value: convertedValue });
             onChange(convertedValue);
         },
-        [currentValue],
+        [currentValue, onChange, setStore],
     );
 
     const input = (

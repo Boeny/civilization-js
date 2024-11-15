@@ -2,37 +2,30 @@ import './styles.css';
 
 import { Block } from 'components/Block';
 import { NumberInput } from 'components/NumberInput';
-import { IHexMapParams } from 'types';
 
-interface IProps extends IHexMapParams {
-    disabled?: boolean;
+interface IProps {
     setWidth: (v: number) => void;
     setHeight: (v: number) => void;
     onEnterKeyDown: () => void;
-    checkValidity: (value: number) => boolean;
 }
-export function HexMapParamsBlock({ disabled, width, setWidth, height, setHeight, onEnterKeyDown, checkValidity }: IProps) {
+export function HexMapParamsBlock({ setWidth, setHeight, onEnterKeyDown }: IProps) {
     return (
         <Block bordered>
             <label>
                 Width{' '}
                 <NumberInput
-                    disabled={disabled}
                     autoFocus
-                    value={width}
+                    defaultValue={100}
                     onChange={setWidth}
                     onEnterKeyDown={onEnterKeyDown}
-                    isError={!checkValidity(width)}
                 />
             </label>
             <label>
                 Height{' '}
                 <NumberInput
-                    disabled={disabled}
-                    value={height}
+                    defaultValue={100}
                     onChange={setHeight}
                     onEnterKeyDown={onEnterKeyDown}
-                    isError={!checkValidity(height)}
                 />
             </label>
         </Block>

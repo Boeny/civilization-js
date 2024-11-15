@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import '../styles.css';
 import { useState } from 'react';
 
@@ -13,6 +14,7 @@ import { DEFAULT_EDITOR_STATE, useEditorStore } from './store';
 import { TopPanel } from './TopPanel';
 import { generateEmptyMapData } from './utils';
 
+// props is used to split hex and image params
 export const EditorScreen = (props: IEditorParamsMenuState) => {
     const isDefaultLayerHex = props.layer === LAYER_TYPE.hex;
 

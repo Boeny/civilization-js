@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import './styles.css';
 
+import { Button } from 'components/Button';
 import { MenuPopup } from 'components/MenuPopup';
-import { EditorParamsMenuItem } from 'menus/EditorParamsMenuItem';
 import { HexMapParamsBlock } from 'menus/EditorParamsMenuItem/HexMapParamsBlock';
 import { getLayers, LAYER_CONFIG } from 'screens/EditorScreen/layersConfig';
 import { useEditorStore } from 'screens/EditorScreen/store';
@@ -27,20 +27,13 @@ export const Layers = ({ width }: IParams) => {
         // if (type === LAYER_TYPE.hex && !data[type]) {
         //     showPopup(
         //         <MenuPopup>
-        //             <EditorParamsMenu
+        //             <CreateMapMenu
         //                 onSubmit={(params) => {
         //                     setStore({
         //                         layer: type,
         //                         data: { ...data, [type]: generateEmptyMapData(params.width, params.height) },
         //                     });
         //                 }}
-        //             />
-        //             <HexMapParamsBlock
-        //                 width={width}
-        //                 setWidth={setWidth}
-        //                 height={height}
-        //                 setHeight={setHeight}
-        //                 onEnterKeyDown={submitHandler}
         //             />
         //         </MenuPopup>,
         //     );
