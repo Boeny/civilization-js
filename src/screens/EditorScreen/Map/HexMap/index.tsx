@@ -44,7 +44,7 @@ export function HexMap({ isEditable, opacity, width, height, data, zIndex, onDat
 
             data[mapY][mapX] = brush!;
 
-            onDataUpdate(data);
+            onDataUpdate([...data]);
         },
         [brush, data, hexRadius, hexWidth, onDataUpdate],
     );

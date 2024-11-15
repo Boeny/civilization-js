@@ -13,7 +13,7 @@ interface IStore {
 export const DEFAULT_EDITOR_STATE: IStore = {
     brush: null,
     layer: LAYER_TYPE.image,
-    hexWidth: 0,
+    hexWidth: 100,
     data: {},
 };
 
