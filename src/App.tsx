@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
 
 import { EditorMenu } from 'menus/EditorMenu';
-import { DEFAULT_EDITOR_PARAMS, IEditorParamsMenuState } from 'menus/EditorParamsMenu/store';
 import { GameMenu } from 'menus/GameMenu';
 import { MainMenu } from 'menus/MainMenu';
 import { EditorScreen } from 'screens/EditorScreen';
 import { GameScreen } from 'screens/GameScreen';
+import { IEditorParamsMenuState } from 'types';
 
 enum SCREEN_TYPE {
     game,
@@ -14,7 +14,7 @@ enum SCREEN_TYPE {
 
 export function App() {
     const [screen, setScreen] = useState<SCREEN_TYPE | null>(null);
-    const [editorParams, setEditorParams] = useState<IEditorParamsMenuState>(DEFAULT_EDITOR_PARAMS);
+    const [editorParams, setEditorParams] = useState<IEditorParamsMenuState | null>(null);
     const [reloadFlag, setReloadFlag] = useState(false);
 
     const switchScreen = useCallback(
@@ -69,7 +69,7 @@ export function App() {
             return <GameScreen key={String(reloadFlag)} />;
         }
 
-        if (screen === SCREEN_TYPE.editor) {
+        if (screen === SCREEN_TYPE.editor && editorParams) {
             return (
                 <EditorScreen
                     key={String(reloadFlag)}

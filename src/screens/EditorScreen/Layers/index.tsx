@@ -1,9 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import './styles.css';
 
+import { MenuPopup } from 'components/MenuPopup';
+import { EditorParamsMenuItem } from 'menus/EditorParamsMenuItem';
+import { HexMapParamsBlock } from 'menus/EditorParamsMenuItem/HexMapParamsBlock';
 import { getLayers, LAYER_CONFIG } from 'screens/EditorScreen/layersConfig';
 import { useEditorStore } from 'screens/EditorScreen/store';
-import { LAYER_TYPE } from 'screens/EditorScreen/types';
+import { LAYER_TYPE } from 'types';
 import { getClasses } from 'utils';
+
+import { generateEmptyMapData } from '../utils';
 
 import { EyeButton, useVisibilityStore } from './EyeButton';
 import { OpacityBar } from './OpacityBar';
@@ -17,6 +23,30 @@ export const Layers = ({ width }: IParams) => {
 
     const handleLayerClick = (type: LAYER_TYPE) => {
         if (layer === type) return;
+
+        // if (type === LAYER_TYPE.hex && !data[type]) {
+        //     showPopup(
+        //         <MenuPopup>
+        //             <EditorParamsMenu
+        //                 onSubmit={(params) => {
+        //                     setStore({
+        //                         layer: type,
+        //                         data: { ...data, [type]: generateEmptyMapData(params.width, params.height) },
+        //                     });
+        //                 }}
+        //             />
+        //             <HexMapParamsBlock
+        //                 width={width}
+        //                 setWidth={setWidth}
+        //                 height={height}
+        //                 setHeight={setHeight}
+        //                 onEnterKeyDown={submitHandler}
+        //             />
+        //         </MenuPopup>,
+        //     );
+
+        //     return;
+        // }
 
         setStore({ layer: type });
     };

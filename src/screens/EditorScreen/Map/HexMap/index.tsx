@@ -49,6 +49,33 @@ export function HexMap({ isEditable, opacity, width, height, data, zIndex, onDat
         [brush, data, hexRadius, hexWidth, onDataUpdate],
     );
 
+    const children = useCallback(
+        (ctx: CanvasRenderingContext2D) => {
+            for (let y = 0; y < data!.length; y += 1) {
+                if (y * hexHeight > height) break;
+
+                const row = data![y];
+
+                for (let x = 0; x < row.length; x += 1) {
+                    if (x * hexWidth > width) break;
+
+                    const hexType = row[x];
+
+                    Hex({
+                        ctx,
+                        x,
+                        y,
+                        width: hexWidth,
+                        radius: hexRadius,
+                        color: HEX_CONFIG[hexType].color,
+                        isGridTurnedOn,
+                    });
+                }
+            }
+        },
+        [data, hexHeight, height, hexWidth, width, hexRadius, isGridTurnedOn],
+    );
+
     if (!data?.length) return null;
 
     return (
@@ -68,29 +95,7 @@ export function HexMap({ isEditable, opacity, width, height, data, zIndex, onDat
                     : undefined
             }
         >
-            {(ctx) => {
-                for (let y = 0; y < data.length; y += 1) {
-                    if (y * hexHeight > height) break;
-
-                    const row = data[y];
-
-                    for (let x = 0; x < row.length; x += 1) {
-                        if (x * hexWidth > width) break;
-
-                        const hexType = row[x];
-
-                        Hex({
-                            ctx,
-                            x,
-                            y,
-                            width: hexWidth,
-                            radius: hexRadius,
-                            color: HEX_CONFIG[hexType].color,
-                            isGridTurnedOn,
-                        });
-                    }
-                }
-            }}
+            {children}
         </Canvas>
     );
 }
