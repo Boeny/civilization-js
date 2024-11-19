@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 
+type DefaultState<T extends object> = Partial<T> | (() => Partial<T>);
+
 interface StoreUpdate<S extends object> {
     (data: Partial<S>): void;
 }
 
-export function useStore<T extends object>(store: T): [(defaultState?: Partial<T>) => [T, StoreUpdate<T>], () => [T, StoreUpdate<T>]] {
+type UseStore<T extends object> = [T, StoreUpdate<T>];
+
+export function useStore<T extends object>(store: T): [(defaultState?: DefaultState<T>) => UseStore<T>, () => UseStore<T>] {
     const storeUpdateStack: (() => void)[] = [];
 
     const setStore: StoreUpdate<T> = (data: Partial<T>) => {
@@ -12,12 +16,14 @@ export function useStore<T extends object>(store: T): [(defaultState?: Partial<T
         storeUpdateStack.forEach((callback) => callback());
     };
 
-    function useUpdatableStore(defaultState?: Partial<T>): [T, StoreUpdate<T>] {
+    function useUpdatableStore(defaultState?: DefaultState<T>): UseStore<T> {
         const [, update] = useState(
             defaultState
                 ? () => {
+                      const state = typeof defaultState === 'function' ? defaultState() : defaultState;
+
                       // init store - one time during first render
-                      Object.assign(store, defaultState);
+                      Object.assign(store, state);
 
                       return {};
                   }
@@ -40,7 +46,7 @@ export function useStore<T extends object>(store: T): [(defaultState?: Partial<T
 
         return [store, setStore];
     }
-    function useStoreWithoutUpdate(): [T, StoreUpdate<T>] {
+    function useStoreWithoutUpdate(): UseStore<T> {
         return [store, setStore];
     }
 
