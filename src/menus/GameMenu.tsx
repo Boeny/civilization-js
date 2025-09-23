@@ -2,17 +2,15 @@ import { Button } from 'components/Button';
 import { Menu } from 'components/Menu';
 import { MenuItem } from 'components/Menu/MenuItem';
 import { MenuPopup } from 'components/MenuPopup';
+import { useScreenStore } from 'screenStore';
+import { SCREEN_TYPE } from 'types';
 
 import { NewGameMenu } from './NewGameMenu';
 import { OptionsMenu } from './OptionsMenu';
 
-interface IProps {
-    onReload: () => void;
-    createGameScreen: () => void;
-    applyParams: () => void;
-    exitToMainMenu: () => void;
-}
-export function GameMenu({ onReload, createGameScreen, applyParams, exitToMainMenu }: IProps) {
+export function GameMenu() {
+    const [, setScreen] = useScreenStore();
+
     return (
         <Menu
             closeOnBackAction
@@ -20,26 +18,27 @@ export function GameMenu({ onReload, createGameScreen, applyParams, exitToMainMe
             item={Button}
         >
             <MenuItem
-                name="Back to the game"
-                action="back"
-            />
-            <MenuItem
-                name="Restart"
-                onClick={onReload}
+                title="Back to the game"
                 action="back"
             />
 
-            <MenuItem name="New Game">
-                <NewGameMenu onPlay={createGameScreen} />
+            <MenuItem
+                title="Restart"
+                onClick={() => {}}
+                action="back"
+            />
+
+            <MenuItem title="New Game">
+                <NewGameMenu onPlay={() => setScreen({ screen: SCREEN_TYPE.game })} />
             </MenuItem>
 
-            <MenuItem name="Options">
-                <OptionsMenu onApply={applyParams} />
+            <MenuItem title="Options">
+                <OptionsMenu onApply={() => {}} />
             </MenuItem>
 
             <MenuItem
-                name="Back to main menu"
-                onClick={exitToMainMenu}
+                title="Back to main menu"
+                onClick={() => setScreen({ screen: SCREEN_TYPE.main })}
             />
         </Menu>
     );

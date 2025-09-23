@@ -1,12 +1,10 @@
-import { CSSProperties, memo } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
-import { Children } from 'components/types';
-
-import { useMenuStoreWithoutUpdate } from './useMenuStore';
+import { useMenuStore } from './useMenuStore';
 
 interface IProps {
-    name: string;
-    children?: Children;
+    title: string;
+    children?: ReactNode;
     action?: 'back' | 'close';
     alignRight?: boolean;
     style?: CSSProperties;
@@ -14,38 +12,37 @@ interface IProps {
     disabled?: boolean;
     onClick?: () => void;
 }
-export const MenuItem = memo(({ name, children, action, alignRight, style, menuStyle, disabled, onClick }: IProps) => {
-    const [store, setStore] = useMenuStoreWithoutUpdate();
+export const MenuItem = ({ title, children, action, alignRight, style, menuStyle, disabled, onClick }: IProps) => {
+    const [menu, setMenu] = useMenuStore();
+
+    const handleClick = () => {
+        onClick?.();
+
+        if (children) {
+            setMenu({ children, menuStyle });
+
+            return;
+        }
+        if (action === 'back') {
+            menu.back();
+
+            return;
+        }
+        if (action === 'close') {
+            setMenu({ isOpen: false, menuStyle: undefined });
+
+            return;
+        }
+    };
 
     return (
         <div style={{ display: 'flex', justifyContent: alignRight ? 'flex-end' : undefined, ...style }}>
-            <store.menuItemComponent
+            <menu.menuItemComponent
                 disabled={disabled}
-                onClick={() => {
-                    onClick?.();
-
-                    if (children) {
-                        setStore({
-                            children,
-                            menuStyle,
-                        });
-
-                        return;
-                    }
-                    if (action === 'back') {
-                        store.back();
-
-                        return;
-                    }
-                    if (action === 'close') {
-                        setStore({ isOpen: false, menuStyle: undefined });
-
-                        return;
-                    }
-                }}
+                onClick={handleClick}
             >
-                {name}
-            </store.menuItemComponent>
+                {title}
+            </menu.menuItemComponent>
         </div>
     );
-});
+};

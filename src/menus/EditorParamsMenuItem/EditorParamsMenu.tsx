@@ -1,15 +1,16 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 import { MenuItem } from 'components/Menu/MenuItem';
-import { IEditorParamsMenuState, LAYER_TYPE } from 'types';
+import { useLayerStore } from 'screens/EditorScreen/layerStore';
+import { useScreenStore } from 'screenStore';
+import { LAYER_TYPE, SCREEN_TYPE } from 'types';
 
 import { HexMapParamsBlock } from './HexMapParamsBlock';
 import { LayerSwitcher } from './LayerSwitcher';
 
-interface IProps {
-    onSubmit: (params: IEditorParamsMenuState) => void;
-}
-export const EditorParamsMenu = ({ onSubmit }: IProps) => {
+export const EditorParamsMenu = () => {
+    const [, setScreen] = useScreenStore();
+    const [, setLayerConfig] = useLayerStore();
     const [layer, setLayer] = useState(LAYER_TYPE.image);
     const [width, setWidth] = useState(100);
     const [height, setHeight] = useState(100);
@@ -17,26 +18,28 @@ export const EditorParamsMenu = ({ onSubmit }: IProps) => {
     const isHex = layer === LAYER_TYPE.hex;
     const isValid = !isHex || (width && height);
 
-    const handleLayerChange = useCallback((newLayer: LAYER_TYPE) => {
+    const handleLayerChange = (newLayer: LAYER_TYPE) => {
         setLayer(newLayer);
         setWidth(100);
         setHeight(100);
-    }, []);
+    };
 
-    const handleImageSubmit = useCallback(() => {
-        onSubmit({ layer: LAYER_TYPE.image });
-    }, []);
+    const handleImageSubmit = () => {
+        setLayerConfig({ layer: LAYER_TYPE.image });
+        setScreen({ screen: SCREEN_TYPE.editor });
+    };
 
-    const handleHexSubmit = useCallback(() => {
+    const handleHexSubmit = () => {
         if (isValid) {
-            onSubmit({ width, height, layer: LAYER_TYPE.hex });
+            setLayerConfig({ width, height, layer: LAYER_TYPE.hex });
+            setScreen({ screen: SCREEN_TYPE.editor });
         }
-    }, [isValid, width, height]);
+    };
 
     return (
         <>
             <MenuItem
-                name="Back"
+                title="Back"
                 action="back"
                 style={{ marginBottom: 24 }}
             />
@@ -59,7 +62,7 @@ export const EditorParamsMenu = ({ onSubmit }: IProps) => {
             <MenuItem
                 disabled={!isValid}
                 alignRight
-                name="Create map"
+                title="Create map"
                 style={{ marginTop: 24 }}
                 onClick={isHex ? handleHexSubmit : handleImageSubmit}
             />

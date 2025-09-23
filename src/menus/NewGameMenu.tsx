@@ -8,14 +8,14 @@ export function NewGameMenu({ onPlay }: IProps) {
     return (
         <>
             <MenuItem
-                name="Back"
+                title="Back"
                 action="back"
             />
 
             <Block />
 
             <MenuItem
-                name="Play"
+                title="Play"
                 onClick={onPlay}
             />
         </>

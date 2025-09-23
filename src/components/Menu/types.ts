@@ -1,12 +1,10 @@
-import { CSSProperties } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 
-import { Children } from 'components/types';
-
-export type MenuComponent = (props: { style?: CSSProperties; children: Children }) => JSX.Element;
+export type MenuComponent = (props: { style?: CSSProperties; children: ReactNode }) => React.JSX.Element;
 
 export type MenuItemComponent = (props: {
     style?: CSSProperties;
-    children: Children | string;
+    children: ReactNode;
     disabled?: boolean;
     onClick: () => void;
-}) => JSX.Element;
+}) => React.JSX.Element;

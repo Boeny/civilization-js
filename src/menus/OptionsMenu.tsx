@@ -8,14 +8,14 @@ export function OptionsMenu({ onApply }: IProps) {
     return (
         <>
             <MenuItem
-                name="Back"
+                title="Back"
                 action="back"
             />
 
             <Block />
 
             <MenuItem
-                name="Apply"
+                title="Apply"
                 onClick={onApply}
                 action="back"
             />

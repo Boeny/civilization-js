@@ -8,7 +8,7 @@ export function GameScreen() {
             className="screen"
         >
             <MenuItem
-                name="Open menu"
+                title="Open menu"
                 action="back"
             />
         </div>
