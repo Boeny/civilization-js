@@ -1,15 +1,11 @@
-import { useStore } from 'hooks/useStore';
-
-const [useGridStore] = useStore({ isGridTurnedOn: true });
-
-export { useGridStore };
+import { useGridObservableStore } from '../stores/gridSwitchStore';
 
 export const ToggleGridButton = () => {
-    const [{ isGridTurnedOn }, setStore] = useGridStore();
+    const [{ isGridTurnedOn }, setGridTurnedOn] = useGridObservableStore();
 
     return (
         <button
-            onClick={() => setStore({ isGridTurnedOn: !isGridTurnedOn })}
+            onClick={() => setGridTurnedOn({ isGridTurnedOn: !isGridTurnedOn })}
             style={{ padding: '6px 20px' }}
         >
             Grid: {isGridTurnedOn ? 'On' : 'Off'}

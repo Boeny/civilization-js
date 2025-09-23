@@ -7,14 +7,10 @@ import { getClasses } from 'utils';
 import { useBrushStore } from '../brushStore';
 
 export function HexBrushes() {
-    const [{ brush }, setStore] = useBrushStore();
+    const [{ brush }, setBrush] = useBrushStore();
 
     const handleBrushClick = (type: HEX_TYPE) => {
-        if (brush === null || brush !== type) {
-            setStore({ brush: type });
-        } else {
-            setStore({ brush: null });
-        }
+        setBrush({ brush: brush === null || brush !== type ? type : null });
     };
 
     const brushes = getBrushes();
