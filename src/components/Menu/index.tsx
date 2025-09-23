@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 
 import { useEsc } from 'hooks/useEsc';
 
@@ -14,24 +14,31 @@ interface IProps {
 }
 
 export function Menu({ isOpen, closeOnBackAction, item, children: topLevelMenu, ...props }: IProps) {
-    const [store, setStore] = useMenuObservableStore({ isOpen: !!isOpen, children: topLevelMenu, menuItemComponent: item });
+    const [menu, setMenu] = useMenuObservableStore();
 
-    store.back = () => {
-        if (store.children !== topLevelMenu) {
-            setStore({ children: topLevelMenu, menuStyle: undefined });
+    useEffect(() => {
+        setMenu({
+            isOpen: !!isOpen,
+            children: topLevelMenu,
+            menuItemComponent: item,
+            back: () => {
+                if (menu.children !== topLevelMenu) {
+                    setMenu({ children: topLevelMenu, menuStyle: undefined });
 
-            return;
-        }
+                    return;
+                }
 
-        if (closeOnBackAction) {
-            // top level menu
-            setStore({ isOpen: !store.isOpen, menuStyle: undefined });
-        }
-    };
+                if (closeOnBackAction) {
+                    // top level menu
+                    setMenu({ isOpen: !menu.isOpen, menuStyle: undefined });
+                }
+            },
+        });
+    }, []);
 
-    useEsc(store.back);
+    useEsc(menu.back);
 
-    if (!store.isOpen) return null;
+    if (!menu.isOpen) return null;
 
-    return <props.component style={store.menuStyle}>{store.children}</props.component>;
+    return <props.component style={menu.menuStyle}>{menu.children}</props.component>;
 }

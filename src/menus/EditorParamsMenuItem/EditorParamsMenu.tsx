@@ -11,6 +11,7 @@ import { LayerSwitcher } from './LayerSwitcher';
 export const EditorParamsMenu = () => {
     const [, setScreen] = useScreenStore();
     const [, setLayerConfig] = useLayerStore();
+
     const [layer, setLayer] = useState(LAYER_TYPE.image);
     const [width, setWidth] = useState(100);
     const [height, setHeight] = useState(100);
