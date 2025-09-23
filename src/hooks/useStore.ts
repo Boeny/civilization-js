@@ -16,14 +16,8 @@ export function useStore<T extends object>(store: T): [(defaultState?: DefaultSt
         storeUpdateStack.forEach((callback) => callback());
     };
 
-    function useUpdatableStore(defaultState?: DefaultState<T>): UseStore<T> {
-        const [, update] = useState<{}>(
-            defaultState
-                ? () => {
-                      Object.assign(store, defaultState);
-                  }
-                : {},
-        );
+    function useUpdatableStore(): UseStore<T> {
+        const [, update] = useState({});
 
         useEffect(() => {
             // add state updater to the stack after mount

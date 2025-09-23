@@ -1,5 +1,4 @@
 import './styles.css';
-import { memo } from 'react';
 
 import { Panel } from 'components/Panel';
 import { Z_INDEX_CONFIG } from 'const';
@@ -12,13 +11,13 @@ const rightPanelStyle = {
     paddingRight: RIGHT_PANEL.padding,
     paddingBottom: RIGHT_PANEL.padding,
     left: `calc(100% - ${RIGHT_PANEL_WIDTH}px)`,
-    zIndex: Z_INDEX_CONFIG.right.zIndex,
+    zIndex: Z_INDEX_CONFIG.rightPanel.zIndex,
 };
 
 interface IProps {
     children: any;
 }
-export const RightPanel = memo(({ children }: IProps) => {
+export const RightPanel = ({ children }: IProps) => {
     return (
         <Panel
             id="right-panel"
@@ -27,4 +26,4 @@ export const RightPanel = memo(({ children }: IProps) => {
             {children}
         </Panel>
     );
-});
+};

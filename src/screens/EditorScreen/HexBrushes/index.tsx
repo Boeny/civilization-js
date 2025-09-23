@@ -1,13 +1,10 @@
 import './styles.css';
 
-import { useStore } from 'hooks/useStore';
 import { getBrushes, HEX_CONFIG } from 'screens/EditorScreen/hexConfig';
 import { HEX_TYPE } from 'screens/EditorScreen/types';
 import { getClasses } from 'utils';
 
-const [useBrushStore] = useStore<{ brush: HEX_TYPE | null }>({ brush: null });
-
-export { useBrushStore };
+import { useBrushStore } from '../brushStore';
 
 export function HexBrushes() {
     const [{ brush }, setStore] = useBrushStore();

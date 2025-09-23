@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { MenuItem } from 'components/Menu/MenuItem';
-import { useLayerStore } from 'screens/EditorScreen/layerStore';
+import { useLayerStore } from 'layerStore';
 import { useScreenStore } from 'screenStore';
 import { LAYER_TYPE, SCREEN_TYPE } from 'types';
 

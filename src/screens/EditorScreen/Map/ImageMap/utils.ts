@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { filePickerConfig, zoomConfig } from './config';
 
 export async function uploadFile(): Promise<HTMLImageElement | undefined> {

@@ -1,12 +1,10 @@
-import { memo } from 'react';
-
 import { useStore } from 'hooks/useStore';
 
 const [useGridStore] = useStore({ isGridTurnedOn: true });
 
 export { useGridStore };
 
-export const ToggleGridButton = memo(() => {
+export const ToggleGridButton = () => {
     const [{ isGridTurnedOn }, setStore] = useGridStore();
 
     return (
@@ -17,4 +15,4 @@ export const ToggleGridButton = memo(() => {
             Grid: {isGridTurnedOn ? 'On' : 'Off'}
         </button>
     );
-});
+};
