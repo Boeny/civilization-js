@@ -1,18 +1,17 @@
-import { Children } from 'components/types';
+import { ReactNode } from 'react';
 
-import { IStore, useRadioStore } from './useRadioStore';
-
-interface IProps<T> extends IStore<T> {
-    children: Children;
+interface IProps<T> {
+    name: string;
+    value: T;
+    children: (props: { name: string; selectedValue: T; onChange: (value: T) => void }) => ReactNode;
     label?: string;
+    onChange: (value: T) => void;
 }
-export function Radio<T extends string | number>({ children, label, ...props }: IProps<T>) {
-    useRadioStore(props);
-
+export function Radio<T extends string | number>({ name, value, children, label, onChange }: IProps<T>) {
     return (
         <div>
             {label && <label>{label}</label>}
-            {children}
+            {children({ name, selectedValue: value, onChange })}
         </div>
     );
 }
