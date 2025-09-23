@@ -1,7 +1,4 @@
-interface IPoint {
-    x: number;
-    y: number;
-}
+import { IPoint } from 'types';
 
 function getPointByAngle(offset: IPoint, angle: number, radius: number): IPoint {
     return {

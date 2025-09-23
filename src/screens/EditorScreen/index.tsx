@@ -1,30 +1,32 @@
-/* eslint-disable react/destructuring-assignment */
 import '../styles.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { IEditorParamsMenuState, LAYER_TYPE } from 'types';
+import { useLayerStore } from 'layerStore';
+import { LAYER_TYPE } from 'types';
 
 import { RIGHT_PANEL, TOP_PANEL_HEIGHT } from './const';
 import { HexBrushes } from './HexBrushes';
 import { Layers } from './Layers';
 import { LeftPanel } from './LeftPanel';
 import { Map } from './Map';
+import { useHexMapStore } from './Map/HexMap/store';
 import { RightPanel } from './RightPanel';
-import { DEFAULT_EDITOR_STATE, useEditorStore } from './store';
 import { TopPanel } from './TopPanel';
 import { generateEmptyMapData } from './utils';
 
-// props is used to split hex and image params
-export const EditorScreen = (props: IEditorParamsMenuState) => {
-    const isDefaultLayerHex = props.layer === LAYER_TYPE.hex;
+export const EditorScreen = () => {
+    const [, setHexMapStore] = useHexMapStore();
+    const [layerConfig] = useLayerStore();
 
-    const [{ layer }] = useEditorStore({
-        ...DEFAULT_EDITOR_STATE,
-        layer: props.layer,
-        data: { [props.layer]: isDefaultLayerHex ? generateEmptyMapData(props.width, props.height) : null },
-    });
+    useEffect(() => {
+        if (layerConfig.layer === LAYER_TYPE.hex) {
+            setHexMapStore({
+                data: generateEmptyMapData(layerConfig.width, layerConfig.height),
+            });
+        }
+    }, []);
 
-    const isCurrentLayerHex = layer === LAYER_TYPE.hex;
+    const isCurrentLayerHex = layerConfig.layer === LAYER_TYPE.hex;
 
     const [isLeftPanelShown, setLeftPanelShown] = useState(true);
     const [isRightPanelShown, setRightPanelShown] = useState(true);

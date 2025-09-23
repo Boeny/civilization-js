@@ -1,11 +1,10 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
 import { Block } from './Block';
 import { Popup } from './Popup';
-import { Children } from './types';
 
 interface IProps {
-    children: Children;
+    children: ReactNode;
     style?: CSSProperties;
 }
 export function MenuPopup({ children, style }: IProps) {

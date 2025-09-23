@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useMemo } from 'react';
 
 export function useMouseMove(callback: (e: MouseEvent) => void, enabled = true) {

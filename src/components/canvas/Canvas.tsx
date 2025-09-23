@@ -1,4 +1,4 @@
-import { CSSProperties, memo, useEffect, useRef, useState } from 'react';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 
 interface IProps {
     id?: string;
@@ -13,7 +13,7 @@ interface IProps {
     onMouseUp?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
     children: (ctx: CanvasRenderingContext2D) => void;
 }
-export const Canvas = memo(({ children, onClick, onMouseDown, onMouseMove, onMouseUp, ...props }: IProps) => {
+export const Canvas = ({ children, onClick, onMouseDown, onMouseMove, onMouseUp, ...props }: IProps) => {
     const ref = useRef<HTMLCanvasElement | null>(null);
     const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
 
@@ -35,4 +35,4 @@ export const Canvas = memo(({ children, onClick, onMouseDown, onMouseMove, onMou
             onMouseUp={onMouseUp && ctx ? (e) => onMouseUp(ctx, e.nativeEvent.offsetX, e.nativeEvent.offsetY) : undefined}
         />
     );
-});
+};

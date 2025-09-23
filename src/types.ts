@@ -16,4 +16,13 @@ export interface IHexMapParams {
     height: number;
 }
 
-export type IEditorParamsMenuState = { layer: LAYER_TYPE.image } | (IHexMapParams & { layer: LAYER_TYPE.hex });
+export interface IPoint {
+    x: number;
+    y: number;
+}
+
+export enum SCREEN_TYPE {
+    main,
+    game,
+    editor,
+}

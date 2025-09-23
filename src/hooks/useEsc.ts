@@ -1,10 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 
 import { KEY_CODE } from 'types';
 
 export function useEsc(callback: () => void) {
-    const container = useMemo(() => ({ callback }), []);
+    const container = { callback };
 
     useEffect(() => {
         function escHandler(e: KeyboardEvent) {

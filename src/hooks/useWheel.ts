@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 
 export function useWheel(callback: (e: WheelEvent) => void) {

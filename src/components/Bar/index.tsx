@@ -1,6 +1,6 @@
 import './styles.css';
 
-import { memo, useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { useMouseMove } from 'hooks/useMouseMove';
 
@@ -10,10 +10,10 @@ interface IProps {
     defaultValue?: number;
     onChange: (value: number) => void;
 }
-export const Bar = memo(({ width, buttonSize, defaultValue = 0, onChange }: IProps) => {
+export const Bar = ({ width, buttonSize, defaultValue = 0, onChange }: IProps) => {
     const [offset, setOffset] = useState(defaultValue * width);
 
-    const container = useMemo(() => ({ startingPoint: 0 }), []);
+    const container = { startingPoint: 0 };
 
     const { startMoving } = useMouseMove((e) => {
         let newOffset = e.clientX - container.startingPoint;
@@ -39,4 +39,4 @@ export const Bar = memo(({ width, buttonSize, defaultValue = 0, onChange }: IPro
             />
         </div>
     );
-});
+};

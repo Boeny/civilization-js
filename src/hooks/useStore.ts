@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-type DefaultState<T extends object> = Partial<T> | (() => Partial<T>);
+type DefaultState<T extends object> = Partial<T>;
 
 interface StoreUpdate<S extends object> {
     (data: Partial<S>): void;
@@ -17,15 +17,10 @@ export function useStore<T extends object>(store: T): [(defaultState?: DefaultSt
     };
 
     function useUpdatableStore(defaultState?: DefaultState<T>): UseStore<T> {
-        const [, update] = useState(
+        const [, update] = useState<{}>(
             defaultState
                 ? () => {
-                      const state = typeof defaultState === 'function' ? defaultState() : defaultState;
-
-                      // init store - one time during first render
-                      Object.assign(store, state);
-
-                      return {};
+                      Object.assign(store, defaultState);
                   }
                 : {},
         );
