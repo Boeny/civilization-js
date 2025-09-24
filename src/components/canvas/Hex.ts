@@ -1,22 +1,24 @@
+import { IPoint } from 'types';
+
 import { Polygon } from './Polygon';
 
 interface IProps {
     ctx: CanvasRenderingContext2D;
-    x: number;
-    y: number;
+    position: IPoint;
+    offset?: IPoint;
     width: number;
     radius: number;
     color: string;
     isGridTurnedOn?: boolean;
 }
-export function Hex({ ctx, x, y, width, radius, color, isGridTurnedOn }: IProps) {
-    const xOffset = y % 2 === 0 ? width / 2 : width;
+export function Hex({ ctx, position, offset, width, radius, color, isGridTurnedOn }: IProps) {
+    const xOffset = position.y % 2 === 0 ? width / 2 : width;
 
     Polygon({
         ctx,
         centerPoint: {
-            x: x * width + xOffset,
-            y: y * radius * 1.5 + radius,
+            x: position.x * width + xOffset + (offset?.x || 0),
+            y: position.y * radius * 1.5 + radius + (offset?.y || 0),
         },
         startAngle: Math.PI / 2,
         radius,

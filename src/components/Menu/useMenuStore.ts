@@ -1,7 +1,7 @@
 import { CSSProperties, ReactNode } from 'react';
 
 import { Button } from 'components/Button';
-import { useStore } from 'hooks/useStore';
+import { createStoreHook } from 'hooks/createStoreHook';
 
 import { MenuItemComponent } from './types';
 
@@ -13,7 +13,7 @@ interface IStore {
     menuStyle?: CSSProperties;
 }
 
-const [useMenuObservableStore, useMenuStore] = useStore<IStore>({
+const [useMenuObservableStore, useMenuStore] = createStoreHook<IStore>({
     isOpen: false,
     children: null,
     back: () => {},

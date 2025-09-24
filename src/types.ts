@@ -5,10 +5,7 @@ export enum KEY_CODE {
 
 export enum LAYER_TYPE {
     image,
-    continuous,
     hex,
-    objects,
-    borders,
 }
 
 export interface IHexMapParams {

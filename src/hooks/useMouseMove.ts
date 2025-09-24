@@ -8,7 +8,9 @@ export function useMouseMove(callback: (e: MouseEvent) => void, enabled = true) 
     }, []);
 
     useEffect(() => {
-        if (!enabled) return () => {};
+        if (!enabled) {
+            return () => {};
+        }
 
         function moveHandler(e: MouseEvent) {
             if (container.moving) {

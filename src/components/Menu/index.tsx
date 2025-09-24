@@ -35,7 +35,9 @@ export function Menu({ isOpen, closeOnBackAction, item, children, ...props }: IP
 
     useEsc(menu.back);
 
-    if (!menu.isOpen) return null;
+    if (!menu.isOpen) {
+        return null;
+    }
 
     return <props.component style={menu.menuStyle}>{menu.children}</props.component>;
 }

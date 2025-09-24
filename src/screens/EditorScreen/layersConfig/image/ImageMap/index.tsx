@@ -1,0 +1,161 @@
+import './styles.css';
+
+import { useEffect, useState } from 'react';
+
+import { Canvas } from 'components/canvas/Canvas';
+import { useArrowKeys } from 'hooks/useArrowKeys';
+import { useWheel } from 'hooks/useWheel';
+
+import { IMapProps } from '../../types';
+import { useImageMapObservableStore } from '../imageMapStore';
+
+import { zoomConfig } from './config';
+import { LoadImageButton } from './LoadImageButton';
+import { clampCoordinate, clampImageWidth, getZoomImageOffset } from './utils';
+
+const SPEED = 5;
+
+interface IProps extends IMapProps {
+    data: HTMLImageElement;
+}
+
+const MapComponent = ({ data, zIndex }: IProps) => {
+    const [{ zoom, opacity, position }, setMapStore] = useImageMapObservableStore();
+
+    const imageWidth = data.width * zoom;
+    const imageHeight = data.height * zoom;
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    const container = {
+        setClampedPosition: (_x: number, _y: number) => {},
+        zoom: (_z: number, _px: number, _py: number) => {},
+    };
+
+    container.setClampedPosition = (dx: number, dy: number) => {
+        setMapStore({
+            position: {
+                x: clampCoordinate(position.x + dx, imageWidth, screenWidth),
+                y: clampCoordinate(position.y + dy, imageHeight, screenHeight),
+            },
+        });
+    };
+    container.zoom = (dz: number, pointX: number, pointY: number) => {
+        const newWidth = clampImageWidth(imageWidth, dz);
+        const newZoom = newWidth / data.width;
+
+        if (zoom !== newZoom) {
+            const newHeight = data.height * newZoom;
+
+            const xOffset = getZoomImageOffset(pointX - position.x, imageWidth, newWidth);
+            const yOffset = getZoomImageOffset(pointY - position.y, imageHeight, newHeight);
+
+            setMapStore({
+                zoom: newZoom,
+                position: {
+                    x: clampCoordinate(position.x - xOffset, newWidth, screenWidth),
+                    y: clampCoordinate(position.y - yOffset, newHeight, screenHeight),
+                },
+            });
+        }
+    };
+
+    useWheel((e) => {
+        if (e.ctrlKey) {
+            container.zoom(e.deltaY, e.offsetX, e.offsetY);
+        } else {
+            container.setClampedPosition(-e.deltaX, -e.deltaY);
+        }
+    });
+
+    const [isUpPressed, setUpPressed] = useState(false);
+    const [isDownPressed, setDownPressed] = useState(false);
+    const [isLeftPressed, setLeftPressed] = useState(false);
+    const [isRightPressed, setRightPressed] = useState(false);
+
+    useArrowKeys({ setUpPressed, setDownPressed, setLeftPressed, setRightPressed });
+
+    const render = () => {
+        let deltaX = 0;
+        let deltaY = 0;
+
+        if (isUpPressed) {
+            deltaY = SPEED;
+        }
+        if (isDownPressed) {
+            deltaY = -SPEED;
+        }
+        if (isLeftPressed) {
+            deltaX = SPEED;
+        }
+        if (isRightPressed) {
+            deltaX = -SPEED;
+        }
+        container.setClampedPosition(deltaX, deltaY);
+    };
+
+    useEffect(() => {
+        if (isUpPressed || isDownPressed || isLeftPressed || isRightPressed) {
+            requestAnimationFrame(render);
+        }
+    }, [position, isDownPressed, isLeftPressed, isRightPressed, isUpPressed, render]);
+
+    const children = (ctx: CanvasRenderingContext2D) => {
+        ctx.clearRect(0, 0, screenWidth, screenHeight);
+        ctx.drawImage(data, position.x, position.y, imageWidth, imageHeight);
+    };
+
+    return (
+        <Canvas
+            id="image-map"
+            width={screenWidth}
+            height={screenHeight}
+            style={{ zIndex, opacity }}
+        >
+            {children}
+        </Canvas>
+    );
+};
+
+export function ImageMap(props: IMapProps) {
+    const { isEditable, zIndex } = props;
+
+    const [{ data, opacity }, setStore] = useImageMapObservableStore();
+
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    if (!data) {
+        return (
+            <div
+                id="image-map"
+                style={{ height: 'calc(100% - 32px)', zIndex, opacity }}
+            >
+                <LoadImageButton
+                    disabled={!isEditable}
+                    onDataUpdate={(newData) => {
+                        const initialZoom = zoomConfig.minWidth / newData.width; // set minimal size
+
+                        setStore({
+                            data: newData,
+                            zoom: initialZoom,
+                            position: {
+                                // set in the center of the creen
+                                x: (screenWidth - newData.width * initialZoom) / 2,
+                                y: (screenHeight - newData.height * initialZoom) / 2,
+                            },
+                        });
+                    }}
+                />
+            </div>
+        );
+    }
+
+    return (
+        <MapComponent
+            key={data.src}
+            {...props}
+            data={data}
+        />
+    );
+}

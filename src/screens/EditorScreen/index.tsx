@@ -1,32 +1,20 @@
 import '../styles.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
+import { ArrowButton } from 'components/ArrowButton';
+import { MenuItem } from 'components/Menu/MenuItem';
 import { useLayerStore } from 'layerStore';
-import { LAYER_TYPE } from 'types';
 
+import { LeftPanel } from './components/LeftPanel';
+import { RightPanel } from './components/RightPanel';
+import { TopPanel } from './components/TopPanel';
 import { RIGHT_PANEL, TOP_PANEL_HEIGHT } from './const';
-import { HexBrushes } from './HexBrushes';
-import { Layers } from './Layers';
-import { LeftPanel } from './LeftPanel';
-import { Map } from './Map';
-import { useHexMapStore } from './Map/HexMap/store';
-import { RightPanel } from './RightPanel';
-import { TopPanel } from './TopPanel';
-import { generateEmptyMapData } from './utils';
+import { LAYER_CONFIG } from './layersConfig/config';
+import { Layers } from './layersConfig/Layers';
+import { Map } from './layersConfig/Map';
 
 export const EditorScreen = () => {
-    const [, setHexMapStore] = useHexMapStore();
     const [layerConfig] = useLayerStore();
-
-    useEffect(() => {
-        if (layerConfig.layer === LAYER_TYPE.hex) {
-            setHexMapStore({
-                data: generateEmptyMapData(layerConfig.width, layerConfig.height),
-            });
-        }
-    }, []);
-
-    const isCurrentLayerHex = layerConfig.layer === LAYER_TYPE.hex;
 
     const [isLeftPanelShown, setLeftPanelShown] = useState(true);
     const [isRightPanelShown, setRightPanelShown] = useState(true);
@@ -39,20 +27,25 @@ export const EditorScreen = () => {
             className="screen"
             style={{ paddingTop: TOP_PANEL_HEIGHT }}
         >
-            <Map
-                width={window.innerWidth}
-                height={window.innerHeight - TOP_PANEL_HEIGHT}
-            />
-            <TopPanel
-                showLeftPanelSwitcher={isCurrentLayerHex}
-                toggleLeftPanel={toggleLeftPanel}
-                toggleRightPanel={toggleRightPanel}
-            />
-            {isLeftPanelShown && isCurrentLayerHex && (
-                <LeftPanel>
-                    <HexBrushes />
-                </LeftPanel>
-            )}
+            <Map />
+
+            <TopPanel>
+                <div style={{ display: 'flex' }}>
+                    <MenuItem
+                        title="Open menu"
+                        action="back"
+                    />
+                    <ArrowButton onClick={toggleLeftPanel} />
+
+                    {LAYER_CONFIG[layerConfig.layer].topPanelContent}
+                </div>
+                <div style={{ display: 'flex', width: RIGHT_PANEL.width }}>
+                    <ArrowButton onClick={toggleRightPanel} />
+                </div>
+            </TopPanel>
+
+            {isLeftPanelShown && <LeftPanel>{LAYER_CONFIG[layerConfig.layer].leftPanelContent}</LeftPanel>}
+
             {isRightPanelShown && (
                 <RightPanel>
                     <Layers width={RIGHT_PANEL.innerWidth} />

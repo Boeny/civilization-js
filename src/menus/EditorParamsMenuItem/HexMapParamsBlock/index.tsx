@@ -9,6 +9,7 @@ interface IProps extends IHexMapParams {
     setHeight: (v: number) => void;
     onEnterKeyDown: () => void;
 }
+
 export function HexMapParamsBlock({ width, height, setWidth, setHeight, onEnterKeyDown }: IProps) {
     return (
         <Block bordered>

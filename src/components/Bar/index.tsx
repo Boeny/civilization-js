@@ -18,8 +18,12 @@ export const Bar = ({ width, buttonSize, defaultValue = 0, onChange }: IProps) =
     const { startMoving } = useMouseMove((e) => {
         let newOffset = e.clientX - container.startingPoint;
 
-        if (newOffset < 0) newOffset = 0;
-        if (newOffset > width) newOffset = width;
+        if (newOffset < 0) {
+            newOffset = 0;
+        }
+        if (newOffset > width) {
+            newOffset = width;
+        }
 
         setOffset(newOffset);
         onChange(newOffset / width);

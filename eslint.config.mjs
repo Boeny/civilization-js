@@ -1,279 +1,296 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import { fixupConfigRules, fixupPluginRules } from "@eslint/compat";
-import _import from "eslint-plugin-import";
-import react from "eslint-plugin-react";
-import reactHooks from "eslint-plugin-react-hooks";
-import jsxA11Y from "eslint-plugin-jsx-a11y";
-import jest from "eslint-plugin-jest";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import prettier from "eslint-plugin-prettier";
-import globals from "globals";
-import tsParser from "@typescript-eslint/parser";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
+import { defineConfig, globalIgnores } from 'eslint/config';
+import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
+import _import from 'eslint-plugin-import';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import jsxA11Y from 'eslint-plugin-jsx-a11y';
+import jest from 'eslint-plugin-jest';
+import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import prettier from 'eslint-plugin-prettier';
+import globals from 'globals';
+import tsParser from '@typescript-eslint/parser';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import js from '@eslint/js';
+import { FlatCompat } from '@eslint/eslintrc';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
     baseDirectory: __dirname,
     recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
+    allConfig: js.configs.all,
 });
 
-export default defineConfig([globalIgnores([
-    "**/node_modules",
-    "**/node_modules/**/*",
-    "**/dist/",
-    "**/build/",
-    "**/docs/",
-    "**/jest.config.*",
-    "**/*.mjs",
-]), {
-    extends: fixupConfigRules(compat.extends(
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:import/recommended",
-        "prettier",
-    )),
+export default defineConfig([
+    globalIgnores(['**/node_modules', '**/node_modules/**/*', '**/dist/', '**/build/', '**/docs/', '**/jest.config.*', '**/*.mjs']),
+    {
+        extends: fixupConfigRules(
+            compat.extends('eslint:recommended', 'plugin:react/recommended', 'plugin:import/recommended', 'prettier'),
+        ),
 
-    plugins: {
-        import: fixupPluginRules(_import),
-        react: fixupPluginRules(react),
-        "react-hooks": fixupPluginRules(reactHooks),
-        "jsx-a11y": jsxA11Y,
-        jest,
-        "@typescript-eslint": typescriptEslint,
-        prettier,
-    },
-
-    languageOptions: {
-        globals: {
-            ...globals.browser,
-            ...globals.node,
-            ...globals.jest,
+        plugins: {
+            import: fixupPluginRules(_import),
+            react: fixupPluginRules(react),
+            'react-hooks': fixupPluginRules(reactHooks),
+            'jsx-a11y': jsxA11Y,
+            jest,
+            '@typescript-eslint': typescriptEslint,
+            prettier,
         },
 
-        parser: tsParser,
-        ecmaVersion: 5,
-        sourceType: "commonjs",
-
-        parserOptions: {
-            ecmaFeatures: {
-                jsx: true,
-            },
-        },
-    },
-
-    settings: {
-        react: {
-            version: "detect",
-        },
-
-        "import/parsers": {
-            "@typescript-eslint/parser": [".js", ".jsx", ".ts", ".tsx"],
-        },
-
-        "import/resolver": {
-            node: {
-                paths: ["src/"],
-                moduleDirectory: ["node_modules", "src"],
-                extensions: [".js", ".jsx", ".ts", ".tsx"],
+        languageOptions: {
+            globals: {
+                ...globals.browser,
+                ...globals.node,
+                ...globals.jest,
             },
 
-            typescript: {
-                alwaysTryTypes: true,
+            parser: tsParser,
+            ecmaVersion: 5,
+            sourceType: 'commonjs',
+
+            parserOptions: {
+                ecmaFeatures: {
+                    jsx: true,
+                },
             },
         },
-    },
 
-    rules: {
-        "array-callback-return": "error",
-        "@typescript-eslint/ban-ts-comment": "warn",
-        "brace-style": "error",
-        camelcase: "error",
-        "class-methods-use-this": "off",
-        "consistent-return": "warn",
-        curly: "error",
-        "default-case": "error",
-        "default-param-last": "off",
-        "@typescript-eslint/default-param-last": "error",
-        eqeqeq: "error",
-        "global-require": "error",
-        "guard-for-in": "warn",
-        "import/extensions": "off",
-
-        "import/order": ["error", {
-            alphabetize: {
-                caseInsensitive: true,
-                order: "asc",
+        settings: {
+            react: {
+                version: 'detect',
             },
 
-            groups: [
-                "builtin",
-                "external",
-                "internal",
-                "parent",
-                ["sibling", "index"],
-                "object",
-                "type",
+            'import/parsers': {
+                '@typescript-eslint/parser': ['.js', '.jsx', '.ts', '.tsx'],
+            },
+
+            'import/resolver': {
+                node: {
+                    paths: ['src/'],
+                    moduleDirectory: ['node_modules', 'src'],
+                    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+                },
+
+                typescript: {
+                    alwaysTryTypes: true,
+                },
+            },
+        },
+
+        rules: {
+            'array-callback-return': 'error',
+            '@typescript-eslint/ban-ts-comment': 'warn',
+            'brace-style': 'error',
+            camelcase: 'warn',
+            'class-methods-use-this': 'off',
+            'consistent-return': 'warn',
+            curly: 'error',
+            'default-case': 'error',
+            'default-param-last': 'off',
+            '@typescript-eslint/default-param-last': 'error',
+            eqeqeq: 'error',
+            'global-require': 'error',
+            'guard-for-in': 'warn',
+            'import/extensions': 'off',
+
+            'import/order': [
+                'error',
+                {
+                    alphabetize: {
+                        caseInsensitive: true,
+                        order: 'asc',
+                    },
+
+                    groups: ['builtin', 'external', 'internal', 'parent', ['sibling', 'index'], 'object', 'type'],
+
+                    'newlines-between': 'always',
+
+                    pathGroups: [
+                        {
+                            pattern: 'react*',
+                            group: 'builtin',
+                            position: 'before',
+                        },
+                    ],
+
+                    distinctGroup: true,
+                    pathGroupsExcludedImportTypes: ['builtin'],
+                },
             ],
 
-            "newlines-between": "always",
+            'import/newline-after-import': 'error',
+            'import/no-extraneous-dependencies': 'off',
+            'import/no-cycle': 'error',
+            'import/no-unresolved': 'off',
+            'import/no-duplicates': 'error',
+            'import/named': 'off',
+            'import/no-self-import': 'error',
+            'import/no-dynamic-require': 'off',
+            'import/no-named-as-default': 'off',
 
-            pathGroups: [{
-                pattern: "react*",
-                group: "builtin",
-                position: "before",
-            }],
+            'import/no-unused-modules': [
+                'error',
+                {
+                    unusedExports: true,
+                },
+            ],
 
-            distinctGroup: true,
-            pathGroupsExcludedImportTypes: ["builtin"],
-        }],
+            'import/prefer-default-export': 'off',
+            'jsx-a11y/click-events-have-key-events': 'off',
+            'jsx-a11y/interactive-supports-focus': 'warn',
+            'jsx-a11y/label-has-associated-control': 'off',
+            'jsx-a11y/no-autofocus': 'off',
+            'jsx-a11y/no-static-element-interactions': 'off',
+            'keyword-spacing': 'warn',
 
-        "import/newline-after-import": "error",
-        "import/no-extraneous-dependencies": "off",
-        "import/no-cycle": "error",
-        "import/no-unresolved": "off",
-        "import/no-duplicates": "error",
-        "import/named": "off",
-        "import/no-self-import": "error",
-        "import/no-dynamic-require": "off",
-        "import/no-named-as-default": "off",
+            'max-len': [
+                'warn',
+                {
+                    code: 140,
+                    ignoreUrls: true,
+                    ignoreTemplateLiterals: true,
+                    ignoreStrings: true,
+                },
+            ],
 
-        "import/no-unused-modules": ["error", {
-            unusedExports: true,
-        }],
+            'newline-before-return': 'warn',
+            'no-await-in-loop': 'off',
+            'no-continue': 'off',
+            'no-console': 'warn',
+            'no-debugger': 'warn',
+            'no-dupe-keys': 'error',
+            'no-else-return': 'error',
+            'no-empty': 'warn',
+            '@typescript-eslint/no-empty-function': 'warn',
+            'no-multi-assign': 'off',
 
-        "import/prefer-default-export": "off",
-        "jsx-a11y/click-events-have-key-events": "off",
-        "jsx-a11y/interactive-supports-focus": "warn",
-        "jsx-a11y/label-has-associated-control": "off",
-        "jsx-a11y/no-autofocus": "off",
-        "jsx-a11y/no-static-element-interactions": "off",
-        "keyword-spacing": "warn",
+            'no-multiple-empty-lines': [
+                'warn',
+                {
+                    max: 1,
+                    maxBOF: 0,
+                    maxEOF: 1,
+                },
+            ],
 
-        "max-len": ["warn", {
-            code: 140,
-            ignoreUrls: true,
-            ignoreTemplateLiterals: true,
-            ignoreStrings: true,
-        }],
+            'no-nested-ternary': 'warn',
+            'no-param-reassign': 'off',
+            'no-plusplus': 'warn',
+            'no-prototype-builtins': 'warn',
+            'no-redeclare': 'warn',
+            '@typescript-eslint/no-require-imports': 'warn',
 
-        "newline-before-return": "warn",
-        "no-await-in-loop": "off",
-        "no-continue": "off",
-        "no-console": "warn",
-        "no-debugger": "warn",
-        "no-dupe-keys": "error",
-        "no-else-return": "error",
-        "no-empty": "warn",
-        "@typescript-eslint/no-empty-function": "warn",
-        "no-multi-assign": "off",
+            'no-restricted-globals': [
+                'error',
+                {
+                    name: 'location',
+                    message: 'Please, use it as a part of History from utils/History',
+                },
+            ],
 
-        "no-multiple-empty-lines": ["warn", {
-            max: 1,
-            maxBOF: 0,
-            maxEOF: 1,
-        }],
+            'no-restricted-syntax': [
+                'error',
+                {
+                    selector: "MemberExpression[object.meta.name='import'][object.property.name='meta'][property.name='env']",
+                    message: "Usage of 'import.meta.env' is restricted. Please define your variables in src/config.ts.",
+                },
+            ],
 
-        "no-nested-ternary": "warn",
-        "no-param-reassign": "off",
-        "no-plusplus": "warn",
-        "no-prototype-builtins": "warn",
-        "no-redeclare": "error",
-        "@typescript-eslint/no-require-imports": "warn",
+            'no-return-assign': 'error',
+            'no-return-await': 'error',
+            'no-self-compare': 'error',
+            'no-shadow': 'off',
+            '@typescript-eslint/no-shadow': 'warn',
+            'no-unsafe-optional-chaining': 'warn',
+            'no-unused-expressions': 'warn',
+            'no-unused-vars': 'off',
 
-        "no-restricted-globals": ["error", {
-            name: "location",
-            message: "Please, use it as a part of History from utils/History",
-        }],
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                {
+                    argsIgnorePattern: '^_',
+                    varsIgnorePattern: '^_',
+                    caughtErrorsIgnorePattern: '^.',
+                },
+            ],
 
-        "no-restricted-syntax": ["error", {
-            selector: "MemberExpression[object.meta.name='import'][object.property.name='meta'][property.name='env']",
-            message: "Usage of 'import.meta.env' is restricted. Please define your variables in src/config.ts.",
-        }],
+            'no-use-before-define': 'off',
 
-        "no-return-assign": "error",
-        "no-return-await": "error",
-        "no-self-compare": "error",
-        "no-shadow": "off",
-        "@typescript-eslint/no-shadow": "warn",
-        "no-unsafe-optional-chaining": "warn",
-        "no-unused-expressions": "warn",
-        "no-unused-vars": "off",
+            '@typescript-eslint/no-use-before-define': [
+                'warn',
+                {
+                    functions: false,
+                    classes: false,
+                    variables: true,
+                    allowNamedExports: false,
+                },
+            ],
 
-        "@typescript-eslint/no-unused-vars": ["error", {
-            argsIgnorePattern: "^_",
-            varsIgnorePattern: "^_",
-            caughtErrorsIgnorePattern: "^.",
-        }],
+            'no-useless-constructor': 'error',
+            '@typescript-eslint/no-useless-constructor': 'error',
+            'no-var': 'error',
+            'prefer-const': 'error',
+            radix: 'off',
+            'react/button-has-type': 'off',
+            'react/destructuring-assignment': 'warn',
+            'react/display-name': 'off',
+            'react/forbid-prop-types': 'off',
+            'react/function-component-definition': 'off',
 
-        "no-use-before-define": "off",
+            'react/jsx-filename-extension': [
+                'error',
+                {
+                    extensions: ['.jsx', '.tsx'],
+                },
+            ],
 
-        "@typescript-eslint/no-use-before-define": ["warn", {
-            functions: false,
-            classes: false,
-            variables: true,
-            allowNamedExports: false,
-        }],
+            'react/jsx-no-bind': [
+                'error',
+                {
+                    ignoreDOMComponents: true,
+                    ignoreRefs: true,
+                    allowArrowFunctions: true,
+                    allowFunctions: true,
+                    allowBind: false,
+                },
+            ],
 
-        "no-useless-constructor": "error",
-        "@typescript-eslint/no-useless-constructor": "error",
-        "no-var": "error",
-        "prefer-const": "error",
-        radix: "off",
-        "react/button-has-type": "off",
-        "react/destructuring-assignment": "warn",
-        "react/display-name": "off",
-        "react/forbid-prop-types": "off",
-        "react/function-component-definition": "off",
-
-        "react/jsx-filename-extension": ["error", {
-            extensions: [".jsx", ".tsx"],
-        }],
-
-        "react/jsx-no-bind": ["error", {
-            ignoreDOMComponents: true,
-            ignoreRefs: true,
-            allowArrowFunctions: true,
-            allowFunctions: true,
-            allowBind: false,
-        }],
-
-        "react/jsx-no-constructed-context-values": "warn",
-        "react/jsx-no-useless-fragment": "error",
-        "react/jsx-props-no-spreading": "off",
-        "react/jsx-uses-react": "error",
-        "react/no-access-state-in-setstate": "off",
-        "react/no-array-index-key": "off",
-        "react/no-children-prop": "warn",
-        "react/no-unescaped-entities": "off",
-        "react/no-find-dom-node": "warn",
-        "react/no-unknown-property": "warn",
-        "react/no-unstable-nested-components": "warn",
-        "react/no-unused-class-component-methods": "warn",
-        "react/no-unused-prop-types": "warn",
-        "react/no-unused-state": "warn",
-        "react/prefer-stateless-function": "warn",
-        "react/prop-types": "off",
-        "react/react-in-jsx-scope": "off",
-        "react/require-default-props": "off",
-        "react/static-property-placement": "off",
-        "react-hooks/exhaustive-deps": "warn",
-        "react-hooks/rules-of-hooks": "error",
-        "space-in-parens": ["warn", "never"],
+            'react/jsx-no-constructed-context-values': 'warn',
+            'react/jsx-no-useless-fragment': 'error',
+            'react/jsx-props-no-spreading': 'off',
+            'react/jsx-uses-react': 'error',
+            'react/no-access-state-in-setstate': 'off',
+            'react/no-array-index-key': 'off',
+            'react/no-children-prop': 'warn',
+            'react/no-unescaped-entities': 'off',
+            'react/no-find-dom-node': 'warn',
+            'react/no-unknown-property': 'warn',
+            'react/no-unstable-nested-components': 'warn',
+            'react/no-unused-class-component-methods': 'warn',
+            'react/no-unused-prop-types': 'warn',
+            'react/no-unused-state': 'warn',
+            'react/prefer-stateless-function': 'warn',
+            'react/prop-types': 'off',
+            'react/react-in-jsx-scope': 'off',
+            'react/require-default-props': 'off',
+            'react/static-property-placement': 'off',
+            'react-hooks/exhaustive-deps': 'warn',
+            'react-hooks/rules-of-hooks': 'error',
+            'space-in-parens': ['warn', 'never'],
+        },
     },
-}, {
-    files: ["**/*.ts", "**/*.tsx"],
+    {
+        files: ['**/*.ts', '**/*.tsx'],
 
-    languageOptions: {
-        parser: tsParser,
-    },
+        languageOptions: {
+            parser: tsParser,
+        },
 
-    rules: {
-        "import/namespace": "off",
-        "no-undef": "off",
+        rules: {
+            'import/namespace': 'off',
+            'no-undef': 'off',
+        },
     },
-}]);
+]);

@@ -44,7 +44,7 @@
         "array-callback-return": "error",
         "@typescript-eslint/ban-ts-comment": "warn",
         "brace-style": "error",
-        "camelcase": "error",
+        "camelcase": "warn",
         "class-methods-use-this": "off",
         "consistent-return": "warn",
         "curly": "error",
@@ -131,7 +131,7 @@
         "no-param-reassign": "off",
         "no-plusplus": "warn",
         "no-prototype-builtins": "warn",
-        "no-redeclare": "error",
+        "no-redeclare": "warn",
         "@typescript-eslint/no-require-imports": "warn",
         "no-restricted-globals": [
             "error",
