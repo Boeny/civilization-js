@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { KEY_CODE } from 'types';
 
 export function useEsc(callback: () => void) {
-    const container = { callback };
+    const container = useMemo(() => ({ callback }), []);
 
     useEffect(() => {
         function escHandler(e: KeyboardEvent) {

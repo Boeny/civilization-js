@@ -11,13 +11,10 @@ interface IProps {
     menuStyle?: CSSProperties;
     disabled?: boolean;
     onClick?: () => void;
+    testId?: string;
 }
-export const MenuItem = ({ title, children, action, alignRight, style, menuStyle, disabled, onClick }: IProps) => {
+export const MenuItem = ({ title, children, action, alignRight, style, menuStyle, disabled, onClick, testId }: IProps) => {
     const [menu, setMenu] = useMenuStore();
-
-    if (!menu.menuItemComponent) {
-        return null;
-    }
 
     const handleClick = () => {
         onClick?.();
@@ -44,6 +41,7 @@ export const MenuItem = ({ title, children, action, alignRight, style, menuStyle
             <menu.menuItemComponent
                 disabled={disabled}
                 onClick={handleClick}
+                data-testid={testId}
             >
                 {title}
             </menu.menuItemComponent>
