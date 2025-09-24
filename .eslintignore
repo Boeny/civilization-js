@@ -4,3 +4,4 @@ dist/
 build/
 docs/
 jest.config.*
+*.mjs

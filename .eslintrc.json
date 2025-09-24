@@ -43,10 +43,11 @@
     "rules": {
         "array-callback-return": "error",
         "@typescript-eslint/ban-ts-comment": "warn",
-        "brace-style": "warn",
-        // "camelcase": "error",
+        "brace-style": "error",
+        "camelcase": "error",
         "class-methods-use-this": "off",
         "consistent-return": "warn",
+        "curly": "error",
         "default-case": "error",
         "default-param-last": "off",
         "@typescript-eslint/default-param-last": "error",
@@ -123,7 +124,7 @@
         "no-dupe-keys": "error",
         "no-else-return": "error",
         "no-empty": "warn",
-        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/no-empty-function": "warn",
         "no-multi-assign": "off",
         "no-multiple-empty-lines": ["warn", { "max": 1, "maxBOF": 0, "maxEOF": 1 }],
         "no-nested-ternary": "warn",
@@ -218,6 +219,7 @@
         "react/static-property-placement": "off",
 
         "react-hooks/exhaustive-deps": "warn",
+        "react-hooks/rules-of-hooks": "error",
 
         "space-in-parens": ["warn", "never"]
     }
