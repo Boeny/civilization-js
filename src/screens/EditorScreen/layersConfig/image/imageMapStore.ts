@@ -5,18 +5,18 @@ interface IStore {
     data: HTMLImageElement | null;
     zoom: number;
     position: IPoint;
-    opacity: number;
     width: number;
     height: number;
 }
 
-const [useImageMapObservableStore] = createStoreHook<IStore>({
+const DEFAULT_IMAGE_MAP = {
     data: null,
     zoom: 1,
     position: { x: 0, y: 0 },
-    opacity: 1,
     width: 0,
     height: 0,
-});
+};
+
+const [useImageMapObservableStore] = createStoreHook<IStore>(DEFAULT_IMAGE_MAP);
 
 export { useImageMapObservableStore };

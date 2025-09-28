@@ -1,22 +1,17 @@
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
-import { IPoint } from 'types';
 
 import { EyeButton } from '../../components/EyeButton';
 import { OpacityBar } from '../../components/OpacityBar';
 import { IMiniMapProps } from '../types';
 
 import { HEX_CONFIG } from './hexConfig';
-import { useHexMapObservableStore } from './hexMapStore';
-import { HexMapData } from './types';
+import { useHexMapObservableStore } from './stores/hexMapStore';
 import { getHexRadius } from './utils';
 
-interface IProps extends IMiniMapProps {
-    data: HexMapData;
-    zoom: number;
-    position: IPoint;
-}
-const MapComponent = ({ data, width, title }: IProps) => {
+const MapComponent = ({ width, title }: IMiniMapProps) => {
+    const [{ data }] = useHexMapObservableStore();
+
     if (!data?.length) {
         return null;
     }
@@ -43,7 +38,7 @@ const MapComponent = ({ data, width, title }: IProps) => {
 };
 
 export const HexMiniMap = ({ width, title }: IMiniMapProps) => {
-    const [{ data, isVisible, opacity, zoom, position }, setHexMap] = useHexMapObservableStore();
+    const [{ data, isVisible, opacity }, setHexMap] = useHexMapObservableStore();
 
     return (
         <>
@@ -67,11 +62,8 @@ export const HexMiniMap = ({ width, title }: IMiniMapProps) => {
             <div className="mini-map">
                 {data && isVisible && (
                     <MapComponent
-                        data={data}
                         width={width}
                         title={title}
-                        zoom={zoom}
-                        position={position}
                     />
                 )}
             </div>

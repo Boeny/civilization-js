@@ -2,8 +2,8 @@ import './styles.css';
 
 import { getClasses } from 'utils';
 
-import { useBrushObservableStore } from '../brushStore';
 import { getBrushes, HEX_CONFIG } from '../hexConfig';
+import { useBrushObservableStore } from '../stores/brushStore';
 import { HEX_TYPE } from '../types';
 
 export function HexBrushes() {

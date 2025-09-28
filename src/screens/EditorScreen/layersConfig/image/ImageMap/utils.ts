@@ -1,6 +1,6 @@
 import { filePickerConfig, zoomConfig } from './config';
 
-export async function uploadFile(): Promise<HTMLImageElement | undefined> {
+export async function uploadFile(): Promise<HTMLImageElement | null> {
     try {
         const [imageFile] = await window.showOpenFilePicker(filePickerConfig);
 
@@ -22,7 +22,7 @@ export async function uploadFile(): Promise<HTMLImageElement | undefined> {
     } catch (e) {
         console.error(e);
 
-        return undefined;
+        return null;
     }
 }
 

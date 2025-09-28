@@ -16,11 +16,10 @@ interface IProps extends IMiniMapProps {
     data: HTMLImageElement;
     onClick?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
 }
+
 const MiniMapComponent = ({ data, title, onClick, ...props }: IProps) => {
     const width = props.width - 29;
     const height = props.width > styles.maxHeight ? styles.maxHeight : props.width;
-
-    const children = (ctx: CanvasRenderingContext2D) => ctx.drawImage(data, 0, 0, width, height);
 
     return (
         <Canvas
@@ -31,15 +30,16 @@ const MiniMapComponent = ({ data, title, onClick, ...props }: IProps) => {
             style={styles}
             onClick={onClick}
         >
-            {children}
+            {(ctx) => ctx.drawImage(data, 0, 0, width, height)}
         </Canvas>
     );
 };
 
 export const ImageMiniMap = ({ title, width }: IMiniMapProps) => {
     const [{ data }, setImageMap] = useImageMapObservableStore();
-    const [layerConfig] = useLayerObservableStore();
-    const isSelected = layerConfig.layer === LAYER_TYPE.image;
+    const [{ layer }] = useLayerObservableStore();
+
+    const isSelected = layer === LAYER_TYPE.image;
 
     const handleDataUpdate = (newData: HTMLImageElement) => {
         setImageMap({ data: newData });

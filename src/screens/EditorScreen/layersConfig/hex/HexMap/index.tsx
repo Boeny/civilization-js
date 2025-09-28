@@ -9,10 +9,10 @@ import { useLayerObservableStore } from 'layerStore';
 import { LAYER_TYPE } from 'types';
 
 import { IMapProps } from '../../types';
-import { useBrushObservableStore } from '../brushStore';
-import { useGridObservableStore } from '../gridSwitchStore';
 import { HEX_CONFIG } from '../hexConfig';
-import { useHexMapObservableStore } from '../hexMapStore';
+import { useBrushObservableStore } from '../stores/brushStore';
+import { useGridObservableStore } from '../stores/gridSwitchStore';
+import { useHexMapObservableStore } from '../stores/hexMapStore';
 import { generateEmptyMapData, getHexRadius } from '../utils';
 
 import { getMapCoordinatesFromCursor } from './utils';

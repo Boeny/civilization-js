@@ -1,7 +1,7 @@
 import { createStoreHook } from 'hooks/createStoreHook';
 import { IPoint } from 'types';
 
-import { HexMapData } from './types';
+import { HexMapData } from '../types';
 
 interface IStore {
     data: HexMapData | null;

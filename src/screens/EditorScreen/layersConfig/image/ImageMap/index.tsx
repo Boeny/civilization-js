@@ -20,7 +20,7 @@ interface IProps extends IMapProps {
 }
 
 const MapComponent = ({ data, zIndex }: IProps) => {
-    const [{ zoom, opacity, position }, setMapStore] = useImageMapObservableStore();
+    const [{ zoom, position }, setMapStore] = useImageMapObservableStore();
 
     const imageWidth = data.width * zoom;
     const imageHeight = data.height * zoom;
@@ -110,7 +110,7 @@ const MapComponent = ({ data, zIndex }: IProps) => {
             id="image-map"
             width={screenWidth}
             height={screenHeight}
-            style={{ zIndex, opacity }}
+            style={{ zIndex }}
         >
             {children}
         </Canvas>
@@ -120,7 +120,7 @@ const MapComponent = ({ data, zIndex }: IProps) => {
 export function ImageMap(props: IMapProps) {
     const { isEditable, zIndex } = props;
 
-    const [{ data, opacity }, setStore] = useImageMapObservableStore();
+    const [{ data }, setImageMap] = useImageMapObservableStore();
 
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
@@ -129,14 +129,14 @@ export function ImageMap(props: IMapProps) {
         return (
             <div
                 id="image-map"
-                style={{ height: 'calc(100% - 32px)', zIndex, opacity }}
+                style={{ height: 'calc(100% - 32px)', zIndex }}
             >
                 <LoadImageButton
                     disabled={!isEditable}
                     onDataUpdate={(newData) => {
                         const initialZoom = zoomConfig.minWidth / newData.width; // set minimal size
 
-                        setStore({
+                        setImageMap({
                             data: newData,
                             zoom: initialZoom,
                             position: {
