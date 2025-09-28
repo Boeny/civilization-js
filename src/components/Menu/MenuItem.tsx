@@ -24,13 +24,15 @@ export const MenuItem = ({ title, children, action, alignRight, style, menuStyle
 
             return;
         }
+
         if (action === 'back') {
             menu.back();
 
             return;
         }
+
         if (action === 'close') {
-            setMenu({ isOpen: false, menuStyle: undefined });
+            menu.toggle(false);
 
             return;
         }

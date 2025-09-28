@@ -13,7 +13,7 @@ export function GameMenu() {
 
     return (
         <Menu
-            closeOnBackAction
+            toggleMenuOnBackAction
             component={MenuPopup}
             item={Button}
         >

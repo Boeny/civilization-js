@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useCallback } from 'react';
 
 import { useEsc } from 'hooks/useEsc';
 
@@ -7,31 +7,35 @@ import { useMenuObservableStore } from './useMenuStore';
 
 interface IProps {
     isOpen?: boolean;
-    closeOnBackAction?: boolean;
+    toggleMenuOnBackAction?: boolean; // on top level only
     component: MenuComponent;
     item: MenuItemComponent;
-    children: ReactNode;
+    children: ReactNode; // top level children
 }
 
-export function Menu({ isOpen, closeOnBackAction, item, children, ...props }: IProps) {
+export function Menu({ isOpen, toggleMenuOnBackAction, item, children: topLevelChildren, ...props }: IProps) {
     const [menu, setMenu] = useMenuObservableStore({
         isOpen: !!isOpen,
-        children,
+        children: topLevelChildren,
         menuItemComponent: item,
     });
 
-    menu.back = () => {
-        if (menu.children !== children) {
-            setMenu({ children, menuStyle: undefined });
+    menu.toggle = useCallback((show: boolean) => {
+        setMenu({ isOpen: show, children: topLevelChildren, menuStyle: undefined });
+    }, []);
+
+    menu.back = useCallback(() => {
+        if (menu.children !== topLevelChildren) {
+            // menu is NOT top level - make top level
+            setMenu({ children: topLevelChildren, menuStyle: undefined });
 
             return;
         }
 
-        if (closeOnBackAction) {
-            // top level menu
-            setMenu({ isOpen: !menu.isOpen, menuStyle: undefined });
+        if (toggleMenuOnBackAction) {
+            menu.toggle(!menu.isOpen);
         }
-    };
+    }, [menu.children, menu.isOpen]);
 
     useEsc(menu.back);
 

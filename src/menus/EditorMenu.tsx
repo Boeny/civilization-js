@@ -13,7 +13,7 @@ export function EditorMenu() {
 
     return (
         <Menu
-            closeOnBackAction
+            toggleMenuOnBackAction
             component={MenuPopup}
             item={Button}
         >

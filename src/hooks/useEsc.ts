@@ -1,17 +1,19 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 
 import { KEY_CODE } from 'types';
 
+const container = { callback: () => {} };
+
+function escHandler(e: KeyboardEvent) {
+    if (e.key === KEY_CODE.esc) {
+        container.callback();
+    }
+}
+
 export function useEsc(callback: () => void) {
-    const container = useMemo(() => ({ callback }), []);
+    container.callback = callback;
 
     useEffect(() => {
-        function escHandler(e: KeyboardEvent) {
-            if (e.key === KEY_CODE.esc) {
-                container.callback();
-            }
-        }
-
         document.addEventListener('keydown', escHandler);
 
         return () => {

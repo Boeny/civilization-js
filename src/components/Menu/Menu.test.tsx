@@ -67,7 +67,10 @@ describe('Menu component', () => {
         expect(getByTestId('item')).toBeInTheDocument();
     });
 
-    it('Should go back to the parent menu', async () => {
+    it.each([
+        ['Esc keypress', () => keypress(KEY_CODE.esc)],
+        ['menu item 2 click', (getByTestId: any) => clickOn(getByTestId('menu-item2'))],
+    ])('Should go back to the parent menu by %s', async (title, runEvent) => {
         const { getByTestId } = render(
             <Menu
                 isOpen
@@ -82,6 +85,131 @@ describe('Menu component', () => {
                         title="menu item 2"
                         testId="menu-item2"
                         action="back"
+                    />
+                </MenuItem>
+            </Menu>,
+        );
+
+        await clickOn(getByTestId('menu-item'));
+        await runEvent(getByTestId);
+
+        expect(getByTestId('menu-item')).toBeInTheDocument();
+    });
+
+    it.each([
+        ['Esc keypress', () => keypress(KEY_CODE.esc)],
+        ['menu item click', (getByTestId: any) => clickOn(getByTestId('menu-item'))],
+    ])('Should do nothing at the top menu level when go back by %s', async (title, runEvent) => {
+        const { getByTestId } = render(
+            <Menu
+                isOpen
+                component={({ children }) => <div>{children}</div>}
+                item={Button}
+            >
+                <MenuItem
+                    title="menu item"
+                    testId="menu-item"
+                    action="back"
+                />
+            </Menu>,
+        );
+
+        await runEvent(getByTestId);
+
+        expect(getByTestId('menu-item')).toBeInTheDocument();
+    });
+
+    it.each([
+        ['Esc keypress when menu is open', () => keypress(KEY_CODE.esc)],
+        ['menu item click when menu is open', (getByTestId: any) => clickOn(getByTestId('menu-item'))],
+    ])('Should close menu when go back by %s at the menu top level with toggleMenuOnBackAction', async (title, runEvent) => {
+        const { getByTestId } = render(
+            <Menu
+                isOpen
+                component={({ children }) => <div>{children}</div>}
+                item={Button}
+                toggleMenuOnBackAction
+            >
+                <MenuItem
+                    title="menu item"
+                    testId="menu-item"
+                    action="back"
+                />
+            </Menu>,
+        );
+
+        await runEvent(getByTestId);
+
+        expect(() => getByTestId('menu-item')).toThrow();
+    });
+
+    it.each([
+        ['Esc keypress when menu is closed', () => keypress(KEY_CODE.esc)],
+        ['menu item click when menu is closed', (getByTestId: any) => clickOn(getByTestId('open-menu'))],
+    ])('Should show menu by %s with toggleMenuOnBackAction', async (title, runEvent) => {
+        const { getByTestId } = render(
+            <>
+                <Menu
+                    component={({ children }) => <div>{children}</div>}
+                    item={Button}
+                    toggleMenuOnBackAction
+                >
+                    <MenuItem
+                        title="menu item"
+                        testId="menu-item"
+                        action="back"
+                    />
+                </Menu>
+                <MenuItem
+                    title="open"
+                    testId="open-menu"
+                    action="back"
+                />
+            </>,
+        );
+
+        await runEvent(getByTestId);
+
+        expect(getByTestId('menu-item')).toBeInTheDocument();
+    });
+
+    it('Should close menu if item action is "close"', async () => {
+        const { getByTestId } = render(
+            <Menu
+                isOpen
+                component={({ children }) => <div>{children}</div>}
+                item={Button}
+                toggleMenuOnBackAction
+            >
+                <MenuItem
+                    title="menu item"
+                    testId="menu-item"
+                    action="close"
+                />
+            </Menu>,
+        );
+
+        await clickOn(getByTestId('menu-item'));
+
+        expect(() => getByTestId('menu-item')).toThrow();
+    });
+
+    it('Should be at the top level after reopen', async () => {
+        const { getByTestId } = render(
+            <Menu
+                isOpen
+                component={({ children }) => <div>{children}</div>}
+                item={Button}
+                toggleMenuOnBackAction
+            >
+                <MenuItem
+                    title="menu item"
+                    testId="menu-item"
+                >
+                    <MenuItem
+                        title="menu item 2"
+                        testId="menu-item2"
+                        action="close"
                     />
                 </MenuItem>
             </Menu>,
@@ -89,31 +217,6 @@ describe('Menu component', () => {
 
         await clickOn(getByTestId('menu-item'));
         await clickOn(getByTestId('menu-item2'));
-
-        expect(getByTestId('menu-item')).toBeInTheDocument();
-    });
-
-    it('Should go back to the parent menu with Esc key pressed', async () => {
-        const { getByTestId } = render(
-            <Menu
-                isOpen
-                component={({ children }) => <div>{children}</div>}
-                item={Button}
-            >
-                <MenuItem
-                    title="menu item"
-                    testId="menu-item"
-                >
-                    <MenuItem
-                        title="menu item 2"
-                        testId="menu-item2"
-                        action="back"
-                    />
-                </MenuItem>
-            </Menu>,
-        );
-
-        await clickOn(getByTestId('menu-item'));
         await keypress(KEY_CODE.esc);
 
         expect(getByTestId('menu-item')).toBeInTheDocument();

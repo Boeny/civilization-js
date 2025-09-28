@@ -64,6 +64,7 @@ export const EditorParamsMenu = () => {
                 disabled={!isValid}
                 alignRight
                 title="Create map"
+                action="close"
                 style={{ marginTop: 24 }}
                 onClick={isHex ? handleHexSubmit : handleImageSubmit}
             />
