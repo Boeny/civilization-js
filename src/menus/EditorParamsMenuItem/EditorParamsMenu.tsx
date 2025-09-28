@@ -15,9 +15,9 @@ export const EditorParamsMenu = () => {
     const [layer, setLayer] = useState(LAYER_TYPE.image);
     const [width, setWidth] = useState(100);
     const [height, setHeight] = useState(100);
+    const [isError, setError] = useState(false);
 
     const isHex = layer === LAYER_TYPE.hex;
-    const isValid = !isHex || (width && height);
 
     const handleLayerChange = (newLayer: LAYER_TYPE) => {
         setLayer(newLayer);
@@ -25,16 +25,13 @@ export const EditorParamsMenu = () => {
         setHeight(100);
     };
 
-    const handleImageSubmit = () => {
-        setLayerConfig({ layer: LAYER_TYPE.image });
-        setScreen({ screen: SCREEN_TYPE.editor });
-    };
-
-    const handleHexSubmit = () => {
-        if (isValid) {
+    const handleSubmit = () => {
+        if (isHex) {
             setLayerConfig({ width, height, layer: LAYER_TYPE.hex });
-            setScreen({ screen: SCREEN_TYPE.editor });
+        } else {
+            setLayerConfig({ layer: LAYER_TYPE.image });
         }
+        setScreen({ screen: SCREEN_TYPE.editor });
     };
 
     return (
@@ -55,18 +52,20 @@ export const EditorParamsMenu = () => {
                         height={height}
                         setWidth={setWidth}
                         setHeight={setHeight}
-                        onEnterKeyDown={handleHexSubmit}
+                        onEnterKeyDown={handleSubmit}
+                        isError={isError}
+                        setError={setError}
                     />
                 )}
             </LayerSwitcher>
 
             <MenuItem
-                disabled={!isValid}
+                disabled={isHex && isError}
                 alignRight
                 title="Create map"
                 action="close"
                 style={{ marginTop: 24 }}
-                onClick={isHex ? handleHexSubmit : handleImageSubmit}
+                onClick={handleSubmit}
             />
         </>
     );

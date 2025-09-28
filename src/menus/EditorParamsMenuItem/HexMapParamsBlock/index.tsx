@@ -8,9 +8,11 @@ interface IProps extends IHexMapParams {
     setWidth: (v: number) => void;
     setHeight: (v: number) => void;
     onEnterKeyDown: () => void;
+    isError: boolean;
+    setError: (isError: boolean) => void;
 }
 
-export function HexMapParamsBlock({ width, height, setWidth, setHeight, onEnterKeyDown }: IProps) {
+export function HexMapParamsBlock({ width, height, setWidth, setHeight, onEnterKeyDown, isError, setError }: IProps) {
     return (
         <Block bordered>
             <label>
@@ -20,6 +22,8 @@ export function HexMapParamsBlock({ width, height, setWidth, setHeight, onEnterK
                     value={width}
                     onChange={setWidth}
                     onEnterKeyDown={onEnterKeyDown}
+                    isError={isError}
+                    setError={setError}
                 />
             </label>
             <label>
@@ -28,6 +32,8 @@ export function HexMapParamsBlock({ width, height, setWidth, setHeight, onEnterK
                     value={height}
                     onChange={setHeight}
                     onEnterKeyDown={onEnterKeyDown}
+                    isError={isError}
+                    setError={setError}
                 />
             </label>
         </Block>
