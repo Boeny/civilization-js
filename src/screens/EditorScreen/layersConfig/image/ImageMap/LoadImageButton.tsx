@@ -1,3 +1,5 @@
+import { Button } from 'components/Button';
+
 import { uploadFile } from './utils';
 
 interface IProps {
@@ -14,11 +16,11 @@ export function LoadImageButton({ disabled, onDataUpdate }: IProps) {
     };
 
     return (
-        <button
+        <Button
             disabled={disabled}
             onClick={handleClick}
         >
             Load Image
-        </button>
+        </Button>
     );
 }
