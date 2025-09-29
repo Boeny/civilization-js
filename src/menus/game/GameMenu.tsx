@@ -5,10 +5,11 @@ import { MenuPopup } from 'components/MenuPopup';
 import { useScreenStore } from 'screenStore';
 import { SCREEN_TYPE } from 'types';
 
-import { EditorParamsMenuItem } from './EditorParamsMenuItem';
-import { OptionsMenu } from './OptionsMenu';
+import { OptionsMenu } from '../OptionsMenu';
 
-export function EditorMenu() {
+import { NewGameMenu } from './NewGameMenu';
+
+export function GameMenu() {
     const [, setScreen] = useScreenStore();
 
     return (
@@ -18,19 +19,21 @@ export function EditorMenu() {
             item={Button}
         >
             <MenuItem
-                title="Back to the editor"
+                title="Back to the game"
                 action="back"
             />
 
             <MenuItem
-                title="Reload map"
+                title="Restart"
                 onClick={() => {}}
                 action="back"
             />
 
-            <EditorParamsMenuItem title="New map" />
+            <MenuItem title="New Game">
+                <NewGameMenu onPlay={() => {}} />
+            </MenuItem>
 
-            <MenuItem title="Editor options">
+            <MenuItem title="Options">
                 <OptionsMenu onApply={() => {}} />
             </MenuItem>
 

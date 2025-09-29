@@ -5,8 +5,7 @@ import { MenuPopup } from 'components/MenuPopup';
 import { useScreenStore } from 'screenStore';
 import { SCREEN_TYPE } from 'types';
 
-import { EditorParamsMenuItem } from './EditorParamsMenuItem';
-import { NewGameMenu } from './NewGameMenu';
+import { NewGameMenu } from './game/NewGameMenu';
 import { OptionsMenu } from './OptionsMenu';
 
 export function MainMenu() {
@@ -22,7 +21,10 @@ export function MainMenu() {
                 <NewGameMenu onPlay={() => setScreen({ screen: SCREEN_TYPE.game })} />
             </MenuItem>
 
-            <EditorParamsMenuItem title="Editor" />
+            <MenuItem
+                title="Editor"
+                onClick={() => setScreen({ screen: SCREEN_TYPE.editor })}
+            />
 
             <MenuItem title="Options">
                 <OptionsMenu onApply={() => {}} />
