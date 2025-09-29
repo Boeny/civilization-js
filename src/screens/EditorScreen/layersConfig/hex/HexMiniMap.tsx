@@ -1,13 +1,16 @@
+import { Button } from 'components/Button';
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
+import { usePopup } from 'components/Popup';
 
 import { EyeButton } from '../../components/EyeButton';
 import { OpacityBar } from '../../components/OpacityBar';
 import { IMiniMapProps } from '../types';
 
 import { HEX_CONFIG } from './hexConfig';
+import { NewHexMapPopup } from './NewHexMapPopup';
 import { useHexMapObservableStore } from './stores/hexMapStore';
-import { getHexRadius } from './utils';
+import { generateEmptyMapData, getHexRadius } from './utils';
 
 const MapComponent = ({ width, title }: IMiniMapProps) => {
     const [{ data }] = useHexMapObservableStore();
@@ -39,28 +42,49 @@ const MapComponent = ({ width, title }: IMiniMapProps) => {
 
 export const HexMiniMap = ({ width, title }: IMiniMapProps) => {
     const [{ data, isVisible, opacity }, setHexMap] = useHexMapObservableStore();
+    const { showPopup } = usePopup();
+
+    if (!data) {
+        const handleClick = async () => {
+            try {
+                const params = await showPopup<{ width: number; height: number }>(<NewHexMapPopup />);
+                setHexMap({ data: generateEmptyMapData(params.width, params.height) });
+            } catch (e) {}
+        };
+
+        return (
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 100,
+                }}
+            >
+                <Button onClick={handleClick}>Create Hex Map</Button>
+            </div>
+        );
+    }
 
     return (
         <>
             <div className="title">
                 {title}
-                {data && (
-                    <EyeButton
-                        isVisible={isVisible}
-                        toggleVisible={() => setHexMap({ isVisible: !isVisible })}
-                    />
-                )}
+                <EyeButton
+                    isVisible={isVisible}
+                    toggleVisible={() => setHexMap({ isVisible: !isVisible })}
+                />
             </div>
 
-            {data && isVisible && (
+            {isVisible && (
                 <OpacityBar
                     opacity={opacity}
-                    onChange={(o) => setHexMap({ opacity: o })}
+                    onChange={(newOpacity) => setHexMap({ opacity: newOpacity })}
                 />
             )}
 
             <div className="mini-map">
-                {data && isVisible && (
+                {isVisible && (
                     <MapComponent
                         width={width}
                         title={title}

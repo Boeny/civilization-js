@@ -1,21 +1,14 @@
-import { Popup } from 'components/Popup';
-import { NewHexMapParams } from './NewHexMapParams';
-import { useState } from 'react';
+import { usePopup } from 'components/Popup';
 
-type Props = {
-    show: boolean;
-    onSubmit: (width: number, height: number) => void;
-};
-export function NewHexMapPopup({ show, onSubmit }: Props) {
-    const [] = useState(show);
+import { NewHexMapParams } from './NewHexMapParams';
+
+export function NewHexMapPopup() {
+    const { onAccept, onReject } = usePopup<{ width: number; height: number }>();
 
     return (
-        <Popup>
-            <NewHexMapParams
-                onSubmit={(width, height) => {
-                    onSubmit(width, height);
-                }}
-            />
-        </Popup>
+        <NewHexMapParams
+            onSubmit={(width, height) => onAccept({ width, height })}
+            onClose={onReject}
+        />
     );
 }
