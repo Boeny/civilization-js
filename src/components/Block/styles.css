@@ -1,13 +1,23 @@
 .block {
     margin: 5px 0;
-    background-color: white;
-    border-radius: 7px;
+    border-radius: 5px;
     padding: 20px 30px;
 }
 .block.bordered {
     border: 1px solid #ccc;
 }
+.block.flex {
+    display: flex;
+    justify-content: space-between;
+}
 .block.flex-column {
     display: flex;
     flex-direction: column;
+}
+.block.flex-right {
+    display: flex;
+    justify-content: flex-end;
+}
+.block.no-padding {
+    padding: 0;
 }
