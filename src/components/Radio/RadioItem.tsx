@@ -8,6 +8,7 @@ interface IProps<T> {
     children?: ReactNode;
     onChange: (value: T) => void;
 }
+// eslint-disable-next-line import/no-unused-modules
 export function RadioItem<T extends number | string>({ name, label, value: currentValue, selectedValue, children, onChange }: IProps<T>) {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;

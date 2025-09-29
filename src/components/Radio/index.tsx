@@ -7,6 +7,7 @@ interface IProps<T> {
     label?: string;
     onChange: (value: T) => void;
 }
+// eslint-disable-next-line import/no-unused-modules
 export function Radio<T extends string | number>({ name, value, children, label, onChange }: IProps<T>) {
     return (
         <div>
