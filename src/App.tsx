@@ -1,3 +1,4 @@
+import { Popup } from 'components/Popup';
 import { EditorMenu } from 'menus/editor/EditorMenu';
 import { GameMenu } from 'menus/game/GameMenu';
 import { MainMenu } from 'menus/MainMenu';
@@ -23,6 +24,7 @@ export function App() {
 
     return (
         <>
+            <Popup />
             {menuElement[screen]}
             {screenElement[screen]}
         </>

@@ -1,5 +1,8 @@
 .popup {
     position: fixed;
+    background: white;
+    border-radius: 5px;
+    padding: 20px 30px;
 }
 .popup button {
     margin: 10px 0;
