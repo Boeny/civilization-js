@@ -1,4 +1,4 @@
-import { useLayerObservableStore } from 'layerStore';
+import { useLayerObservableStore } from '../layerStore';
 
 import { getLayers, LAYER_CONFIG } from './config';
 

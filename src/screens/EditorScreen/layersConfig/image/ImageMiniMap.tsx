@@ -1,7 +1,7 @@
 import { Canvas } from 'components/canvas/Canvas';
-import { useLayerObservableStore } from 'layerStore';
 import { LAYER_TYPE } from 'types';
 
+import { useLayerObservableStore } from '../../layerStore';
 import { IMiniMapProps } from '../types';
 
 import { LoadImageButton } from './ImageMap/LoadImageButton';

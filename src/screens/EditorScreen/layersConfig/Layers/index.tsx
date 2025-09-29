@@ -1,9 +1,9 @@
 import './styles.css';
 
-import { useLayerObservableStore } from 'layerStore';
 import { LAYER_TYPE } from 'types';
 import { getClasses } from 'utils';
 
+import { useLayerObservableStore } from '../../layerStore';
 import { getLayers, LAYER_CONFIG } from '../config';
 
 export const Layers = ({ width }: { width: number }) => {
@@ -13,23 +13,6 @@ export const Layers = ({ width }: { width: number }) => {
         if (layer === type) {
             return;
         }
-
-        //     if (type === LAYER_TYPE.hex && !data[type]) {
-        //         showPopup(
-        //             <MenuPopup>
-        //                 <CreateMapMenu
-        //                     onSubmit={(params) => {
-        //                         setStore({
-        //                             layer: type,
-        //                             data: { ...data, [type]: generateEmptyMapData(params.width, params.height) },
-        //                         });
-        //                     }}
-        //                 />
-        //             </MenuPopup>,
-        //         );
-
-        //         return;
-        //     }
 
         setLayer({ layer: type });
     };

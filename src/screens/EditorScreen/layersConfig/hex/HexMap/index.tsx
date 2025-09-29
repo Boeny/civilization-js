@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { useMouseMove } from 'hooks/useMouseMove';
-import { useLayerObservableStore } from 'layerStore';
+import { useLayerObservableStore } from 'screens/EditorScreen/layerStore';
 import { LAYER_TYPE } from 'types';
 
 import { IMapProps } from '../../types';

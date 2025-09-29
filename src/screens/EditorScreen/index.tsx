@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 import { ArrowButton } from 'components/ArrowButton';
 import { MenuItem } from 'components/Menu/MenuItem';
-import { useLayerObservableStore } from 'layerStore';
 
 import { LeftPanel } from './components/LeftPanel';
 import { RightPanel } from './components/RightPanel';
@@ -12,6 +11,7 @@ import { RIGHT_PANEL, TOP_PANEL_HEIGHT } from './const';
 import { LAYER_CONFIG } from './layersConfig/config';
 import { Layers } from './layersConfig/Layers';
 import { Map } from './layersConfig/Map';
+import { useLayerObservableStore } from './layerStore';
 
 export const EditorScreen = () => {
     const [{ layer }] = useLayerObservableStore();
