@@ -8,11 +8,6 @@ export enum LAYER_TYPE {
     hex,
 }
 
-export interface IHexMapParams {
-    width: number;
-    height: number;
-}
-
 export interface IPoint {
     x: number;
     y: number;

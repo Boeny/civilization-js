@@ -2,9 +2,10 @@ import './styles.css';
 
 import { Block } from 'components/Block';
 import { NumberInput } from 'components/NumberInput';
-import { IHexMapParams } from 'types';
 
-interface IProps extends IHexMapParams {
+interface IProps {
+    width: number;
+    height: number;
     setWidth: (v: number) => void;
     setHeight: (v: number) => void;
     onEnterKeyDown: () => void;
