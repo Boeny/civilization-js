@@ -1,33 +1,50 @@
 import { useEffect } from 'react';
 
-interface IParams {
+interface Props {
     setUpPressed: (isPressed: boolean) => void;
     setDownPressed: (isPressed: boolean) => void;
     setLeftPressed: (isPressed: boolean) => void;
     setRightPressed: (isPressed: boolean) => void;
+    includeWASD?: boolean;
 }
-export function useArrowKeys({ setUpPressed, setDownPressed, setLeftPressed, setRightPressed }: IParams) {
+export function useArrowKeys({ setUpPressed, setDownPressed, setLeftPressed, setRightPressed, includeWASD = true }: Props) {
     useEffect(() => {
         function setPressed(key: string, isPressed: boolean) {
             switch (key) {
                 case 'w':
+                    if (!includeWASD) {
+                        return;
+                    }
                 case 'ArrowUp':
                     setUpPressed(isPressed);
-                    break;
+
+                    return;
                 case 's':
+                    if (!includeWASD) {
+                        return;
+                    }
                 case 'ArrowDown':
                     setDownPressed(isPressed);
-                    break;
+
+                    return;
                 case 'a':
+                    if (!includeWASD) {
+                        return;
+                    }
                 case 'ArrowLeft':
                     setLeftPressed(isPressed);
-                    break;
+
+                    return;
                 case 'd':
+                    if (!includeWASD) {
+                        return;
+                    }
                 case 'ArrowRight':
                     setRightPressed(isPressed);
-                    break;
+
+                    return;
                 default:
-                    break;
+                    return;
             }
         }
 

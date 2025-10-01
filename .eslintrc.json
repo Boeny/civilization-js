@@ -125,6 +125,7 @@
         "no-else-return": "error",
         "no-empty": "warn",
         "@typescript-eslint/no-empty-function": "warn",
+        "no-fallthrough": "off",
         "no-multi-assign": "off",
         "no-multiple-empty-lines": ["warn", { "max": 1, "maxBOF": 0, "maxEOF": 1 }],
         "no-nested-ternary": "warn",
