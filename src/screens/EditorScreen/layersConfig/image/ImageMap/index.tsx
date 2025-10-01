@@ -14,12 +14,16 @@ import { LoadImageButton } from './LoadImageButton';
 import { clampCoordinate, clampImageWidth, getZoomImageOffset } from './utils';
 
 const SPEED = 5;
+const container = {
+    setClampedPosition: (_x: number, _y: number) => {},
+    zoom: (_z: number, _px: number, _py: number) => {},
+};
 
 interface IProps extends IMapProps {
     data: HTMLImageElement;
 }
 
-const MapComponent = ({ data, zIndex }: IProps) => {
+const ImageMapComponent = ({ data, zIndex }: IProps) => {
     const {
         store: { zoom, position },
         setStore: setImageMap,
@@ -29,11 +33,6 @@ const MapComponent = ({ data, zIndex }: IProps) => {
     const imageHeight = data.height * zoom;
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
-
-    const container = {
-        setClampedPosition: (_x: number, _y: number) => {},
-        zoom: (_z: number, _px: number, _py: number) => {},
-    };
 
     container.setClampedPosition = (dx: number, dy: number) => {
         setImageMap({
@@ -101,12 +100,7 @@ const MapComponent = ({ data, zIndex }: IProps) => {
         if (isUpPressed || isDownPressed || isLeftPressed || isRightPressed) {
             requestAnimationFrame(render);
         }
-    }, [position, isDownPressed, isLeftPressed, isRightPressed, isUpPressed, render]);
-
-    const children = (ctx: CanvasRenderingContext2D) => {
-        ctx.clearRect(0, 0, screenWidth, screenHeight);
-        ctx.drawImage(data, position.x, position.y, imageWidth, imageHeight);
-    };
+    }, [isDownPressed, isLeftPressed, isRightPressed, isUpPressed, render]);
 
     return (
         <Canvas
@@ -115,7 +109,10 @@ const MapComponent = ({ data, zIndex }: IProps) => {
             height={screenHeight}
             style={{ zIndex }}
         >
-            {children}
+            {(ctx: CanvasRenderingContext2D) => {
+                ctx.clearRect(0, 0, screenWidth, screenHeight);
+                ctx.drawImage(data, position.x, position.y, imageWidth, imageHeight);
+            }}
         </Canvas>
     );
 };
@@ -158,7 +155,7 @@ export function ImageMap(props: IMapProps) {
     }
 
     return (
-        <MapComponent
+        <ImageMapComponent
             key={data.src}
             {...props}
             data={data}
