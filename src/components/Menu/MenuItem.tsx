@@ -43,7 +43,7 @@ export const MenuItem = ({ title, children, action, alignRight, style, menuStyle
             <menu.menuItemComponent
                 disabled={disabled}
                 onClick={handleClick}
-                data-testid={testId}
+                testId={testId}
             >
                 {title}
             </menu.menuItemComponent>

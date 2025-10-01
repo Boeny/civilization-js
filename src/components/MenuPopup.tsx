@@ -5,7 +5,15 @@ import { PopupComponent } from './Popup';
 interface IProps {
     children: ReactNode;
     style?: CSSProperties;
+    testId?: string;
 }
-export function MenuPopup({ children, style }: IProps) {
-    return <PopupComponent style={style}>{children}</PopupComponent>;
+export function MenuPopup({ children, style, testId }: IProps) {
+    return (
+        <PopupComponent
+            testId={testId}
+            style={style}
+        >
+            {children}
+        </PopupComponent>
+    );
 }

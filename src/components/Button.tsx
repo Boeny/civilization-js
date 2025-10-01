@@ -1,5 +1,10 @@
 interface IProps extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {}
 
-export function Button(props: IProps) {
-    return <button {...props} />;
+export function Button({ testId, ...props }: IProps & { testId?: string }) {
+    return (
+        <button
+            data-testid={testId}
+            {...props}
+        />
+    );
 }

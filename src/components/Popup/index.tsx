@@ -25,13 +25,15 @@ interface Props {
     className?: string;
     style?: CSSProperties;
     children: ReactNode;
+    testId?: string;
 }
-export function PopupComponent({ children, className, style }: Props) {
+export function PopupComponent({ children, className, style, testId }: Props) {
     return (
         <Layout>
             <div
                 className={getClasses(['popup', className])}
                 style={style}
+                data-testid={testId}
             >
                 {children}
             </div>

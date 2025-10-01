@@ -11,9 +11,10 @@ interface IProps {
     component: MenuComponent;
     item: MenuItemComponent;
     children: ReactNode; // top level children
+    testId?: string;
 }
 
-export function Menu({ isOpen, toggleMenuOnBackAction, item, children: topLevelChildren, ...props }: IProps) {
+export function Menu({ isOpen, toggleMenuOnBackAction, item, children: topLevelChildren, testId, ...props }: IProps) {
     const [menu, setMenu] = useMenuObservableStore({
         isOpen: !!isOpen,
         children: topLevelChildren,
@@ -43,5 +44,12 @@ export function Menu({ isOpen, toggleMenuOnBackAction, item, children: topLevelC
         return null;
     }
 
-    return <props.component style={menu.menuStyle}>{menu.children}</props.component>;
+    return (
+        <props.component
+            testId={testId}
+            style={menu.menuStyle}
+        >
+            {menu.children}
+        </props.component>
+    );
 }
