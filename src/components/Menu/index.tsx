@@ -15,15 +15,18 @@ interface IProps {
 }
 
 export function Menu({ isOpen, toggleMenuOnBackAction, item, children: topLevelChildren, testId, ...props }: IProps) {
-    const [menu, setMenu] = useMenuObservableStore({
+    const { store: menu, setStore: setMenu } = useMenuObservableStore({
         isOpen: !!isOpen,
         children: topLevelChildren,
         menuItemComponent: item,
     });
 
-    menu.toggle = useCallback((show: boolean) => {
-        setMenu({ isOpen: show, children: topLevelChildren, menuStyle: undefined });
-    }, []);
+    menu.toggle = useCallback(
+        (show: boolean) => {
+            setMenu({ isOpen: show, children: topLevelChildren, menuStyle: undefined });
+        },
+        [topLevelChildren],
+    );
 
     menu.back = useCallback(() => {
         if (menu.children !== topLevelChildren) {
@@ -36,7 +39,7 @@ export function Menu({ isOpen, toggleMenuOnBackAction, item, children: topLevelC
         if (toggleMenuOnBackAction) {
             menu.toggle(!menu.isOpen);
         }
-    }, [menu.children, menu.isOpen]);
+    }, [menu.children, menu.toggle, menu.isOpen, toggleMenuOnBackAction, topLevelChildren]);
 
     useEsc(menu.back);
 

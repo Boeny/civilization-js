@@ -14,7 +14,7 @@ interface IProps {
     testId?: string;
 }
 export const MenuItem = ({ title, children, action, alignRight, style, menuStyle, disabled, onClick, testId }: IProps) => {
-    const [menu, setMenu] = useMenuStore();
+    const { store: menu, setStore: setMenu } = useMenuStore();
 
     const handleClick = () => {
         onClick?.();

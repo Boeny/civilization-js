@@ -20,7 +20,10 @@ interface IProps extends IMapProps {
 }
 
 const MapComponent = ({ data, zIndex }: IProps) => {
-    const [{ zoom, position }, setMapStore] = useImageMapObservableStore();
+    const {
+        store: { zoom, position },
+        setStore: setImageMap,
+    } = useImageMapObservableStore();
 
     const imageWidth = data.width * zoom;
     const imageHeight = data.height * zoom;
@@ -33,7 +36,7 @@ const MapComponent = ({ data, zIndex }: IProps) => {
     };
 
     container.setClampedPosition = (dx: number, dy: number) => {
-        setMapStore({
+        setImageMap({
             position: {
                 x: clampCoordinate(position.x + dx, imageWidth, screenWidth),
                 y: clampCoordinate(position.y + dy, imageHeight, screenHeight),
@@ -50,7 +53,7 @@ const MapComponent = ({ data, zIndex }: IProps) => {
             const xOffset = getZoomImageOffset(pointX - position.x, imageWidth, newWidth);
             const yOffset = getZoomImageOffset(pointY - position.y, imageHeight, newHeight);
 
-            setMapStore({
+            setImageMap({
                 zoom: newZoom,
                 position: {
                     x: clampCoordinate(position.x - xOffset, newWidth, screenWidth),
@@ -120,7 +123,10 @@ const MapComponent = ({ data, zIndex }: IProps) => {
 export function ImageMap(props: IMapProps) {
     const { isEditable, zIndex } = props;
 
-    const [{ data }, setImageMap] = useImageMapObservableStore();
+    const {
+        store: { data },
+        setStore: setImageMap,
+    } = useImageMapObservableStore();
 
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;

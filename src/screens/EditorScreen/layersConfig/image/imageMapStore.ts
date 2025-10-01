@@ -9,14 +9,12 @@ interface IStore {
     height: number;
 }
 
-const DEFAULT_IMAGE_MAP = {
+const [useImageMapObservableStore, useImageMapStore] = createStoreHook<IStore>({
     data: null,
     zoom: 1,
     position: { x: 0, y: 0 },
     width: 0,
     height: 0,
-};
+});
 
-const [useImageMapObservableStore] = createStoreHook<IStore>(DEFAULT_IMAGE_MAP);
-
-export { useImageMapObservableStore };
+export { useImageMapObservableStore, useImageMapStore };

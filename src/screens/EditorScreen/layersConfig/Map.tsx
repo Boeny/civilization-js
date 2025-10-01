@@ -3,7 +3,7 @@ import { useLayerObservableStore } from '../layerStore';
 import { getLayers, LAYER_CONFIG } from './config';
 
 export const Map = () => {
-    const [{ layer }] = useLayerObservableStore();
+    const { layer } = useLayerObservableStore().store;
 
     return (
         <div>

@@ -20,7 +20,7 @@ const screenElement = {
 };
 
 export function App() {
-    const [{ screen }] = useScreenObservableStore();
+    const { screen } = useScreenObservableStore().store;
 
     return (
         <>

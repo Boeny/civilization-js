@@ -10,7 +10,7 @@ import { OptionsMenu } from '../OptionsMenu';
 import { NewGameMenu } from './NewGameMenu';
 
 export function GameMenu() {
-    const [, setScreen] = useScreenStore();
+    const setScreen = useScreenStore().setStore;
 
     return (
         <Menu

@@ -1,19 +1,15 @@
 import './styles.css';
 
-import { useEffect } from 'react';
-
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { useMouseMove } from 'hooks/useMouseMove';
-import { useLayerObservableStore } from 'screens/EditorScreen/layerStore';
-import { LAYER_TYPE } from 'types';
 
 import { IMapProps } from '../../types';
 import { HEX_CONFIG } from '../hexConfig';
 import { useBrushObservableStore } from '../stores/brushStore';
 import { useGridObservableStore } from '../stores/gridSwitchStore';
 import { useHexMapObservableStore } from '../stores/hexMapStore';
-import { generateEmptyMapData, getHexRadius } from '../utils';
+import { getHexRadius } from '../utils';
 
 import { getMapCoordinatesFromCursor } from './utils';
 
@@ -22,10 +18,13 @@ import { getMapCoordinatesFromCursor } from './utils';
 // TODO: zoom by multitouch
 
 export function HexMap({ isEditable, zIndex }: IMapProps) {
-    const [layerConfig] = useLayerObservableStore();
-    const [{ hexWidth, data, zoom, opacity, position }, setHexMapStore] = useHexMapObservableStore();
-    const [{ brush }] = useBrushObservableStore();
-    const [{ isGridTurnedOn }] = useGridObservableStore();
+    const {
+        store: { hexWidth, data, zoom, opacity, position, isVisible },
+        setStore: setHexMapStore,
+    } = useHexMapObservableStore();
+
+    const { brush } = useBrushObservableStore().store;
+    const { isGridTurnedOn } = useGridObservableStore().store;
 
     const container = { updateMap: (_x: number, _y: number) => {} };
     const screenWidth = window.innerWidth;
@@ -33,15 +32,12 @@ export function HexMap({ isEditable, zIndex }: IMapProps) {
 
     const { startMoving } = useMouseMove((e) => container.updateMap(e.offsetX, e.offsetY), isEditable);
 
+    if (!data?.length || !isVisible) {
+        return null;
+    }
+
     const hexRadius = getHexRadius(hexWidth) * zoom;
     const hexHeight = hexRadius * 1.5;
-
-    useEffect(() => {
-        if (layerConfig.layer !== LAYER_TYPE.hex) {
-            return;
-        }
-        setHexMapStore({ data: generateEmptyMapData(layerConfig.width, layerConfig.height) });
-    }, []);
 
     container.updateMap = (x: number, y: number) => {
         if (!data?.length) {
@@ -88,10 +84,6 @@ export function HexMap({ isEditable, zIndex }: IMapProps) {
             }
         }
     };
-
-    if (!data?.length) {
-        return null;
-    }
 
     return (
         <Canvas

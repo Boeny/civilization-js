@@ -14,7 +14,7 @@ import { Map } from './layersConfig/Map';
 import { useLayerObservableStore } from './layerStore';
 
 export const EditorScreen = () => {
-    const [{ layer }] = useLayerObservableStore();
+    const { layer } = useLayerObservableStore().store;
 
     const [isLeftPanelShown, setLeftPanelShown] = useState(true);
     const [isRightPanelShown, setRightPanelShown] = useState(true);

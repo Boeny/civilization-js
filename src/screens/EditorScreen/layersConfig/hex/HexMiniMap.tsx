@@ -13,7 +13,7 @@ import { useHexMapObservableStore } from './stores/hexMapStore';
 import { generateEmptyMapData, getHexRadius } from './utils';
 
 const MapComponent = ({ width, title }: IMiniMapProps) => {
-    const [{ data }] = useHexMapObservableStore();
+    const { data } = useHexMapObservableStore().store;
 
     if (!data?.length) {
         return null;
@@ -41,7 +41,10 @@ const MapComponent = ({ width, title }: IMiniMapProps) => {
 };
 
 export const HexMiniMap = ({ width, title }: IMiniMapProps) => {
-    const [{ data, isVisible, opacity }, setHexMap] = useHexMapObservableStore();
+    const {
+        store: { data, isVisible, opacity },
+        setStore: setHexMap,
+    } = useHexMapObservableStore();
     const { showPopup } = usePopup();
 
     if (!data) {

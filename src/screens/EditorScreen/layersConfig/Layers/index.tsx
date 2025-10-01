@@ -7,7 +7,10 @@ import { useLayerObservableStore } from '../../layerStore';
 import { getLayers, LAYER_CONFIG } from '../config';
 
 export const Layers = ({ width }: { width: number }) => {
-    const [{ layer }, setLayer] = useLayerObservableStore();
+    const {
+        store: { layer },
+        setStore: setLayer,
+    } = useLayerObservableStore();
 
     const handleLayerClick = (type: LAYER_TYPE) => {
         if (layer === type) {

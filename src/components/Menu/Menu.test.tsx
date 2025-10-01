@@ -1,4 +1,4 @@
-import { render, createEvent, fireEvent } from '@testing-library/react';
+import { render, createEvent, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 import { Button } from 'components/Button';
@@ -7,11 +7,11 @@ import { KEY_CODE } from 'types';
 import { Menu } from '.';
 import { MenuItem } from './MenuItem';
 
-async function clickOn(element: any) {
-    return fireEvent(element, createEvent.click(element));
+async function clickOn(element: HTMLElement) {
+    return act(() => element.click());
 }
 async function keypress(key: KEY_CODE) {
-    return fireEvent(document, createEvent.keyDown(document, { key }));
+    return act(() => fireEvent(document, createEvent.keyDown(document, { key })));
 }
 
 describe('Menu component', () => {
@@ -50,8 +50,9 @@ describe('Menu component', () => {
         const { getByTestId } = render(
             <Menu
                 isOpen
-                component={({ children }) => <div>{children}</div>}
+                component={({ children, testId }) => <div data-testid={testId}>{children}</div>}
                 item={Button}
+                testId="menu"
             >
                 <MenuItem
                     title="menu item"

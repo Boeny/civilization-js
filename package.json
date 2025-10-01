@@ -5,7 +5,7 @@
     "author": "boeny",
     "license": "MIT",
     "scripts": {
-        "start": "webpack serve",
+        "start": "npm run test && webpack serve",
         "watch": "webpack --watch",
         "test": "jest --verbose true",
         "test:ci": "jest --ci --silent",

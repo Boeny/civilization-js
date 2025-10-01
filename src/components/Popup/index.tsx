@@ -42,7 +42,10 @@ export function PopupComponent({ children, className, style, testId }: Props) {
 }
 
 export function Popup() {
-    const [{ popupContent }, setPopup] = usePopupObservableStore();
+    const {
+        store: { popupContent },
+        setStore: setPopup,
+    } = usePopupObservableStore();
 
     useEffect(() => {
         const params = { resolvePopup: () => {}, rejectPopup: () => {} } as any;

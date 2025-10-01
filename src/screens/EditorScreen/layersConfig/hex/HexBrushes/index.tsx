@@ -7,7 +7,10 @@ import { useBrushObservableStore } from '../stores/brushStore';
 import { HEX_TYPE } from '../types';
 
 export function HexBrushes() {
-    const [{ brush }, setBrush] = useBrushObservableStore();
+    const {
+        store: { brush },
+        setStore: setBrush,
+    } = useBrushObservableStore();
 
     const handleBrushClick = (type: HEX_TYPE) => {
         setBrush({ brush: brush === null || brush !== type ? type : null });

@@ -36,8 +36,11 @@ const MiniMapComponent = ({ data, title, onClick, ...props }: IProps) => {
 };
 
 export const ImageMiniMap = ({ title, width }: IMiniMapProps) => {
-    const [{ data }, setImageMap] = useImageMapObservableStore();
-    const [{ layer }] = useLayerObservableStore();
+    const {
+        store: { data },
+        setStore: setImageMap,
+    } = useImageMapObservableStore();
+    const { layer } = useLayerObservableStore().store;
 
     const isSelected = layer === LAYER_TYPE.image;
 

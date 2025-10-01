@@ -6,46 +6,71 @@ interface StoreUpdate<S extends object> {
     (data: Partial<S>): void;
 }
 
-type UseStore<T extends object> = [T, StoreUpdate<T>];
+type UseStore<T extends object> = { store: T; setStore: StoreUpdate<T>; reset: () => void };
 
-export function createStoreHook<T extends object>(store: T): [(defaultState?: DefaultState<T>) => UseStore<T>, () => UseStore<T>] {
+export function createStoreHook<T extends object>(defaultState: T) {
+    // one instance for each createStoreHook call
+    const container = {
+        instance: { ...defaultState },
+        getStore() {
+            return this.instance;
+        },
+        update(data: Partial<T>) {
+            this.instance = { ...this.instance, ...data };
+        },
+    };
     const storeUpdateStack: (() => void)[] = [];
 
-    const setStore: StoreUpdate<T> = (data: Partial<T>) => {
-        Object.assign(store, data);
+    function setStore(data: Partial<T>) {
+        container.update(data);
         storeUpdateStack.forEach((callback) => callback());
-    };
+    }
 
-    function useUpdatableStore(defaultState?: DefaultState<T>): UseStore<T> {
-        const [, update] = useState(
-            defaultState
-                ? () => {
-                      Object.assign(store, defaultState);
+    function reset() {
+        setStore(defaultState);
+    }
 
-                      return {};
-                  }
-                : {},
-        );
+    function useUpdatableStore(newDefaultState?: DefaultState<T>): UseStore<T> {
+        const [, forceUpdate] = useState(() => {
+            if (newDefaultState) {
+                container.update(newDefaultState);
+            }
+
+            return {};
+        });
 
         useEffect(() => {
             // add state updater to the stack after mount
-            function updateFunc() {
-                update({});
+            function triggerComponentUpdate() {
+                forceUpdate({});
             }
-            storeUpdateStack.push(updateFunc);
+            storeUpdateStack.push(triggerComponentUpdate);
 
             // remove updateFunc from the stack before unmount
             return () => {
-                const index = storeUpdateStack.indexOf(updateFunc);
+                const index = storeUpdateStack.indexOf(triggerComponentUpdate);
                 storeUpdateStack.splice(index, 1);
             };
         }, []);
 
-        return [store, setStore];
-    }
-    function useStoreWithoutUpdate(): UseStore<T> {
-        return [store, setStore];
+        return {
+            get store() {
+                return container.getStore();
+            },
+            setStore,
+            reset,
+        };
     }
 
-    return [useUpdatableStore, useStoreWithoutUpdate];
+    function useStoreWithoutUpdate(): UseStore<T> {
+        return {
+            get store() {
+                return container.getStore();
+            },
+            setStore,
+            reset,
+        };
+    }
+
+    return [useUpdatableStore, useStoreWithoutUpdate] as const;
 }
