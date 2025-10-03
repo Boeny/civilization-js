@@ -8,10 +8,6 @@ import { LoadImageButton } from './ImageMap/LoadImageButton';
 import { uploadFile } from './ImageMap/utils';
 import { useImageMapObservableStore } from './imageMapStore';
 
-const styles = {
-    maxHeight: 170,
-};
-
 interface IProps extends IMiniMapProps {
     data: HTMLImageElement;
     onClick?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
@@ -19,7 +15,7 @@ interface IProps extends IMiniMapProps {
 
 const ImageMiniMapComponent = ({ data, title, onClick, ...props }: IProps) => {
     const width = props.width - 29;
-    const height = props.width > styles.maxHeight ? styles.maxHeight : props.width;
+    const height = (width * data.height) / data.width;
 
     return (
         <Canvas
@@ -27,7 +23,10 @@ const ImageMiniMapComponent = ({ data, title, onClick, ...props }: IProps) => {
             title={title}
             width={width}
             height={height}
-            style={styles}
+            style={{
+                maxHeight: 170,
+                cursor: 'pointer',
+            }}
             onClick={onClick}
         >
             {(ctx) => ctx.drawImage(data, 0, 0, width, height)}
