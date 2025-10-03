@@ -1,4 +1,6 @@
 import { SQRT_3 } from 'screens/EditorScreen/const';
+import { IPoint } from 'types';
+import { vectorSum } from 'utils';
 
 function yIsBelowTheLine(isIncreasing: boolean, x: number, y: number, dy: number): boolean {
     // tan(30) = 1 / sqrt(3)
@@ -7,7 +9,7 @@ function yIsBelowTheLine(isIncreasing: boolean, x: number, y: number, dy: number
     return y < yOnTheLine;
 }
 
-export function getMapCoordinatesFromCursor(x: number, y: number, hexWidth: number, hexRadius: number): [number, number] {
+export function getMapCoordinatesFromCursor({ x, y }: IPoint, hexWidth: number, hexRadius: number): IPoint {
     const hexHeight_1_5 = 3 * hexRadius;
     const y_3radius_count = Math.floor(y / hexHeight_1_5);
     let yMin = y_3radius_count * hexHeight_1_5;
@@ -15,8 +17,10 @@ export function getMapCoordinatesFromCursor(x: number, y: number, hexWidth: numb
     const x_widthCount = Math.floor(x / hexWidth);
     const xMin = x_widthCount * hexWidth;
 
-    let mapX = x_widthCount;
-    const mapY = y_3radius_count * 2;
+    const result: IPoint = {
+        x: x_widthCount,
+        y: y_3radius_count * 2,
+    };
 
     const halfRadius = hexRadius / 2;
     const halfWidth = hexWidth / 2;
@@ -28,10 +32,10 @@ export function getMapCoordinatesFromCursor(x: number, y: number, hexWidth: numb
     if (y < yMin + halfRadius) {
         // (mapX - 1, mapY - 1) or (mapX, mapY) or (mapX, mapY -1)
         if (x < xCenter) {
-            return yIsBelowTheLine(false, x - xMin, y - yMin, halfRadius) ? [mapX - 1, mapY - 1] : [mapX, mapY];
+            return yIsBelowTheLine(false, x - xMin, y - yMin, halfRadius) ? vectorSum(result, -1) : result;
         }
 
-        return yIsBelowTheLine(true, x - xCenter, y - yMin, halfRadius) ? [mapX, mapY - 1] : [mapX, mapY];
+        return yIsBelowTheLine(true, x - xCenter, y - yMin, halfRadius) ? vectorSum(result, { x: 0, y: -1 }) : result;
     }
 
     const radius_1_5 = hexRadius * 1.5;
@@ -43,7 +47,7 @@ export function getMapCoordinatesFromCursor(x: number, y: number, hexWidth: numb
     // yMin + radius * 1.5
     //  \ /
     if (y <= yMin + radius_1_5) {
-        return [mapX, mapY];
+        return result;
     }
 
     // yMin + radius * 1.5
@@ -54,10 +58,10 @@ export function getMapCoordinatesFromCursor(x: number, y: number, hexWidth: numb
 
         // (mapX - 1, mapY + 1) or (mapX, mapY) or (mapX, mapY + 1)
         if (x < xCenter) {
-            return yIsBelowTheLine(true, x - xMin, y - yMin, halfRadius) ? [mapX, mapY] : [mapX - 1, mapY + 1];
+            return yIsBelowTheLine(true, x - xMin, y - yMin, halfRadius) ? result : vectorSum(result, { x: -1, y: 1 });
         }
 
-        return yIsBelowTheLine(false, x - xCenter, y - yMin, halfRadius) ? [mapX, mapY] : [mapX, mapY + 1];
+        return yIsBelowTheLine(false, x - xCenter, y - yMin, halfRadius) ? result : vectorSum(result, { x: 0, y: 1 });
     }
 
     // yMin + radius * 1.5
@@ -68,8 +72,8 @@ export function getMapCoordinatesFromCursor(x: number, y: number, hexWidth: numb
     // |/      \|
     // (mapX - 1, mapY + 1) or (mapX, mapY + 1)
     if (x < xCenter) {
-        mapX -= 1;
+        result.x -= 1;
     }
 
-    return [mapX, mapY + 1];
+    return vectorSum(result, { x: 0, y: 1 });
 }

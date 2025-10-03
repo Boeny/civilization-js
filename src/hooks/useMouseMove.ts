@@ -15,7 +15,7 @@ export function useMouseMove(callback: (e: MouseEvent) => void, enabled = true) 
 
         function moveHandler(e: MouseEvent) {
             if (container.moving) {
-                container.callback(e);
+                requestAnimationFrame(() => container.callback(e));
             }
         }
 

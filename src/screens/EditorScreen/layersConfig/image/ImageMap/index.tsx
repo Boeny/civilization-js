@@ -1,6 +1,6 @@
 import './styles.css';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Canvas } from 'components/canvas/Canvas';
 import { useArrowKeys } from 'hooks/useArrowKeys';
@@ -21,9 +21,44 @@ const screenSize: IPoint = {
     y: window.innerHeight,
 };
 const BORDER_SIZE = getZeroVector();
+
+function applyZoom({
+    dz,
+    point,
+    zoom,
+    position,
+    imageSize,
+    originalImageSize,
+}: {
+    dz: number;
+    point: IPoint;
+    zoom: number;
+    position: IPoint;
+    imageSize: IPoint;
+    originalImageSize: IPoint;
+}): { zoom: number; position: IPoint } | null {
+    const newImageSize = {
+        x: clampImageWidth(imageSize.x, dz),
+        y: originalImageSize.y,
+    };
+    const newZoom = newImageSize.x / originalImageSize.x;
+
+    if (zoom === newZoom) {
+        return null;
+    }
+
+    newImageSize.y *= newZoom;
+
+    const offset = getZoomImageOffset(vectorSub(point, position), imageSize, newImageSize);
+
+    return {
+        zoom: newZoom,
+        position: clampImageSize(vectorSub(position, offset), newImageSize, screenSize, BORDER_SIZE),
+    };
+}
+
 const container = {
     setClampedPosition: (_v: IPoint) => {},
-    zoom: (_z: number, _point: IPoint) => {},
 };
 
 interface IProps extends IMapProps {
@@ -47,34 +82,32 @@ const ImageMapComponent = ({ data, zIndex }: IProps) => {
             position: clampImageSize(vectorSum(position, delta), imageSize, screenSize, BORDER_SIZE),
         });
     };
-    container.zoom = (dz, point) => {
-        const newImageSize = {
-            x: clampImageWidth(imageSize.x, dz),
-            y: originalImageSize.y,
-        };
-        const newZoom = newImageSize.x / originalImageSize.x;
 
-        if (zoom !== newZoom) {
-            newImageSize.y *= newZoom;
+    const useWheelCallback = useCallback(
+        (e: WheelEvent) => {
+            if (!e.ctrlKey) {
+                container.setClampedPosition(vectorMult({ x: e.deltaX, y: e.deltaY }, -1)); // DELTA! - making pan
 
-            const offset = getZoomImageOffset(vectorSub(point, position), imageSize, newImageSize);
-
-            setImageMap({
-                zoom: newZoom,
-                position: clampImageSize(vectorSub(position, offset), newImageSize, screenSize, BORDER_SIZE),
-            });
-        }
-    };
-
-    useWheel((e) => {
-        requestAnimationFrame(() => {
-            if (e.ctrlKey) {
-                container.zoom(e.deltaY, { x: e.offsetX, y: e.offsetY }); // OFSSET!
-            } else {
-                container.setClampedPosition(vectorMult({ x: e.deltaX, y: e.deltaY }, -1)); // DELTA!
+                return;
             }
-        });
-    });
+
+            const newZoomParams = applyZoom({
+                dz: e.deltaY,
+                point: { x: e.offsetX, y: e.offsetY }, // OFSSET! - making zoom
+                zoom,
+                position,
+                imageSize,
+                originalImageSize,
+            });
+
+            if (newZoomParams) {
+                setImageMap(newZoomParams);
+            }
+        },
+        [zoom, position],
+    );
+
+    useWheel(useWheelCallback);
 
     const [isUpPressed, setUpPressed] = useState(false);
     const [isDownPressed, setDownPressed] = useState(false);
@@ -127,11 +160,6 @@ export function ImageMap(props: IMapProps) {
         store: { data },
         setStore: setImageMap,
     } = useImageMapObservableStore();
-
-    const screenSize = {
-        x: window.innerWidth,
-        y: window.innerHeight,
-    };
 
     if (!data) {
         return (

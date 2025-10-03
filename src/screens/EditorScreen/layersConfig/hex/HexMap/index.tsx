@@ -3,106 +3,161 @@ import './styles.css';
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { useMouseMove } from 'hooks/useMouseMove';
+import { IPoint } from 'types';
+import { vectorSub, vectorSum } from 'utils';
 
+import { useImageMapObservableStore } from '../../image/imageMapStore';
 import { IMapProps } from '../../types';
 import { HEX_CONFIG } from '../hexConfig';
 import { useBrushObservableStore } from '../stores/brushStore';
 import { useGridObservableStore } from '../stores/gridSwitchStore';
 import { useHexMapObservableStore } from '../stores/hexMapStore';
+import { HEX_TYPE, HexMapData } from '../types';
 import { getHexRadius } from '../utils';
 
 import { getMapCoordinatesFromCursor } from './utils';
 
+const screenSize = {
+    x: window.innerWidth,
+    y: window.innerHeight,
+};
+
+function fillHex({
+    point,
+    hexWidth,
+    hexRadius,
+    mapSize,
+    brush,
+    data,
+}: {
+    point: IPoint;
+    hexWidth: number;
+    hexRadius: number;
+    mapSize: IPoint;
+    brush: HEX_TYPE | null;
+    data: HexMapData;
+}): HexMapData {
+    const mapPoint = getMapCoordinatesFromCursor(point, hexWidth, hexRadius);
+
+    if (
+        mapPoint.x < 0 ||
+        mapPoint.y < 0 ||
+        mapPoint.x >= mapSize.x ||
+        mapPoint.y >= mapSize.y ||
+        !brush ||
+        data[mapPoint.y][mapPoint.x] === brush
+    ) {
+        return data;
+    }
+
+    data[mapPoint.y][mapPoint.x] = brush;
+
+    return data;
+}
+
 // TODO: Ctrl+Z for painting
-// TODO: scroll by wheel
-// TODO: zoom by multitouch
 
-export function HexMap({ isEditable, zIndex }: IMapProps) {
+type Props = IMapProps & {
+    data: HexMapData;
+};
+
+function HexMapComponent({ isEditable, zIndex, data }: Props) {
     const {
-        store: { hexWidth, data, zoom, opacity, position, isVisible },
-        setStore: setHexMapStore,
+        store: { hexWidth: originalHexWidth, opacity, position: originalPosition },
+        setStore: setHexMap,
     } = useHexMapObservableStore();
-
+    const { zoom, position: imagePosition } = useImageMapObservableStore().store;
     const { brush } = useBrushObservableStore().store;
     const { isGridTurnedOn } = useGridObservableStore().store;
 
-    const container = { updateMap: (_x: number, _y: number) => {} };
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
-
-    const { startMoving } = useMouseMove((e) => container.updateMap(e.offsetX, e.offsetY), isEditable);
-
-    if (!data?.length || !isVisible) {
-        return null;
-    }
-
-    const hexRadius = getHexRadius(hexWidth) * zoom;
+    const position = vectorSum(originalPosition, imagePosition);
+    const hexWidth = originalHexWidth * zoom;
+    const hexRadius = getHexRadius(hexWidth);
     const hexHeight = hexRadius * 1.5;
-
-    container.updateMap = (x: number, y: number) => {
-        if (!data?.length) {
-            return;
-        }
-
-        const [mapX, mapY] = getMapCoordinatesFromCursor(x, y, hexWidth, hexRadius);
-
-        if (mapX < 0 || mapY < 0 || mapY >= data.length || mapX >= data[mapY].length || data[mapY][mapX] === brush!) {
-            return;
-        }
-
-        data[mapY][mapX] = brush!;
-
-        setHexMapStore({ data: [...data] });
+    const mapSize: IPoint = {
+        x: data[0].length,
+        y: data.length,
     };
 
-    const children = (ctx: CanvasRenderingContext2D) => {
-        ctx.clearRect(0, 0, screenWidth, screenHeight);
+    const { startMoving } = useMouseMove((e) => {
+        const newData = fillHex({
+            point: vectorSub({ x: e.offsetX, y: e.offsetY }, position),
+            hexWidth,
+            hexRadius,
+            mapSize,
+            brush,
+            data,
+        });
+        setHexMap({ data: [...newData] });
+    }, isEditable);
 
-        for (let y = 0; y < data!.length; y += 1) {
-            if (y * hexHeight + position.y > screenHeight) {
-                break;
-            }
-
-            const row = data![y];
-
-            for (let x = 0; x < row.length; x += 1) {
-                if (x * hexWidth + position.x > screenWidth) {
-                    break;
-                }
-
-                const hexType = row[x];
-
-                Hex({
-                    ctx,
-                    position: { x, y },
-                    offset: position,
-                    width: hexWidth,
-                    radius: hexRadius,
-                    color: HEX_CONFIG[hexType].color,
-                    isGridTurnedOn,
-                });
-            }
+    const handleMouseDown = (ctx: CanvasRenderingContext2D, point: IPoint) => {
+        if (brush !== null) {
+            startMoving();
+            const newData = fillHex({
+                point: vectorSub(point, position),
+                hexWidth,
+                hexRadius,
+                mapSize,
+                brush,
+                data,
+            });
+            setHexMap({ data: [...newData] });
         }
     };
 
     return (
         <Canvas
             id="hex-map"
-            width={screenWidth}
-            height={screenHeight}
+            width={screenSize.x}
+            height={screenSize.y}
             style={{ zIndex, opacity }}
-            onMouseDown={
-                isEditable
-                    ? (ctx, x, y) => {
-                          if (brush !== null) {
-                              container.updateMap(x, y);
-                              startMoving();
-                          }
-                      }
-                    : undefined
-            }
+            onMouseDown={isEditable ? handleMouseDown : undefined}
         >
-            {children}
+            {(ctx: CanvasRenderingContext2D) => {
+                ctx.clearRect(0, 0, screenSize.x, screenSize.y);
+
+                for (let y = 0; y < data.length; y += 1) {
+                    if (y * hexHeight + position.y > screenSize.y) {
+                        break;
+                    }
+
+                    const row = data[y];
+
+                    for (let x = 0; x < row.length; x += 1) {
+                        if (x * hexWidth + position.x > screenSize.x) {
+                            break;
+                        }
+
+                        const hexType = row[x];
+
+                        Hex({
+                            ctx,
+                            position: { x, y },
+                            offset: position,
+                            width: hexWidth,
+                            radius: hexRadius,
+                            color: HEX_CONFIG[hexType].color,
+                            isGridTurnedOn,
+                        });
+                    }
+                }
+            }}
         </Canvas>
+    );
+}
+
+export function HexMap(props: IMapProps) {
+    const { isVisible, data } = useHexMapObservableStore().store;
+
+    if (!isVisible || !data?.length) {
+        return null;
+    }
+
+    return (
+        <HexMapComponent
+            {...props}
+            data={data}
+        />
     );
 }

@@ -4,7 +4,6 @@ export function useWheel(callback: (e: WheelEvent) => void) {
     useEffect(() => {
         function handleScroll(e: WheelEvent) {
             e.preventDefault();
-
             requestAnimationFrame(() => callback(e));
         }
 
@@ -13,5 +12,5 @@ export function useWheel(callback: (e: WheelEvent) => void) {
         return () => {
             document.removeEventListener('wheel', handleScroll);
         };
-    }, []);
+    }, [callback]);
 }
