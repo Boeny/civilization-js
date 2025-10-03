@@ -88,6 +88,7 @@ export function Popup() {
     return <PopupComponent>{popupContent}</PopupComponent>;
 }
 
+// eslint-disable-next-line import/no-unused-modules
 export function usePopup<T = undefined>(): PopupContextProps<T> {
     return context;
 }
