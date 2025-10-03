@@ -15,7 +15,7 @@ import { ZOOM_CONFIG } from './config';
 import { LoadImageButton } from './LoadImageButton';
 import { clampImageWidth, clampImageSize, getZoomImageOffset } from './utils';
 
-const SPEED = 10;
+const KEY_PAN_SPEED = 40;
 const screenSize: IPoint = {
     x: window.innerWidth,
     y: window.innerHeight,
@@ -86,7 +86,7 @@ const ImageMapComponent = ({ data, zIndex }: IProps) => {
     const useWheelCallback = useCallback(
         (e: WheelEvent) => {
             if (!e.ctrlKey) {
-                container.setClampedPosition(vectorMult({ x: e.deltaX, y: e.deltaY }, -1)); // DELTA! - making pan
+                container.setClampedPosition(vectorMult({ x: e.deltaX, y: e.deltaY }, -5)); // DELTA! - making pan
 
                 return;
             }
@@ -122,16 +122,16 @@ const ImageMapComponent = ({ data, zIndex }: IProps) => {
                 const delta = getZeroVector();
 
                 if (isUpPressed) {
-                    delta.y = SPEED;
+                    delta.y = KEY_PAN_SPEED;
                 }
                 if (isDownPressed) {
-                    delta.y = -SPEED;
+                    delta.y = -KEY_PAN_SPEED;
                 }
                 if (isLeftPressed) {
-                    delta.x = SPEED;
+                    delta.x = KEY_PAN_SPEED;
                 }
                 if (isRightPressed) {
-                    delta.x = -SPEED;
+                    delta.x = -KEY_PAN_SPEED;
                 }
                 container.setClampedPosition(delta);
             });
