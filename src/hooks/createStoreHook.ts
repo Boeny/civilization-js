@@ -30,6 +30,14 @@ export function createStoreHook<T extends object>(defaultState: T) {
         setStore(defaultState);
     }
 
+    const params = {
+        get store() {
+            return container.getStore();
+        },
+        setStore,
+        reset,
+    };
+
     function useUpdatableStore(newDefaultState?: DefaultState<T>): UseStore<T> {
         const [, forceUpdate] = useState(() => {
             if (newDefaultState) {
@@ -53,24 +61,12 @@ export function createStoreHook<T extends object>(defaultState: T) {
             };
         }, []);
 
-        return {
-            get store() {
-                return container.getStore();
-            },
-            setStore,
-            reset,
-        };
+        return params;
     }
 
-    function useStoreWithoutUpdate(): UseStore<T> {
-        return {
-            get store() {
-                return container.getStore();
-            },
-            setStore,
-            reset,
-        };
+    function getStoreParams(): UseStore<T> {
+        return params;
     }
 
-    return [useUpdatableStore, useStoreWithoutUpdate] as const;
+    return [useUpdatableStore, getStoreParams] as const;
 }
