@@ -1,5 +1,5 @@
 import { Canvas } from 'components/canvas/Canvas';
-import { LAYER_TYPE } from 'types';
+import { IPoint, LAYER_TYPE } from 'types';
 
 import { useLayerObservableStore } from '../../layerStore';
 import { IMiniMapProps } from '../types';
@@ -14,10 +14,10 @@ const styles = {
 
 interface IProps extends IMiniMapProps {
     data: HTMLImageElement;
-    onClick?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
+    onClick?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
 }
 
-const MiniMapComponent = ({ data, title, onClick, ...props }: IProps) => {
+const ImageMiniMapComponent = ({ data, title, onClick, ...props }: IProps) => {
     const width = props.width - 29;
     const height = props.width > styles.maxHeight ? styles.maxHeight : props.width;
 
@@ -76,7 +76,7 @@ export const ImageMiniMap = ({ title, width }: IMiniMapProps) => {
     }
 
     return (
-        <MiniMapComponent
+        <ImageMiniMapComponent
             width={width}
             title={isSelected ? 'Load new image' : title}
             data={data}

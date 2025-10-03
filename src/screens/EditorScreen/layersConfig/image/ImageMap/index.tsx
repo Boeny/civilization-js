@@ -5,18 +5,25 @@ import { useEffect, useState } from 'react';
 import { Canvas } from 'components/canvas/Canvas';
 import { useArrowKeys } from 'hooks/useArrowKeys';
 import { useWheel } from 'hooks/useWheel';
+import { IPoint } from 'types';
+import { getZeroVector, vectorDiv, vectorMult, vectorSub, vectorSum } from 'utils';
 
 import { IMapProps } from '../../types';
 import { useImageMapObservableStore } from '../imageMapStore';
 
-import { zoomConfig } from './config';
+import { ZOOM_CONFIG } from './config';
 import { LoadImageButton } from './LoadImageButton';
-import { clampCoordinate, clampImageWidth, getZoomImageOffset } from './utils';
+import { clampImageWidth, clampImageSize, getZoomImageOffset } from './utils';
 
-const SPEED = 5;
+const SPEED = 10;
+const screenSize: IPoint = {
+    x: window.innerWidth,
+    y: window.innerHeight,
+};
+const BORDER_SIZE = getZeroVector();
 const container = {
-    setClampedPosition: (_x: number, _y: number) => {},
-    zoom: (_z: number, _px: number, _py: number) => {},
+    setClampedPosition: (_v: IPoint) => {},
+    zoom: (_z: number, _point: IPoint) => {},
 };
 
 interface IProps extends IMapProps {
@@ -29,45 +36,44 @@ const ImageMapComponent = ({ data, zIndex }: IProps) => {
         setStore: setImageMap,
     } = useImageMapObservableStore();
 
-    const imageWidth = data.width * zoom;
-    const imageHeight = data.height * zoom;
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
+    const originalImageSize: IPoint = {
+        x: data.width,
+        y: data.height,
+    };
+    const imageSize = vectorMult(originalImageSize, zoom);
 
-    container.setClampedPosition = (dx: number, dy: number) => {
+    container.setClampedPosition = (delta) => {
         setImageMap({
-            position: {
-                x: clampCoordinate(position.x + dx, imageWidth, screenWidth),
-                y: clampCoordinate(position.y + dy, imageHeight, screenHeight),
-            },
+            position: clampImageSize(vectorSum(position, delta), imageSize, screenSize, BORDER_SIZE),
         });
     };
-    container.zoom = (dz: number, pointX: number, pointY: number) => {
-        const newWidth = clampImageWidth(imageWidth, dz);
-        const newZoom = newWidth / data.width;
+    container.zoom = (dz, point) => {
+        const newImageSize = {
+            x: clampImageWidth(imageSize.x, dz),
+            y: originalImageSize.y,
+        };
+        const newZoom = newImageSize.x / originalImageSize.x;
 
         if (zoom !== newZoom) {
-            const newHeight = data.height * newZoom;
+            newImageSize.y *= newZoom;
 
-            const xOffset = getZoomImageOffset(pointX - position.x, imageWidth, newWidth);
-            const yOffset = getZoomImageOffset(pointY - position.y, imageHeight, newHeight);
+            const offset = getZoomImageOffset(vectorSub(point, position), imageSize, newImageSize);
 
             setImageMap({
                 zoom: newZoom,
-                position: {
-                    x: clampCoordinate(position.x - xOffset, newWidth, screenWidth),
-                    y: clampCoordinate(position.y - yOffset, newHeight, screenHeight),
-                },
+                position: clampImageSize(vectorSub(position, offset), newImageSize, screenSize, BORDER_SIZE),
             });
         }
     };
 
     useWheel((e) => {
-        if (e.ctrlKey) {
-            container.zoom(e.deltaY, e.offsetX, e.offsetY);
-        } else {
-            container.setClampedPosition(-e.deltaX, -e.deltaY);
-        }
+        requestAnimationFrame(() => {
+            if (e.ctrlKey) {
+                container.zoom(e.deltaY, { x: e.offsetX, y: e.offsetY }); // OFSSET!
+            } else {
+                container.setClampedPosition(vectorMult({ x: e.deltaX, y: e.deltaY }, -1)); // DELTA!
+            }
+        });
     });
 
     const [isUpPressed, setUpPressed] = useState(false);
@@ -77,41 +83,38 @@ const ImageMapComponent = ({ data, zIndex }: IProps) => {
 
     useArrowKeys({ setUpPressed, setDownPressed, setLeftPressed, setRightPressed });
 
-    const render = () => {
-        let deltaX = 0;
-        let deltaY = 0;
-
-        if (isUpPressed) {
-            deltaY = SPEED;
-        }
-        if (isDownPressed) {
-            deltaY = -SPEED;
-        }
-        if (isLeftPressed) {
-            deltaX = SPEED;
-        }
-        if (isRightPressed) {
-            deltaX = -SPEED;
-        }
-        container.setClampedPosition(deltaX, deltaY);
-    };
-
     useEffect(() => {
         if (isUpPressed || isDownPressed || isLeftPressed || isRightPressed) {
-            requestAnimationFrame(render);
+            requestAnimationFrame(() => {
+                const delta = getZeroVector();
+
+                if (isUpPressed) {
+                    delta.y = SPEED;
+                }
+                if (isDownPressed) {
+                    delta.y = -SPEED;
+                }
+                if (isLeftPressed) {
+                    delta.x = SPEED;
+                }
+                if (isRightPressed) {
+                    delta.x = -SPEED;
+                }
+                container.setClampedPosition(delta);
+            });
         }
-    }, [isDownPressed, isLeftPressed, isRightPressed, isUpPressed, render]);
+    }, [position, isDownPressed, isLeftPressed, isRightPressed, isUpPressed]);
 
     return (
         <Canvas
             id="image-map"
-            width={screenWidth}
-            height={screenHeight}
+            width={screenSize.x}
+            height={screenSize.y}
             style={{ zIndex }}
         >
             {(ctx: CanvasRenderingContext2D) => {
-                ctx.clearRect(0, 0, screenWidth, screenHeight);
-                ctx.drawImage(data, position.x, position.y, imageWidth, imageHeight);
+                ctx.clearRect(0, 0, screenSize.x, screenSize.y);
+                ctx.drawImage(data, position.x, position.y, imageSize.x, imageSize.y);
             }}
         </Canvas>
     );
@@ -125,8 +128,10 @@ export function ImageMap(props: IMapProps) {
         setStore: setImageMap,
     } = useImageMapObservableStore();
 
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
+    const screenSize = {
+        x: window.innerWidth,
+        y: window.innerHeight,
+    };
 
     if (!data) {
         return (
@@ -137,16 +142,17 @@ export function ImageMap(props: IMapProps) {
                 <LoadImageButton
                     disabled={!isEditable}
                     onDataUpdate={(newData) => {
-                        const initialZoom = zoomConfig.minWidth / newData.width; // set minimal size
+                        const initialZoom = ZOOM_CONFIG.minWidth / newData.width; // set minimal size
+                        const newDataSize = {
+                            x: newData.width,
+                            y: newData.height,
+                        };
 
                         setImageMap({
                             data: newData,
                             zoom: initialZoom,
-                            position: {
-                                // set in the center of the creen
-                                x: (screenWidth - newData.width * initialZoom) / 2,
-                                y: (screenHeight - newData.height * initialZoom) / 2,
-                            },
+                            // set in the center of the creen
+                            position: vectorDiv(vectorSub(screenSize, vectorMult(newDataSize, initialZoom)), 2),
                         });
                     }}
                 />

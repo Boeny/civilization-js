@@ -1,4 +1,4 @@
-export const filePickerConfig = {
+export const FILE_PICKER_CONFIG = {
     types: [
         {
             description: 'Images',
@@ -9,9 +9,9 @@ export const filePickerConfig = {
     multiple: false,
 };
 
-export const zoomConfig = {
+export const ZOOM_CONFIG = {
     pixelsInDelta: 40,
-    pixelsAddition: 20,
-    minWidth: 1000,
+    pixelsAddition: 0,
+    minWidth: 300,
     maxWidth: 1000000,
 };

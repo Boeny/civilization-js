@@ -1,5 +1,7 @@
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 
+import { IPoint } from 'types';
+
 interface IProps {
     id?: string;
     className?: string;
@@ -7,10 +9,10 @@ interface IProps {
     width?: number;
     height?: number;
     style?: CSSProperties;
-    onClick?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
-    onMouseDown?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
-    onMouseMove?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
-    onMouseUp?: (ctx: CanvasRenderingContext2D, x: number, y: number) => void;
+    onClick?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
+    onMouseDown?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
+    onMouseMove?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
+    onMouseUp?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
     children: (ctx: CanvasRenderingContext2D) => void;
 }
 export const Canvas = ({ children, onClick, onMouseDown, onMouseMove, onMouseUp, ...props }: IProps) => {
@@ -29,10 +31,10 @@ export const Canvas = ({ children, onClick, onMouseDown, onMouseMove, onMouseUp,
         <canvas
             ref={ref}
             {...props}
-            onClick={onClick && ctx ? (e) => onClick(ctx, e.nativeEvent.offsetX, e.nativeEvent.offsetY) : undefined}
-            onMouseDown={onMouseDown && ctx ? (e) => onMouseDown(ctx, e.nativeEvent.offsetX, e.nativeEvent.offsetY) : undefined}
-            onMouseMove={onMouseMove && ctx ? (e) => onMouseMove(ctx, e.nativeEvent.offsetX, e.nativeEvent.offsetY) : undefined}
-            onMouseUp={onMouseUp && ctx ? (e) => onMouseUp(ctx, e.nativeEvent.offsetX, e.nativeEvent.offsetY) : undefined}
+            onClick={onClick && ctx ? (e) => onClick(ctx, { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY }) : undefined}
+            onMouseDown={onMouseDown && ctx ? (e) => onMouseDown(ctx, { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY }) : undefined}
+            onMouseMove={onMouseMove && ctx ? (e) => onMouseMove(ctx, { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY }) : undefined}
+            onMouseUp={onMouseUp && ctx ? (e) => onMouseUp(ctx, { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY }) : undefined}
         />
     );
 };
