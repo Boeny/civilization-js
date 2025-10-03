@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 export function useMouseMove(callback: (e: MouseEvent) => void, enabled = true) {
     const container = useMemo(() => ({ moving: false, callback }), []);
 
-    const startMoving = useCallback(() => {
+    const startMoving = () => {
         container.moving = true;
-    }, []);
+        container.callback = callback;
+    };
 
     useEffect(() => {
         if (!enabled) {
@@ -36,7 +37,7 @@ export function useMouseMove(callback: (e: MouseEvent) => void, enabled = true) 
             document.removeEventListener('touchmove', moveHandler as any);
             document.removeEventListener('touchend', upHandler as any);
         };
-    }, []);
+    }, [enabled]);
 
     return { startMoving };
 }
