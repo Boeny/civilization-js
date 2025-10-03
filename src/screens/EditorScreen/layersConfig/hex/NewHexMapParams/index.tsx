@@ -6,11 +6,10 @@ import { Button } from 'components/Button';
 import { HexMapParamsBlock } from './HexMapParamsBlock';
 
 type Props = {
-    onClose: () => void;
     onSubmit: (width: number, height: number) => void;
 };
 
-export const NewHexMapParams = ({ onSubmit, onClose }: Props) => {
+export const NewHexMapParams = ({ onSubmit }: Props) => {
     const [width, setWidth] = useState(100);
     const [height, setHeight] = useState(100);
     const [isError, setError] = useState(false);
@@ -32,10 +31,9 @@ export const NewHexMapParams = ({ onSubmit, onClose }: Props) => {
             />
 
             <Block
-                align
+                alignCenter
                 noPadding
             >
-                <Button onClick={onClose}>Cancel</Button>
                 <Button
                     disabled={isError}
                     onClick={handleSubmit}

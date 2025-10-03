@@ -15,10 +15,19 @@ interface IProps {
 
 export function HexMapParamsBlock({ width, height, setWidth, setHeight, onEnterKeyDown, isError, setError }: IProps) {
     return (
-        <Block bordered>
-            <label>
-                Width{' '}
+        <Block
+            noPadding
+            alignCenter
+            style={{ fontSize: 14, margin: 0 }}
+        >
+            <Block
+                alignedVertically
+                noPadding
+                style={{ marginRight: 5 }}
+            >
+                <div>width</div>
                 <NumberInput
+                    className="small"
                     autoFocus
                     value={width}
                     onChange={setWidth}
@@ -26,17 +35,22 @@ export function HexMapParamsBlock({ width, height, setWidth, setHeight, onEnterK
                     isError={isError}
                     setError={setError}
                 />
-            </label>
-            <label>
-                Height{' '}
+            </Block>
+            <Block
+                alignedVertically
+                noPadding
+                style={{ marginLeft: 5 }}
+            >
+                <div>height</div>
                 <NumberInput
+                    className="small"
                     value={height}
                     onChange={setHeight}
                     onEnterKeyDown={onEnterKeyDown}
                     isError={isError}
                     setError={setError}
                 />
-            </label>
+            </Block>
         </Block>
     );
 }
