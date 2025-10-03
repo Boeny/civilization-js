@@ -2,6 +2,7 @@ import { Button } from 'components/Button';
 import { Menu } from 'components/Menu';
 import { MenuItem } from 'components/Menu/MenuItem';
 import { MenuPopup } from 'components/MenuPopup';
+import { resetEditorPage } from 'screens/EditorScreen/utils';
 import { screenStoreConfig } from 'screenStore';
 import { SCREEN_TYPE } from 'types';
 
@@ -23,7 +24,10 @@ export function MainMenu() {
 
             <MenuItem
                 title="Editor"
-                onClick={() => setScreen({ screen: SCREEN_TYPE.editor })}
+                onClick={() => {
+                    resetEditorPage();
+                    setScreen({ screen: SCREEN_TYPE.editor });
+                }}
             />
 
             <MenuItem title="Options">
