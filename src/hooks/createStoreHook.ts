@@ -64,9 +64,5 @@ export function createStoreHook<T extends object>(defaultState: T) {
         return params;
     }
 
-    function getStoreParams(): UseStore<T> {
-        return params;
-    }
-
-    return [useUpdatableStore, getStoreParams] as const;
+    return [useUpdatableStore, params] as const;
 }

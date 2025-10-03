@@ -2,15 +2,14 @@ import { Button } from 'components/Button';
 import { Menu } from 'components/Menu';
 import { MenuItem } from 'components/Menu/MenuItem';
 import { MenuPopup } from 'components/MenuPopup';
-import { useEditorReset } from 'screens/EditorScreen/hooks/useEditorReset';
-import { useScreenStore } from 'screenStore';
+import { resetEditorPage } from 'screens/EditorScreen/utils';
+import { screenStoreConfig } from 'screenStore';
 import { SCREEN_TYPE } from 'types';
 
 import { OptionsMenu } from '../OptionsMenu';
 
 export function EditorMenu() {
-    const setScreen = useScreenStore().setStore;
-    const reset = useEditorReset();
+    const setScreen = screenStoreConfig.setStore;
 
     return (
         <Menu
@@ -25,7 +24,7 @@ export function EditorMenu() {
 
             <MenuItem
                 title="New map"
-                onClick={reset}
+                onClick={resetEditorPage}
                 action="close"
             />
 

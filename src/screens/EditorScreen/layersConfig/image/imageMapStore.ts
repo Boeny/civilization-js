@@ -9,7 +9,7 @@ interface IStore {
     height: number;
 }
 
-const [useImageMapObservableStore, useImageMapStore] = createStoreHook<IStore>({
+const [useImageMapObservableStore, imageMapStoreConfig] = createStoreHook<IStore>({
     data: null,
     zoom: 1,
     position: { x: 0, y: 0 },
@@ -17,4 +17,4 @@ const [useImageMapObservableStore, useImageMapStore] = createStoreHook<IStore>({
     height: 0,
 });
 
-export { useImageMapObservableStore, useImageMapStore };
+export { useImageMapObservableStore, imageMapStoreConfig };

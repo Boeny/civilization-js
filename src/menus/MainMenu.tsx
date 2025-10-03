@@ -2,14 +2,14 @@ import { Button } from 'components/Button';
 import { Menu } from 'components/Menu';
 import { MenuItem } from 'components/Menu/MenuItem';
 import { MenuPopup } from 'components/MenuPopup';
-import { useScreenStore } from 'screenStore';
+import { screenStoreConfig } from 'screenStore';
 import { SCREEN_TYPE } from 'types';
 
 import { NewGameMenu } from './game/NewGameMenu';
 import { OptionsMenu } from './OptionsMenu';
 
 export function MainMenu() {
-    const setScreen = useScreenStore().setStore;
+    const setScreen = screenStoreConfig.setStore;
 
     return (
         <Menu

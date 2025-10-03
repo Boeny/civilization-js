@@ -1,5 +1,5 @@
 import { createStoreHook } from 'hooks/createStoreHook';
 
-const [useGridObservableStore, useGridStore] = createStoreHook({ isGridTurnedOn: true });
+const [useGridObservableStore, gridStoreConfig] = createStoreHook({ isGridTurnedOn: true });
 
-export { useGridObservableStore, useGridStore };
+export { useGridObservableStore, gridStoreConfig };

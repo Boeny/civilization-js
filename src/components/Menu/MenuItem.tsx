@@ -1,6 +1,6 @@
 import { CSSProperties, ReactNode } from 'react';
 
-import { useMenuStore } from './useMenuStore';
+import { menuStoreConfig } from './useMenuStore';
 
 interface IProps {
     title: string;
@@ -14,7 +14,7 @@ interface IProps {
     testId?: string;
 }
 export const MenuItem = ({ title, children, action, alignRight, style, menuStyle, disabled, onClick, testId }: IProps) => {
-    const { store: menu, setStore: setMenu } = useMenuStore();
+    const { store: menu, setStore: setMenu } = menuStoreConfig;
 
     const handleClick = () => {
         onClick?.();

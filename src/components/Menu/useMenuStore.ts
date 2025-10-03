@@ -14,7 +14,7 @@ interface IStore {
     menuStyle?: CSSProperties;
 }
 
-const [useMenuObservableStore, useMenuStore] = createStoreHook<IStore>({
+const [useMenuObservableStore, menuStoreConfig] = createStoreHook<IStore>({
     isOpen: false,
     children: null,
     back: () => {},
@@ -22,4 +22,4 @@ const [useMenuObservableStore, useMenuStore] = createStoreHook<IStore>({
     menuItemComponent: Button,
 });
 
-export { useMenuObservableStore, useMenuStore };
+export { useMenuObservableStore, menuStoreConfig };
