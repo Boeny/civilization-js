@@ -39,7 +39,7 @@ export function Menu({ isOpen, toggleMenuOnBackAction, item, children: topLevelC
         if (toggleMenuOnBackAction) {
             menu.toggle(!menu.isOpen);
         }
-    }, [menu.children, menu.toggle, menu.isOpen, toggleMenuOnBackAction, topLevelChildren]);
+    }, [menu.children, menu.isOpen, toggleMenuOnBackAction, topLevelChildren]);
 
     useEsc(menu.back);
 
