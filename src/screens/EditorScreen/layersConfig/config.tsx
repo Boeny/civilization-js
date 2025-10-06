@@ -2,7 +2,7 @@ import { FC, ReactNode } from 'react';
 
 import { StoreConfig } from 'hooks/createStoreHook';
 import { LAYER_TYPE } from 'types';
-import { getZeroVector } from 'utils';
+import { getVector } from 'utils';
 
 import { HexBrushes } from './hex/HexBrushes';
 import { HexMap } from './hex/HexMap';
@@ -58,4 +58,4 @@ export const ZOOM_CONFIG = {
 
 export const KEY_PAN_SPEED = 40;
 export const WHEEL_PAN_SPEED = 5;
-export const BORDER_SIZE = getZeroVector();
+export const BORDER_SIZE = getVector(200, 200);

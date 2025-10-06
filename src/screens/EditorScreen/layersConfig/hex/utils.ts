@@ -9,3 +9,7 @@ export function generateEmptyMapData(width: number, height: number): HexMapData[
 export function getHexRadius(hexWidth: number): number {
     return hexWidth / SQRT_3;
 }
+
+export function getHexHeight(hexRadius: number): number {
+    return hexRadius * 1.5;
+}

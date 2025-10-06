@@ -13,7 +13,7 @@ import { useBrushStore } from '../stores/brushStore';
 import { useGridStore } from '../stores/gridSwitchStore';
 import { useHexMapStore } from '../stores/hexMapStore';
 import { HexMapData } from '../types';
-import { getHexRadius } from '../utils';
+import { getHexHeight, getHexRadius } from '../utils';
 
 import { fillHex } from './utils';
 
@@ -35,7 +35,7 @@ function HexMapComponent({ isEditable, zIndex, data, screenSize }: Props) {
     const position = vectorSum(commonPosition, hexMapPosiition);
     const hexWidth = originalHexWidth * zoom;
     const hexRadius = getHexRadius(hexWidth);
-    const hexHeight = hexRadius * 1.5;
+    const hexHeight = getHexHeight(hexRadius);
     const mapSize = getVector(data.width, data.height);
 
     const updateMapCell = (point: IPoint) => {

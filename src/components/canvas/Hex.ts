@@ -14,10 +14,11 @@ interface IProps {
 }
 export function Hex({ ctx, position, offset, width, radius, color, isGridTurnedOn }: IProps) {
     const xOffset = position.y % 2 === 0 ? width / 2 : width;
+    const height = radius * 1.5;
 
     Polygon({
         ctx,
-        centerPoint: getVector(position.x * width + xOffset + (offset?.x || 0), position.y * radius * 1.5 + radius + (offset?.y || 0)),
+        centerPoint: getVector(position.x * width + xOffset + (offset?.x || 0), position.y * height + radius + (offset?.y || 0)),
         startAngle: Math.PI / 2,
         radius,
         sides: 6,

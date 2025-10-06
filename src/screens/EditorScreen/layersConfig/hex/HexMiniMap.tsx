@@ -9,7 +9,7 @@ import { HEX_CONFIG } from './hexConfig';
 import { NewHexMapParams } from './NewHexMapParams';
 import { useHexMapStore } from './stores/hexMapStore';
 import { HexMapData } from './types';
-import { generateEmptyMapData, getHexRadius } from './utils';
+import { generateEmptyMapData, getHexHeight, getHexRadius } from './utils';
 
 type Props = {
     panelWidth: number;
@@ -20,12 +20,13 @@ type Props = {
 const MiniMap = ({ panelWidth, title, data }: Props) => {
     const hexWidth = panelWidth / (data.width + 10);
     const hexRadius = getHexRadius(hexWidth);
+    const hexHeight = getHexHeight(hexRadius);
 
     return (
         <Canvas
             title={title}
             width={panelWidth + hexWidth / 2}
-            height={(3 * hexRadius * data.height) / 2 + hexRadius / 2}
+            height={hexHeight * data.height + hexRadius / 2}
             style={{ maxHeight: 170 }}
         >
             {(ctx) => {
@@ -74,7 +75,10 @@ export const HexMiniMap = ({ setMapCommonParams, ...props }: IMiniMapProps) => {
     } = useHexMapStore();
 
     const handleSubmit = (width: number, height: number) => {
-        setMapCommonParams(width * hexWidth, height * hexWidth);
+        const hexRadius = getHexRadius(hexWidth);
+        const hexHeight = getHexHeight(hexRadius);
+
+        setMapCommonParams(width * hexWidth, height * hexHeight);
         setHexMap({ data: new HexMapData(generateEmptyMapData(width, height)) });
     };
 
