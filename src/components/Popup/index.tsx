@@ -17,7 +17,7 @@ const context: PopupContextProps<any> = {
     onReject: () => {},
 } as any;
 
-const [usePopupObservableStore] = createStoreHook<{ popupContent: ReactNode }>({
+const [usePopupStore] = createStoreHook<{ popupContent: ReactNode }>({
     popupContent: null,
 });
 
@@ -45,7 +45,7 @@ export function Popup() {
     const {
         store: { popupContent },
         setStore: setPopup,
-    } = usePopupObservableStore();
+    } = usePopupStore();
 
     useEffect(() => {
         const params = { resolvePopup: () => {}, rejectPopup: () => {} } as any;

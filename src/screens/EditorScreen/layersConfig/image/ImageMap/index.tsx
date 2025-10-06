@@ -5,7 +5,7 @@ import { getVector, vectorMult, vectorSum } from 'utils';
 
 import { useMapMovementParamsStore } from '../../mapMovingStore';
 import { IMapProps } from '../../types';
-import { useImageMapObservableStore } from '../imageMapStore';
+import { useImageMapStore } from '../imageMapStore';
 
 interface IProps extends IMapProps {
     data: HTMLImageElement;
@@ -13,7 +13,7 @@ interface IProps extends IMapProps {
 
 const ImageMapComponent = ({ data, zIndex, screenSize }: IProps) => {
     const { zoom, position: commonPosition } = useMapMovementParamsStore().store;
-    const { position: imageMapPosition } = useImageMapObservableStore().store;
+    const { position: imageMapPosition } = useImageMapStore().store;
 
     const position = vectorSum(commonPosition, imageMapPosition);
     const originalImageSize = getVector(data.width, data.height);
@@ -35,7 +35,7 @@ const ImageMapComponent = ({ data, zIndex, screenSize }: IProps) => {
 };
 
 export function ImageMap(props: IMapProps) {
-    const { data } = useImageMapObservableStore().store;
+    const { data } = useImageMapStore().store;
 
     if (!data) {
         return null;

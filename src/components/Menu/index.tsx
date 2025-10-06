@@ -3,7 +3,7 @@ import { ReactNode, useCallback } from 'react';
 import { useEsc } from 'hooks/useEsc';
 
 import { MenuComponent, MenuItemComponent } from './types';
-import { useMenuObservableStore } from './useMenuStore';
+import { useMenuStore } from './useMenuStore';
 
 interface IProps {
     isOpen?: boolean;
@@ -15,7 +15,7 @@ interface IProps {
 }
 
 export function Menu({ isOpen, toggleMenuOnBackAction, item, children: topLevelChildren, testId, ...props }: IProps) {
-    const { store: menu, setStore: setMenu } = useMenuObservableStore({
+    const { store: menu, setStore: setMenu } = useMenuStore({
         isOpen: !!isOpen,
         children: topLevelChildren,
         menuItemComponent: item,

@@ -12,10 +12,10 @@ import { RIGHT_PANEL, TOP_PANEL_HEIGHT } from './const';
 import { LAYER_CONFIG } from './layersConfig/config';
 import { Layers } from './layersConfig/Layers';
 import { Map } from './layersConfig/Map';
-import { useLayerObservableStore } from './layerStore';
+import { useLayerStore } from './layerStore';
 
 export const EditorScreen = () => {
-    const { layer } = useLayerObservableStore().store;
+    const { layer } = useLayerStore().store;
 
     const [isLeftPanelShown, setLeftPanelShown] = useState(true);
     const [isRightPanelShown, setRightPanelShown] = useState(true);

@@ -4,7 +4,7 @@ import { GameMenu } from 'menus/game/GameMenu';
 import { MainMenu } from 'menus/MainMenu';
 import { EditorScreen } from 'screens/EditorScreen';
 import { GameScreen } from 'screens/GameScreen';
-import { useScreenObservableStore } from 'screenStore';
+import { useScreenStore } from 'screenStore';
 import { SCREEN_TYPE } from 'types';
 
 const menuElement = {
@@ -20,7 +20,7 @@ const screenElement = {
 };
 
 export function App() {
-    const { screen } = useScreenObservableStore().store;
+    const { screen } = useScreenStore().store;
 
     return (
         <>

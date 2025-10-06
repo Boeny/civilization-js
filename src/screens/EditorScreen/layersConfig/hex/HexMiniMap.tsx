@@ -7,7 +7,7 @@ import { IMiniMapProps } from '../types';
 
 import { HEX_CONFIG } from './hexConfig';
 import { NewHexMapParams } from './NewHexMapParams';
-import { useHexMapObservableStore } from './stores/hexMapStore';
+import { useHexMapStore } from './stores/hexMapStore';
 import { HexMapData } from './types';
 import { generateEmptyMapData, getHexRadius } from './utils';
 
@@ -43,7 +43,7 @@ const MiniMapWithParams = (props: Props) => {
     const {
         store: { isVisible, opacity },
         setStore: setHexMap,
-    } = useHexMapObservableStore();
+    } = useHexMapStore();
 
     return (
         <>
@@ -71,7 +71,7 @@ export const HexMiniMap = ({ setMapCommonParams, ...props }: IMiniMapProps) => {
     const {
         store: { data, hexWidth },
         setStore: setHexMap,
-    } = useHexMapObservableStore();
+    } = useHexMapStore();
 
     const handleSubmit = (width: number, height: number) => {
         setMapCommonParams(width * hexWidth, height * hexWidth);

@@ -1,10 +1,10 @@
-import { useGridObservableStore } from './stores/gridSwitchStore';
+import { useGridStore } from './stores/gridSwitchStore';
 
 export const ToggleGridButton = () => {
     const {
         store: { isGridTurnedOn },
         setStore: setGridTurnedOn,
-    } = useGridObservableStore();
+    } = useGridStore();
 
     return (
         <button

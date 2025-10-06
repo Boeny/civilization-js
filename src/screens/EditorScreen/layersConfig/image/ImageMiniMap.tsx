@@ -2,11 +2,11 @@ import { Button } from 'components/Button';
 import { Canvas } from 'components/canvas/Canvas';
 import { IPoint, LAYER_TYPE } from 'types';
 
-import { useLayerObservableStore } from '../../layerStore';
+import { useLayerStore } from '../../layerStore';
 import { IMiniMapProps } from '../types';
 
 import { uploadFile } from './ImageMap/utils';
-import { useImageMapObservableStore } from './imageMapStore';
+import { useImageMapStore } from './imageMapStore';
 
 interface Props {
     panelWidth: number;
@@ -40,8 +40,8 @@ export const ImageMiniMap = ({ title, setMapCommonParams, ...props }: IMiniMapPr
     const {
         store: { data },
         setStore: setImageMap,
-    } = useImageMapObservableStore();
-    const { layer } = useLayerObservableStore().store;
+    } = useImageMapStore();
+    const { layer } = useLayerStore().store;
 
     const isSelected = layer === LAYER_TYPE.image;
 

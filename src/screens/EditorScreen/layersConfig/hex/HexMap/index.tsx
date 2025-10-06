@@ -9,9 +9,9 @@ import { getVector, vectorSub, vectorSum } from 'utils';
 import { useMapMovementParamsStore } from '../../mapMovingStore';
 import { IMapProps } from '../../types';
 import { HEX_CONFIG } from '../hexConfig';
-import { useBrushObservableStore } from '../stores/brushStore';
-import { useGridObservableStore } from '../stores/gridSwitchStore';
-import { useHexMapObservableStore } from '../stores/hexMapStore';
+import { useBrushStore } from '../stores/brushStore';
+import { useGridStore } from '../stores/gridSwitchStore';
+import { useHexMapStore } from '../stores/hexMapStore';
 import { HexMapData } from '../types';
 import { getHexRadius } from '../utils';
 
@@ -28,9 +28,9 @@ function HexMapComponent({ isEditable, zIndex, data, screenSize }: Props) {
     const {
         store: { hexWidth: originalHexWidth, opacity, position: hexMapPosiition },
         setStore: setHexMap,
-    } = useHexMapObservableStore();
-    const { brush } = useBrushObservableStore().store;
-    const { isGridTurnedOn } = useGridObservableStore().store;
+    } = useHexMapStore();
+    const { brush } = useBrushStore().store;
+    const { isGridTurnedOn } = useGridStore().store;
 
     const position = vectorSum(commonPosition, hexMapPosiition);
     const hexWidth = originalHexWidth * zoom;
@@ -101,7 +101,7 @@ function HexMapComponent({ isEditable, zIndex, data, screenSize }: Props) {
 }
 
 export function HexMap(props: IMapProps) {
-    const { isVisible, data } = useHexMapObservableStore().store;
+    const { isVisible, data } = useHexMapStore().store;
 
     if (!isVisible || !data || !data.height) {
         return null;

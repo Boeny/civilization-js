@@ -13,7 +13,7 @@ interface HexMapStore {
     zoom: number;
 }
 
-const [useHexMapObservableStore, hexMapStoreConfig] = createStoreHook<HexMapStore>({
+const [useHexMapStore, hexMapStoreConfig] = createStoreHook<HexMapStore>({
     data: null,
     hexWidth: 100,
     isVisible: true,
@@ -22,4 +22,4 @@ const [useHexMapObservableStore, hexMapStoreConfig] = createStoreHook<HexMapStor
     zoom: 1,
 });
 
-export { useHexMapObservableStore, hexMapStoreConfig };
+export { useHexMapStore, hexMapStoreConfig };

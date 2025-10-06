@@ -3,7 +3,7 @@ import './styles.css';
 import { IPoint, LAYER_TYPE } from 'types';
 import { getClasses, getVector, getZeroVector, vectorDiv, vectorMult, vectorSub } from 'utils';
 
-import { useLayerObservableStore } from '../../layerStore';
+import { useLayerStore } from '../../layerStore';
 import { getLayers, getMaps, LAYER_CONFIG, ZOOM_CONFIG } from '../config';
 import { mapMovementParamsConfig } from '../mapMovingStore';
 
@@ -16,7 +16,7 @@ export const Layers = ({ panelWidth, screenSize }: Props) => {
     const {
         store: { layer },
         setStore: setLayer,
-    } = useLayerObservableStore();
+    } = useLayerStore();
     const setMapMovementParams = mapMovementParamsConfig.setStore;
 
     const handleLayerClick = (type: LAYER_TYPE) => {

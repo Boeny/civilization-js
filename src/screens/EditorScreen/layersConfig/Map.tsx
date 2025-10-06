@@ -1,6 +1,6 @@
 import { IPoint } from 'types';
 
-import { useLayerObservableStore } from '../layerStore';
+import { useLayerStore } from '../layerStore';
 
 import { getLayers, LAYER_CONFIG } from './config';
 import { useMapMoving } from './useMapMoving';
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const Map = ({ screenSize }: Props) => {
-    const { layer } = useLayerObservableStore().store;
+    const { layer } = useLayerStore().store;
 
     useMapMoving(screenSize);
 

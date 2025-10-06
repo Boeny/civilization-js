@@ -5,6 +5,6 @@ type IStore = {
     screen: SCREEN_TYPE;
 };
 
-const [useScreenObservableStore, screenStoreConfig] = createStoreHook<IStore>({ screen: SCREEN_TYPE.main });
+const [useScreenStore, screenStoreConfig] = createStoreHook<IStore>({ screen: SCREEN_TYPE.main });
 
-export { useScreenObservableStore, screenStoreConfig };
+export { useScreenStore, screenStoreConfig };

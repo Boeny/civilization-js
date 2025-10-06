@@ -3,14 +3,14 @@ import './styles.css';
 import { getClasses } from 'utils';
 
 import { getBrushes, HEX_CONFIG } from '../hexConfig';
-import { useBrushObservableStore } from '../stores/brushStore';
+import { useBrushStore } from '../stores/brushStore';
 import { HEX_TYPE } from '../types';
 
 export function HexBrushes() {
     const {
         store: { brush },
         setStore: setBrush,
-    } = useBrushObservableStore();
+    } = useBrushStore();
 
     const handleBrushClick = (type: HEX_TYPE) => {
         setBrush({ brush: brush === null || brush !== type ? type : null });
