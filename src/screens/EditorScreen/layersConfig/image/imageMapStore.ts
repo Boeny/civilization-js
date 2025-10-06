@@ -2,7 +2,7 @@ import { createStoreHook } from 'hooks/createStoreHook';
 import { IPoint } from 'types';
 import { getZeroVector } from 'utils';
 
-interface IStore {
+interface ImageMapStore {
     data: HTMLImageElement | null;
     zoom: number;
     position: IPoint;
@@ -10,7 +10,7 @@ interface IStore {
     height: number;
 }
 
-const [useImageMapObservableStore, imageMapStoreConfig] = createStoreHook<IStore>({
+const [useImageMapObservableStore, imageMapStoreConfig] = createStoreHook<ImageMapStore>({
     data: null,
     zoom: 1,
     position: getZeroVector(),

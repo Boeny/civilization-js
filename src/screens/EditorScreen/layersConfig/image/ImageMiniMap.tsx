@@ -1,20 +1,22 @@
+import { Button } from 'components/Button';
 import { Canvas } from 'components/canvas/Canvas';
 import { IPoint, LAYER_TYPE } from 'types';
 
 import { useLayerObservableStore } from '../../layerStore';
 import { IMiniMapProps } from '../types';
 
-import { LoadImageButton } from './ImageMap/LoadImageButton';
 import { uploadFile } from './ImageMap/utils';
 import { useImageMapObservableStore } from './imageMapStore';
 
-interface IProps extends IMiniMapProps {
+interface Props {
+    panelWidth: number;
+    title: string;
     data: HTMLImageElement;
     onClick?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
 }
 
-const ImageMiniMapComponent = ({ data, title, onClick, ...props }: IProps) => {
-    const width = props.width - 29;
+const ImageMiniMapComponent = ({ data, title, onClick, ...props }: Props) => {
+    const width = props.panelWidth - 29;
     const height = (width * data.height) / data.width;
 
     return (
@@ -34,7 +36,7 @@ const ImageMiniMapComponent = ({ data, title, onClick, ...props }: IProps) => {
     );
 };
 
-export const ImageMiniMap = ({ title, width }: IMiniMapProps) => {
+export const ImageMiniMap = ({ title, setMapCommonParams, ...props }: IMiniMapProps) => {
     const {
         store: { data },
         setStore: setImageMap,
@@ -43,19 +45,20 @@ export const ImageMiniMap = ({ title, width }: IMiniMapProps) => {
 
     const isSelected = layer === LAYER_TYPE.image;
 
-    const handleDataUpdate = (newData: HTMLImageElement) => {
-        setImageMap({ data: newData });
-    };
+    const loadImage = async () => {
+        const newData = await uploadFile();
 
-    const handleClick = async () => {
-        if (!isSelected) {
+        if (!newData) {
             return;
         }
 
-        const newData = await uploadFile();
+        setMapCommonParams(newData.width, newData.height);
+        setImageMap({ data: newData });
+    };
 
-        if (newData) {
-            handleDataUpdate(newData);
+    const handleImageMiniMapClick = () => {
+        if (isSelected) {
+            loadImage();
         }
     };
 
@@ -69,17 +72,17 @@ export const ImageMiniMap = ({ title, width }: IMiniMapProps) => {
                     height: 100,
                 }}
             >
-                <LoadImageButton onDataUpdate={handleDataUpdate} />
+                <Button onClick={loadImage}>Load Image</Button>
             </div>
         );
     }
 
     return (
         <ImageMiniMapComponent
-            width={width}
+            {...props}
             title={isSelected ? 'Load new image' : title}
             data={data}
-            onClick={handleClick}
+            onClick={handleImageMiniMapClick}
         />
     );
 };

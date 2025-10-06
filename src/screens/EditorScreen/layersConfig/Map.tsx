@@ -1,9 +1,18 @@
+import { IPoint } from 'types';
+
 import { useLayerObservableStore } from '../layerStore';
 
 import { getLayers, LAYER_CONFIG } from './config';
+import { useMapMoving } from './useMapMoving';
 
-export const Map = () => {
+type Props = {
+    screenSize: IPoint;
+};
+
+export const Map = ({ screenSize }: Props) => {
     const { layer } = useLayerObservableStore().store;
+
+    useMapMoving(screenSize);
 
     return (
         <div>
@@ -19,6 +28,7 @@ export const Map = () => {
                         key={type}
                         isEditable={layer === type}
                         zIndex={i}
+                        screenSize={screenSize}
                     />
                 );
             })}

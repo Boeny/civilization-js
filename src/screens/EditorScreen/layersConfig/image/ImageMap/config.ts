@@ -8,10 +8,3 @@ export const FILE_PICKER_CONFIG = {
     excludeAcceptAllOption: true,
     multiple: false,
 };
-
-export const ZOOM_CONFIG = {
-    pixelsInDelta: 40,
-    pixelsAddition: 0,
-    minWidth: 300,
-    maxWidth: 1000000,
-};

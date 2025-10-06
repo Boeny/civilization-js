@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { ArrowButton } from 'components/ArrowButton';
 import { MenuItem } from 'components/Menu/MenuItem';
+import { getVector } from 'utils';
 
 import { LeftPanel } from './components/LeftPanel';
 import { RightPanel } from './components/RightPanel';
@@ -24,12 +25,14 @@ export const EditorScreen = () => {
 
     const { leftPanelContent, topPanelContent } = LAYER_CONFIG[layer];
 
+    const screenSize = getVector(window.innerWidth, window.innerHeight);
+
     return (
         <div
             className="screen"
             style={{ paddingTop: TOP_PANEL_HEIGHT }}
         >
-            <Map />
+            <Map screenSize={screenSize} />
 
             <TopPanel>
                 <div style={{ display: 'flex' }}>
@@ -49,7 +52,10 @@ export const EditorScreen = () => {
 
             {isRightPanelShown && (
                 <RightPanel>
-                    <Layers width={RIGHT_PANEL.innerWidth} />
+                    <Layers
+                        panelWidth={RIGHT_PANEL.innerWidth}
+                        screenSize={screenSize}
+                    />
                 </RightPanel>
             )}
         </div>

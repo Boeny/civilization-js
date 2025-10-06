@@ -1,8 +1,12 @@
+import { IPoint } from 'types';
+
 export interface IMiniMapProps {
-    width: number;
+    panelWidth: number;
     title: string;
+    setMapCommonParams: (width: number, height: number) => void;
 }
 export interface IMapProps {
     isEditable: boolean;
     zIndex: number;
+    screenSize: IPoint;
 }

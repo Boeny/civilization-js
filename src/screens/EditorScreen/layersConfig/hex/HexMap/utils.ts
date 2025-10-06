@@ -2,6 +2,8 @@ import { SQRT_3 } from 'screens/EditorScreen/const';
 import { IPoint } from 'types';
 import { getVector, vectorSum } from 'utils';
 
+import { HEX_TYPE, HexMapData } from '../types';
+
 function yIsBelowTheLine(isIncreasing: boolean, x: number, y: number, dy: number): boolean {
     // tan(30) = 1 / sqrt(3)
     const yOnTheLine = isIncreasing ? x / SQRT_3 : dy - x / SQRT_3;
@@ -9,7 +11,7 @@ function yIsBelowTheLine(isIncreasing: boolean, x: number, y: number, dy: number
     return y < yOnTheLine;
 }
 
-export function getMapCoordinatesFromCursor({ x, y }: IPoint, hexWidth: number, hexRadius: number): IPoint {
+function getMapCoordinatesFromCursor({ x, y }: IPoint, hexWidth: number, hexRadius: number): IPoint {
     const hexHeight_1_5 = 3 * hexRadius;
     const y_3radius_count = Math.floor(y / hexHeight_1_5);
     let yMin = y_3radius_count * hexHeight_1_5;
@@ -73,4 +75,37 @@ export function getMapCoordinatesFromCursor({ x, y }: IPoint, hexWidth: number, 
     }
 
     return vectorSum(result, getVector(0, 1));
+}
+
+export function fillHex({
+    point,
+    hexWidth,
+    hexRadius,
+    mapSize,
+    brush,
+    data,
+}: {
+    point: IPoint;
+    hexWidth: number;
+    hexRadius: number;
+    mapSize: IPoint;
+    brush: HEX_TYPE | null;
+    data: HexMapData['data'];
+}): HexMapData['data'] {
+    const mapPoint = getMapCoordinatesFromCursor(point, hexWidth, hexRadius);
+
+    if (
+        mapPoint.x < 0 ||
+        mapPoint.y < 0 ||
+        mapPoint.x >= mapSize.x ||
+        mapPoint.y >= mapSize.y ||
+        !brush ||
+        data[mapPoint.y][mapPoint.x] === brush
+    ) {
+        return data;
+    }
+
+    data[mapPoint.y][mapPoint.x] = brush;
+
+    return data;
 }

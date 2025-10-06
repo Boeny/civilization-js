@@ -8,27 +8,28 @@ import { IMiniMapProps } from '../types';
 import { HEX_CONFIG } from './hexConfig';
 import { NewHexMapParams } from './NewHexMapParams';
 import { useHexMapObservableStore } from './stores/hexMapStore';
+import { HexMapData } from './types';
 import { generateEmptyMapData, getHexRadius } from './utils';
 
-const MiniMap = ({ width, title }: IMiniMapProps) => {
-    const { data } = useHexMapObservableStore().store;
+type Props = {
+    panelWidth: number;
+    title: string;
+    data: HexMapData;
+};
 
-    if (!data?.length) {
-        return null;
-    }
-
-    const hexWidth = width / (data[0].length + 10);
+const MiniMap = ({ panelWidth, title, data }: Props) => {
+    const hexWidth = panelWidth / (data.width + 10);
     const hexRadius = getHexRadius(hexWidth);
 
     return (
         <Canvas
             title={title}
-            width={width + hexWidth / 2}
-            height={(3 * hexRadius * data.length) / 2 + hexRadius / 2}
+            width={panelWidth + hexWidth / 2}
+            height={(3 * hexRadius * data.height) / 2 + hexRadius / 2}
             style={{ maxHeight: 170 }}
         >
             {(ctx) => {
-                data.forEach((row, y) => {
+                data.data.forEach((row, y) => {
                     row.forEach((type, x) => {
                         Hex({ ctx, position: { x, y }, width: hexWidth, radius: hexRadius, color: HEX_CONFIG[type].color });
                     });
@@ -38,7 +39,7 @@ const MiniMap = ({ width, title }: IMiniMapProps) => {
     );
 };
 
-const MiniMapWithParams = ({ width, title }: IMiniMapProps) => {
+const MiniMapWithParams = (props: Props) => {
     const {
         store: { isVisible, opacity },
         setStore: setHexMap,
@@ -47,7 +48,7 @@ const MiniMapWithParams = ({ width, title }: IMiniMapProps) => {
     return (
         <>
             <div className="title">
-                {title}
+                {props.title}
                 <EyeButton
                     isVisible={isVisible}
                     toggleVisible={() => setHexMap({ isVisible: !isVisible })}
@@ -61,34 +62,33 @@ const MiniMapWithParams = ({ width, title }: IMiniMapProps) => {
                 />
             )}
 
-            <div className="mini-map">
-                {isVisible && (
-                    <MiniMap
-                        width={width}
-                        title={title}
-                    />
-                )}
-            </div>
+            <div className="mini-map">{isVisible && <MiniMap {...props} />}</div>
         </>
     );
 };
 
-export const HexMiniMap = (props: IMiniMapProps) => {
+export const HexMiniMap = ({ setMapCommonParams, ...props }: IMiniMapProps) => {
     const {
-        store: { data },
+        store: { data, hexWidth },
         setStore: setHexMap,
     } = useHexMapObservableStore();
 
+    const handleSubmit = (width: number, height: number) => {
+        setMapCommonParams(width * hexWidth, height * hexWidth);
+        setHexMap({ data: new HexMapData(generateEmptyMapData(width, height)) });
+    };
+
     return (
         <>
-            {data && <MiniMapWithParams {...props} />}
+            {data && (
+                <MiniMapWithParams
+                    {...props}
+                    data={data}
+                />
+            )}
 
             <div>
-                <NewHexMapParams
-                    onSubmit={(width, height) => {
-                        setHexMap({ data: generateEmptyMapData(width, height) });
-                    }}
-                />
+                <NewHexMapParams onSubmit={handleSubmit} />
             </div>
         </>
     );

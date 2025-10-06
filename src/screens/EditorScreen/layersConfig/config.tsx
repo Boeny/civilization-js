@@ -1,12 +1,16 @@
 import { FC, ReactNode } from 'react';
 
+import { StoreConfig } from 'hooks/createStoreHook';
 import { LAYER_TYPE } from 'types';
+import { getZeroVector } from 'utils';
 
 import { HexBrushes } from './hex/HexBrushes';
 import { HexMap } from './hex/HexMap';
 import { HexMiniMap } from './hex/HexMiniMap';
+import { hexMapStoreConfig } from './hex/stores/hexMapStore';
 import { ToggleGridButton } from './hex/ToggleGridButton';
 import { ImageMap } from './image/ImageMap';
+import { imageMapStoreConfig } from './image/imageMapStore';
 import { ImageMiniMap } from './image/ImageMiniMap';
 import { IMapProps, IMiniMapProps } from './types';
 
@@ -14,6 +18,7 @@ export const LAYER_CONFIG: Record<
     LAYER_TYPE,
     {
         title: string;
+        config: StoreConfig<{ data: ({ width: number; height: number } & any) | null }>;
         miniMapComponent: FC<IMiniMapProps>;
         mapComponent: FC<IMapProps>;
         topPanelContent?: ReactNode;
@@ -22,11 +27,13 @@ export const LAYER_CONFIG: Record<
 > = {
     [LAYER_TYPE.image]: {
         title: 'Image',
+        config: imageMapStoreConfig,
         miniMapComponent: ImageMiniMap,
         mapComponent: ImageMap,
     },
     [LAYER_TYPE.hex]: {
         title: 'Hexagonal base map',
+        config: hexMapStoreConfig,
         miniMapComponent: HexMiniMap,
         mapComponent: HexMap,
         topPanelContent: <ToggleGridButton />,
@@ -37,3 +44,18 @@ export const LAYER_CONFIG: Record<
 export function getLayers(): LAYER_TYPE[] {
     return Object.keys(LAYER_CONFIG).map(Number);
 }
+
+export function getMaps(): ({ width: number; height: number } | null)[] {
+    return getLayers().map((type) => LAYER_CONFIG[type].config.store.data);
+}
+
+export const ZOOM_CONFIG = {
+    pixelsInDelta: 40,
+    pixelsAddition: 0,
+    minWidth: 300,
+    maxWidth: 1000000,
+};
+
+export const KEY_PAN_SPEED = 40;
+export const WHEEL_PAN_SPEED = 5;
+export const BORDER_SIZE = getZeroVector();

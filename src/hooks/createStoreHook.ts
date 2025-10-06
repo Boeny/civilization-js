@@ -6,6 +6,12 @@ interface StoreUpdate<S extends object> {
     (data: Partial<S>): void;
 }
 
+export type StoreConfig<T> = {
+    readonly store: T;
+    setStore: (data: Partial<T>) => void;
+    reset: () => void;
+};
+
 type UseStore<T extends object> = { store: T; setStore: StoreUpdate<T>; reset: () => void };
 
 export function createStoreHook<T extends object>(defaultState: T) {
@@ -30,7 +36,7 @@ export function createStoreHook<T extends object>(defaultState: T) {
         setStore(defaultState);
     }
 
-    const params = {
+    const params: StoreConfig<T> = {
         get store() {
             return container.getStore();
         },

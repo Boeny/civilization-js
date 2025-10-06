@@ -4,7 +4,7 @@ import { getZeroVector } from 'utils';
 
 import { HexMapData } from '../types';
 
-interface IStore {
+interface HexMapStore {
     data: HexMapData | null;
     hexWidth: number;
     isVisible: boolean;
@@ -13,7 +13,7 @@ interface IStore {
     zoom: number;
 }
 
-const [useHexMapObservableStore, hexMapStoreConfig] = createStoreHook<IStore>({
+const [useHexMapObservableStore, hexMapStoreConfig] = createStoreHook<HexMapStore>({
     data: null,
     hexWidth: 100,
     isVisible: true,

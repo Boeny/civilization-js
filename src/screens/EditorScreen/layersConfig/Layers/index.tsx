@@ -1,16 +1,23 @@
 import './styles.css';
 
-import { LAYER_TYPE } from 'types';
-import { getClasses } from 'utils';
+import { IPoint, LAYER_TYPE } from 'types';
+import { getClasses, getVector, getZeroVector, vectorDiv, vectorMult, vectorSub } from 'utils';
 
 import { useLayerObservableStore } from '../../layerStore';
-import { getLayers, LAYER_CONFIG } from '../config';
+import { getLayers, getMaps, LAYER_CONFIG, ZOOM_CONFIG } from '../config';
+import { mapMovementParamsConfig } from '../mapMovingStore';
 
-export const Layers = ({ width }: { width: number }) => {
+type Props = {
+    screenSize: IPoint;
+    panelWidth: number;
+};
+
+export const Layers = ({ panelWidth, screenSize }: Props) => {
     const {
         store: { layer },
         setStore: setLayer,
     } = useLayerObservableStore();
+    const setMapMovementParams = mapMovementParamsConfig.setStore;
 
     const handleLayerClick = (type: LAYER_TYPE) => {
         if (layer === type) {
@@ -18,6 +25,49 @@ export const Layers = ({ width }: { width: number }) => {
         }
 
         setLayer({ layer: type });
+    };
+
+    const handleSetMapCommonParams = (newWidth: number, newHeight: number) => {
+        const maps = getMaps();
+
+        // if some map exists - check if the new map is bigger and set borders
+        if (maps.some(Boolean)) {
+            const currentMapMaxSize = getZeroVector();
+            maps.forEach((map) => {
+                if (!map) {
+                    return;
+                }
+                if (currentMapMaxSize.x < map.width) {
+                    currentMapMaxSize.x = map.width;
+                }
+                if (currentMapMaxSize.y < map.height) {
+                    currentMapMaxSize.y = map.height;
+                }
+            });
+
+            if (newWidth > currentMapMaxSize.x) {
+                currentMapMaxSize.x = newWidth;
+            }
+            if (newHeight > currentMapMaxSize.y) {
+                currentMapMaxSize.y = newHeight;
+            }
+
+            setMapMovementParams({
+                imageSize: currentMapMaxSize,
+            });
+
+            return;
+        }
+
+        // if it's the first map - set basic params relying on it
+        const initialZoom = ZOOM_CONFIG.minWidth / newWidth; // set minimal size
+        const imageSize = getVector(newWidth, newHeight);
+
+        setMapMovementParams({
+            imageSize,
+            zoom: initialZoom,
+            position: vectorDiv(vectorSub(screenSize, vectorMult(imageSize, initialZoom)), 2),
+        });
     };
 
     return (
@@ -32,8 +82,9 @@ export const Layers = ({ width }: { width: number }) => {
                         className={getClasses(['layer', layer === type && 'selected'])}
                     >
                         <config.miniMapComponent
-                            width={width}
+                            panelWidth={panelWidth}
                             title={config.title}
+                            setMapCommonParams={handleSetMapCommonParams}
                         />
                     </div>
                 );
