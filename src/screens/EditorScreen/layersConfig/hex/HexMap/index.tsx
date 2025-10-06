@@ -4,7 +4,7 @@ import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { useMouseMove } from 'hooks/useMouseMove';
 import { IPoint } from 'types';
-import { vectorSub, vectorSum } from 'utils';
+import { getVector, vectorSub, vectorSum } from 'utils';
 
 import { useImageMapObservableStore } from '../../image/imageMapStore';
 import { IMapProps } from '../../types';
@@ -17,10 +17,7 @@ import { getHexRadius } from '../utils';
 
 import { getMapCoordinatesFromCursor } from './utils';
 
-const screenSize = {
-    x: window.innerWidth,
-    y: window.innerHeight,
-};
+const screenSize = getVector(window.innerWidth, window.innerHeight);
 
 function fillHex({
     point,
@@ -74,14 +71,11 @@ function HexMapComponent({ isEditable, zIndex, data }: Props) {
     const hexWidth = originalHexWidth * zoom;
     const hexRadius = getHexRadius(hexWidth);
     const hexHeight = hexRadius * 1.5;
-    const mapSize: IPoint = {
-        x: data[0].length,
-        y: data.length,
-    };
+    const mapSize = getVector(data[0].length, data.length);
 
     const { startMoving } = useMouseMove((e) => {
         const newData = fillHex({
-            point: vectorSub({ x: e.offsetX, y: e.offsetY }, position),
+            point: vectorSub(getVector(e.offsetX, e.offsetY), position),
             hexWidth,
             hexRadius,
             mapSize,

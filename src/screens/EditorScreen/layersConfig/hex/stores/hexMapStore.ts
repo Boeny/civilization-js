@@ -1,5 +1,6 @@
 import { createStoreHook } from 'hooks/createStoreHook';
 import { IPoint } from 'types';
+import { getZeroVector } from 'utils';
 
 import { HexMapData } from '../types';
 
@@ -17,7 +18,7 @@ const [useHexMapObservableStore, hexMapStoreConfig] = createStoreHook<IStore>({
     hexWidth: 100,
     isVisible: true,
     opacity: 1,
-    position: { x: 0, y: 0 },
+    position: getZeroVector(),
     zoom: 1,
 });
 

@@ -20,62 +20,42 @@ export function isValueSmallNumber(value: number): boolean {
     return value <= 99999;
 }
 
+export function getVector(x: number, y: number): IPoint {
+    return { x, y };
+}
+
 export function vectorSum(a: IPoint, b: IPoint | number): IPoint {
     if (typeof b === 'number') {
-        return {
-            x: a.x + b,
-            y: a.y + b,
-        };
+        return getVector(a.x + b, a.y + b);
     }
 
-    return {
-        x: a.x + b.x,
-        y: a.y + b.y,
-    };
+    return getVector(a.x + b.x, a.y + b.y);
 }
 
 export function vectorSub(a: IPoint, b: IPoint | number): IPoint {
     if (typeof b === 'number') {
-        return {
-            x: a.x - b,
-            y: a.y - b,
-        };
+        return getVector(a.x - b, a.y - b);
     }
 
-    return {
-        x: a.x - b.x,
-        y: a.y - b.y,
-    };
+    return getVector(a.x - b.x, a.y - b.y);
 }
 
 export function vectorDiv(a: IPoint, b: IPoint | number): IPoint {
     if (typeof b === 'number') {
-        return {
-            x: a.x / b,
-            y: a.y / b,
-        };
+        return getVector(a.x / b, a.y / b);
     }
 
-    return {
-        x: a.x / b.x,
-        y: a.y / b.y,
-    };
+    return getVector(a.x / b.x, a.y / b.y);
 }
 
 export function vectorMult(a: IPoint, b: IPoint | number): IPoint {
     if (typeof b === 'number') {
-        return {
-            x: a.x * b,
-            y: a.y * b,
-        };
+        return getVector(a.x * b, a.y * b);
     }
 
-    return {
-        x: a.x * b.x,
-        y: a.y * b.y,
-    };
+    return getVector(a.x * b.x, a.y * b.y);
 }
 
 export function getZeroVector(): IPoint {
-    return { x: 0, y: 0 };
+    return getVector(0, 0);
 }

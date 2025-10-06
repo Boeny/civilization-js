@@ -1,4 +1,5 @@
 import { IPoint } from 'types';
+import { getVector } from 'utils';
 
 import { Polygon } from './Polygon';
 
@@ -16,10 +17,7 @@ export function Hex({ ctx, position, offset, width, radius, color, isGridTurnedO
 
     Polygon({
         ctx,
-        centerPoint: {
-            x: position.x * width + xOffset + (offset?.x || 0),
-            y: position.y * radius * 1.5 + radius + (offset?.y || 0),
-        },
+        centerPoint: getVector(position.x * width + xOffset + (offset?.x || 0), position.y * radius * 1.5 + radius + (offset?.y || 0)),
         startAngle: Math.PI / 2,
         radius,
         sides: 6,

@@ -1,10 +1,8 @@
 import { IPoint } from 'types';
+import { getVector } from 'utils';
 
 function getPointByAngle(offset: IPoint, angle: number, radius: number): IPoint {
-    return {
-        x: offset.x + radius * Math.cos(angle),
-        y: offset.y + radius * Math.sin(angle),
-    };
+    return getVector(offset.x + radius * Math.cos(angle), offset.y + radius * Math.sin(angle));
 }
 
 interface IProps {

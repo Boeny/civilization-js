@@ -1,5 +1,6 @@
 import { createStoreHook } from 'hooks/createStoreHook';
 import { IPoint } from 'types';
+import { getZeroVector } from 'utils';
 
 interface IStore {
     data: HTMLImageElement | null;
@@ -12,7 +13,7 @@ interface IStore {
 const [useImageMapObservableStore, imageMapStoreConfig] = createStoreHook<IStore>({
     data: null,
     zoom: 1,
-    position: { x: 0, y: 0 },
+    position: getZeroVector(),
     width: 0,
     height: 0,
 });

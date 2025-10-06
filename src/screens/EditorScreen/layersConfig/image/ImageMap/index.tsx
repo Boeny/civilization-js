@@ -6,7 +6,7 @@ import { Canvas } from 'components/canvas/Canvas';
 import { useArrowKeys } from 'hooks/useArrowKeys';
 import { useWheel } from 'hooks/useWheel';
 import { IPoint } from 'types';
-import { getZeroVector, vectorDiv, vectorMult, vectorSub, vectorSum } from 'utils';
+import { getVector, getZeroVector, vectorDiv, vectorMult, vectorSub, vectorSum } from 'utils';
 
 import { IMapProps } from '../../types';
 import { useImageMapObservableStore } from '../imageMapStore';
@@ -71,10 +71,7 @@ const ImageMapComponent = ({ data, zIndex }: IProps) => {
         setStore: setImageMap,
     } = useImageMapObservableStore();
 
-    const originalImageSize: IPoint = {
-        x: data.width,
-        y: data.height,
-    };
+    const originalImageSize = getVector(data.width, data.height);
     const imageSize = vectorMult(originalImageSize, zoom);
 
     container.setClampedPosition = (delta) => {

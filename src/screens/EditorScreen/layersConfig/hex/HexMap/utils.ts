@@ -1,6 +1,6 @@
 import { SQRT_3 } from 'screens/EditorScreen/const';
 import { IPoint } from 'types';
-import { vectorSum } from 'utils';
+import { getVector, vectorSum } from 'utils';
 
 function yIsBelowTheLine(isIncreasing: boolean, x: number, y: number, dy: number): boolean {
     // tan(30) = 1 / sqrt(3)
@@ -17,10 +17,7 @@ export function getMapCoordinatesFromCursor({ x, y }: IPoint, hexWidth: number, 
     const x_widthCount = Math.floor(x / hexWidth);
     const xMin = x_widthCount * hexWidth;
 
-    const result: IPoint = {
-        x: x_widthCount,
-        y: y_3radius_count * 2,
-    };
+    const result = getVector(x_widthCount, y_3radius_count * 2);
 
     const halfRadius = hexRadius / 2;
     const halfWidth = hexWidth / 2;
@@ -35,7 +32,7 @@ export function getMapCoordinatesFromCursor({ x, y }: IPoint, hexWidth: number, 
             return yIsBelowTheLine(false, x - xMin, y - yMin, halfRadius) ? vectorSum(result, -1) : result;
         }
 
-        return yIsBelowTheLine(true, x - xCenter, y - yMin, halfRadius) ? vectorSum(result, { x: 0, y: -1 }) : result;
+        return yIsBelowTheLine(true, x - xCenter, y - yMin, halfRadius) ? vectorSum(result, getVector(0, -1)) : result;
     }
 
     const radius_1_5 = hexRadius * 1.5;
@@ -58,10 +55,10 @@ export function getMapCoordinatesFromCursor({ x, y }: IPoint, hexWidth: number, 
 
         // (mapX - 1, mapY + 1) or (mapX, mapY) or (mapX, mapY + 1)
         if (x < xCenter) {
-            return yIsBelowTheLine(true, x - xMin, y - yMin, halfRadius) ? result : vectorSum(result, { x: -1, y: 1 });
+            return yIsBelowTheLine(true, x - xMin, y - yMin, halfRadius) ? result : vectorSum(result, getVector(-1, 1));
         }
 
-        return yIsBelowTheLine(false, x - xCenter, y - yMin, halfRadius) ? result : vectorSum(result, { x: 0, y: 1 });
+        return yIsBelowTheLine(false, x - xCenter, y - yMin, halfRadius) ? result : vectorSum(result, getVector(0, 1));
     }
 
     // yMin + radius * 1.5
@@ -75,5 +72,5 @@ export function getMapCoordinatesFromCursor({ x, y }: IPoint, hexWidth: number, 
         result.x -= 1;
     }
 
-    return vectorSum(result, { x: 0, y: 1 });
+    return vectorSum(result, getVector(0, 1));
 }

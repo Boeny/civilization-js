@@ -1,6 +1,7 @@
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 
 import { IPoint } from 'types';
+import { getVector } from 'utils';
 
 interface IProps {
     id?: string;
@@ -31,10 +32,10 @@ export const Canvas = ({ children, onClick, onMouseDown, onMouseMove, onMouseUp,
         <canvas
             ref={ref}
             {...props}
-            onClick={onClick && ctx ? (e) => onClick(ctx, { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY }) : undefined}
-            onMouseDown={onMouseDown && ctx ? (e) => onMouseDown(ctx, { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY }) : undefined}
-            onMouseMove={onMouseMove && ctx ? (e) => onMouseMove(ctx, { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY }) : undefined}
-            onMouseUp={onMouseUp && ctx ? (e) => onMouseUp(ctx, { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY }) : undefined}
+            onClick={onClick && ctx ? (e) => onClick(ctx, getVector(e.nativeEvent.offsetX, e.nativeEvent.offsetY)) : undefined}
+            onMouseDown={onMouseDown && ctx ? (e) => onMouseDown(ctx, getVector(e.nativeEvent.offsetX, e.nativeEvent.offsetY)) : undefined}
+            onMouseMove={onMouseMove && ctx ? (e) => onMouseMove(ctx, getVector(e.nativeEvent.offsetX, e.nativeEvent.offsetY)) : undefined}
+            onMouseUp={onMouseUp && ctx ? (e) => onMouseUp(ctx, getVector(e.nativeEvent.offsetX, e.nativeEvent.offsetY)) : undefined}
         />
     );
 };
