@@ -1,7 +1,5 @@
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
-import { Radio } from 'components/Radio';
-import { RadioItem } from 'components/Radio/RadioItem';
 import { IPoint } from 'types';
 import { getVector } from 'utils';
 
@@ -13,7 +11,7 @@ import { HEX_CONFIG } from './hexConfig';
 import { HexMapData } from './models';
 import { NewHexMapParams } from './NewHexMapParams';
 import { useHexMapStore } from './stores/hexMapStore';
-import { CREATE_TYPE } from './types';
+import { CREATE_MODE } from './types';
 import { generateEmptyMapData, getHexHeight, getHexRadius } from './utils';
 
 type Props = {
@@ -76,20 +74,18 @@ const MiniMapWithParams = ({ title }: { title: string }) => {
     );
 };
 
-export const HexMiniMap = ({ setMapCommonParams, mapsCount, panelWidth, title }: IMiniMapProps) => {
+export const HexMiniMap = ({ setMapCommonParams, otherExistingMapsCount, panelWidth, title }: IMiniMapProps) => {
     const {
-        store: { map, createType },
+        store: { map },
         setStore: setHexMap,
     } = useHexMapStore();
 
-    const handleSubmit = (mapSize: IPoint) => {
+    const handleSubmit = (mapSize: IPoint, creationMode: CREATE_MODE) => {
         const newMap = new HexMapData(generateEmptyMapData(mapSize));
 
-        setMapCommonParams(getVector(newMap.width, newMap.height), createType);
+        setMapCommonParams(getVector(newMap.width, newMap.height), creationMode);
         setHexMap({ map: newMap });
     };
-
-    const hasOtherMaps = map ? mapsCount > 1 : mapsCount > 0;
 
     return (
         <>
@@ -107,34 +103,10 @@ export const HexMiniMap = ({ setMapCommonParams, mapsCount, panelWidth, title }:
             )}
 
             <div>
-                <NewHexMapParams onSubmit={handleSubmit} />
-                <Radio
-                    name="createType"
-                    value={createType}
-                    onChange={(type) => setHexMap({ createType: type })}
-                >
-                    {(params) => (
-                        <>
-                            {hasOtherMaps && (
-                                <RadioItem
-                                    {...params}
-                                    label="Fit the image"
-                                    value={CREATE_TYPE.fitImage}
-                                />
-                            )}
-                            <RadioItem
-                                {...params}
-                                value={CREATE_TYPE.fitScreen}
-                                label="Fit the screen"
-                            />
-                            <RadioItem
-                                {...params}
-                                value={CREATE_TYPE.free}
-                                label="Free transform"
-                            />
-                        </>
-                    )}
-                </Radio>
+                <NewHexMapParams
+                    hasOtherMaps={otherExistingMapsCount > 0}
+                    onSubmit={handleSubmit}
+                />
             </div>
         </>
     );

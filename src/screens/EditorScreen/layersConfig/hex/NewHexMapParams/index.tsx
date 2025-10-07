@@ -2,21 +2,27 @@ import { useState } from 'react';
 
 import { Block } from 'components/Block';
 import { Button } from 'components/Button';
+import { Radio } from 'components/Radio';
+import { RadioItem } from 'components/Radio/RadioItem';
 import { IPoint } from 'types';
 import { getVector } from 'utils';
+
+import { CREATE_MODE } from '../types';
 
 import { HexMapParamsBlock } from './HexMapParamsBlock';
 
 type Props = {
-    onSubmit: (mapSize: IPoint) => void;
+    hasOtherMaps: boolean;
+    onSubmit: (mapSize: IPoint, creationMode: CREATE_MODE) => void;
 };
 
-export const NewHexMapParams = ({ onSubmit }: Props) => {
+export const NewHexMapParams = ({ hasOtherMaps, onSubmit }: Props) => {
     const [mapSize, setMapSize] = useState(getVector(100, 100));
+    const [creationMode, setCreationMode] = useState(CREATE_MODE.fitScreen);
     const [isError, setError] = useState(false);
 
     const handleSubmit = () => {
-        onSubmit(mapSize);
+        onSubmit(mapSize, creationMode);
     };
 
     return (
@@ -28,6 +34,34 @@ export const NewHexMapParams = ({ onSubmit }: Props) => {
                 isError={isError}
                 setError={setError}
             />
+
+            <Radio
+                name="creationMode"
+                value={creationMode}
+                onChange={setCreationMode}
+            >
+                {(params) => (
+                    <>
+                        {hasOtherMaps && (
+                            <RadioItem
+                                {...params}
+                                label="Fit the image"
+                                value={CREATE_MODE.fitImage}
+                            />
+                        )}
+                        <RadioItem
+                            {...params}
+                            value={CREATE_MODE.fitScreen}
+                            label="Fit the screen"
+                        />
+                        <RadioItem
+                            {...params}
+                            value={CREATE_MODE.free}
+                            label="Free transform"
+                        />
+                    </>
+                )}
+            </Radio>
 
             <Block
                 alignCenter

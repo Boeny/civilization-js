@@ -12,7 +12,7 @@ import { ToggleGridButton } from './hex/ToggleGridButton';
 import { ImageMap } from './image/ImageMap';
 import { imageMapStoreConfig } from './image/imageMapStore';
 import { ImageMiniMap } from './image/ImageMiniMap';
-import { IMapProps, IMiniMapProps, MapStore } from './types';
+import { IMap, IMapProps, IMiniMapProps, MapStore } from './types';
 
 const LAYER_CONFIG: Record<
     LAYER_TYPE,
@@ -49,10 +49,10 @@ export function getLayer(type: LAYER_TYPE) {
     return LAYER_CONFIG[type];
 }
 
-export function getMaps() {
+export function getMapsWithoutCurrent(currentType: LAYER_TYPE): IMap[] {
     return getLayerTypes()
-        .map((type) => ({ type, map: getLayer(type).config.store.map! }))
-        .filter((store) => store.map);
+        .filter((type) => type !== currentType && getLayer(type).config.store.map!)
+        .map((type) => getLayer(type).config.store.map!);
 }
 
 export const ZOOM_CONFIG = {

@@ -1,13 +1,13 @@
 import { IPoint } from 'types';
 
-import { CREATE_TYPE } from './hex/types';
+import { CREATE_MODE } from './hex/types';
 
 export interface IMiniMapProps {
     panelWidth: number;
     title: string;
     isSelected: boolean;
-    mapsCount: number;
-    setMapCommonParams: (imageSize: IPoint, creationType?: CREATE_TYPE) => void;
+    otherExistingMapsCount: number;
+    setMapCommonParams: (imageSize: IPoint, creationMode?: CREATE_MODE) => void;
 }
 export interface IMapProps {
     isEditable: boolean;

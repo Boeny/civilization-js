@@ -11,7 +11,7 @@ export enum HEX_TYPE {
     hill,
 }
 
-export enum CREATE_TYPE {
+export enum CREATE_MODE {
     fitImage,
     fitScreen,
     free,
