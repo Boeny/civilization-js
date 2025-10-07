@@ -36,7 +36,7 @@ const ImageMiniMapComponent = ({ map, title, onClick, panelWidth }: Props) => {
     );
 };
 
-export const ImageMiniMap = ({ title, isSelected, setMapCommonParams, panelWidth }: IMiniMapProps) => {
+export const ImageMiniMap = ({ title, panelWidth, isSelected, setMapCommonParams }: IMiniMapProps) => {
     const {
         store: { map },
         setStore: setImageMap,

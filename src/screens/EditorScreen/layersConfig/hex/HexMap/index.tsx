@@ -33,7 +33,7 @@ function HexMapComponent({ isEditable, zIndex, map, screenSize }: Props) {
     const { isGridTurnedOn } = useGridStore().store;
 
     const position = vectorSum(commonPosition, hexMapPosiition);
-    const zoomedHexWidth = map.hexWidth * zoom;
+    const zoomedHexWidth = HexMapData.hexWidth * zoom;
     const zoomedHexRadius = getHexRadius(zoomedHexWidth);
     const zoomedHexHeight = getHexHeight(zoomedHexRadius);
 

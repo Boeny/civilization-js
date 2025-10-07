@@ -2,16 +2,16 @@ import { HEX_TYPE } from './types';
 import { getHexHeight, getHexRadius } from './utils';
 
 export class HexMapData {
-    hexWidth = 100;
+    static hexWidth = 100;
     data: HEX_TYPE[][] = [];
 
     get width() {
         // in pixels
-        return this.rowLength * this.hexWidth;
+        return this.rowLength * HexMapData.hexWidth;
     }
     get height() {
         // in pixels
-        return this.columnLength * getHexHeight(getHexRadius(this.hexWidth));
+        return this.columnLength * getHexHeight(getHexRadius(HexMapData.hexWidth));
     }
     get rowLength() {
         // in cells

@@ -5,7 +5,6 @@ import { getClasses, getZeroVector, vectorDiv, vectorMult, vectorSub } from 'uti
 
 import { useLayerStore } from '../../layerStore';
 import { getLayer, getLayerTypes, getMapsWithoutCurrent, ZOOM_CONFIG } from '../config';
-import { CREATE_MODE } from '../hex/types';
 import { useMapMovementParamsStore } from '../mapMovingStore';
 
 import { adaptMapBorders } from './utils';
@@ -22,15 +21,17 @@ export const Layers = ({ panelWidth, screenSize }: Props) => {
     } = useLayerStore();
     const { setStore: setMapMovementParams } = useMapMovementParamsStore();
 
-    const layers = getLayerTypes();
-
     const handleLayerClick = (type: LAYER_TYPE) => {
         if (currentLayer !== type) {
             setLayer({ layer: type });
         }
     };
 
-    const handleSetMapCommonParams = (createdMapType: LAYER_TYPE, newImageSize: IPoint, creationMode?: CREATE_MODE) => {
+    const handleSetMapCommonParams = (
+        createdMapType: LAYER_TYPE,
+        newImageSize: IPoint,
+        movingParams?: { zoom: number; position: IPoint },
+    ) => {
         const otherExistingMaps = getMapsWithoutCurrent(createdMapType);
 
         // if some map exists - check if the new map is bigger and set borders
@@ -42,14 +43,16 @@ export const Layers = ({ panelWidth, screenSize }: Props) => {
         }
 
         // if it's the first map - set basic params relying on it
-        let initialZoom = ZOOM_CONFIG.minWidth / newImageSize.x; // set minimal size
+        let initialZoom = 1;
+        let initialPosition = getZeroVector();
 
-        const zoomedImageSize = vectorMult(newImageSize, initialZoom);
-        let initialPosition = vectorDiv(vectorSub(screenSize, zoomedImageSize), 2); // set in the screen center
-
-        if (creationMode === CREATE_MODE.fitScreen) {
-            initialZoom = screenSize.x / newImageSize.x;
-            initialPosition = getZeroVector();
+        if (movingParams) {
+            initialZoom = movingParams.zoom;
+            initialPosition = movingParams.position;
+        } else {
+            initialZoom = ZOOM_CONFIG.minWidth / newImageSize.x; // set minimal size
+            const zoomedImageSize = vectorMult(newImageSize, initialZoom);
+            initialPosition = vectorDiv(vectorSub(screenSize, zoomedImageSize), 2); // set in the screen center
         }
 
         setMapMovementParams({
@@ -61,7 +64,7 @@ export const Layers = ({ panelWidth, screenSize }: Props) => {
 
     return (
         <div className="layers">
-            {layers.map((type) => {
+            {getLayerTypes().map((type) => {
                 const config = getLayer(type);
                 const isSelected = currentLayer === type;
 
@@ -72,10 +75,11 @@ export const Layers = ({ panelWidth, screenSize }: Props) => {
                         className={getClasses(['layer', isSelected && 'selected'])}
                     >
                         <config.miniMapComponent
-                            panelWidth={panelWidth}
+                            screenSize={screenSize}
                             title={config.title}
+                            panelWidth={panelWidth}
                             isSelected={isSelected}
-                            setMapCommonParams={(imageSize, creationMode) => handleSetMapCommonParams(type, imageSize, creationMode)}
+                            setMapCommonParams={(imageSize, movingParams) => handleSetMapCommonParams(type, imageSize, movingParams)}
                             otherExistingMapsCount={getMapsWithoutCurrent(type).length}
                         />
                     </div>

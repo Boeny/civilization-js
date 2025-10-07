@@ -1,7 +1,7 @@
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { IPoint } from 'types';
-import { getVector } from 'utils';
+import { getVector, getZeroVector } from 'utils';
 
 import { EyeButton } from '../../components/EyeButton';
 import { OpacityBar } from '../../components/OpacityBar';
@@ -74,16 +74,30 @@ const MiniMapWithParams = ({ title }: { title: string }) => {
     );
 };
 
-export const HexMiniMap = ({ setMapCommonParams, otherExistingMapsCount, panelWidth, title }: IMiniMapProps) => {
+export const HexMiniMap = ({ screenSize, title, panelWidth, otherExistingMapsCount, setMapCommonParams }: IMiniMapProps) => {
     const {
         store: { map },
         setStore: setHexMap,
     } = useHexMapStore();
 
     const handleSubmit = (mapSize: IPoint, creationMode: CREATE_MODE) => {
-        const newMap = new HexMapData(generateEmptyMapData(mapSize));
+        let movingParams;
 
-        setMapCommonParams(getVector(newMap.width, newMap.height), creationMode);
+        if (creationMode === CREATE_MODE.fitScreen) {
+            const zoom = screenSize.x / (mapSize.x * HexMapData.hexWidth);
+            const hexHeight = getHexHeight(getHexRadius(HexMapData.hexWidth));
+            mapSize.y = Math.floor(screenSize.y / (zoom * hexHeight));
+
+            movingParams = {
+                zoom,
+                position: getZeroVector(),
+            };
+        }
+
+        const newMap = new HexMapData(generateEmptyMapData(mapSize));
+        const newImageSize = getVector(newMap.width, newMap.height);
+
+        setMapCommonParams(newImageSize, movingParams);
         setHexMap({ map: newMap });
     };
 
