@@ -1,0 +1,6 @@
+.selected #image-minimap:hover {
+    box-shadow: 0px 0px 12px #000000;
+}
+.selected #image-minimap:active {
+    box-shadow: none;
+}

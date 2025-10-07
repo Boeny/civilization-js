@@ -20,7 +20,7 @@ type Props = {
     map: HexMapData;
 };
 
-const MiniMap = ({ panelWidth, title, map }: Props) => {
+const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
     const { isVisible } = useHexMapStore().store;
     if (!isVisible) {
         return null;
@@ -48,7 +48,7 @@ const MiniMap = ({ panelWidth, title, map }: Props) => {
     );
 };
 
-const MiniMapWithParams = ({ title }: { title: string }) => {
+const MiniMapParams = ({ title }: { title: string }) => {
     const {
         store: { isVisible, opacity },
         setStore: setHexMap,
@@ -105,9 +105,9 @@ export const HexMiniMap = ({ screenSize, title, panelWidth, otherExistingMapsCou
         <>
             {map && (
                 <>
-                    <MiniMapWithParams title={title} />
+                    <MiniMapParams title={title} />
                     <div className="mini-map">
-                        <MiniMap
+                        <MiniMapComponent
                             panelWidth={panelWidth}
                             title={title}
                             map={map}

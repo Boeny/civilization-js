@@ -36,7 +36,7 @@ export const NewHexMapParams = ({ hasOtherMaps, onSubmit }: Props) => {
             />
 
             <Radio
-                name="creationMode"
+                name="hexMapCreationMode"
                 value={creationMode}
                 onChange={setCreationMode}
             >
@@ -53,6 +53,11 @@ export const NewHexMapParams = ({ hasOtherMaps, onSubmit }: Props) => {
                             {...params}
                             value={CREATE_MODE.fitScreen}
                             label="Fit the screen"
+                        />
+                        <RadioItem
+                            {...params}
+                            value={CREATE_MODE.center}
+                            label="Screen center"
                         />
                         <RadioItem
                             {...params}
