@@ -11,16 +11,8 @@ export enum HEX_TYPE {
     hill,
 }
 
-export class HexMapData {
-    get width() {
-        return this.data[0].length;
-    }
-    get height() {
-        return this.data.length;
-    }
-    data: HEX_TYPE[][] = [];
-
-    constructor(data: HEX_TYPE[][]) {
-        this.data = data;
-    }
+export enum CREATE_TYPE {
+    fitImage,
+    fitScreen,
+    free,
 }

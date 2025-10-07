@@ -1,38 +1,48 @@
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
+import { Radio } from 'components/Radio';
+import { RadioItem } from 'components/Radio/RadioItem';
+import { IPoint } from 'types';
+import { getVector } from 'utils';
 
 import { EyeButton } from '../../components/EyeButton';
 import { OpacityBar } from '../../components/OpacityBar';
 import { IMiniMapProps } from '../types';
 
 import { HEX_CONFIG } from './hexConfig';
+import { HexMapData } from './models';
 import { NewHexMapParams } from './NewHexMapParams';
 import { useHexMapStore } from './stores/hexMapStore';
-import { HexMapData } from './types';
+import { CREATE_TYPE } from './types';
 import { generateEmptyMapData, getHexHeight, getHexRadius } from './utils';
 
 type Props = {
     panelWidth: number;
     title: string;
-    data: HexMapData;
+    map: HexMapData;
 };
 
-const MiniMap = ({ panelWidth, title, data }: Props) => {
-    const hexWidth = panelWidth / (data.width + 10);
-    const hexRadius = getHexRadius(hexWidth);
-    const hexHeight = getHexHeight(hexRadius);
+const MiniMap = ({ panelWidth, title, map }: Props) => {
+    const { isVisible } = useHexMapStore().store;
+    if (!isVisible) {
+        return null;
+    }
+
+    const miniHexWidth = panelWidth / (map.rowLength + 10);
+    const miniHexRadius = getHexRadius(miniHexWidth);
+    const miniHexHeight = getHexHeight(miniHexRadius);
 
     return (
         <Canvas
             title={title}
-            width={panelWidth + hexWidth / 2}
-            height={hexHeight * data.height + hexRadius / 2}
+            width={panelWidth + miniHexWidth / 2}
+            height={miniHexHeight * map.columnLength + miniHexRadius / 2}
             style={{ maxHeight: 170 }}
         >
             {(ctx) => {
-                data.data.forEach((row, y) => {
+                map.data.forEach((row, y) => {
                     row.forEach((type, x) => {
-                        Hex({ ctx, position: { x, y }, width: hexWidth, radius: hexRadius, color: HEX_CONFIG[type].color });
+                        Hex({ ctx, position: { x, y }, width: miniHexWidth, radius: miniHexRadius, color: HEX_CONFIG[type].color });
                     });
                 });
             }}
@@ -40,7 +50,7 @@ const MiniMap = ({ panelWidth, title, data }: Props) => {
     );
 };
 
-const MiniMapWithParams = (props: Props) => {
+const MiniMapWithParams = ({ title }: { title: string }) => {
     const {
         store: { isVisible, opacity },
         setStore: setHexMap,
@@ -49,7 +59,7 @@ const MiniMapWithParams = (props: Props) => {
     return (
         <>
             <div className="title">
-                {props.title}
+                {title}
                 <EyeButton
                     isVisible={isVisible}
                     toggleVisible={() => setHexMap({ isVisible: !isVisible })}
@@ -62,37 +72,69 @@ const MiniMapWithParams = (props: Props) => {
                     onChange={(newOpacity) => setHexMap({ opacity: newOpacity })}
                 />
             )}
-
-            <div className="mini-map">{isVisible && <MiniMap {...props} />}</div>
         </>
     );
 };
 
-export const HexMiniMap = ({ setMapCommonParams, ...props }: IMiniMapProps) => {
+export const HexMiniMap = ({ setMapCommonParams, mapsCount, panelWidth, title }: IMiniMapProps) => {
     const {
-        store: { data, hexWidth },
+        store: { map, createType },
         setStore: setHexMap,
     } = useHexMapStore();
 
-    const handleSubmit = (width: number, height: number) => {
-        const hexRadius = getHexRadius(hexWidth);
-        const hexHeight = getHexHeight(hexRadius);
+    const handleSubmit = (mapSize: IPoint) => {
+        const newMap = new HexMapData(generateEmptyMapData(mapSize));
 
-        setMapCommonParams(width * hexWidth, height * hexHeight);
-        setHexMap({ data: new HexMapData(generateEmptyMapData(width, height)) });
+        setMapCommonParams(getVector(newMap.width, newMap.height), createType);
+        setHexMap({ map: newMap });
     };
+
+    const hasOtherMaps = map ? mapsCount > 1 : mapsCount > 0;
 
     return (
         <>
-            {data && (
-                <MiniMapWithParams
-                    {...props}
-                    data={data}
-                />
+            {map && (
+                <>
+                    <MiniMapWithParams title={title} />
+                    <div className="mini-map">
+                        <MiniMap
+                            panelWidth={panelWidth}
+                            title={title}
+                            map={map}
+                        />
+                    </div>
+                </>
             )}
 
             <div>
                 <NewHexMapParams onSubmit={handleSubmit} />
+                <Radio
+                    name="createType"
+                    value={createType}
+                    onChange={(type) => setHexMap({ createType: type })}
+                >
+                    {(params) => (
+                        <>
+                            {hasOtherMaps && (
+                                <RadioItem
+                                    {...params}
+                                    label="Fit the image"
+                                    value={CREATE_TYPE.fitImage}
+                                />
+                            )}
+                            <RadioItem
+                                {...params}
+                                value={CREATE_TYPE.fitScreen}
+                                label="Fit the screen"
+                            />
+                            <RadioItem
+                                {...params}
+                                value={CREATE_TYPE.free}
+                                label="Free transform"
+                            />
+                        </>
+                    )}
+                </Radio>
             </div>
         </>
     );

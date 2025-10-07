@@ -2,20 +2,18 @@ import { createStoreHook } from 'hooks/createStoreHook';
 import { IPoint } from 'types';
 import { getZeroVector } from 'utils';
 
-interface ImageMapStore {
-    data: HTMLImageElement | null;
+import { MapStore } from '../types';
+
+interface ImageMapStore extends MapStore {
+    map: HTMLImageElement | null;
     zoom: number;
     position: IPoint;
-    width: number;
-    height: number;
 }
 
 const [useImageMapStore, imageMapStoreConfig] = createStoreHook<ImageMapStore>({
-    data: null,
+    map: null,
     zoom: 1,
     position: getZeroVector(),
-    width: 0,
-    height: 0,
 });
 
 export { useImageMapStore, imageMapStoreConfig };

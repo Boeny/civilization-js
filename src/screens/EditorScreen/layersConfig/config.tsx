@@ -12,13 +12,13 @@ import { ToggleGridButton } from './hex/ToggleGridButton';
 import { ImageMap } from './image/ImageMap';
 import { imageMapStoreConfig } from './image/imageMapStore';
 import { ImageMiniMap } from './image/ImageMiniMap';
-import { IMapProps, IMiniMapProps } from './types';
+import { IMapProps, IMiniMapProps, MapStore } from './types';
 
-export const LAYER_CONFIG: Record<
+const LAYER_CONFIG: Record<
     LAYER_TYPE,
     {
         title: string;
-        config: StoreConfig<{ data: ({ width: number; height: number } & any) | null }>;
+        config: StoreConfig<MapStore>;
         miniMapComponent: FC<IMiniMapProps>;
         mapComponent: FC<IMapProps>;
         topPanelContent?: ReactNode;
@@ -27,13 +27,13 @@ export const LAYER_CONFIG: Record<
 > = {
     [LAYER_TYPE.image]: {
         title: 'Image',
-        config: imageMapStoreConfig,
+        config: imageMapStoreConfig as StoreConfig<MapStore>,
         miniMapComponent: ImageMiniMap,
         mapComponent: ImageMap,
     },
     [LAYER_TYPE.hex]: {
         title: 'Hexagonal base map',
-        config: hexMapStoreConfig,
+        config: hexMapStoreConfig as StoreConfig<MapStore>,
         miniMapComponent: HexMiniMap,
         mapComponent: HexMap,
         topPanelContent: <ToggleGridButton />,
@@ -41,18 +41,24 @@ export const LAYER_CONFIG: Record<
     },
 };
 
-export function getLayers(): LAYER_TYPE[] {
+export function getLayerTypes(): LAYER_TYPE[] {
     return Object.keys(LAYER_CONFIG).map(Number);
 }
 
-export function getMaps(): ({ width: number; height: number } | null)[] {
-    return getLayers().map((type) => LAYER_CONFIG[type].config.store.data);
+export function getLayer(type: LAYER_TYPE) {
+    return LAYER_CONFIG[type];
+}
+
+export function getMaps() {
+    return getLayerTypes()
+        .map((type) => ({ type, map: getLayer(type).config.store.map! }))
+        .filter((store) => store.map);
 }
 
 export const ZOOM_CONFIG = {
     pixelsInDelta: 40,
     pixelsAddition: 0,
-    minWidth: 300,
+    minWidth: 500,
     maxWidth: 1000000,
 };
 

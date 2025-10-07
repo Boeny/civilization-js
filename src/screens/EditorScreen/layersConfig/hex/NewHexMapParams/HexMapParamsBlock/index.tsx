@@ -2,18 +2,17 @@ import './styles.css';
 
 import { Block } from 'components/Block';
 import { NumberInput } from 'components/NumberInput';
+import { IPoint } from 'types';
 
 interface IProps {
-    width: number;
-    height: number;
-    setWidth: (v: number) => void;
-    setHeight: (v: number) => void;
+    mapSize: IPoint;
+    setMapSize: (size: IPoint) => void;
     onEnterKeyDown: () => void;
     isError: boolean;
     setError: (isError: boolean) => void;
 }
 
-export function HexMapParamsBlock({ width, height, setWidth, setHeight, onEnterKeyDown, isError, setError }: IProps) {
+export function HexMapParamsBlock({ mapSize, setMapSize, onEnterKeyDown, isError, setError }: IProps) {
     return (
         <Block
             noPadding
@@ -29,8 +28,8 @@ export function HexMapParamsBlock({ width, height, setWidth, setHeight, onEnterK
                 <NumberInput
                     className="small"
                     autoFocus
-                    value={width}
-                    onChange={setWidth}
+                    value={mapSize.x}
+                    onChange={(x) => setMapSize({ x, y: mapSize.y })}
                     onEnterKeyDown={onEnterKeyDown}
                     isError={isError}
                     setError={setError}
@@ -44,8 +43,8 @@ export function HexMapParamsBlock({ width, height, setWidth, setHeight, onEnterK
                 <div>height</div>
                 <NumberInput
                     className="small"
-                    value={height}
-                    onChange={setHeight}
+                    value={mapSize.y}
+                    onChange={(y) => setMapSize({ x: mapSize.x, y })}
                     onEnterKeyDown={onEnterKeyDown}
                     isError={isError}
                     setError={setError}

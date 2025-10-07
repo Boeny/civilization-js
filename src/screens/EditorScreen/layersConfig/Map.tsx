@@ -2,7 +2,7 @@ import { IPoint } from 'types';
 
 import { useLayerStore } from '../layerStore';
 
-import { getLayers, LAYER_CONFIG } from './config';
+import { getLayer, getLayerTypes } from './config';
 import { useMapMoving } from './useMapMoving';
 
 type Props = {
@@ -16,8 +16,8 @@ export const Map = ({ screenSize }: Props) => {
 
     return (
         <div>
-            {getLayers().map((type, i) => {
-                const config = LAYER_CONFIG[type];
+            {getLayerTypes().map((type, i) => {
+                const config = getLayer(type);
 
                 if (!config.mapComponent) {
                     return null;

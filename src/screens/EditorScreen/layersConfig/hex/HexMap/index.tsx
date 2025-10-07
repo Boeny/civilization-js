@@ -9,10 +9,10 @@ import { getVector, vectorSub, vectorSum } from 'utils';
 import { useMapMovementParamsStore } from '../../mapMovingStore';
 import { IMapProps } from '../../types';
 import { HEX_CONFIG } from '../hexConfig';
+import { HexMapData } from '../models';
 import { useBrushStore } from '../stores/brushStore';
 import { useGridStore } from '../stores/gridSwitchStore';
 import { useHexMapStore } from '../stores/hexMapStore';
-import { HexMapData } from '../types';
 import { getHexHeight, getHexRadius } from '../utils';
 
 import { fillHex } from './utils';
@@ -20,34 +20,32 @@ import { fillHex } from './utils';
 // TODO: Ctrl+Z for painting
 
 type Props = IMapProps & {
-    data: HexMapData;
+    map: HexMapData;
 };
 
-function HexMapComponent({ isEditable, zIndex, data, screenSize }: Props) {
+function HexMapComponent({ isEditable, zIndex, map, screenSize }: Props) {
     const { zoom, position: commonPosition } = useMapMovementParamsStore().store;
     const {
-        store: { hexWidth: originalHexWidth, opacity, position: hexMapPosiition },
+        store: { opacity, position: hexMapPosiition },
         setStore: setHexMap,
     } = useHexMapStore();
     const { brush } = useBrushStore().store;
     const { isGridTurnedOn } = useGridStore().store;
 
     const position = vectorSum(commonPosition, hexMapPosiition);
-    const hexWidth = originalHexWidth * zoom;
-    const hexRadius = getHexRadius(hexWidth);
-    const hexHeight = getHexHeight(hexRadius);
-    const mapSize = getVector(data.width, data.height);
+    const zoomedHexWidth = map.hexWidth * zoom;
+    const zoomedHexRadius = getHexRadius(zoomedHexWidth);
+    const zoomedHexHeight = getHexHeight(zoomedHexRadius);
 
     const updateMapCell = (point: IPoint) => {
-        const newData = fillHex({
+        fillHex({
             point,
-            hexWidth,
-            hexRadius,
-            mapSize,
+            hexWidth: zoomedHexWidth,
+            hexRadius: zoomedHexRadius,
             brush,
-            data: data.data,
+            map,
         });
-        setHexMap({ data: new HexMapData([...newData]) });
+        setHexMap({ map });
     };
 
     const { startMoving } = useMouseMove((e) => updateMapCell(vectorSub(getVector(e.offsetX, e.offsetY), position)), isEditable);
@@ -70,15 +68,15 @@ function HexMapComponent({ isEditable, zIndex, data, screenSize }: Props) {
             {(ctx: CanvasRenderingContext2D) => {
                 ctx.clearRect(0, 0, screenSize.x, screenSize.y);
 
-                for (let y = 0; y < data.height; y += 1) {
-                    if (y * hexHeight + position.y > screenSize.y) {
+                for (let y = 0; y < map.columnLength; y += 1) {
+                    if (y * zoomedHexHeight + position.y > screenSize.y) {
                         break;
                     }
 
-                    const row = data.data[y];
+                    const row = map.data[y];
 
                     for (let x = 0; x < row.length; x += 1) {
-                        if (x * hexWidth + position.x > screenSize.x) {
+                        if (x * zoomedHexWidth + position.x > screenSize.x) {
                             break;
                         }
 
@@ -88,8 +86,8 @@ function HexMapComponent({ isEditable, zIndex, data, screenSize }: Props) {
                             ctx,
                             position: { x, y },
                             offset: position,
-                            width: hexWidth,
-                            radius: hexRadius,
+                            width: zoomedHexWidth,
+                            radius: zoomedHexRadius,
                             color: HEX_CONFIG[hexType].color,
                             isGridTurnedOn,
                         });
@@ -101,16 +99,16 @@ function HexMapComponent({ isEditable, zIndex, data, screenSize }: Props) {
 }
 
 export function HexMap(props: IMapProps) {
-    const { isVisible, data } = useHexMapStore().store;
+    const { isVisible, map } = useHexMapStore().store;
 
-    if (!isVisible || !data || !data.height) {
+    if (!isVisible || !map || !map.columnLength) {
         return null;
     }
 
     return (
         <HexMapComponent
             {...props}
-            data={data}
+            map={map}
         />
     );
 }

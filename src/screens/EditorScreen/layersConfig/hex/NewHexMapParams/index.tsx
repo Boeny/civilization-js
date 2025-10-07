@@ -2,29 +2,28 @@ import { useState } from 'react';
 
 import { Block } from 'components/Block';
 import { Button } from 'components/Button';
+import { IPoint } from 'types';
+import { getVector } from 'utils';
 
 import { HexMapParamsBlock } from './HexMapParamsBlock';
 
 type Props = {
-    onSubmit: (width: number, height: number) => void;
+    onSubmit: (mapSize: IPoint) => void;
 };
 
 export const NewHexMapParams = ({ onSubmit }: Props) => {
-    const [width, setWidth] = useState(100);
-    const [height, setHeight] = useState(100);
+    const [mapSize, setMapSize] = useState(getVector(100, 100));
     const [isError, setError] = useState(false);
 
     const handleSubmit = () => {
-        onSubmit(width, height);
+        onSubmit(mapSize);
     };
 
     return (
         <>
             <HexMapParamsBlock
-                width={width}
-                height={height}
-                setWidth={setWidth}
-                setHeight={setHeight}
+                mapSize={mapSize}
+                setMapSize={setMapSize}
                 onEnterKeyDown={handleSubmit}
                 isError={isError}
                 setError={setError}

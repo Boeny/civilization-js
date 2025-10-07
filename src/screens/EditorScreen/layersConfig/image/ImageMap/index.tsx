@@ -8,16 +8,16 @@ import { IMapProps } from '../../types';
 import { useImageMapStore } from '../imageMapStore';
 
 interface IProps extends IMapProps {
-    data: HTMLImageElement;
+    map: HTMLImageElement;
 }
 
-const ImageMapComponent = ({ data, zIndex, screenSize }: IProps) => {
+const ImageMapComponent = ({ map, zIndex, screenSize }: IProps) => {
     const { zoom, position: commonPosition } = useMapMovementParamsStore().store;
     const { position: imageMapPosition } = useImageMapStore().store;
 
     const position = vectorSum(commonPosition, imageMapPosition);
-    const originalImageSize = getVector(data.width, data.height);
-    const imageSize = vectorMult(originalImageSize, zoom);
+    const originalImageSize = getVector(map.width, map.height);
+    const zoomedImageSize = vectorMult(originalImageSize, zoom);
 
     return (
         <Canvas
@@ -28,24 +28,24 @@ const ImageMapComponent = ({ data, zIndex, screenSize }: IProps) => {
         >
             {(ctx: CanvasRenderingContext2D) => {
                 ctx.clearRect(0, 0, screenSize.x, screenSize.y);
-                ctx.drawImage(data, position.x, position.y, imageSize.x, imageSize.y);
+                ctx.drawImage(map, position.x, position.y, zoomedImageSize.x, zoomedImageSize.y);
             }}
         </Canvas>
     );
 };
 
 export function ImageMap(props: IMapProps) {
-    const { data } = useImageMapStore().store;
+    const { map } = useImageMapStore().store;
 
-    if (!data) {
+    if (!map) {
         return null;
     }
 
     return (
         <ImageMapComponent
-            key={data.src}
+            key={map.src}
             {...props}
-            data={data}
+            map={map}
         />
     );
 }
