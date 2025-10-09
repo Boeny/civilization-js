@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { useArrowKeys } from 'hooks/useArrowKeys';
 import { useWheel } from 'hooks/useWheel';
@@ -54,12 +54,7 @@ export function useMapMoving(screenSize: IPoint) {
 
     useWheel(useWheelCallback);
 
-    const [isUpPressed, setUpPressed] = useState(false);
-    const [isDownPressed, setDownPressed] = useState(false);
-    const [isLeftPressed, setLeftPressed] = useState(false);
-    const [isRightPressed, setRightPressed] = useState(false);
-
-    useArrowKeys({ setUpPressed, setDownPressed, setLeftPressed, setRightPressed });
+    const { isUpPressed, isDownPressed, isLeftPressed, isRightPressed } = useArrowKeys();
 
     useEffect(() => {
         if (isUpPressed || isDownPressed || isLeftPressed || isRightPressed) {

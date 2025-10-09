@@ -1,13 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-interface Props {
-    setUpPressed: (isPressed: boolean) => void;
-    setDownPressed: (isPressed: boolean) => void;
-    setLeftPressed: (isPressed: boolean) => void;
-    setRightPressed: (isPressed: boolean) => void;
-    includeWASD?: boolean;
-}
-export function useArrowKeys({ setUpPressed, setDownPressed, setLeftPressed, setRightPressed, includeWASD = true }: Props) {
+export function useArrowKeys(includeWASD = true) {
+    const [isUpPressed, setUpPressed] = useState(false);
+    const [isDownPressed, setDownPressed] = useState(false);
+    const [isLeftPressed, setLeftPressed] = useState(false);
+    const [isRightPressed, setRightPressed] = useState(false);
+
     useEffect(() => {
         function setPressed(key: string, isPressed: boolean) {
             switch (key) {
@@ -63,4 +61,6 @@ export function useArrowKeys({ setUpPressed, setDownPressed, setLeftPressed, set
             document.removeEventListener('keyup', handleKeyUp);
         };
     }, []);
+
+    return { isUpPressed, isDownPressed, isLeftPressed, isRightPressed };
 }
