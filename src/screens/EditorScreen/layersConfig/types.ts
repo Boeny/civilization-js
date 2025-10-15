@@ -5,8 +5,7 @@ export interface IMiniMapProps {
     panelWidth: number;
     title: string;
     isSelected: boolean;
-    otherExistingMapsCount: number;
-    setMapCommonParams: (imageSize: IPoint, movingParams?: { zoom: number; position: IPoint }) => void;
+    otherExistingMaps: IMap[];
 }
 export interface IMapProps {
     isEditable: boolean;

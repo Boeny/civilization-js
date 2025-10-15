@@ -11,6 +11,10 @@ export function getHexRadius(hexWidth: number): number {
     return hexWidth / SQRT_3;
 }
 
-export function getHexHeight(hexRadius: number): number {
+export function getHexHeightFromRadius(hexRadius: number): number {
     return hexRadius * 1.5;
+}
+
+export function getHexHeight(hexWidth: number): number {
+    return getHexRadius(hexWidth) * 1.5;
 }

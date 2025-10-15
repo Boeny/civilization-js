@@ -59,3 +59,7 @@ export function vectorMult(a: IPoint, b: IPoint | number): IPoint {
 export function getZeroVector(): IPoint {
     return getVector(0, 0);
 }
+
+export function getZoomFor(targetSize: number, currentSize: number): number {
+    return targetSize / currentSize;
+}

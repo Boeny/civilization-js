@@ -1,9 +1,9 @@
+import { useMapMoving } from 'hooks/useMapMoving';
 import { IPoint } from 'types';
 
 import { useLayerStore } from '../layerStore';
 
 import { getLayer, getLayerTypes } from './config';
-import { useMapMoving } from './useMapMoving';
 
 type Props = {
     screenSize: IPoint;

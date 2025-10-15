@@ -2,18 +2,18 @@ import './styles.css';
 
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
+import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
 import { useMouseMove } from 'hooks/useMouseMove';
 import { IPoint } from 'types';
 import { getVector, vectorSub, vectorSum } from 'utils';
 
-import { useMapMovementParamsStore } from '../../mapMovingStore';
 import { IMapProps } from '../../types';
 import { HEX_CONFIG } from '../hexConfig';
 import { HexMapData } from '../models';
 import { useBrushStore } from '../stores/brushStore';
 import { useGridStore } from '../stores/gridSwitchStore';
 import { useHexMapStore } from '../stores/hexMapStore';
-import { getHexHeight, getHexRadius } from '../utils';
+import { getHexHeight } from '../utils';
 
 import { fillHex } from './utils';
 
@@ -24,24 +24,23 @@ type Props = IMapProps & {
 };
 
 function HexMapComponent({ isEditable, zIndex, map, screenSize }: Props) {
-    const { zoom, position: commonPosition } = useMapMovementParamsStore().store;
+    const { zoom: commonZoom, position: commonPosition } = useMapMovementParamsStore().store;
     const {
-        store: { opacity, position: hexMapPosiition },
+        store: { opacity, position: hexMapPosiition, zoom: hexMapZoom },
         setStore: setHexMap,
     } = useHexMapStore();
     const { brush } = useBrushStore().store;
     const { isGridTurnedOn } = useGridStore().store;
 
     const position = vectorSum(commonPosition, hexMapPosiition);
+    const zoom = commonZoom * hexMapZoom;
     const zoomedHexWidth = HexMapData.hexWidth * zoom;
-    const zoomedHexRadius = getHexRadius(zoomedHexWidth);
-    const zoomedHexHeight = getHexHeight(zoomedHexRadius);
+    const zoomedHexHeight = getHexHeight(zoomedHexWidth);
 
     const updateMapCell = (point: IPoint) => {
         fillHex({
             point,
             hexWidth: zoomedHexWidth,
-            hexRadius: zoomedHexRadius,
             brush,
             map,
         });
@@ -65,7 +64,7 @@ function HexMapComponent({ isEditable, zIndex, map, screenSize }: Props) {
             style={{ zIndex, opacity }}
             onMouseDown={isEditable ? handleMouseDown : undefined}
         >
-            {(ctx: CanvasRenderingContext2D) => {
+            {(ctx) => {
                 ctx.clearRect(0, 0, screenSize.x, screenSize.y);
 
                 for (let y = 0; y < map.columnLength; y += 1) {
@@ -87,7 +86,6 @@ function HexMapComponent({ isEditable, zIndex, map, screenSize }: Props) {
                             position: { x, y },
                             offset: position,
                             width: zoomedHexWidth,
-                            radius: zoomedHexRadius,
                             color: HEX_CONFIG[hexType].color,
                             isGridTurnedOn,
                         });

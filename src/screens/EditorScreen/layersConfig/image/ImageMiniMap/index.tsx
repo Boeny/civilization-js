@@ -6,10 +6,12 @@ import { Button } from 'components/Button';
 import { Canvas } from 'components/canvas/Canvas';
 import { Radio } from 'components/Radio';
 import { RadioItem } from 'components/Radio/RadioItem';
+import { mapMovementParamsConfig } from 'hooks/useMapMoving/mapMovingStore';
 import { IPoint } from 'types';
-import { getVector, getZeroVector } from 'utils';
+import { getVector, vectorSub } from 'utils';
 
 import { CREATE_MODE } from '../../hex/types';
+import { getMapMovementParams, getMapBorders } from '../../Layers/utils';
 import { IMiniMapProps } from '../../types';
 import { uploadFile } from '../ImageMap/utils';
 import { useImageMapStore } from '../imageMapStore';
@@ -42,7 +44,7 @@ const MiniMapComponent = ({ map, title, onClick, panelWidth }: Props) => {
     );
 };
 
-export const ImageMiniMap = ({ screenSize, title, panelWidth, isSelected, setMapCommonParams }: IMiniMapProps) => {
+export const ImageMiniMap = ({ screenSize, title, panelWidth, isSelected, otherExistingMaps }: IMiniMapProps) => {
     const {
         store: { map },
         setStore: setImageMap,
@@ -57,17 +59,24 @@ export const ImageMiniMap = ({ screenSize, title, panelWidth, isSelected, setMap
             return;
         }
 
-        let movingParams;
+        const imageSize = getVector(newMap.width, newMap.height);
+        const newMapMovementParams = getMapMovementParams(creationMode, screenSize, imageSize);
 
-        if (creationMode === CREATE_MODE.fitScreen) {
-            movingParams = {
-                zoom: screenSize.x / newMap.width,
-                position: getZeroVector(),
-            };
+        const {
+            store: { zoom, position },
+            setStore: setCommonMapMovementParams,
+        } = mapMovementParamsConfig;
+
+        if (otherExistingMaps.length > 0) {
+            const newZoom = newMapMovementParams.zoom / zoom;
+            const newPosition = vectorSub(newMapMovementParams.position, position);
+
+            setImageMap({ map: newMap, zoom: newZoom, position: newPosition });
+            setCommonMapMovementParams({ borders: getMapBorders(imageSize, otherExistingMaps, newZoom) });
+        } else {
+            setImageMap({ map: newMap });
+            setCommonMapMovementParams({ borders: imageSize, ...newMapMovementParams });
         }
-
-        setMapCommonParams(getVector(newMap.width, newMap.height), movingParams);
-        setImageMap({ map: newMap });
     };
 
     const handleImageMiniMapClick = () => {

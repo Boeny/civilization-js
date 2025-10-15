@@ -1,3 +1,4 @@
+import { getHexHeightFromRadius, getHexRadius } from 'screens/EditorScreen/layersConfig/hex/utils';
 import { IPoint } from 'types';
 import { getVector } from 'utils';
 
@@ -8,13 +9,13 @@ interface IProps {
     position: IPoint;
     offset?: IPoint;
     width: number;
-    radius: number;
     color: string;
     isGridTurnedOn?: boolean;
 }
-export function Hex({ ctx, position, offset, width, radius, color, isGridTurnedOn }: IProps) {
+export function Hex({ ctx, position, offset, width, color, isGridTurnedOn }: IProps) {
     const xOffset = position.y % 2 === 0 ? width / 2 : width;
-    const height = radius * 1.5;
+    const radius = getHexRadius(width);
+    const height = getHexHeightFromRadius(radius);
 
     Polygon({
         ctx,

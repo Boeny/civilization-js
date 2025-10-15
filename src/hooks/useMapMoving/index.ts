@@ -1,30 +1,27 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { useArrowKeys } from 'hooks/useArrowKeys';
 import { useWheel } from 'hooks/useWheel';
+import { BORDER_SIZE, KEY_PAN_SPEED, WHEEL_PAN_SPEED } from 'screens/EditorScreen/const';
 import { IPoint } from 'types';
 import { getVector, getZeroVector, vectorMult, vectorSum } from 'utils';
 
-import { BORDER_SIZE, KEY_PAN_SPEED, WHEEL_PAN_SPEED } from '../config';
-import { useMapMovementParamsStore } from '../mapMovingStore';
-
-import { applyZoom, clampImageSize } from './utils';
+import { useMapMovementParamsStore } from './mapMovingStore';
+import { applyZoom, clampImageOffset } from './utils';
 
 export function useMapMoving(screenSize: IPoint) {
     const {
-        store: { zoom, position, imageSize: originalImageSize },
-        setStore: setMapMoving,
+        store: { zoom, position, borders },
+        setStore: setMapMovementParams,
     } = useMapMovementParamsStore();
-
-    const imageSize = useMemo(() => vectorMult(originalImageSize, zoom), [originalImageSize, zoom]);
 
     const setClampedPosition = useCallback(
         (delta: IPoint) => {
-            setMapMoving({
-                position: clampImageSize(vectorSum(position, delta), imageSize, screenSize, BORDER_SIZE),
+            setMapMovementParams({
+                position: clampImageOffset(vectorSum(position, delta), vectorMult(borders, zoom), screenSize, BORDER_SIZE),
             });
         },
-        [imageSize, position],
+        [zoom, position, borders],
     );
 
     const useWheelCallback = useCallback(
@@ -35,21 +32,20 @@ export function useMapMoving(screenSize: IPoint) {
                 return;
             }
 
-            const newZoomParams = applyZoom({
+            const newMapMovementParams = applyZoom({
                 dz: e.deltaY,
                 point: getVector(e.offsetX, e.offsetY), // OFSSET! - making zoom
                 zoom,
                 position,
-                imageSize,
-                originalImageSize,
+                borders,
                 screenSize,
             });
 
-            if (newZoomParams) {
-                setMapMoving(newZoomParams);
+            if (newMapMovementParams) {
+                setMapMovementParams(newMapMovementParams);
             }
         },
-        [zoom, position, imageSize, originalImageSize, setClampedPosition],
+        [zoom, position, borders],
     );
 
     useWheel(useWheelCallback);
