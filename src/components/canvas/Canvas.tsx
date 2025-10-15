@@ -3,20 +3,24 @@ import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { IPoint } from 'types';
 import { getVector } from 'utils';
 
-interface IProps {
+export interface CanvasEventHandlers {
+    onClick?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
+    onMouseDown?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
+    onMouseMove?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
+    onMouseUp?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
+}
+
+interface Props extends CanvasEventHandlers {
     id?: string;
     className?: string;
     title?: string;
     width?: number;
     height?: number;
     style?: CSSProperties;
-    onClick?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
-    onMouseDown?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
-    onMouseMove?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
-    onMouseUp?: (ctx: CanvasRenderingContext2D, point: IPoint) => void;
     children: (ctx: CanvasRenderingContext2D) => void;
 }
-export const Canvas = ({ children, onClick, onMouseDown, onMouseMove, onMouseUp, ...props }: IProps) => {
+
+export const Canvas = ({ children, onClick, onMouseDown, onMouseMove, onMouseUp, ...props }: Props) => {
     const ref = useRef<HTMLCanvasElement | null>(null);
     const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
 

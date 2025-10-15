@@ -21,7 +21,7 @@ export function useMapMoving(screenSize: IPoint) {
                 position: clampImageOffset(vectorSum(position, delta), vectorMult(borders, zoom), screenSize, BORDER_SIZE),
             });
         },
-        [zoom, position, borders],
+        [position, borders, zoom, screenSize],
     );
 
     const useWheelCallback = useCallback(
@@ -45,7 +45,7 @@ export function useMapMoving(screenSize: IPoint) {
                 setMapMovementParams(newMapMovementParams);
             }
         },
-        [zoom, position, borders],
+        [zoom, position, borders, screenSize],
     );
 
     useWheel(useWheelCallback);

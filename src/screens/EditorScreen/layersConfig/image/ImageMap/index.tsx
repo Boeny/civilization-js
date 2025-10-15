@@ -1,7 +1,7 @@
 import './styles.css';
 
-import { Canvas } from 'components/canvas/Canvas';
 import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
+import { MapWrapper } from 'screens/EditorScreen/components/MapWrapper';
 import { getVector, vectorMult, vectorSum } from 'utils';
 
 import { IMapProps } from '../../types';
@@ -20,17 +20,13 @@ const ImageMapComponent = ({ map, zIndex, screenSize }: IProps) => {
     const zoomedImageSize = vectorMult(getVector(map.width, map.height), zoom);
 
     return (
-        <Canvas
+        <MapWrapper
             id="image-map"
-            width={screenSize.x}
-            height={screenSize.y}
-            style={{ zIndex }}
+            screenSize={screenSize}
+            zIndex={zIndex}
         >
-            {(ctx) => {
-                ctx.clearRect(0, 0, screenSize.x, screenSize.y);
-                ctx.drawImage(map, position.x, position.y, zoomedImageSize.x, zoomedImageSize.y);
-            }}
-        </Canvas>
+            {(ctx) => ctx.drawImage(map, position.x, position.y, zoomedImageSize.x, zoomedImageSize.y)}
+        </MapWrapper>
     );
 };
 

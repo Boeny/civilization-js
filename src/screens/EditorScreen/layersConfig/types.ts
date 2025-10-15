@@ -17,4 +17,6 @@ export type IMap = { width: number; height: number }; // in pixels
 
 export interface MapStore {
     map: IMap | null;
+    zoom: number;
+    position: IPoint;
 }

@@ -1,9 +1,9 @@
 import './styles.css';
 
-import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
 import { useMouseMove } from 'hooks/useMouseMove';
+import { MapWrapper } from 'screens/EditorScreen/components/MapWrapper';
 import { IPoint } from 'types';
 import { getVector, vectorSub, vectorSum } from 'utils';
 
@@ -57,16 +57,14 @@ function HexMapComponent({ isEditable, zIndex, map, screenSize }: Props) {
     };
 
     return (
-        <Canvas
+        <MapWrapper
             id="hex-map"
-            width={screenSize.x}
-            height={screenSize.y}
-            style={{ zIndex, opacity }}
+            screenSize={screenSize}
+            zIndex={zIndex}
+            opacity={opacity}
             onMouseDown={isEditable ? handleMouseDown : undefined}
         >
             {(ctx) => {
-                ctx.clearRect(0, 0, screenSize.x, screenSize.y);
-
                 for (let y = 0; y < map.columnLength; y += 1) {
                     if (y * zoomedHexHeight + position.y > screenSize.y) {
                         break;
@@ -92,7 +90,7 @@ function HexMapComponent({ isEditable, zIndex, map, screenSize }: Props) {
                     }
                 }
             }}
-        </Canvas>
+        </MapWrapper>
     );
 }
 

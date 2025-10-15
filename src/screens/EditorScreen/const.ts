@@ -17,5 +17,5 @@ export const ZOOM_CONFIG = {
 };
 
 export const KEY_PAN_SPEED = 40;
-export const WHEEL_PAN_SPEED = 1;
+export const WHEEL_PAN_SPEED = 5;
 export const BORDER_SIZE = getVector(200, 200);
