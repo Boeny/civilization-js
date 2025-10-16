@@ -14,6 +14,7 @@ export const LeftPanel = ({ children }: IProps) => {
         <Panel
             id="left-panel"
             style={{ zIndex: Z_INDEX_CONFIG.leftPanel.zIndex }}
+            onWheel={(e) => e.stopPropagation()}
         >
             {children}
         </Panel>

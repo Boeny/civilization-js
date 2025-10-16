@@ -22,6 +22,7 @@ export const RightPanel = ({ children }: IProps) => {
         <Panel
             id="right-panel"
             style={rightPanelStyle}
+            onWheel={(e) => e.stopPropagation()}
         >
             {children}
         </Panel>
