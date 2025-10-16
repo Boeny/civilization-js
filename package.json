@@ -19,7 +19,9 @@
         "build:dev": "webpack --mode=development",
         "build": "webpack --mode=production --node-env=production",
         "prepare": "husky && chmod ug+x .husky/*",
-        "lint-staged": "lint-staged --concurrent false"
+        "lint-staged": "lint-staged --concurrent false",
+        "bump": "npm version minor --no-commit-hooks -m 'bump version to %s'",
+        "bump:patch": "npm version patch --no-commit-hooks -m 'bump version to %s'"
     },
     "dependencies": {
         "react": "19.1.1",
