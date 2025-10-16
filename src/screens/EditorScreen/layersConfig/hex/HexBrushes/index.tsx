@@ -16,7 +16,7 @@ export function HexBrushes() {
         setBrush({ brush: brush === null || brush !== type ? type : null });
     };
 
-    const brushes = getBrushes();
+    const brushes = getBrushes().filter((type) => type !== HEX_TYPE.water);
 
     return (
         <div style={{ paddingBottom: 80 }}>

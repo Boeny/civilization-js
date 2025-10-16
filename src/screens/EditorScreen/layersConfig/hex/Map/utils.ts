@@ -88,7 +88,7 @@ export function fillHex({ point, hexWidth, brush, map }: { point: IPoint; hexWid
         mapPoint.y < 0 ||
         mapPoint.x >= map.rowLength ||
         mapPoint.y >= map.columnLength ||
-        !brush ||
+        brush === null ||
         map.data[mapPoint.y][mapPoint.x] === brush
     ) {
         return;
