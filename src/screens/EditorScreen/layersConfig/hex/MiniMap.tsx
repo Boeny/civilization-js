@@ -12,7 +12,7 @@ import { BRUSH_MAP } from './config';
 import { HexMapData } from './models';
 import { NewHexMapParams } from './NewHexMapParams';
 import { useHexMapStore } from './stores/hexMapStore';
-import { CREATE_MODE } from './types';
+import { CREATE_MODE, HEX_TYPE } from './types';
 import { generateEmptyMapData, getHexHeight } from './utils';
 
 type Props = {
@@ -60,7 +60,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, otherExistingMaps }: IM
             mapSize.y = Math.floor(screenSize.y / (newMapMovementParams.zoom * hexHeight));
         }
 
-        const newMap = new HexMapData(generateEmptyMapData(mapSize));
+        const newMap = new HexMapData(generateEmptyMapData(mapSize, HEX_TYPE.hill));
 
         const {
             store: { zoom, position },
@@ -72,10 +72,10 @@ export const MiniMap = ({ screenSize, title, panelWidth, otherExistingMaps }: IM
             const newPosition = vectorSub(newMapMovementParams.position, position);
 
             setHexMap({ map: newMap, zoom: newZoom, position: newPosition });
-            setCommonMapMovementParams({ borders: getMapBorders(newMap.size, otherExistingMaps, newZoom) });
+            setCommonMapMovementParams({ borders: getMapBorders(newMap.imageSize, otherExistingMaps, newZoom) });
         } else {
             setHexMap({ map: newMap });
-            setCommonMapMovementParams({ borders: newMap.size, ...newMapMovementParams });
+            setCommonMapMovementParams({ borders: newMap.imageSize, ...newMapMovementParams });
         }
     };
 

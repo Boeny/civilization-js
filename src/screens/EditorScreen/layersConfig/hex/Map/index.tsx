@@ -1,5 +1,3 @@
-import './styles.css';
-
 import { Hex } from 'components/canvas/Hex';
 import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
 import { useMouseMove } from 'hooks/useMouseMove';
@@ -12,7 +10,7 @@ import { BRUSH_MAP } from '../config';
 import { HexMapData } from '../models';
 import { useBrushStore } from '../stores/brushStore';
 import { useGridStore } from '../stores/gridSwitchStore';
-import { useHexMapStore } from '../stores/hexMapStore';
+import { HexMapStore, useHexMapStore } from '../stores/hexMapStore';
 import { getHexHeight } from '../utils';
 
 import { fillHex } from './utils';
@@ -21,19 +19,16 @@ import { fillHex } from './utils';
 
 type Props = IMapProps & {
     map: HexMapData;
+    zoom: number;
+    position: IPoint;
+    opacity: number;
+    onUpdate: (store: Partial<HexMapStore>) => void;
 };
 
-function MapComponent({ isEditable, zIndex, map, screenSize }: Props) {
-    const { zoom: commonZoom, position: commonPosition } = useMapMovementParamsStore().store;
-    const {
-        store: { opacity, position: hexMapPosiition, zoom: hexMapZoom },
-        setStore: setHexMap,
-    } = useHexMapStore();
+function MapComponent({ isEditable, zIndex, map, screenSize, zoom, position, opacity, onUpdate }: Props) {
     const { brush } = useBrushStore().store;
     const { isGridTurnedOn } = useGridStore().store;
 
-    const position = vectorSum(commonPosition, hexMapPosiition);
-    const zoom = commonZoom * hexMapZoom;
     const zoomedHexWidth = HexMapData.hexWidth * zoom;
     const zoomedHexHeight = getHexHeight(zoomedHexWidth);
 
@@ -44,7 +39,7 @@ function MapComponent({ isEditable, zIndex, map, screenSize }: Props) {
             brush,
             map,
         });
-        setHexMap({ map });
+        onUpdate({ map });
     };
 
     const { startMoving } = useMouseMove((e) => updateMapCell(vectorSub(getVector(e.offsetX, e.offsetY), position)), isEditable);
@@ -58,7 +53,6 @@ function MapComponent({ isEditable, zIndex, map, screenSize }: Props) {
 
     return (
         <MapWrapper
-            id="hex-map"
             screenSize={screenSize}
             zIndex={zIndex}
             opacity={opacity}
@@ -94,17 +88,36 @@ function MapComponent({ isEditable, zIndex, map, screenSize }: Props) {
     );
 }
 
+function MovingMap({ zoom, position, ...props }: Props) {
+    const { zoom: commonZoom, position: commonPosition } = useMapMovementParamsStore().store;
+
+    return (
+        <MapComponent
+            {...props}
+            zoom={commonZoom * zoom}
+            position={vectorSum(commonPosition, position)}
+        />
+    );
+}
+
 export function Map(props: IMapProps) {
-    const { isVisible, map } = useHexMapStore().store;
+    const {
+        store: { isVisible, map, opacity, position, zoom },
+        setStore,
+    } = useHexMapStore();
 
     if (!isVisible || !map || !map.columnLength) {
         return null;
     }
 
     return (
-        <MapComponent
+        <MovingMap
             {...props}
             map={map}
+            zoom={zoom}
+            position={position}
+            opacity={opacity}
+            onUpdate={setStore}
         />
     );
 }

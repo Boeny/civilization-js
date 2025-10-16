@@ -1,5 +1,3 @@
-import './styles.css';
-
 import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
 import { MapWrapper } from 'screens/EditorScreen/components/MapWrapper';
 import { getVector, vectorMult, vectorSum } from 'utils';
@@ -21,7 +19,6 @@ const MapComponent = ({ map, zIndex, screenSize }: IProps) => {
 
     return (
         <MapWrapper
-            id="image-map"
             screenSize={screenSize}
             zIndex={zIndex}
         >
