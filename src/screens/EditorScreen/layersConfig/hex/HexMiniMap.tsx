@@ -1,11 +1,10 @@
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { mapMovementParamsConfig } from 'hooks/useMapMoving/mapMovingStore';
+import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
 import { IPoint } from 'types';
 import { getVector, vectorMult, vectorSub } from 'utils';
 
-import { EyeButton } from '../../components/EyeButton';
-import { OpacityBar } from '../../components/OpacityBar';
 import { getMapMovementParams, getMapBorders } from '../Layers/utils';
 import { IMiniMapProps } from '../types';
 
@@ -81,42 +80,28 @@ export const HexMiniMap = ({ screenSize, title, panelWidth, otherExistingMaps }:
     };
 
     return (
-        <>
-            {map && (
-                <>
-                    <div className="title">
-                        {title}
-                        <EyeButton
-                            isVisible={isVisible}
-                            toggleVisible={() => setHexMap({ isVisible: !isVisible })}
-                        />
-                    </div>
-
-                    {isVisible && (
-                        <OpacityBar
-                            opacity={opacity}
-                            onChange={(newOpacity) => setHexMap({ opacity: newOpacity })}
-                        />
-                    )}
-
-                    <div className="mini-map">
-                        {isVisible && (
-                            <MiniMapComponent
-                                panelWidth={panelWidth}
-                                title={title}
-                                map={map}
-                            />
-                        )}
-                    </div>
-                </>
-            )}
-
+        <MiniMapWrapper
+            isVisible={isVisible}
+            setVisible={(value) => setHexMap({ isVisible: value })}
+            opacity={opacity}
+            setOpacity={(value) => setHexMap({ opacity: value })}
+            map={
+                map && (
+                    <MiniMapComponent
+                        panelWidth={panelWidth}
+                        title={title}
+                        map={map}
+                    />
+                )
+            }
+            title={title}
+        >
             <div>
                 <NewHexMapParams
                     hasOtherMaps={otherExistingMaps.length > 0}
                     onSubmit={handleSubmit}
                 />
             </div>
-        </>
+        </MiniMapWrapper>
     );
 };

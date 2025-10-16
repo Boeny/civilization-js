@@ -7,6 +7,7 @@ import { Canvas } from 'components/canvas/Canvas';
 import { Radio } from 'components/Radio';
 import { RadioItem } from 'components/Radio/RadioItem';
 import { mapMovementParamsConfig } from 'hooks/useMapMoving/mapMovingStore';
+import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
 import { IPoint } from 'types';
 import { getVector, vectorSub } from 'utils';
 
@@ -86,15 +87,19 @@ export const ImageMiniMap = ({ screenSize, title, panelWidth, isSelected, otherE
     };
 
     return (
-        <>
-            {map && (
-                <MiniMapComponent
-                    panelWidth={panelWidth}
-                    title={isSelected ? 'Load new image' : title}
-                    map={map}
-                    onClick={handleImageMiniMapClick}
-                />
-            )}
+        <MiniMapWrapper
+            map={
+                map && (
+                    <MiniMapComponent
+                        panelWidth={panelWidth}
+                        title={isSelected ? 'Load new image' : title}
+                        map={map}
+                        onClick={handleImageMiniMapClick}
+                    />
+                )
+            }
+            title={title}
+        >
             <div>
                 <Radio
                     name="imageMapCreationMode"
@@ -124,6 +129,6 @@ export const ImageMiniMap = ({ screenSize, title, panelWidth, isSelected, otherE
                     <Button onClick={loadImage}>Load Image</Button>
                 </Block>
             </div>
-        </>
+        </MiniMapWrapper>
     );
 };

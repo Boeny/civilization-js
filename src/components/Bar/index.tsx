@@ -10,6 +10,7 @@ interface IProps {
     defaultValue?: number;
     onChange: (value: number) => void;
 }
+// TODO: stop propagation on mouse up
 export const Bar = ({ width, buttonSize, defaultValue = 0, onChange }: IProps) => {
     const [offset, setOffset] = useState(defaultValue * width);
 
