@@ -2,7 +2,7 @@ import './styles.css';
 
 import { getClasses } from 'utils';
 
-import { getBrushes, HEX_CONFIG } from '../hexConfig';
+import { getBrushes, BRUSH_MAP } from '../config';
 import { useBrushStore } from '../stores/brushStore';
 import { HEX_TYPE } from '../types';
 
@@ -21,7 +21,7 @@ export function HexBrushes() {
     return (
         <div style={{ paddingBottom: 80 }}>
             {brushes.map((type) => {
-                const { title, color } = HEX_CONFIG[type];
+                const { title, color } = BRUSH_MAP[type];
                 const isSelected = brush === type;
 
                 return (

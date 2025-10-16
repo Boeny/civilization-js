@@ -11,7 +11,7 @@ interface IProps extends IMapProps {
     map: HTMLImageElement;
 }
 
-const ImageMapComponent = ({ map, zIndex, screenSize }: IProps) => {
+const MapComponent = ({ map, zIndex, screenSize }: IProps) => {
     const { zoom: commonZoom, position: commonPosition } = useMapMovementParamsStore().store;
     const { position: imageMapPosition, zoom: imageMapZoom } = useImageMapStore().store;
 
@@ -30,7 +30,7 @@ const ImageMapComponent = ({ map, zIndex, screenSize }: IProps) => {
     );
 };
 
-export function ImageMap(props: IMapProps) {
+export function Map(props: IMapProps) {
     const { map } = useImageMapStore().store;
 
     if (!map) {
@@ -38,7 +38,7 @@ export function ImageMap(props: IMapProps) {
     }
 
     return (
-        <ImageMapComponent
+        <MapComponent
             key={map.src}
             {...props}
             map={map}

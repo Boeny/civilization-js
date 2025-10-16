@@ -4,13 +4,13 @@ import { StoreConfig } from 'hooks/createStoreHook';
 import { LAYER_TYPE } from 'types';
 
 import { HexBrushes } from './hex/HexBrushes';
-import { HexMap } from './hex/HexMap';
-import { HexMiniMap } from './hex/HexMiniMap';
+import { Map as HexMap } from './hex/Map';
+import { MiniMap as HexMiniMap } from './hex/MiniMap';
 import { hexMapStoreConfig } from './hex/stores/hexMapStore';
 import { ToggleGridButton } from './hex/ToggleGridButton';
-import { ImageMap } from './image/ImageMap';
 import { imageMapStoreConfig } from './image/imageMapStore';
-import { ImageMiniMap } from './image/ImageMiniMap';
+import { Map as ImageMap } from './image/Map';
+import { MiniMap as ImageMiniMap } from './image/MiniMap';
 import { IMap, IMapProps, IMiniMapProps, MapStore } from './types';
 
 const LAYER_CONFIG: Record<

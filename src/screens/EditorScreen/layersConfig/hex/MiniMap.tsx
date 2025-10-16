@@ -8,7 +8,7 @@ import { getVector, vectorMult, vectorSub } from 'utils';
 import { getMapMovementParams, getMapBorders } from '../Layers/utils';
 import { IMiniMapProps } from '../types';
 
-import { HEX_CONFIG } from './hexConfig';
+import { BRUSH_MAP } from './config';
 import { HexMapData } from './models';
 import { NewHexMapParams } from './NewHexMapParams';
 import { useHexMapStore } from './stores/hexMapStore';
@@ -35,7 +35,7 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
             {(ctx) => {
                 map.data.forEach((row, y) => {
                     row.forEach((type, x) => {
-                        Hex({ ctx, position: { x, y }, width: miniHexWidth, color: HEX_CONFIG[type].color });
+                        Hex({ ctx, position: { x, y }, width: miniHexWidth, color: BRUSH_MAP[type].color });
                     });
                 });
             }}
@@ -43,7 +43,7 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
     );
 };
 
-export const HexMiniMap = ({ screenSize, title, panelWidth, otherExistingMaps }: IMiniMapProps) => {
+export const MiniMap = ({ screenSize, title, panelWidth, otherExistingMaps }: IMiniMapProps) => {
     const {
         store: { map, isVisible, opacity },
         setStore: setHexMap,

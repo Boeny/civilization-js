@@ -1,6 +1,6 @@
 import { HEX_TYPE } from './types';
 
-export const HEX_CONFIG: Record<HEX_TYPE, { color: string; title: string }> = {
+export const BRUSH_MAP: Record<HEX_TYPE, { color: string; title: string }> = {
     [HEX_TYPE.ocean]: {
         color: 'rgb(0 138 134)',
         title: 'Ocean',
@@ -44,5 +44,5 @@ export const HEX_CONFIG: Record<HEX_TYPE, { color: string; title: string }> = {
 };
 
 export function getBrushes(): HEX_TYPE[] {
-    return Object.keys(HEX_CONFIG).map(Number);
+    return Object.keys(BRUSH_MAP).map(Number);
 }

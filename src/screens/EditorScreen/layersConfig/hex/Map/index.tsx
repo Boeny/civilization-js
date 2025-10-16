@@ -8,7 +8,7 @@ import { IPoint } from 'types';
 import { getVector, vectorSub, vectorSum } from 'utils';
 
 import { IMapProps } from '../../types';
-import { HEX_CONFIG } from '../hexConfig';
+import { BRUSH_MAP } from '../config';
 import { HexMapData } from '../models';
 import { useBrushStore } from '../stores/brushStore';
 import { useGridStore } from '../stores/gridSwitchStore';
@@ -23,7 +23,7 @@ type Props = IMapProps & {
     map: HexMapData;
 };
 
-function HexMapComponent({ isEditable, zIndex, map, screenSize }: Props) {
+function MapComponent({ isEditable, zIndex, map, screenSize }: Props) {
     const { zoom: commonZoom, position: commonPosition } = useMapMovementParamsStore().store;
     const {
         store: { opacity, position: hexMapPosiition, zoom: hexMapZoom },
@@ -84,7 +84,7 @@ function HexMapComponent({ isEditable, zIndex, map, screenSize }: Props) {
                             position: { x, y },
                             offset: position,
                             width: zoomedHexWidth,
-                            color: HEX_CONFIG[hexType].color,
+                            color: BRUSH_MAP[hexType].color,
                             isGridTurnedOn,
                         });
                     }
@@ -94,7 +94,7 @@ function HexMapComponent({ isEditable, zIndex, map, screenSize }: Props) {
     );
 }
 
-export function HexMap(props: IMapProps) {
+export function Map(props: IMapProps) {
     const { isVisible, map } = useHexMapStore().store;
 
     if (!isVisible || !map || !map.columnLength) {
@@ -102,7 +102,7 @@ export function HexMap(props: IMapProps) {
     }
 
     return (
-        <HexMapComponent
+        <MapComponent
             {...props}
             map={map}
         />
