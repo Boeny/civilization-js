@@ -12,6 +12,9 @@ import { imageMapStoreConfig } from './image/imageMapStore';
 import { Map as ImageMap } from './image/Map';
 import { MiniMap as ImageMiniMap } from './image/MiniMap';
 import { IMap, IMapProps, IMiniMapProps, MapStore } from './types';
+import { Map as WaterMap } from './water/Map';
+import { MiniMap as WaterMiniMap } from './water/MiniMap';
+import { waterMapStoreConfig } from './water/waterMapStore';
 
 const LAYER_CONFIG: Record<
     LAYER_TYPE,
@@ -30,13 +33,19 @@ const LAYER_CONFIG: Record<
         miniMapComponent: ImageMiniMap,
         mapComponent: ImageMap,
     },
-    [LAYER_TYPE.hex]: {
-        title: 'Hexagonal base map',
+    [LAYER_TYPE.height]: {
+        title: 'Height map',
         config: hexMapStoreConfig as StoreConfig<MapStore>,
         miniMapComponent: HexMiniMap,
         mapComponent: HexMap,
         topPanelContent: <ToggleGridButton />,
         leftPanelContent: <HexBrushes />,
+    },
+    [LAYER_TYPE.water]: {
+        title: 'Water map',
+        config: waterMapStoreConfig as StoreConfig<MapStore>,
+        miniMapComponent: WaterMiniMap,
+        mapComponent: WaterMap,
     },
 };
 

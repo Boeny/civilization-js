@@ -15,7 +15,7 @@ export class HexMapData {
         // in pixels
         return this.columnLength * getHexHeight(HexMapData.hexWidth);
     }
-    get size() {
+    get imageSize() {
         return getVector(this.width, this.height);
     }
     get rowLength() {
@@ -25,6 +25,9 @@ export class HexMapData {
     get columnLength() {
         // in cells
         return this.data.length;
+    }
+    get mapSize() {
+        return getVector(this.rowLength, this.columnLength);
     }
 
     constructor(data: HEX_TYPE[][]) {

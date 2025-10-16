@@ -1,6 +1,5 @@
 export enum HEX_TYPE {
-    ocean,
-    sea,
+    water,
     desert,
     dirt,
     meadow,

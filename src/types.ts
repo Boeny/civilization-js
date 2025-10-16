@@ -5,7 +5,8 @@ export enum KEY_CODE {
 
 export enum LAYER_TYPE {
     image,
-    hex,
+    height,
+    water,
 }
 
 export interface IPoint {

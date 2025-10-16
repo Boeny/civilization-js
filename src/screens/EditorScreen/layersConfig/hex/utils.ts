@@ -3,8 +3,8 @@ import { IPoint } from 'types';
 
 import { HEX_TYPE } from './types';
 
-export function generateEmptyMapData(size: IPoint): HEX_TYPE[][] {
-    return Array.from({ length: size.y }).map(() => Array.from({ length: size.x }).map(() => HEX_TYPE.ocean));
+export function generateEmptyMapData(size: IPoint, fill: HEX_TYPE): HEX_TYPE[][] {
+    return Array.from({ length: size.y }).map(() => Array.from({ length: size.x }).map(() => fill));
 }
 
 export function getHexRadius(hexWidth: number): number {

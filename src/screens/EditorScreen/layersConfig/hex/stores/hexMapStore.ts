@@ -5,7 +5,7 @@ import { getZeroVector } from 'utils';
 import { MapStore } from '../../types';
 import { HexMapData } from '../models';
 
-interface HexMapStore extends MapStore {
+export interface HexMapStore extends MapStore {
     map: HexMapData | null;
     isVisible: boolean;
     opacity: number;

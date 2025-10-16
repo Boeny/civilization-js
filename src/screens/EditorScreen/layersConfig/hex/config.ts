@@ -1,13 +1,9 @@
 import { HEX_TYPE } from './types';
 
 export const BRUSH_MAP: Record<HEX_TYPE, { color: string; title: string }> = {
-    [HEX_TYPE.ocean]: {
-        color: 'rgb(0 138 134)',
-        title: 'Ocean',
-    },
-    [HEX_TYPE.sea]: {
+    [HEX_TYPE.water]: {
         color: '#02acd2',
-        title: 'Sea',
+        title: 'Water',
     },
     [HEX_TYPE.desert]: {
         color: '#f2be00',
