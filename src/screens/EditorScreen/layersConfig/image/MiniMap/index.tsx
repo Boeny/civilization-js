@@ -8,12 +8,13 @@ import { Radio } from 'components/Radio';
 import { RadioItem } from 'components/Radio/RadioItem';
 import { mapMovementParamsConfig } from 'hooks/useMapMoving/mapMovingStore';
 import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
-import { IPoint } from 'types';
-import { getVector, vectorSub } from 'utils';
+import { IPoint, LAYER_TYPE } from 'types';
+import { getVector, getZeroVector, vectorSub } from 'utils';
 
+import { getMapsWithoutCurrent } from '../../config';
 import { CREATE_MODE } from '../../hex/types';
 import { IMiniMapProps } from '../../types';
-import { getMapMovementParams, getMapBorders } from '../../utils';
+import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../../utils';
 import { useImageMapStore } from '../imageMapStore';
 import { uploadFile } from '../Map/utils';
 
@@ -45,7 +46,7 @@ const MiniMapComponent = ({ map, title, onClick, panelWidth }: Props) => {
     );
 };
 
-export const MiniMap = ({ screenSize, title, panelWidth, isSelected, otherExistingMaps }: IMiniMapProps) => {
+export const MiniMap = ({ screenSize, title, panelWidth, isSelected }: IMiniMapProps) => {
     const {
         store: { map },
         setStore: setImageMap,
@@ -60,8 +61,21 @@ export const MiniMap = ({ screenSize, title, panelWidth, isSelected, otherExisti
             return;
         }
 
+        const otherExistingMaps = getMapsWithoutCurrent(LAYER_TYPE.image);
         const imageSize = getVector(newMap.width, newMap.height);
-        const newMapMovementParams = getMapMovementParams(creationMode, screenSize, imageSize);
+
+        // CREATE_MODE.free by default
+        let newMapMovementParams = {
+            zoom: 1,
+            position: getZeroVector(),
+        };
+
+        if (creationMode === CREATE_MODE.fitScreen) {
+            newMapMovementParams = getFitScreenMapMovementParams(screenSize.x, imageSize.x);
+        }
+        if (creationMode === CREATE_MODE.center) {
+            newMapMovementParams = getSreenCenterMapMovementParams(screenSize, imageSize);
+        }
 
         const {
             store: { zoom, position },
@@ -69,15 +83,15 @@ export const MiniMap = ({ screenSize, title, panelWidth, isSelected, otherExisti
         } = mapMovementParamsConfig;
 
         if (otherExistingMaps.length > 0) {
-            const newZoom = newMapMovementParams.zoom / zoom;
-            const newPosition = vectorSub(newMapMovementParams.position, position);
+            newMapMovementParams.zoom /= zoom;
+            newMapMovementParams.position = vectorSub(newMapMovementParams.position, position);
 
-            setImageMap({ map: newMap, zoom: newZoom, position: newPosition });
+            setImageMap({ map: newMap, ...newMapMovementParams });
             setCommonMapMovementParams({
                 borders: getMapBorders(
                     imageSize,
                     otherExistingMaps.map(({ map }) => map),
-                    newZoom,
+                    newMapMovementParams.zoom,
                 ),
             });
         } else {
@@ -123,6 +137,11 @@ export const MiniMap = ({ screenSize, title, panelWidth, isSelected, otherExisti
                                 {...params}
                                 value={CREATE_MODE.center}
                                 label="Screen center"
+                            />
+                            <RadioItem
+                                {...params}
+                                value={CREATE_MODE.free}
+                                label="Free transform"
                             />
                         </>
                     )}

@@ -10,7 +10,7 @@ RIGHT_PANEL.width = RIGHT_PANEL.innerWidth + RIGHT_PANEL.padding * 2;
 export { RIGHT_PANEL };
 
 export const ZOOM_CONFIG = {
-    pixelsInDelta: 40,
+    pixelsInDelta: 50,
     pixelsAddition: 0,
     minWidth: 500,
     maxWidth: 1000000,

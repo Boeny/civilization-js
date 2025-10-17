@@ -4,7 +4,7 @@ import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
 import { IPoint, LAYER_TYPE } from 'types';
 import { getClasses } from 'utils';
 
-import { getLayer, getLayerTypes, getMapsWithoutCurrent } from '../../layersConfig/config';
+import { getLayer, getLayerTypes } from '../../layersConfig/config';
 import { useLayerStore } from '../../layerStore';
 
 type Props = {
@@ -42,7 +42,6 @@ export const Layers = ({ panelWidth, screenSize }: Props) => {
                             title={config.title}
                             panelWidth={panelWidth}
                             isSelected={isSelected}
-                            otherExistingMaps={getMapsWithoutCurrent(type)}
                         />
                     </div>
                 );

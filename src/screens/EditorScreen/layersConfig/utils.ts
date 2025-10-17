@@ -3,7 +3,6 @@ import { getZeroVector, getZoomFor, vectorDiv, vectorMult, vectorSub } from 'uti
 
 import { ZOOM_CONFIG } from '../const';
 
-import { CREATE_MODE } from './hex/types';
 import { IMap } from './types';
 
 type MovementParams = {
@@ -30,27 +29,14 @@ function getScreenCenterPosition(screenSize: IPoint, imageSize: IPoint): IPoint 
     return vectorDiv(vectorSub(screenSize, imageSize), 2);
 }
 
-export function getMapMovementParams(creationMode: CREATE_MODE, screenSize: IPoint, imageSize: IPoint): MovementParams {
-    if (creationMode === CREATE_MODE.fitScreen) {
-        return {
-            zoom: getZoomFor(screenSize.x, imageSize.x),
-            position: getZeroVector(),
-        };
-    }
-    if (creationMode === CREATE_MODE.fitImage) {
-        return {
-            zoom: 1,
-            position: getZeroVector(),
-        };
-    }
-    if (creationMode === CREATE_MODE.free) {
-        return {
-            zoom: 1,
-            position: getZeroVector(),
-        };
-    }
+export function getFitScreenMapMovementParams(screenWidth: number, imageWidth: number) {
+    return {
+        zoom: getZoomFor(screenWidth, imageWidth),
+        position: getZeroVector(),
+    };
+}
 
-    // CREATE_MODE.center
+export function getSreenCenterMapMovementParams(screenSize: IPoint, imageSize: IPoint): MovementParams {
     const zoom = getZoomFor(ZOOM_CONFIG.minWidth, imageSize.x);
 
     return {

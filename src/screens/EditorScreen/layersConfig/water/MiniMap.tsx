@@ -46,7 +46,8 @@ export const MiniMap = ({ title, panelWidth }: IMiniMapProps) => {
         store: { map, isVisible, opacity },
         setStore: setWaterMap,
     } = useWaterMapStore();
-    const { map: heightMap, zoom: heightZoom, position: heightPosition } = useHexMapStore().store;
+
+    const { store: heightMap } = useHexMapStore();
 
     return (
         <MiniMapWrapper
@@ -65,7 +66,7 @@ export const MiniMap = ({ title, panelWidth }: IMiniMapProps) => {
             }
             title={title}
         >
-            {heightMap && (
+            {heightMap.map && (
                 <div>
                     <Block
                         alignCenter
@@ -74,9 +75,9 @@ export const MiniMap = ({ title, panelWidth }: IMiniMapProps) => {
                         <Button
                             onClick={() => {
                                 setWaterMap({
-                                    map: new HexMapData(generateEmptyMapData(heightMap.mapSize, HEX_TYPE.water)),
-                                    zoom: heightZoom,
-                                    position: heightPosition,
+                                    map: new HexMapData(generateEmptyMapData(heightMap.map!.mapSize, HEX_TYPE.water)),
+                                    zoom: heightMap.zoom,
+                                    position: heightMap.position,
                                 });
                             }}
                         >

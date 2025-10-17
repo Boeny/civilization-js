@@ -1,13 +1,12 @@
 import { IPoint, LAYER_TYPE } from 'types';
 
-export type OtherMap = { map: IMap; type: LAYER_TYPE };
+export type OtherMap = MapStoreWithMap & { type: LAYER_TYPE };
 
 export interface IMiniMapProps {
     screenSize: IPoint;
     panelWidth: number;
     title: string;
     isSelected: boolean;
-    otherExistingMaps: OtherMap[];
 }
 export interface IMapProps {
     isEditable: boolean;
@@ -22,3 +21,5 @@ export interface MapStore {
     zoom: number;
     position: IPoint;
 }
+
+export type MapStoreWithMap = MapStore & { map: IMap };

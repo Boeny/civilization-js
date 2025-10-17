@@ -61,7 +61,6 @@ export const NewHexMapParams = ({ hasImageMap, onSubmit }: Props) => {
                         />
                         <RadioItem
                             {...params}
-                            disabled // TODO: enable when it has been implemented
                             value={CREATE_MODE.free}
                             label="Free transform"
                         />
