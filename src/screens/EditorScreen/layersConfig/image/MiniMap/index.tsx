@@ -12,8 +12,8 @@ import { IPoint } from 'types';
 import { getVector, vectorSub } from 'utils';
 
 import { CREATE_MODE } from '../../hex/types';
-import { getMapMovementParams, getMapBorders } from '../../Layers/utils';
 import { IMiniMapProps } from '../../types';
+import { getMapMovementParams, getMapBorders } from '../../utils';
 import { useImageMapStore } from '../imageMapStore';
 import { uploadFile } from '../Map/utils';
 

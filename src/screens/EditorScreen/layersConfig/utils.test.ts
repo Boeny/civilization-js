@@ -1,5 +1,4 @@
-import { IMap } from '../types';
-
+import { IMap } from './types';
 import { adaptMapBorders } from './utils';
 
 describe('adaptMapBorders', () => {

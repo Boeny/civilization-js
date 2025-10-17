@@ -4,8 +4,8 @@ import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
 import { IPoint, LAYER_TYPE } from 'types';
 import { getClasses } from 'utils';
 
+import { getLayer, getLayerTypes, getMapsWithoutCurrent } from '../../layersConfig/config';
 import { useLayerStore } from '../../layerStore';
-import { getLayer, getLayerTypes, getMapsWithoutCurrent } from '../config';
 
 type Props = {
     screenSize: IPoint;

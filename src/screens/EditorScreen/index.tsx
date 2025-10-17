@@ -5,12 +5,12 @@ import { ArrowButton } from 'components/ArrowButton';
 import { MenuItem } from 'components/Menu/MenuItem';
 import { getVector } from 'utils';
 
+import { Layers } from './components/Layers';
 import { LeftPanel } from './components/LeftPanel';
 import { RightPanel } from './components/RightPanel';
 import { TopPanel } from './components/TopPanel';
 import { RIGHT_PANEL, TOP_PANEL_HEIGHT } from './const';
 import { getLayer } from './layersConfig/config';
-import { Layers } from './layersConfig/Layers';
 import { Map } from './layersConfig/Map';
 import { useLayerStore } from './layerStore';
 

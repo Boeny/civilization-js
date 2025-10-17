@@ -5,8 +5,8 @@ import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
 import { IPoint } from 'types';
 import { getVector, vectorMult, vectorSub } from 'utils';
 
-import { getMapMovementParams, getMapBorders } from '../Layers/utils';
 import { IMiniMapProps } from '../types';
+import { getMapMovementParams, getMapBorders } from '../utils';
 
 import { BRUSH_MAP } from './config';
 import { HexMapData } from './models';

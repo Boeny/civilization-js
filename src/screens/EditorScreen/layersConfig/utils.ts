@@ -1,9 +1,10 @@
 import { IPoint } from 'types';
 import { getZeroVector, getZoomFor, vectorDiv, vectorMult, vectorSub } from 'utils';
 
-import { ZOOM_CONFIG } from '../../const';
-import { CREATE_MODE } from '../hex/types';
-import { IMap } from '../types';
+import { ZOOM_CONFIG } from '../const';
+
+import { CREATE_MODE } from './hex/types';
+import { IMap } from './types';
 
 type MovementParams = {
     zoom: number;
