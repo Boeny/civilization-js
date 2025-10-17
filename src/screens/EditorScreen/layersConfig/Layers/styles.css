@@ -29,16 +29,6 @@
     padding: 4px 7px 6px;
 }
 
-.eye {
-    cursor: pointer;
-    border-radius: 5px;
-    padding: 0 1px;
-    margin-bottom: -1px;
-}
-.eye:hover {
-    outline: 3px solid #7c7c7c;
-}
-
 .mini-map {
     min-height: 90px;
     max-height: 170px;

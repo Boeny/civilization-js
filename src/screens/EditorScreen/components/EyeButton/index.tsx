@@ -1,3 +1,4 @@
+import './styles.css';
 import { MouseEvent } from 'react';
 
 import eyeClosed from 'assets/eye-closed.svg';
