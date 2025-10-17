@@ -1,5 +1,6 @@
 import { PropsWithChildren, ReactNode, useState } from 'react';
 
+import { Block } from 'components/Block';
 import { Button } from 'components/Button';
 
 import { EyeButton } from './EyeButton';
@@ -19,24 +20,29 @@ export function MiniMapWrapper({ title, map, children, ...props }: Props) {
             <div className="title">
                 {title}
 
-                {map && props.setVisible && (
-                    <EyeButton
-                        isVisible={props.isVisible}
-                        toggleVisible={() => props.setVisible(!props.isVisible)}
-                    />
-                )}
+                <Block
+                    noGaps
+                    alignCenter
+                >
+                    {map && props.setVisible && (
+                        <EyeButton
+                            isVisible={props.isVisible}
+                            toggleVisible={() => props.setVisible(!props.isVisible)}
+                        />
+                    )}
 
-                {(map || children) && (
-                    <Button
-                        style={{ padding: 0, width: 25, height: 25, marginLeft: 3 }}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            setOpened(!isOpened);
-                        }}
-                    >
-                        {isOpened ? '-' : '+'}
-                    </Button>
-                )}
+                    {(map || children) && (
+                        <Button
+                            style={{ padding: 0, width: 25, height: 25, marginLeft: 3 }}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setOpened(!isOpened);
+                            }}
+                        >
+                            {isOpened ? '-' : '+'}
+                        </Button>
+                    )}
+                </Block>
             </div>
 
             {isOpened && (

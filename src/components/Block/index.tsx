@@ -10,7 +10,9 @@ interface IBlockParams {
     alignedVertically?: boolean;
     alignRight?: boolean;
     alignCenter?: boolean;
+    noMargin?: boolean;
     noPadding?: boolean;
+    noGaps?: boolean;
     children?: ReactNode;
     style?: CSSProperties;
 }
@@ -21,7 +23,9 @@ export const Block = ({
     alignedVertically,
     alignRight,
     alignCenter,
+    noMargin,
     noPadding,
+    noGaps,
     className,
     style,
 }: IBlockParams) => {
@@ -32,7 +36,8 @@ export const Block = ({
         alignedVertically && 'flex-column',
         alignRight && 'flex-right',
         alignCenter && 'flex-center',
-        noPadding && 'no-padding',
+        (noGaps || noMargin) && 'no-margin',
+        (noGaps || noPadding) && 'no-padding',
         className,
     ]);
 

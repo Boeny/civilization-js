@@ -1,9 +1,9 @@
 .block {
     margin: 5px 0;
-    border-radius: 5px;
     padding: 20px 30px;
 }
 .block.bordered {
+    border-radius: 5px;
     border: 1px solid #ccc;
 }
 .block.flex {
@@ -21,6 +21,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.block.no-margin {
+    margin: 0;
 }
 .block.no-padding {
     padding: 0;
