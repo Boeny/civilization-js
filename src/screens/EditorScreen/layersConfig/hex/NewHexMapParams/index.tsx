@@ -12,11 +12,11 @@ import { CREATE_MODE } from '../types';
 import { HexMapParamsBlock } from './HexMapParamsBlock';
 
 type Props = {
-    hasOtherMaps: boolean;
+    hasImageMap: boolean;
     onSubmit: (mapSize: IPoint, creationMode: CREATE_MODE) => void;
 };
 
-export const NewHexMapParams = ({ hasOtherMaps, onSubmit }: Props) => {
+export const NewHexMapParams = ({ hasImageMap, onSubmit }: Props) => {
     const [mapSize, setMapSize] = useState(getVector(100, 100));
     const [creationMode, setCreationMode] = useState(CREATE_MODE.fitScreen);
     const [isError, setError] = useState(false);
@@ -42,7 +42,7 @@ export const NewHexMapParams = ({ hasOtherMaps, onSubmit }: Props) => {
             >
                 {(params) => (
                     <>
-                        {hasOtherMaps && (
+                        {hasImageMap && (
                             <RadioItem
                                 {...params}
                                 label="Fit the image"

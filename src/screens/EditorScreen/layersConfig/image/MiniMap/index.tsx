@@ -73,7 +73,13 @@ export const MiniMap = ({ screenSize, title, panelWidth, isSelected, otherExisti
             const newPosition = vectorSub(newMapMovementParams.position, position);
 
             setImageMap({ map: newMap, zoom: newZoom, position: newPosition });
-            setCommonMapMovementParams({ borders: getMapBorders(imageSize, otherExistingMaps, newZoom) });
+            setCommonMapMovementParams({
+                borders: getMapBorders(
+                    imageSize,
+                    otherExistingMaps.map(({ map }) => map),
+                    newZoom,
+                ),
+            });
         } else {
             setImageMap({ map: newMap });
             setCommonMapMovementParams({ borders: imageSize, ...newMapMovementParams });

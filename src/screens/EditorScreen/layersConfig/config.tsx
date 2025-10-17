@@ -11,7 +11,7 @@ import { ToggleGridButton } from './hex/ToggleGridButton';
 import { imageMapStoreConfig } from './image/imageMapStore';
 import { Map as ImageMap } from './image/Map';
 import { MiniMap as ImageMiniMap } from './image/MiniMap';
-import { IMap, IMapProps, IMiniMapProps, MapStore } from './types';
+import { IMapProps, IMiniMapProps, MapStore, OtherMap } from './types';
 import { Map as WaterMap } from './water/Map';
 import { MiniMap as WaterMiniMap } from './water/MiniMap';
 import { waterMapStoreConfig } from './water/waterMapStore';
@@ -57,8 +57,8 @@ export function getLayer(type: LAYER_TYPE) {
     return LAYER_CONFIG[type];
 }
 
-export function getMapsWithoutCurrent(currentType: LAYER_TYPE): IMap[] {
+export function getMapsWithoutCurrent(currentType: LAYER_TYPE): OtherMap[] {
     return getLayerTypes()
-        .filter((type) => type !== currentType && getLayer(type).config.store.map!)
-        .map((type) => getLayer(type).config.store.map!);
+        .map((type) => ({ type, map: getLayer(type).config.store.map! }))
+        .filter(({ type, map }) => type !== currentType && map);
 }

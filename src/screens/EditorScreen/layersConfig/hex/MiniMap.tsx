@@ -2,7 +2,7 @@ import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { mapMovementParamsConfig } from 'hooks/useMapMoving/mapMovingStore';
 import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
-import { IPoint } from 'types';
+import { IPoint, LAYER_TYPE } from 'types';
 import { getVector, vectorMult, vectorSub } from 'utils';
 
 import { IMiniMapProps } from '../types';
@@ -54,9 +54,14 @@ export const MiniMap = ({ screenSize, title, panelWidth, otherExistingMaps }: IM
         const imageSize = vectorMult(mapSize, getVector(HexMapData.hexWidth, hexHeight));
         const newMapMovementParams = getMapMovementParams(creationMode, screenSize, imageSize);
 
+        // adapt map height with screen height
         if (creationMode === CREATE_MODE.fitScreen) {
             // zoom = screen_height / (map_height * hex_height)
             // map_height = screen_height / (zoom * hex_height)
+            mapSize.y = Math.floor(screenSize.y / (newMapMovementParams.zoom * hexHeight));
+        }
+        // adapt map height with image height
+        if (creationMode === CREATE_MODE.fitImage) {
             mapSize.y = Math.floor(screenSize.y / (newMapMovementParams.zoom * hexHeight));
         }
 
@@ -68,11 +73,17 @@ export const MiniMap = ({ screenSize, title, panelWidth, otherExistingMaps }: IM
         } = mapMovementParamsConfig;
 
         if (otherExistingMaps.length > 0) {
-            const newZoom = newMapMovementParams.zoom * zoom;
-            const newPosition = vectorSub(newMapMovementParams.position, position);
+            newMapMovementParams.zoom *= zoom;
+            newMapMovementParams.position = vectorSub(newMapMovementParams.position, position);
 
-            setHexMap({ map: newMap, zoom: newZoom, position: newPosition });
-            setCommonMapMovementParams({ borders: getMapBorders(newMap.imageSize, otherExistingMaps, newZoom) });
+            setHexMap({ map: newMap, ...newMapMovementParams });
+            setCommonMapMovementParams({
+                borders: getMapBorders(
+                    newMap.imageSize,
+                    otherExistingMaps.map(({ map }) => map),
+                    newMapMovementParams.zoom,
+                ),
+            });
         } else {
             setHexMap({ map: newMap });
             setCommonMapMovementParams({ borders: newMap.imageSize, ...newMapMovementParams });
@@ -98,7 +109,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, otherExistingMaps }: IM
         >
             <div>
                 <NewHexMapParams
-                    hasOtherMaps={otherExistingMaps.length > 0}
+                    hasImageMap={!!otherExistingMaps.find(({ type }) => type === LAYER_TYPE.image)}
                     onSubmit={handleSubmit}
                 />
             </div>

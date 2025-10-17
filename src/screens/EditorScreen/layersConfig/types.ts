@@ -1,11 +1,13 @@
-import { IPoint } from 'types';
+import { IPoint, LAYER_TYPE } from 'types';
+
+export type OtherMap = { map: IMap; type: LAYER_TYPE };
 
 export interface IMiniMapProps {
     screenSize: IPoint;
     panelWidth: number;
     title: string;
     isSelected: boolean;
-    otherExistingMaps: IMap[];
+    otherExistingMaps: OtherMap[];
 }
 export interface IMapProps {
     isEditable: boolean;
