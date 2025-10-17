@@ -5,11 +5,20 @@ interface IProps<T> {
     label?: string;
     value: T;
     selectedValue: T;
+    disabled?: boolean;
     children?: ReactNode;
     onChange: (value: T) => void;
 }
 
-export function RadioItem<T extends number | string>({ name, label, value: currentValue, selectedValue, children, onChange }: IProps<T>) {
+export function RadioItem<T extends number | string>({
+    name,
+    label,
+    value: currentValue,
+    selectedValue,
+    disabled,
+    children,
+    onChange,
+}: IProps<T>) {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
         const convertedValue = typeof currentValue === 'number' ? Number(newValue) : newValue;
@@ -18,6 +27,7 @@ export function RadioItem<T extends number | string>({ name, label, value: curre
 
     const input = (
         <input
+            disabled={disabled}
             type="radio"
             name={name}
             value={currentValue}
