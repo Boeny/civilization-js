@@ -1,31 +1,65 @@
-export async function uploadFile() {
-    try {
-        const [imageFile] = await window.showOpenFilePicker({
-            types: [{
-                description: "Images",
-                accept: {"image/*": [".png", ".gif", ".jpeg", ".jpg"]},
-            }],
-            excludeAcceptAllOption: true,
-            multiple: false,
-        })
+import { IPoint } from 'types';
 
-        const file = await imageFile.getFile()
-        const img = new Image()
-        img.src = URL.createObjectURL(file)
+export function getClasses(classes: (string | boolean | undefined)[]): string {
+    return classes.filter(Boolean).join(' ');
+}
 
-        img.onerror = function () {
-            URL.revokeObjectURL(this.src)
-            console.error("Cannot load image")
-        }
+export function isValuePositiveNumber(value: number): boolean {
+    return value > 0;
+}
 
-        return new Promise<HTMLImageElement>(resolve => {
-            img.onload = function () {
-                URL.revokeObjectURL(img.src)
-                resolve(img)
-            }
-        })
+export function isValueNumber(value: number): boolean {
+    return !isNaN(value);
+}
+
+export function isValueNonNegativeNumber(value: number): boolean {
+    return value >= 0;
+}
+
+export function isValueSmallNumber(value: number): boolean {
+    return value <= 99999;
+}
+
+export function getVector(x: number, y: number): IPoint {
+    return { x, y };
+}
+
+export function vectorSum(a: IPoint, b: IPoint | number): IPoint {
+    if (typeof b === 'number') {
+        return getVector(a.x + b, a.y + b);
     }
-    catch(e) {
-        console.error(e)
+
+    return getVector(a.x + b.x, a.y + b.y);
+}
+
+export function vectorSub(a: IPoint, b: IPoint | number): IPoint {
+    if (typeof b === 'number') {
+        return getVector(a.x - b, a.y - b);
     }
+
+    return getVector(a.x - b.x, a.y - b.y);
+}
+
+export function vectorDiv(a: IPoint, b: IPoint | number): IPoint {
+    if (typeof b === 'number') {
+        return getVector(a.x / b, a.y / b);
+    }
+
+    return getVector(a.x / b.x, a.y / b.y);
+}
+
+export function vectorMult(a: IPoint, b: IPoint | number): IPoint {
+    if (typeof b === 'number') {
+        return getVector(a.x * b, a.y * b);
+    }
+
+    return getVector(a.x * b.x, a.y * b.y);
+}
+
+export function getZeroVector(): IPoint {
+    return getVector(0, 0);
+}
+
+export function getZoomFor(targetSize: number, currentSize: number): number {
+    return targetSize / currentSize;
 }

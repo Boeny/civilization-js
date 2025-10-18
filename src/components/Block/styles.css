@@ -1,0 +1,30 @@
+.block {
+    margin: 5px 0;
+    padding: 20px 30px;
+}
+.block.bordered {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.block.flex {
+    display: flex;
+}
+.block.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+.block.flex-right {
+    display: flex;
+    justify-content: flex-end;
+}
+.block.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.block.no-margin {
+    margin: 0;
+}
+.block.no-padding {
+    padding: 0;
+}

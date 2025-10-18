@@ -15,4 +15,5 @@ button {
     user-select: none;
     border-radius: 5px;
     border-color: #ccc;
+    max-width: 160px;
 }

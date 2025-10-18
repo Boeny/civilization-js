@@ -1,0 +1,10 @@
+.number-input {
+    width: 50px;
+    outline: none;
+}
+.number-input.error {
+    outline: 2px solid #ff4d4d;
+}
+.number-input.small {
+    width: 35px;
+}

@@ -1,0 +1,4 @@
+npm run typecheck &&
+npm run lint-staged &&
+npm run test &&
+git update-index --again

@@ -1,6 +1,8 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const isProduction = process.env.NODE_ENV == 'production'
+const path = require('path');
+
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
     // amd: undefined,
@@ -12,13 +14,13 @@ module.exports = {
         open: true, // open default browser
         host: 'localhost',
         //onBeforeSetupMiddleware: (app) => { // IS DEPRECATED for webpack 5.0
-            // app.app.get("/", function(req, res){
-            //     res.json({})
-            // })
+        // app.app.get("/", function(req, res){
+        //     res.json({})
+        // })
 
-            // app.post("/post/some-data", bodyParser.json(), function(req, res){
-            //     res.send("POST res sent from webpack dev server")
-            // })
+        // app.post("/post/some-data", bodyParser.json(), function(req, res){
+        //     res.send("POST res sent from webpack dev server")
+        // })
         //},
         // allowedHosts: undefined,
         // bonjour: undefined,
@@ -37,7 +39,7 @@ module.exports = {
         // ipc: undefined,
         // liveReload: undefined,
         // onListening: undefined,
-        // port: 80,
+        port: 8080,
         // proxy: undefined,
         // server: undefined,
         // setupExitSignals: undefined,
@@ -47,7 +49,7 @@ module.exports = {
         // webSocketServer: undefined,
     },
     // devtool: undefined,
-    entry: path.resolve(__dirname, 'src/index.ts'),
+    entry: path.resolve(__dirname, 'src/index.tsx'),
     // entry: {
     //     home: './home.js',
     //     shared: ['react', 'react-dom', 'redux', 'react-redux'],
@@ -86,9 +88,9 @@ module.exports = {
         // parser: undefined,
         rules: [
             {
-                test: /\.(ts)$/i,
+                test: /\.(tsx?)$/i,
                 loader: 'ts-loader',
-                exclude: ['/node_modules/'],
+                exclude: [path.resolve(__dirname, 'node_modules')],
                 options: {
                     compilerOptions: {
                         noEmit: false,
@@ -123,7 +125,7 @@ module.exports = {
     // node: undefined,
     // optimization: undefined,
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'docs'),
         filename: 'bundle.js',
     },
     // parallelism: undefined,
@@ -148,7 +150,7 @@ module.exports = {
         // descriptionFiles: ['package.json'], // The JSON files to use for descriptions
         // enforceExtension: false, // If true, it will not allow extension-less files
         // exportsFields: ['exports', 'myCompanyExports'], // Fields in package.json that are used for resolving module requests
-        extensions: ['.ts', '.js'], // Attempt to resolve these extensions in order. Use '...' to access the default extensions. JS is important to resolve node_modules!
+        extensions: ['.tsx', '.ts', '.jsx', '.js'], // Attempt to resolve these extensions in order. Use '...' to access the default extensions. JS is important to resolve node_modules!
         // extensionAlias: {'.js': ['.ts', '.js']}, // An object which maps extension to extension aliases
         // fallback: { // Redirect module requests when normal resolving fails
         //     abc: false, // do not include a polyfill for abc,
@@ -205,4 +207,4 @@ module.exports = {
     // target: undefined,
     // watch: undefined,
     // watchOptions: undefined,
-}
+};

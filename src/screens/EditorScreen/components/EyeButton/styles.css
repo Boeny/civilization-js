@@ -1,0 +1,9 @@
+.eye {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 0 1px;
+    margin-bottom: -1px;
+}
+.eye:hover {
+    outline: 3px solid #7c7c7c;
+}

@@ -1,0 +1,74 @@
+import { useEffect, useState } from 'react';
+
+type DefaultState<T extends object> = Partial<T>;
+
+interface StoreUpdate<S extends object> {
+    (data: Partial<S>): void;
+}
+
+export type StoreConfig<T> = {
+    readonly store: T;
+    setStore: (data: Partial<T>) => void;
+    reset: () => void;
+};
+
+type UseStore<T extends object> = { store: T; setStore: StoreUpdate<T>; reset: () => void };
+
+export function createStoreHook<T extends object>(defaultState: T) {
+    // one instance for each createStoreHook call
+    const container = {
+        instance: { ...defaultState },
+        getStore() {
+            return this.instance;
+        },
+        update(data: Partial<T>) {
+            this.instance = { ...this.instance, ...data };
+        },
+    };
+    const storeUpdateStack: (() => void)[] = [];
+
+    function setStore(data: Partial<T>) {
+        container.update(data);
+        storeUpdateStack.forEach((callback) => callback());
+    }
+
+    function reset() {
+        setStore(defaultState);
+    }
+
+    const params: StoreConfig<T> = {
+        get store() {
+            return container.getStore();
+        },
+        setStore,
+        reset,
+    };
+
+    function useUpdatableStore(newDefaultState?: DefaultState<T>): UseStore<T> {
+        const [, forceUpdate] = useState(() => {
+            if (newDefaultState) {
+                container.update(newDefaultState);
+            }
+
+            return {};
+        });
+
+        useEffect(() => {
+            // add state updater to the stack after mount
+            function triggerComponentUpdate() {
+                forceUpdate({});
+            }
+            storeUpdateStack.push(triggerComponentUpdate);
+
+            // remove updateFunc from the stack before unmount
+            return () => {
+                const index = storeUpdateStack.indexOf(triggerComponentUpdate);
+                storeUpdateStack.splice(index, 1);
+            };
+        }, []);
+
+        return params;
+    }
+
+    return [useUpdatableStore, params] as const;
+}
