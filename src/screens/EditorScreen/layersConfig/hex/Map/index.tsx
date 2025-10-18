@@ -100,6 +100,7 @@ function MovingMap({ zoom, position, ...props }: Props) {
     );
 }
 
+// eslint-disable-next-line import/no-unused-modules
 export function Map(props: IMapProps) {
     const {
         store: { isVisible, map, opacity, position, zoom },

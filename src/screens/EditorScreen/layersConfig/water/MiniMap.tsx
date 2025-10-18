@@ -6,7 +6,7 @@ import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
 
 import { BRUSH_MAP } from '../hex/config';
 import { HexMapData } from '../hex/models';
-import { useHexMapStore } from '../hex/stores/hexMapStore';
+import { hexMapStoreConfig } from '../hex/stores/hexMapStore';
 import { HEX_TYPE } from '../hex/types';
 import { generateEmptyMapData, getHexHeight } from '../hex/utils';
 import { IMiniMapProps } from '../types';
@@ -41,13 +41,22 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
     );
 };
 
+// eslint-disable-next-line import/no-unused-modules
 export const MiniMap = ({ title, panelWidth }: IMiniMapProps) => {
     const {
         store: { map, isVisible, opacity },
         setStore: setWaterMap,
     } = useWaterMapStore();
 
-    const { store: heightMap } = useHexMapStore();
+    const heightMap = hexMapStoreConfig.store;
+
+    const handleCreateMap = () => {
+        setWaterMap({
+            map: new HexMapData(generateEmptyMapData(heightMap.map!.mapSize, HEX_TYPE.water)),
+            zoom: heightMap.zoom,
+            position: heightMap.position,
+        });
+    };
 
     return (
         <MiniMapWrapper
@@ -72,17 +81,7 @@ export const MiniMap = ({ title, panelWidth }: IMiniMapProps) => {
                         alignCenter
                         noPadding
                     >
-                        <Button
-                            onClick={() => {
-                                setWaterMap({
-                                    map: new HexMapData(generateEmptyMapData(heightMap.map!.mapSize, HEX_TYPE.water)),
-                                    zoom: heightMap.zoom,
-                                    position: heightMap.position,
-                                });
-                            }}
-                        >
-                            Create Map
-                        </Button>
+                        <Button onClick={handleCreateMap}>Create Map</Button>
                     </Block>
                 </div>
             )}

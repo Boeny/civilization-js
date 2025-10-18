@@ -4,9 +4,9 @@ export enum KEY_CODE {
 }
 
 export enum LAYER_TYPE {
-    image,
-    height,
-    water,
+    image = 'image',
+    height = 'hex',
+    water = 'water',
 }
 
 export interface IPoint {

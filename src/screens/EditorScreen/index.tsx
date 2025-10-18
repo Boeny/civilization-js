@@ -10,7 +10,7 @@ import { LeftPanel } from './components/LeftPanel';
 import { RightPanel } from './components/RightPanel';
 import { TopPanel } from './components/TopPanel';
 import { RIGHT_PANEL, TOP_PANEL_HEIGHT } from './const';
-import { getLayer } from './layersConfig/config';
+import { LAYER_CONFIG } from './layersConfig/config';
 import { Map } from './layersConfig/Map';
 import { useLayerStore } from './layerStore';
 
@@ -23,7 +23,7 @@ export const EditorScreen = () => {
     const toggleLeftPanel = () => setLeftPanelShown(!isLeftPanelShown);
     const toggleRightPanel = () => setRightPanelShown(!isRightPanelShown);
 
-    const { leftPanelContent, topPanelContent } = getLayer(layer);
+    const { leftPanelContent, topPanelContent } = LAYER_CONFIG[layer];
 
     const screenSize = getVector(window.innerWidth, window.innerHeight);
 

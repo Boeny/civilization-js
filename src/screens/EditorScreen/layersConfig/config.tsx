@@ -1,28 +1,22 @@
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { StoreConfig } from 'hooks/createStoreHook';
 import { LAYER_TYPE } from 'types';
 
 import { HexBrushes } from './hex/HexBrushes';
-import { Map as HexMap } from './hex/Map';
-import { MiniMap as HexMiniMap } from './hex/MiniMap';
 import { hexMapStoreConfig } from './hex/stores/hexMapStore';
 import { ToggleGridButton } from './hex/ToggleGridButton';
 import { imageMapStoreConfig } from './image/imageMapStore';
-import { Map as ImageMap } from './image/Map';
-import { MiniMap as ImageMiniMap } from './image/MiniMap';
-import { IMapProps, IMiniMapProps, MapStore, MapStoreWithMap, OtherMap } from './types';
-import { Map as WaterMap } from './water/Map';
-import { MiniMap as WaterMiniMap } from './water/MiniMap';
+import { MapStore, MapStoreWithMap, OtherMap } from './types';
 import { waterMapStoreConfig } from './water/waterMapStore';
 
-const LAYER_CONFIG: Record<
+export const LAYER_CONFIG: Record<
     LAYER_TYPE,
     {
         title: string;
         config: StoreConfig<MapStore>;
-        miniMapComponent: FC<IMiniMapProps>;
-        mapComponent: FC<IMapProps>;
+        miniMapComponent: string;
+        mapComponent: string;
         topPanelContent?: ReactNode;
         leftPanelContent?: ReactNode;
     }
@@ -30,38 +24,34 @@ const LAYER_CONFIG: Record<
     [LAYER_TYPE.image]: {
         title: 'Image',
         config: imageMapStoreConfig as StoreConfig<MapStore>,
-        miniMapComponent: ImageMiniMap,
-        mapComponent: ImageMap,
+        miniMapComponent: '../../layersConfig/image/MiniMap/index.tsx',
+        mapComponent: '../../layersConfig/image/Map/index.tsx',
     },
     [LAYER_TYPE.height]: {
         title: 'Height map',
         config: hexMapStoreConfig as StoreConfig<MapStore>,
-        miniMapComponent: HexMiniMap,
-        mapComponent: HexMap,
         topPanelContent: <ToggleGridButton />,
         leftPanelContent: <HexBrushes />,
+        miniMapComponent: '../../layersConfig/hex/MiniMap.tsx',
+        mapComponent: '../../layersConfig/hex/Map/index.tsx',
     },
     [LAYER_TYPE.water]: {
         title: 'Water map',
         config: waterMapStoreConfig as StoreConfig<MapStore>,
-        miniMapComponent: WaterMiniMap,
-        mapComponent: WaterMap,
+        miniMapComponent: '../../layersConfig/water/MiniMap.tsx',
+        mapComponent: '../../layersConfig/water/Map.tsx',
     },
 };
 
 export function getLayerTypes(): LAYER_TYPE[] {
-    return Object.keys(LAYER_CONFIG).map(Number);
-}
-
-export function getLayer(type: LAYER_TYPE) {
-    return LAYER_CONFIG[type];
+    return Object.values(LAYER_TYPE);
 }
 
 export function getMapsWithoutCurrent(currentType: LAYER_TYPE): OtherMap[] {
     return getLayerTypes()
         .map((type) => ({
             type,
-            ...(getLayer(type).config.store as MapStoreWithMap),
+            ...(LAYER_CONFIG[type].config.store as MapStoreWithMap),
         }))
         .filter(({ type, map }) => type !== currentType && map);
 }

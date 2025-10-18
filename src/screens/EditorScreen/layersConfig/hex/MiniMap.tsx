@@ -8,6 +8,7 @@ import { getVector, getZeroVector, vectorMult, vectorSub } from 'utils';
 import { getMapsWithoutCurrent } from '../config';
 import { IMiniMapProps } from '../types';
 import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../utils';
+import { waterMapStoreConfig } from '../water/waterMapStore';
 
 import { BRUSH_MAP } from './config';
 import { HexMapData } from './models';
@@ -44,6 +45,7 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
     );
 };
 
+// eslint-disable-next-line import/no-unused-modules
 export const MiniMap = ({ screenSize, title, panelWidth }: IMiniMapProps) => {
     const {
         store: { map, isVisible, opacity },
@@ -80,6 +82,7 @@ export const MiniMap = ({ screenSize, title, panelWidth }: IMiniMapProps) => {
             const newMap = new HexMapData(generateEmptyMapData(mapSize, HEX_TYPE.hill));
             setHexMap({ map: newMap });
             setCommonMapMovementParams({ borders: newMap.imageSize, ...newMapMovementParams });
+            waterMapStoreConfig.reset();
 
             return;
         }
@@ -109,6 +112,7 @@ export const MiniMap = ({ screenSize, title, panelWidth }: IMiniMapProps) => {
                 newMapMovementParams.zoom,
             ),
         });
+        waterMapStoreConfig.reset();
     };
 
     return (

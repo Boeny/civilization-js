@@ -1,11 +1,23 @@
 import './styles.css';
 
-import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
+import { FC, useEffect, useState } from 'react';
+
+import { IMiniMapProps } from 'screens/EditorScreen/layersConfig/types';
 import { IPoint, LAYER_TYPE } from 'types';
 import { getClasses } from 'utils';
 
-import { getLayer, getLayerTypes } from '../../layersConfig/config';
+import { getLayerTypes, LAYER_CONFIG } from '../../layersConfig/config';
 import { useLayerStore } from '../../layerStore';
+
+type MiniMapType = { type: LAYER_TYPE; component: FC<IMiniMapProps> };
+
+async function getMiniMapComponent(type: LAYER_TYPE): Promise<FC<IMiniMapProps>> {
+    return import('../../layersConfig/' + type + '/MiniMap').then((module) => module.MiniMap);
+}
+
+async function getMiniMapObject(type: LAYER_TYPE): Promise<MiniMapType> {
+    return new Promise<MiniMapType>((resolve) => getMiniMapComponent(type).then((component) => resolve({ type, component })));
+}
 
 type Props = {
     screenSize: IPoint;
@@ -13,11 +25,20 @@ type Props = {
 };
 
 export const Layers = ({ panelWidth, screenSize }: Props) => {
-    useMapMovementParamsStore(); // to update on common params change (new map)
     const {
         store: { layer: currentLayer },
         setStore: setLayer,
     } = useLayerStore();
+
+    const [miniMaps, setMiniMaps] = useState<MiniMapType[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            const miniMaps = await Promise.all(getLayerTypes().map(getMiniMapObject));
+
+            setMiniMaps(miniMaps);
+        })();
+    }, []);
 
     const handleLayerClick = (type: LAYER_TYPE) => {
         if (currentLayer !== type) {
@@ -27,19 +48,18 @@ export const Layers = ({ panelWidth, screenSize }: Props) => {
 
     return (
         <div className="layers">
-            {getLayerTypes().map((type) => {
-                const config = getLayer(type);
-                const isSelected = currentLayer === type;
+            {miniMaps.map((miniMap) => {
+                const isSelected = currentLayer === miniMap.type;
 
                 return (
                     <div
-                        key={type}
-                        onClick={() => handleLayerClick(type)}
+                        key={miniMap.type}
+                        onClick={() => handleLayerClick(miniMap.type)}
                         className={getClasses(['layer', isSelected && 'selected'])}
                     >
-                        <config.miniMapComponent
+                        <miniMap.component
                             screenSize={screenSize}
-                            title={config.title}
+                            title={LAYER_CONFIG[miniMap.type].title}
                             panelWidth={panelWidth}
                             isSelected={isSelected}
                         />

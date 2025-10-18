@@ -1,9 +1,22 @@
+import { FC, useEffect, useState } from 'react';
+
 import { useMapMoving } from 'hooks/useMapMoving';
-import { IPoint } from 'types';
+import { IPoint, LAYER_TYPE } from 'types';
 
 import { useLayerStore } from '../layerStore';
 
-import { getLayer, getLayerTypes } from './config';
+import { getLayerTypes } from './config';
+import { IMapProps } from './types';
+
+type MapType = { type: LAYER_TYPE; component: FC<IMapProps> };
+
+async function getMapComponent(type: LAYER_TYPE): Promise<FC<IMapProps>> {
+    return import('./' + type + '/Map').then((module) => module.Map);
+}
+
+async function getMapObject(type: LAYER_TYPE): Promise<MapType> {
+    return new Promise<MapType>((resolve) => getMapComponent(type).then((component) => resolve({ type, component })));
+}
 
 type Props = {
     screenSize: IPoint;
@@ -11,27 +24,28 @@ type Props = {
 
 export const Map = ({ screenSize }: Props) => {
     const { layer } = useLayerStore().store;
+    const [maps, setMaps] = useState<MapType[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            const maps = await Promise.all(getLayerTypes().map(getMapObject));
+
+            setMaps(maps);
+        })();
+    }, []);
 
     useMapMoving(screenSize);
 
     return (
         <div>
-            {getLayerTypes().map((type, i) => {
-                const config = getLayer(type);
-
-                if (!config.mapComponent) {
-                    return null;
-                }
-
-                return (
-                    <config.mapComponent
-                        key={type}
-                        isEditable={layer === type}
-                        zIndex={i}
-                        screenSize={screenSize}
-                    />
-                );
-            })}
+            {maps.map((map, i) => (
+                <map.component
+                    key={map.type}
+                    isEditable={layer === map.type}
+                    zIndex={i}
+                    screenSize={screenSize}
+                />
+            ))}
         </div>
     );
 };

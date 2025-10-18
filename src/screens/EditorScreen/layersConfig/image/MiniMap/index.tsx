@@ -46,6 +46,7 @@ const MiniMapComponent = ({ map, title, onClick, panelWidth }: Props) => {
     );
 };
 
+// eslint-disable-next-line import/no-unused-modules
 export const MiniMap = ({ screenSize, title, panelWidth, isSelected }: IMiniMapProps) => {
     const {
         store: { map },

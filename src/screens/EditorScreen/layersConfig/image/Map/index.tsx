@@ -27,6 +27,7 @@ const MapComponent = ({ map, zIndex, screenSize }: IProps) => {
     );
 };
 
+// eslint-disable-next-line import/no-unused-modules
 export function Map(props: IMapProps) {
     const { map } = useImageMapStore().store;
 
