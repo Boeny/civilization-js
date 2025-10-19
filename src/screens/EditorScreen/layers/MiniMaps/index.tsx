@@ -7,6 +7,7 @@ import { IPoint, LAYER_TYPE } from 'types';
 import { getClasses } from 'utils';
 
 import { getLayerTypes, LAYER_CONFIG } from '../config';
+import { heightMapStoreConfig } from '../height/store';
 import { IMiniMapProps } from '../types';
 import { waterMapStoreConfig } from '../water/store';
 
@@ -48,8 +49,17 @@ export const MiniMaps = ({ panelWidth, screenSize }: Props) => {
     };
 
     const handleMapCreate = (type: LAYER_TYPE) => {
-        if (type === LAYER_TYPE.height) {
-            waterMapStoreConfig.reset();
+        switch (type) {
+            case LAYER_TYPE.height:
+                waterMapStoreConfig.reset();
+
+                return;
+            case LAYER_TYPE.image:
+                heightMapStoreConfig.setStore({ hasImageMap: true });
+
+                return;
+            default:
+                break;
         }
     };
 
@@ -69,7 +79,7 @@ export const MiniMaps = ({ panelWidth, screenSize }: Props) => {
                             title={LAYER_CONFIG[miniMap.type].title}
                             panelWidth={panelWidth}
                             isSelected={isSelected}
-                            onMapCreate={handleMapCreate}
+                            onMapCreate={() => handleMapCreate(miniMap.type)}
                         />
                     </div>
                 );

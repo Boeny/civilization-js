@@ -46,7 +46,7 @@ const MiniMapComponent = ({ map, title, onClick, panelWidth }: Props) => {
 };
 
 // eslint-disable-next-line import/no-unused-modules
-export const MiniMap = ({ screenSize, title, panelWidth, isSelected }: IMiniMapProps) => {
+export const MiniMap = ({ screenSize, title, panelWidth, isSelected, onMapCreate }: IMiniMapProps) => {
     const {
         store: { map },
         setStore,
@@ -98,6 +98,8 @@ export const MiniMap = ({ screenSize, title, panelWidth, isSelected }: IMiniMapP
             setStore({ map: newMap });
             setCommonMapMovementParams({ borders: imageSize, ...newMapMovementParams });
         }
+
+        onMapCreate();
     };
 
     const handleImageMiniMapClick = () => {

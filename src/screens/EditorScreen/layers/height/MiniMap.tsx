@@ -46,7 +46,7 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
 // eslint-disable-next-line import/no-unused-modules
 export const MiniMap = ({ screenSize, title, panelWidth, onMapCreate }: IMiniMapProps) => {
     const {
-        store: { map, isVisible, opacity },
+        store: { map, isVisible, opacity, hasImageMap },
         setStore,
     } = useStore();
 
@@ -80,7 +80,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, onMapCreate }: IMiniMap
             const newMap = new HexMapData<HEX_TYPE>(generateEmptyMapData(mapSize, HEX_TYPE.hill));
             setStore({ map: newMap });
             setCommonMapMovementParams({ borders: newMap.imageSize, ...newMapMovementParams });
-            onMapCreate(LAYER_TYPE.height);
+            onMapCreate();
 
             return;
         }
@@ -110,7 +110,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, onMapCreate }: IMiniMap
                 newMapMovementParams.zoom,
             ),
         });
-        onMapCreate(LAYER_TYPE.height);
+        onMapCreate();
     };
 
     return (
@@ -132,7 +132,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, onMapCreate }: IMiniMap
         >
             <div>
                 <NewHexMapParams
-                    hasImageMap={!!getMapsWithoutCurrent(LAYER_TYPE.height).find(({ type }) => type === LAYER_TYPE.image)}
+                    hasImageMap={hasImageMap}
                     onSubmit={handleSubmit}
                 />
             </div>

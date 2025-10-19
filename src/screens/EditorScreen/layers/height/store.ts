@@ -11,6 +11,7 @@ export interface HexMapStore extends MapStore {
     opacity: number;
     position: IPoint;
     zoom: number;
+    hasImageMap: boolean;
 }
 
 const [useStore, heightMapStoreConfig] = createStoreHook<HexMapStore>({
@@ -19,6 +20,7 @@ const [useStore, heightMapStoreConfig] = createStoreHook<HexMapStore>({
     opacity: 1,
     position: getZeroVector(),
     zoom: 1,
+    hasImageMap: false,
 });
 
 export { useStore, heightMapStoreConfig };

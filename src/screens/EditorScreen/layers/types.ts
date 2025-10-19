@@ -7,7 +7,7 @@ export interface IMiniMapProps {
     panelWidth: number;
     title: string;
     isSelected: boolean;
-    onMapCreate: (type: LAYER_TYPE) => void;
+    onMapCreate: () => void;
 }
 export interface IMapProps {
     isEditable: boolean;
