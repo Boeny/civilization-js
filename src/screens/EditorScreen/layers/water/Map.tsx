@@ -6,8 +6,8 @@ import { MapWrapper } from 'screens/EditorScreen/components/MapWrapper';
 import { IPoint } from 'types';
 import { vectorSum } from 'utils';
 
-import { HexMapStore } from '../hex/store';
-import { useGridStore } from '../hex/stores/gridSwitchStore';
+import { HexMapStore } from '../height/store';
+import { useGridStore } from '../height/stores/gridSwitchStore';
 import { HexMapData } from '../models';
 import { IMapProps } from '../types';
 

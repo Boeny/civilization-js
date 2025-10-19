@@ -6,7 +6,7 @@ import { EMPTY_COLOR, WATER_COLOR } from 'const';
 import { generateEmptyMapData, getHexHeight } from 'hexUtils';
 import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
 
-import { hexMapStoreConfig } from '../hex/store';
+import { heightMapStoreConfig } from '../height/store';
 import { HexMapData } from '../models';
 import { IMiniMapProps } from '../types';
 
@@ -49,7 +49,7 @@ export const MiniMap = ({ title, panelWidth }: IMiniMapProps) => {
         setStore,
     } = useStore();
 
-    const heightMap = hexMapStoreConfig.store;
+    const heightMap = heightMapStoreConfig.store;
 
     const handleCreateMap = () => {
         setStore({

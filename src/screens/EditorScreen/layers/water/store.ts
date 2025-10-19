@@ -1,7 +1,7 @@
 import { createStoreHook } from 'hooks/createStoreHook';
 import { getZeroVector } from 'utils';
 
-import { HexMapStore } from '../hex/store';
+import { HexMapStore } from '../height/store';
 
 const [useStore, waterMapStoreConfig] = createStoreHook<HexMapStore>({
     map: null,

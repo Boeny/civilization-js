@@ -3,9 +3,9 @@ import { ReactNode } from 'react';
 import { StoreConfig } from 'hooks/createStoreHook';
 import { LAYER_TYPE } from 'types';
 
-import { HexBrushes } from './hex/HexBrushes';
-import { hexMapStoreConfig } from './hex/store';
-import { ToggleGridButton } from './hex/ToggleGridButton';
+import { HexBrushes } from './height/HexBrushes';
+import { heightMapStoreConfig } from './height/store';
+import { ToggleGridButton } from './height/ToggleGridButton';
 import { imageMapStoreConfig } from './image/store';
 import { MapStore, MapStoreWithMap, OtherMap } from './types';
 import { waterMapStoreConfig } from './water/store';
@@ -25,7 +25,7 @@ export const LAYER_CONFIG: Record<
     },
     [LAYER_TYPE.height]: {
         title: 'Height map',
-        config: hexMapStoreConfig as StoreConfig<MapStore>,
+        config: heightMapStoreConfig as StoreConfig<MapStore>,
         topPanelContent: <ToggleGridButton />,
         leftPanelContent: <HexBrushes />,
     },

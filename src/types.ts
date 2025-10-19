@@ -5,7 +5,7 @@ export enum KEY_CODE {
 
 export enum LAYER_TYPE {
     image = 'image',
-    height = 'hex',
+    height = 'height',
     water = 'water',
 }
 

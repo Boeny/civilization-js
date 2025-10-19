@@ -12,7 +12,7 @@ import { IPoint, LAYER_TYPE } from 'types';
 import { getVector, getZeroVector, vectorSub } from 'utils';
 
 import { getMapsWithoutCurrent } from '../../config';
-import { CREATE_MODE } from '../../hex/types';
+import { CREATE_MODE } from '../../height/types';
 import { IMiniMapProps } from '../../types';
 import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../../utils';
 import { useStore } from '../store';

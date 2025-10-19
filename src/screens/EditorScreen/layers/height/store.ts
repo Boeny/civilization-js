@@ -15,7 +15,7 @@ export interface HexMapStore extends MapStore {
     zoom: number;
 }
 
-const [useStore, hexMapStoreConfig] = createStoreHook<HexMapStore>({
+const [useStore, heightMapStoreConfig] = createStoreHook<HexMapStore>({
     map: null,
     isVisible: true,
     opacity: 1,
@@ -23,4 +23,4 @@ const [useStore, hexMapStoreConfig] = createStoreHook<HexMapStore>({
     zoom: 1,
 });
 
-export { useStore, hexMapStoreConfig };
+export { useStore, heightMapStoreConfig };
