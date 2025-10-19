@@ -1,20 +1,34 @@
 import './styles.css';
 
-import { useState } from 'react';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
 
 import { useMouseMove } from 'hooks/useMouseMove';
 
 interface IProps {
-    width: number;
-    buttonSize: number;
-    defaultValue?: number;
+    buttonSize?: number;
+    defaultValue?: number; // from 0 to 1
     onChange: (value: number) => void;
 }
 // TODO: stop propagation on mouse up
-export const Bar = ({ width, buttonSize, defaultValue = 0, onChange }: IProps) => {
-    const [offset, setOffset] = useState(defaultValue * width);
+export const Bar = ({ buttonSize = 16, defaultValue = 0, onChange }: IProps) => {
+    const barRef = useRef<HTMLDivElement | null>(null);
+    const widthRef = useRef(0);
+    const [offset, setOffset] = useState(0);
+
+    useEffect(() => {
+        if (!barRef.current) {
+            return;
+        }
+        widthRef.current = barRef.current.clientWidth;
+        setOffset(defaultValue * widthRef.current);
+    }, [barRef.current]);
 
     const container = { startingPoint: 0 };
+
+    const handleOffsetChange = (newOffset: number) => {
+        setOffset(newOffset);
+        onChange(newOffset / widthRef.current);
+    };
 
     const { startMoving } = useMouseMove((e) => {
         let newOffset = e.clientX - container.startingPoint;
@@ -22,24 +36,38 @@ export const Bar = ({ width, buttonSize, defaultValue = 0, onChange }: IProps) =
         if (newOffset < 0) {
             newOffset = 0;
         }
-        if (newOffset > width) {
-            newOffset = width;
+        if (newOffset > widthRef.current) {
+            newOffset = widthRef.current;
         }
 
-        setOffset(newOffset);
-        onChange(newOffset / width);
+        handleOffsetChange(newOffset);
     });
 
+    const handleStartMoving = (e: MouseEvent, newOffset: number) => {
+        container.startingPoint = e.clientX - newOffset;
+        startMoving();
+    };
+
     return (
-        <div className="bar-container">
-            <div className="bar" />
+        <div
+            className="bar-container"
+            onMouseDown={(e) => {
+                e.stopPropagation();
+                const newOffset = e.nativeEvent.offsetX;
+                handleOffsetChange(newOffset);
+                handleStartMoving(e, newOffset);
+            }}
+        >
+            <div
+                ref={barRef}
+                className="bar"
+            />
             <div
                 className="bar-button"
-                style={{ left: offset, width: buttonSize, height: buttonSize }}
+                style={{ left: offset - buttonSize / 2, width: buttonSize, height: buttonSize }}
                 onMouseDown={(e) => {
                     e.stopPropagation();
-                    container.startingPoint = e.clientX - offset;
-                    startMoving();
+                    handleStartMoving(e, offset);
                 }}
             />
         </div>

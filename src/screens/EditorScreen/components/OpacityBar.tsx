@@ -7,11 +7,11 @@ interface IProps {
 
 export const OpacityBar = ({ opacity, onChange }: IProps) => {
     return (
-        <Bar
-            width={162}
-            buttonSize={16}
-            defaultValue={opacity}
-            onChange={onChange}
-        />
+        <div style={{ padding: '0 8px' }}>
+            <Bar
+                defaultValue={opacity}
+                onChange={onChange}
+            />
+        </div>
     );
 };
