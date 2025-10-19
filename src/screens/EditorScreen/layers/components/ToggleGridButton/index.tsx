@@ -1,4 +1,4 @@
-import { useGridStore } from './stores/gridSwitchStore';
+import { useGridStore } from './store';
 
 export const ToggleGridButton = () => {
     const {

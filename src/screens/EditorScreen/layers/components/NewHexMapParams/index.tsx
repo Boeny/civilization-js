@@ -7,7 +7,7 @@ import { RadioItem } from 'components/Radio/RadioItem';
 import { IPoint } from 'types';
 import { getVector } from 'utils';
 
-import { CREATE_MODE } from '../types';
+import { CREATE_MODE } from '../../types';
 
 import { HexMapParamsBlock } from './HexMapParamsBlock';
 

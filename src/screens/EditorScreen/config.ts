@@ -1,8 +1,8 @@
 import { mapMovementParamsConfig } from 'hooks/useMapMoving/mapMovingStore';
 
+import { brushStoreConfig } from './layers/components/HexBrushes/store';
+import { gridStoreConfig } from './layers/components/ToggleGridButton/store';
 import { heightMapStoreConfig } from './layers/height/store';
-import { brushStoreConfig } from './layers/height/stores/brushStore';
-import { gridStoreConfig } from './layers/height/stores/gridSwitchStore';
 import { imageMapStoreConfig } from './layers/image/store';
 import { waterMapStoreConfig } from './layers/water/store';
 import { layerStoreConfig } from './layerStore';

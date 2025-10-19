@@ -6,15 +6,14 @@ import { MapWrapper } from 'screens/EditorScreen/components/MapWrapper';
 import { IPoint } from 'types';
 import { getVector, vectorSub, vectorSum } from 'utils';
 
+import { BRUSH_MAP } from '../components/HexBrushes/config';
+import { useBrushStore } from '../components/HexBrushes/store';
+import { useGridStore } from '../components/ToggleGridButton/store';
 import { fillHex } from '../hexUtils';
 import { HexMapData } from '../models';
-import { IMapProps } from '../types';
+import { IMapProps, HEX_TYPE } from '../types';
 
-import { BRUSH_MAP } from './config';
 import { HexMapStore, useStore } from './store';
-import { useBrushStore } from './stores/brushStore';
-import { useGridStore } from './stores/gridSwitchStore';
-import { HEX_TYPE } from './types';
 
 // TODO: Ctrl+Z for painting
 

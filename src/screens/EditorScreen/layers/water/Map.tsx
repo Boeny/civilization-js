@@ -6,14 +6,16 @@ import { MapWrapper } from 'screens/EditorScreen/components/MapWrapper';
 import { IPoint } from 'types';
 import { vectorSum } from 'utils';
 
+import { useGridStore } from '../components/ToggleGridButton/store';
 import { HexMapStore } from '../height/store';
-import { useGridStore } from '../height/stores/gridSwitchStore';
 import { HexMapData } from '../models';
 import { IMapProps } from '../types';
 
 import { useStore } from './store';
 
 // TODO: Ctrl+Z for painting
+// TODO: use isEditable and onUpdate for water level change
+// TODO: draw on selected height map through the water map
 
 type Props = IMapProps & {
     map: HexMapData;
@@ -22,7 +24,7 @@ type Props = IMapProps & {
     opacity: number;
     onUpdate: (store: Partial<HexMapStore>) => void;
 };
-// TODO: use isEditable and onUpdate for water level change
+
 function MapComponent({ isEditable: _1, zIndex, map, screenSize, zoom, position, opacity, onUpdate: _2 }: Props) {
     const { isGridTurnedOn } = useGridStore().store;
 

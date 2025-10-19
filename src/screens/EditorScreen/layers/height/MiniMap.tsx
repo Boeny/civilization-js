@@ -6,15 +6,14 @@ import { IPoint, LAYER_TYPE } from 'types';
 import { getVector, getZeroVector, vectorMult, vectorSub } from 'utils';
 
 import { MiniMapWrapper } from '../../components/MiniMapWrapper';
+import { BRUSH_MAP } from '../components/HexBrushes/config';
+import { NewHexMapParams } from '../components/NewHexMapParams';
 import { getMapsWithoutCurrent } from '../config';
 import { HexMapData } from '../models';
-import { IMiniMapProps } from '../types';
+import { IMiniMapProps, CREATE_MODE, HEX_TYPE } from '../types';
 import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../utils';
 
-import { BRUSH_MAP } from './config';
-import { NewHexMapParams } from './NewHexMapParams';
 import { useStore } from './store';
-import { CREATE_MODE, HEX_TYPE } from './types';
 
 type Props = {
     panelWidth: number;

@@ -3,9 +3,7 @@ import { IPoint } from 'types';
 import { getZeroVector } from 'utils';
 
 import { HexMapData } from '../models';
-import { MapStore } from '../types';
-
-import { HEX_TYPE } from './types';
+import { MapStore, HEX_TYPE } from '../types';
 
 export interface HexMapStore extends MapStore {
     map: HexMapData<HEX_TYPE> | null;

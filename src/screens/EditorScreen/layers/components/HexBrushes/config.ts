@@ -1,6 +1,6 @@
 import { EMPTY_COLOR } from 'const';
 
-import { HEX_TYPE } from './types';
+import { HEX_TYPE } from '../../types';
 
 export const BRUSH_MAP: Record<HEX_TYPE, { color: string; title: string }> = {
     [HEX_TYPE.empty]: {

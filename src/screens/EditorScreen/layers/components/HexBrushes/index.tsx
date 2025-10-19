@@ -2,9 +2,10 @@ import './styles.css';
 
 import { getClasses } from 'utils';
 
-import { getBrushes, BRUSH_MAP } from '../config';
-import { useBrushStore } from '../stores/brushStore';
-import { HEX_TYPE } from '../types';
+import { HEX_TYPE } from '../../types';
+
+import { getBrushes, BRUSH_MAP } from './config';
+import { useBrushStore } from './store';
 
 export function HexBrushes() {
     const {
