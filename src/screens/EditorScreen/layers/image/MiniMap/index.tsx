@@ -15,7 +15,7 @@ import { getMapsWithoutCurrent } from '../../config';
 import { CREATE_MODE } from '../../hex/types';
 import { IMiniMapProps } from '../../types';
 import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../../utils';
-import { useImageMapStore } from '../imageMapStore';
+import { useStore } from '../store';
 import { uploadFile } from '../utils';
 
 interface Props {
@@ -50,8 +50,8 @@ const MiniMapComponent = ({ map, title, onClick, panelWidth }: Props) => {
 export const MiniMap = ({ screenSize, title, panelWidth, isSelected }: IMiniMapProps) => {
     const {
         store: { map },
-        setStore: setImageMap,
-    } = useImageMapStore();
+        setStore,
+    } = useStore();
 
     const [creationMode, setCreationMode] = useState(CREATE_MODE.center);
 
@@ -87,7 +87,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, isSelected }: IMiniMapP
             newMapMovementParams.zoom /= zoom;
             newMapMovementParams.position = vectorSub(newMapMovementParams.position, position);
 
-            setImageMap({ map: newMap, ...newMapMovementParams });
+            setStore({ map: newMap, ...newMapMovementParams });
             setCommonMapMovementParams({
                 borders: getMapBorders(
                     imageSize,
@@ -96,7 +96,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, isSelected }: IMiniMapP
                 ),
             });
         } else {
-            setImageMap({ map: newMap });
+            setStore({ map: newMap });
             setCommonMapMovementParams({ borders: imageSize, ...newMapMovementParams });
         }
     };

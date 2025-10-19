@@ -6,11 +6,11 @@ import { EMPTY_COLOR, WATER_COLOR } from 'const';
 import { generateEmptyMapData, getHexHeight } from 'hexUtils';
 import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
 
-import { hexMapStoreConfig } from '../hex/stores/hexMapStore';
+import { hexMapStoreConfig } from '../hex/store';
 import { HexMapData } from '../models';
 import { IMiniMapProps } from '../types';
 
-import { useWaterMapStore } from './waterMapStore';
+import { useStore } from './store';
 
 const WATER_EXISTS = 1;
 
@@ -46,13 +46,13 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
 export const MiniMap = ({ title, panelWidth }: IMiniMapProps) => {
     const {
         store: { map, isVisible, opacity },
-        setStore: setWaterMap,
-    } = useWaterMapStore();
+        setStore,
+    } = useStore();
 
     const heightMap = hexMapStoreConfig.store;
 
     const handleCreateMap = () => {
-        setWaterMap({
+        setStore({
             map: new HexMapData(generateEmptyMapData(heightMap.map!.mapSize, WATER_EXISTS)),
             zoom: heightMap.zoom,
             position: heightMap.position,
@@ -62,9 +62,9 @@ export const MiniMap = ({ title, panelWidth }: IMiniMapProps) => {
     return (
         <MiniMapWrapper
             isVisible={isVisible}
-            setVisible={(value) => setWaterMap({ isVisible: value })}
+            setVisible={(value) => setStore({ isVisible: value })}
             opacity={opacity}
-            setOpacity={(value) => setWaterMap({ opacity: value })}
+            setOpacity={(value) => setStore({ opacity: value })}
             map={
                 map && (
                     <MiniMapComponent

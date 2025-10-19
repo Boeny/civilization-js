@@ -1,9 +1,9 @@
 import { createStoreHook } from 'hooks/createStoreHook';
 import { getZeroVector } from 'utils';
 
-import { HexMapStore } from '../hex/stores/hexMapStore';
+import { HexMapStore } from '../hex/store';
 
-const [useWaterMapStore, waterMapStoreConfig] = createStoreHook<HexMapStore>({
+const [useStore, waterMapStoreConfig] = createStoreHook<HexMapStore>({
     map: null,
     isVisible: true,
     opacity: 1,
@@ -11,4 +11,4 @@ const [useWaterMapStore, waterMapStoreConfig] = createStoreHook<HexMapStore>({
     zoom: 1,
 });
 
-export { useWaterMapStore, waterMapStoreConfig };
+export { useStore, waterMapStoreConfig };

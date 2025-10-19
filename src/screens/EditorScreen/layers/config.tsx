@@ -4,11 +4,11 @@ import { StoreConfig } from 'hooks/createStoreHook';
 import { LAYER_TYPE } from 'types';
 
 import { HexBrushes } from './hex/HexBrushes';
-import { hexMapStoreConfig } from './hex/stores/hexMapStore';
+import { hexMapStoreConfig } from './hex/store';
 import { ToggleGridButton } from './hex/ToggleGridButton';
-import { imageMapStoreConfig } from './image/imageMapStore';
+import { imageMapStoreConfig } from './image/store';
 import { MapStore, MapStoreWithMap, OtherMap } from './types';
-import { waterMapStoreConfig } from './water/waterMapStore';
+import { waterMapStoreConfig } from './water/store';
 
 export const LAYER_CONFIG: Record<
     LAYER_TYPE,

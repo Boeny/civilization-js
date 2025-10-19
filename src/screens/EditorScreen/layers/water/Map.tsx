@@ -6,12 +6,12 @@ import { MapWrapper } from 'screens/EditorScreen/components/MapWrapper';
 import { IPoint } from 'types';
 import { vectorSum } from 'utils';
 
+import { HexMapStore } from '../hex/store';
 import { useGridStore } from '../hex/stores/gridSwitchStore';
-import { HexMapStore } from '../hex/stores/hexMapStore';
 import { HexMapData } from '../models';
 import { IMapProps } from '../types';
 
-import { useWaterMapStore } from './waterMapStore';
+import { useStore } from './store';
 
 // TODO: Ctrl+Z for painting
 
@@ -82,7 +82,7 @@ export function Map(props: IMapProps) {
     const {
         store: { isVisible, map, opacity, position, zoom },
         setStore,
-    } = useWaterMapStore();
+    } = useStore();
 
     if (!isVisible || !map) {
         return null;

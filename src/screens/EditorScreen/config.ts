@@ -1,10 +1,10 @@
 import { mapMovementParamsConfig } from 'hooks/useMapMoving/mapMovingStore';
 
+import { hexMapStoreConfig } from './layers/hex/store';
 import { brushStoreConfig } from './layers/hex/stores/brushStore';
 import { gridStoreConfig } from './layers/hex/stores/gridSwitchStore';
-import { hexMapStoreConfig } from './layers/hex/stores/hexMapStore';
-import { imageMapStoreConfig } from './layers/image/imageMapStore';
-import { waterMapStoreConfig } from './layers/water/waterMapStore';
+import { imageMapStoreConfig } from './layers/image/store';
+import { waterMapStoreConfig } from './layers/water/store';
 import { layerStoreConfig } from './layerStore';
 
 export const editorScreenConfigs = [

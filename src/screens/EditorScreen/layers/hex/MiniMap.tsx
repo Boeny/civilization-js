@@ -10,11 +10,10 @@ import { getMapsWithoutCurrent } from '../config';
 import { HexMapData } from '../models';
 import { IMiniMapProps } from '../types';
 import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../utils';
-import { waterMapStoreConfig } from '../water/waterMapStore';
 
 import { BRUSH_MAP } from './config';
 import { NewHexMapParams } from './NewHexMapParams';
-import { useHexMapStore } from './stores/hexMapStore';
+import { useStore } from './store';
 import { CREATE_MODE, HEX_TYPE } from './types';
 
 type Props = {
@@ -46,11 +45,11 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
 };
 
 // eslint-disable-next-line import/no-unused-modules
-export const MiniMap = ({ screenSize, title, panelWidth }: IMiniMapProps) => {
+export const MiniMap = ({ screenSize, title, panelWidth, onMapCreate }: IMiniMapProps) => {
     const {
         store: { map, isVisible, opacity },
-        setStore: setHexMap,
-    } = useHexMapStore();
+        setStore,
+    } = useStore();
 
     const handleSubmit = (mapSize: IPoint, creationMode: CREATE_MODE) => {
         const otherExistingMaps = getMapsWithoutCurrent(LAYER_TYPE.height);
@@ -79,10 +78,10 @@ export const MiniMap = ({ screenSize, title, panelWidth }: IMiniMapProps) => {
         const setCommonMapMovementParams = mapMovementParamsConfig.setStore;
 
         if (otherExistingMaps.length === 0) {
-            const newMap = new HexMapData(generateEmptyMapData(mapSize, HEX_TYPE.hill));
-            setHexMap({ map: newMap });
+            const newMap = new HexMapData<HEX_TYPE>(generateEmptyMapData(mapSize, HEX_TYPE.hill));
+            setStore({ map: newMap });
             setCommonMapMovementParams({ borders: newMap.imageSize, ...newMapMovementParams });
-            waterMapStoreConfig.reset();
+            onMapCreate(LAYER_TYPE.height);
 
             return;
         }
@@ -103,8 +102,8 @@ export const MiniMap = ({ screenSize, title, panelWidth }: IMiniMapProps) => {
             newMapMovementParams.position = vectorSub(newMapMovementParams.position, position);
         }
 
-        const newMap = new HexMapData(generateEmptyMapData(mapSize, HEX_TYPE.hill));
-        setHexMap({ map: newMap, ...newMapMovementParams });
+        const newMap = new HexMapData<HEX_TYPE>(generateEmptyMapData(mapSize, HEX_TYPE.hill));
+        setStore({ map: newMap, ...newMapMovementParams });
         setCommonMapMovementParams({
             borders: getMapBorders(
                 newMap.imageSize,
@@ -112,15 +111,15 @@ export const MiniMap = ({ screenSize, title, panelWidth }: IMiniMapProps) => {
                 newMapMovementParams.zoom,
             ),
         });
-        waterMapStoreConfig.reset();
+        onMapCreate(LAYER_TYPE.height);
     };
 
     return (
         <MiniMapWrapper
             isVisible={isVisible}
-            setVisible={(value) => setHexMap({ isVisible: value })}
+            setVisible={(value) => setStore({ isVisible: value })}
             opacity={opacity}
-            setOpacity={(value) => setHexMap({ opacity: value })}
+            setOpacity={(value) => setStore({ opacity: value })}
             map={
                 map && (
                     <MiniMapComponent

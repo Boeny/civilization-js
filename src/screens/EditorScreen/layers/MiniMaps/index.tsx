@@ -2,12 +2,13 @@ import './styles.css';
 
 import { FC, useEffect, useState } from 'react';
 
-import { IMiniMapProps } from 'screens/EditorScreen/layers/types';
 import { useLayerStore } from 'screens/EditorScreen/layerStore';
 import { IPoint, LAYER_TYPE } from 'types';
 import { getClasses } from 'utils';
 
 import { getLayerTypes, LAYER_CONFIG } from '../config';
+import { IMiniMapProps } from '../types';
+import { waterMapStoreConfig } from '../water/store';
 
 type MiniMapType = { type: LAYER_TYPE; component: FC<IMiniMapProps> };
 
@@ -46,6 +47,12 @@ export const MiniMaps = ({ panelWidth, screenSize }: Props) => {
         }
     };
 
+    const handleMapCreate = (type: LAYER_TYPE) => {
+        if (type === LAYER_TYPE.height) {
+            waterMapStoreConfig.reset();
+        }
+    };
+
     return (
         <div className="layers">
             {miniMaps.map((miniMap) => {
@@ -62,6 +69,7 @@ export const MiniMaps = ({ panelWidth, screenSize }: Props) => {
                             title={LAYER_CONFIG[miniMap.type].title}
                             panelWidth={panelWidth}
                             isSelected={isSelected}
+                            onMapCreate={handleMapCreate}
                         />
                     </div>
                 );

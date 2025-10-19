@@ -10,10 +10,10 @@ interface ImageMapStore extends MapStore {
     position: IPoint;
 }
 
-const [useImageMapStore, imageMapStoreConfig] = createStoreHook<ImageMapStore>({
+const [useStore, imageMapStoreConfig] = createStoreHook<ImageMapStore>({
     map: null,
     zoom: 1,
     position: getZeroVector(),
 });
 
-export { useImageMapStore, imageMapStoreConfig };
+export { useStore, imageMapStoreConfig };

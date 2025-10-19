@@ -11,9 +11,9 @@ import { HexMapData } from '../models';
 import { IMapProps } from '../types';
 
 import { BRUSH_MAP } from './config';
+import { HexMapStore, useStore } from './store';
 import { useBrushStore } from './stores/brushStore';
 import { useGridStore } from './stores/gridSwitchStore';
-import { HexMapStore, useHexMapStore } from './stores/hexMapStore';
 import { HEX_TYPE } from './types';
 
 // TODO: Ctrl+Z for painting
@@ -106,7 +106,7 @@ export function Map(props: IMapProps) {
     const {
         store: { isVisible, map, opacity, position, zoom },
         setStore,
-    } = useHexMapStore();
+    } = useStore();
 
     if (!isVisible || !map || !map.columnLength) {
         return null;
