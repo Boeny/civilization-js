@@ -15,8 +15,6 @@ export const LAYER_CONFIG: Record<
     {
         title: string;
         config: StoreConfig<MapStore>;
-        miniMapComponent: string;
-        mapComponent: string;
         topPanelContent?: ReactNode;
         leftPanelContent?: ReactNode;
     }
@@ -24,22 +22,16 @@ export const LAYER_CONFIG: Record<
     [LAYER_TYPE.image]: {
         title: 'Image',
         config: imageMapStoreConfig as StoreConfig<MapStore>,
-        miniMapComponent: '../../layersConfig/image/MiniMap/index.tsx',
-        mapComponent: '../../layersConfig/image/Map/index.tsx',
     },
     [LAYER_TYPE.height]: {
         title: 'Height map',
         config: hexMapStoreConfig as StoreConfig<MapStore>,
         topPanelContent: <ToggleGridButton />,
         leftPanelContent: <HexBrushes />,
-        miniMapComponent: '../../layersConfig/hex/MiniMap.tsx',
-        mapComponent: '../../layersConfig/hex/Map/index.tsx',
     },
     [LAYER_TYPE.water]: {
         title: 'Water map',
         config: waterMapStoreConfig as StoreConfig<MapStore>,
-        miniMapComponent: '../../layersConfig/water/MiniMap.tsx',
-        mapComponent: '../../layersConfig/water/Map.tsx',
     },
 };
 

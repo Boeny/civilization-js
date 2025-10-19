@@ -22,7 +22,7 @@ type Props = {
     screenSize: IPoint;
 };
 
-export const Map = ({ screenSize }: Props) => {
+export const Maps = ({ screenSize }: Props) => {
     const { layer } = useLayerStore().store;
     const [maps, setMaps] = useState<MapType[]>([]);
 

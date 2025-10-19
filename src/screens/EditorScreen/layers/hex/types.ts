@@ -8,7 +8,6 @@ export enum HEX_TYPE {
     ice,
     mountain,
     hill,
-    water,
 }
 
 export enum CREATE_MODE {

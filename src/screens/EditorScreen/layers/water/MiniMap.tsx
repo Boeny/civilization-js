@@ -2,16 +2,17 @@ import { Block } from 'components/Block';
 import { Button } from 'components/Button';
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
+import { EMPTY_COLOR, WATER_COLOR } from 'const';
+import { generateEmptyMapData, getHexHeight } from 'hexUtils';
 import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
 
-import { BRUSH_MAP } from '../hex/config';
-import { HexMapData } from '../hex/models';
 import { hexMapStoreConfig } from '../hex/stores/hexMapStore';
-import { HEX_TYPE } from '../hex/types';
-import { generateEmptyMapData, getHexHeight } from '../hex/utils';
+import { HexMapData } from '../models';
 import { IMiniMapProps } from '../types';
 
 import { useWaterMapStore } from './waterMapStore';
+
+const WATER_EXISTS = 1;
 
 type Props = {
     panelWidth: number;
@@ -32,8 +33,8 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
         >
             {(ctx) => {
                 map.data.forEach((row, y) => {
-                    row.forEach((type, x) => {
-                        Hex({ ctx, position: { x, y }, width: miniHexWidth, color: BRUSH_MAP[type].color });
+                    row.forEach((isWaterExist, x) => {
+                        Hex({ ctx, position: { x, y }, width: miniHexWidth, color: isWaterExist ? WATER_COLOR : EMPTY_COLOR });
                     });
                 });
             }}
@@ -52,7 +53,7 @@ export const MiniMap = ({ title, panelWidth }: IMiniMapProps) => {
 
     const handleCreateMap = () => {
         setWaterMap({
-            map: new HexMapData(generateEmptyMapData(heightMap.map!.mapSize, HEX_TYPE.water)),
+            map: new HexMapData(generateEmptyMapData(heightMap.map!.mapSize, WATER_EXISTS)),
             zoom: heightMap.zoom,
             position: heightMap.position,
         });

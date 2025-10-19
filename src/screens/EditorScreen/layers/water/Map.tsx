@@ -1,17 +1,14 @@
 import { Hex } from 'components/canvas/Hex';
+import { EMPTY_COLOR, WATER_COLOR } from 'const';
+import { getHexHeight } from 'hexUtils';
 import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
-import { useMouseMove } from 'hooks/useMouseMove';
 import { MapWrapper } from 'screens/EditorScreen/components/MapWrapper';
 import { IPoint } from 'types';
-import { getVector, vectorSub, vectorSum } from 'utils';
+import { vectorSum } from 'utils';
 
-import { BRUSH_MAP } from '../hex/config';
-import { fillHex } from '../hex/Map/utils';
-import { HexMapData } from '../hex/models';
 import { useGridStore } from '../hex/stores/gridSwitchStore';
 import { HexMapStore } from '../hex/stores/hexMapStore';
-import { HEX_TYPE } from '../hex/types';
-import { getHexHeight } from '../hex/utils';
+import { HexMapData } from '../models';
 import { IMapProps } from '../types';
 
 import { useWaterMapStore } from './waterMapStore';
@@ -25,36 +22,18 @@ type Props = IMapProps & {
     opacity: number;
     onUpdate: (store: Partial<HexMapStore>) => void;
 };
-
-function MapComponent({ isEditable, zIndex, map, screenSize, zoom, position, opacity, onUpdate }: Props) {
+// TODO: use isEditable and onUpdate for water level change
+function MapComponent({ isEditable: _1, zIndex, map, screenSize, zoom, position, opacity, onUpdate: _2 }: Props) {
     const { isGridTurnedOn } = useGridStore().store;
 
     const zoomedHexWidth = HexMapData.hexWidth * zoom;
     const zoomedHexHeight = getHexHeight(zoomedHexWidth);
-
-    const updateMapCell = (point: IPoint) => {
-        fillHex({
-            point,
-            hexWidth: zoomedHexWidth,
-            brush: HEX_TYPE.water,
-            map,
-        });
-        onUpdate({ map });
-    };
-
-    const { startMoving } = useMouseMove((e) => updateMapCell(vectorSub(getVector(e.offsetX, e.offsetY), position)), isEditable);
-
-    const handleMouseDown = (ctx: CanvasRenderingContext2D, point: IPoint) => {
-        startMoving();
-        updateMapCell(vectorSub(point, position));
-    };
 
     return (
         <MapWrapper
             screenSize={screenSize}
             zIndex={zIndex}
             opacity={opacity}
-            onMouseDown={isEditable ? handleMouseDown : undefined}
         >
             {(ctx) => {
                 for (let y = 0; y < map.columnLength; y += 1) {
@@ -69,14 +48,14 @@ function MapComponent({ isEditable, zIndex, map, screenSize, zoom, position, opa
                             break;
                         }
 
-                        const hexType = row[x];
+                        const isWaterExist = row[x];
 
                         Hex({
                             ctx,
                             position: { x, y },
                             offset: position,
                             width: zoomedHexWidth,
-                            color: BRUSH_MAP[hexType].color,
+                            color: isWaterExist ? WATER_COLOR : EMPTY_COLOR,
                             isGridTurnedOn,
                         });
                     }

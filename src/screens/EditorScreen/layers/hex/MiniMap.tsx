@@ -1,26 +1,26 @@
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
+import { generateEmptyMapData, getHexHeight } from 'hexUtils';
 import { mapMovementParamsConfig } from 'hooks/useMapMoving/mapMovingStore';
-import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
 import { IPoint, LAYER_TYPE } from 'types';
 import { getVector, getZeroVector, vectorMult, vectorSub } from 'utils';
 
+import { MiniMapWrapper } from '../../components/MiniMapWrapper';
 import { getMapsWithoutCurrent } from '../config';
+import { HexMapData } from '../models';
 import { IMiniMapProps } from '../types';
 import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../utils';
 import { waterMapStoreConfig } from '../water/waterMapStore';
 
 import { BRUSH_MAP } from './config';
-import { HexMapData } from './models';
 import { NewHexMapParams } from './NewHexMapParams';
 import { useHexMapStore } from './stores/hexMapStore';
 import { CREATE_MODE, HEX_TYPE } from './types';
-import { generateEmptyMapData, getHexHeight } from './utils';
 
 type Props = {
     panelWidth: number;
     title: string;
-    map: HexMapData;
+    map: HexMapData<HEX_TYPE>;
 };
 
 const MiniMapComponent = ({ panelWidth, title, map }: Props) => {

@@ -2,8 +2,8 @@ import { createStoreHook } from 'hooks/createStoreHook';
 import { IPoint } from 'types';
 import { getZeroVector } from 'utils';
 
+import { HexMapData } from '../../models';
 import { MapStore } from '../../types';
-import { HexMapData } from '../models';
 
 export interface HexMapStore extends MapStore {
     map: HexMapData | null;

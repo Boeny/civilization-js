@@ -1,9 +1,7 @@
-import { SQRT_3 } from 'screens/EditorScreen/const';
+import { SQRT_3 } from 'const';
 import { IPoint } from 'types';
 
-import { HEX_TYPE } from './types';
-
-export function generateEmptyMapData(size: IPoint, fill: HEX_TYPE): HEX_TYPE[][] {
+export function generateEmptyMapData(size: IPoint, fill: number): number[][] {
     return Array.from({ length: size.y }).map(() => Array.from({ length: size.x }).map(() => fill));
 }
 

@@ -16,11 +16,9 @@ export function HexBrushes() {
         setBrush({ brush: brush === null || brush !== type ? type : null });
     };
 
-    const brushes = getBrushes().filter((type) => type !== HEX_TYPE.water);
-
     return (
         <div style={{ paddingBottom: 80 }}>
-            {brushes.map((type) => {
+            {getBrushes().map((type) => {
                 const { title, color } = BRUSH_MAP[type];
                 const isSelected = brush === type;
 

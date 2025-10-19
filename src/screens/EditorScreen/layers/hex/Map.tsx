@@ -1,24 +1,25 @@
 import { Hex } from 'components/canvas/Hex';
+import { getHexHeight } from 'hexUtils';
 import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
 import { useMouseMove } from 'hooks/useMouseMove';
 import { MapWrapper } from 'screens/EditorScreen/components/MapWrapper';
 import { IPoint } from 'types';
 import { getVector, vectorSub, vectorSum } from 'utils';
 
-import { IMapProps } from '../../types';
-import { BRUSH_MAP } from '../config';
+import { fillHex } from '../hexUtils';
 import { HexMapData } from '../models';
-import { useBrushStore } from '../stores/brushStore';
-import { useGridStore } from '../stores/gridSwitchStore';
-import { HexMapStore, useHexMapStore } from '../stores/hexMapStore';
-import { getHexHeight } from '../utils';
+import { IMapProps } from '../types';
 
-import { fillHex } from './utils';
+import { BRUSH_MAP } from './config';
+import { useBrushStore } from './stores/brushStore';
+import { useGridStore } from './stores/gridSwitchStore';
+import { HexMapStore, useHexMapStore } from './stores/hexMapStore';
+import { HEX_TYPE } from './types';
 
 // TODO: Ctrl+Z for painting
 
 type Props = IMapProps & {
-    map: HexMapData;
+    map: HexMapData<HEX_TYPE>;
     zoom: number;
     position: IPoint;
     opacity: number;

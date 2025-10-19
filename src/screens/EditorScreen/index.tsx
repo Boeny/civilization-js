@@ -5,13 +5,13 @@ import { ArrowButton } from 'components/ArrowButton';
 import { MenuItem } from 'components/Menu/MenuItem';
 import { getVector } from 'utils';
 
-import { Layers } from './components/Layers';
 import { LeftPanel } from './components/LeftPanel';
 import { RightPanel } from './components/RightPanel';
 import { TopPanel } from './components/TopPanel';
 import { RIGHT_PANEL, TOP_PANEL_HEIGHT } from './const';
-import { LAYER_CONFIG } from './layersConfig/config';
-import { Map } from './layersConfig/Map';
+import { LAYER_CONFIG } from './layers/config';
+import { Maps } from './layers/Maps';
+import { MiniMaps } from './layers/MiniMaps';
 import { useLayerStore } from './layerStore';
 
 export const EditorScreen = () => {
@@ -32,7 +32,7 @@ export const EditorScreen = () => {
             className="screen"
             style={{ paddingTop: TOP_PANEL_HEIGHT }}
         >
-            <Map screenSize={screenSize} />
+            <Maps screenSize={screenSize} />
 
             <TopPanel>
                 <div style={{ display: 'flex' }}>
@@ -52,7 +52,7 @@ export const EditorScreen = () => {
 
             {isRightPanelShown && (
                 <RightPanel>
-                    <Layers
+                    <MiniMaps
                         panelWidth={RIGHT_PANEL.innerWidth}
                         screenSize={screenSize}
                     />

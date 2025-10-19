@@ -16,7 +16,7 @@ import { CREATE_MODE } from '../../hex/types';
 import { IMiniMapProps } from '../../types';
 import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../../utils';
 import { useImageMapStore } from '../imageMapStore';
-import { uploadFile } from '../Map/utils';
+import { uploadFile } from '../utils';
 
 interface Props {
     panelWidth: number;

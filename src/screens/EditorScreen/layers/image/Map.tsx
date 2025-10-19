@@ -2,8 +2,9 @@ import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
 import { MapWrapper } from 'screens/EditorScreen/components/MapWrapper';
 import { getVector, vectorMult, vectorSum } from 'utils';
 
-import { IMapProps } from '../../types';
-import { useImageMapStore } from '../imageMapStore';
+import { IMapProps } from '../types';
+
+import { useImageMapStore } from './imageMapStore';
 
 interface IProps extends IMapProps {
     map: HTMLImageElement;

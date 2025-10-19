@@ -1,4 +1,4 @@
-import { getHexHeightFromRadius, getHexRadius } from 'screens/EditorScreen/layersConfig/hex/utils';
+import { getHexHeightFromRadius, getHexRadius } from 'hexUtils';
 import { IPoint } from 'types';
 import { getVector } from 'utils';
 

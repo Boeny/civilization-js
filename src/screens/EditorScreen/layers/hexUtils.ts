@@ -1,10 +1,9 @@
-import { SQRT_3 } from 'screens/EditorScreen/const';
+import { SQRT_3 } from 'const';
+import { getHexRadius } from 'hexUtils';
 import { IPoint } from 'types';
 import { getVector, vectorSum } from 'utils';
 
-import { HexMapData } from '../models';
-import { HEX_TYPE } from '../types';
-import { getHexRadius } from '../utils';
+import { HexMapData } from './models';
 
 function yIsBelowTheLine(isIncreasing: boolean, x: number, y: number, dy: number): boolean {
     // tan(30) = 1 / sqrt(3)
@@ -80,7 +79,7 @@ function getMapCoordinatesFromCursor({ x, y }: IPoint, hexWidth: number): IPoint
     return vectorSum(result, getVector(0, 1));
 }
 
-export function fillHex({ point, hexWidth, brush, map }: { point: IPoint; hexWidth: number; brush: HEX_TYPE | null; map: HexMapData }) {
+export function fillHex({ point, hexWidth, brush, map }: { point: IPoint; hexWidth: number; brush: number | null; map: HexMapData }) {
     const mapPoint = getMapCoordinatesFromCursor(point, hexWidth);
 
     if (

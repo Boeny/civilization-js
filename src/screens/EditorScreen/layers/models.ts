@@ -1,11 +1,9 @@
+import { getHexHeight } from 'hexUtils';
 import { getVector } from 'utils';
 
-import { HEX_TYPE } from './types';
-import { getHexHeight } from './utils';
-
-export class HexMapData {
+export class HexMapData<T extends number = number> {
     static hexWidth = 100;
-    data: HEX_TYPE[][] = [];
+    data: T[][] = [];
 
     get width() {
         // in pixels
@@ -30,7 +28,7 @@ export class HexMapData {
         return getVector(this.rowLength, this.columnLength);
     }
 
-    constructor(data: HEX_TYPE[][]) {
+    constructor(data: T[][]) {
         this.data = data;
     }
 }
