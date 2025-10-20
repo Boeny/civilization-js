@@ -1,13 +1,9 @@
 import { useEffect } from 'react';
 
-import { KEY_CODE } from 'types';
-
-export function useEsc(callback: () => void) {
+export function useKey(callback: (key: string) => void) {
     useEffect(() => {
         function escHandler(e: KeyboardEvent) {
-            if (e.key === KEY_CODE.esc) {
-                callback();
-            }
+            callback(e.key);
         }
 
         document.addEventListener('keydown', escHandler);

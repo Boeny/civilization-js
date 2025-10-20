@@ -1,6 +1,7 @@
 import { ReactNode, useCallback } from 'react';
 
-import { useEsc } from 'hooks/useEsc';
+import { useKey } from 'hooks/useKey';
+import { KEY_CODE } from 'types';
 
 import { MenuComponent, MenuItemComponent } from './types';
 import { useMenuStore } from './useMenuStore';
@@ -41,7 +42,16 @@ export function Menu({ isOpen, toggleMenuOnBackAction, item, children: topLevelC
         }
     }, [menu.children, menu.isOpen, toggleMenuOnBackAction, topLevelChildren]);
 
-    useEsc(menu.back);
+    const handleBackByKey = useCallback(
+        (key: string) => {
+            if (key === KEY_CODE.esc) {
+                menu.back();
+            }
+        },
+        [menu.back],
+    );
+
+    useKey(handleBackByKey);
 
     if (!menu.isOpen) {
         return null;
