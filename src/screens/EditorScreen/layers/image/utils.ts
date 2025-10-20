@@ -1,6 +1,15 @@
-import { FILE_PICKER_CONFIG } from './config';
+const FILE_PICKER_CONFIG = {
+    types: [
+        {
+            description: 'Images',
+            accept: { 'image/*': ['.png', '.gif', '.jpeg', '.jpg'] },
+        },
+    ],
+    excludeAcceptAllOption: true,
+    multiple: false,
+};
 
-export async function uploadFile(): Promise<HTMLImageElement | null> {
+export async function uploadImage(): Promise<HTMLImageElement | null> {
     try {
         const [imageFile] = await window.showOpenFilePicker(FILE_PICKER_CONFIG);
 

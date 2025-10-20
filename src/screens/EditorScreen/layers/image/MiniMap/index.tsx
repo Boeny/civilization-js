@@ -15,7 +15,7 @@ import { getMapsWithoutCurrent } from '../../config';
 import { CREATE_MODE, IMiniMapProps } from '../../types';
 import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../../utils';
 import { useStore } from '../store';
-import { uploadFile } from '../utils';
+import { uploadImage } from '../utils';
 
 interface Props {
     panelWidth: number;
@@ -55,7 +55,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, isSelected, onMapCreate
     const [creationMode, setCreationMode] = useState(CREATE_MODE.center);
 
     const loadImage = async () => {
-        const newMap = await uploadFile();
+        const newMap = await uploadImage();
 
         if (!newMap) {
             return;
