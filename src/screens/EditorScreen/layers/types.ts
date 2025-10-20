@@ -8,6 +8,7 @@ export interface IMiniMapProps {
     title: string;
     isSelected: boolean;
     onMapCreate: (params?: { shouldCreateWaterMap: boolean }) => void;
+    createMapKeyBinding: string;
 }
 export interface IMapProps {
     isEditable: boolean;

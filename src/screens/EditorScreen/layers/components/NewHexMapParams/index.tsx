@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { Block } from 'components/Block';
 import { Button } from 'components/Button';
 import { Checkbox } from 'components/Checkbox';
 import { Radio } from 'components/Radio';
 import { RadioItem } from 'components/Radio/RadioItem';
+import { useKey } from 'hooks/useKey';
 import { IPoint } from 'types';
 import { getVector } from 'utils';
 
@@ -13,19 +14,32 @@ import { CREATE_MODE } from '../../types';
 import { HexMapParamsBlock } from './HexMapParamsBlock';
 
 type Props = {
+    isSelected: boolean;
     hasImageMap: boolean;
     onSubmit: (mapSize: IPoint, creationMode: CREATE_MODE, shouldCreateWaterMap: boolean) => void;
+    createMapKeyBinding: string;
 };
 
-export const NewHexMapParams = ({ hasImageMap, onSubmit }: Props) => {
+export const NewHexMapParams = ({ isSelected, hasImageMap, onSubmit, createMapKeyBinding }: Props) => {
     const [mapSize, setMapSize] = useState(getVector(100, 100));
     const [creationMode, setCreationMode] = useState(CREATE_MODE.fitScreen);
     const [isError, setError] = useState(false);
     const [shouldCreateWaterMap, setCreationWaterMap] = useState(true);
 
-    const handleSubmit = () => {
+    const handleSubmit = useCallback(() => {
         onSubmit(mapSize, creationMode, shouldCreateWaterMap);
-    };
+    }, [creationMode, mapSize, shouldCreateWaterMap]);
+
+    const handleSubmitByKey = useCallback(
+        (key: string) => {
+            if (isSelected && key === createMapKeyBinding) {
+                handleSubmit();
+            }
+        },
+        [handleSubmit, isSelected],
+    );
+
+    useKey(handleSubmitByKey);
 
     return (
         <>
@@ -78,7 +92,7 @@ export const NewHexMapParams = ({ hasImageMap, onSubmit }: Props) => {
                     disabled={isError}
                     onClick={handleSubmit}
                 >
-                    Create map
+                    Create map ({createMapKeyBinding})
                 </Button>
             </Block>
 

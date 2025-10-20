@@ -1,11 +1,12 @@
 import './styles.css';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { Block } from 'components/Block';
 import { Button } from 'components/Button';
 import { Canvas } from 'components/canvas/Canvas';
 import { Radio } from 'components/Radio';
 import { RadioItem } from 'components/Radio/RadioItem';
+import { useKey } from 'hooks/useKey';
 import { mapMovementParamsConfig } from 'hooks/useMapMoving/mapMovingStore';
 import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
 import { IPoint, LAYER_TYPE } from 'types';
@@ -46,7 +47,7 @@ const MiniMapComponent = ({ map, title, onClick, panelWidth }: Props) => {
 };
 
 // eslint-disable-next-line import/no-unused-modules
-export const MiniMap = ({ screenSize, title, panelWidth, isSelected, onMapCreate }: IMiniMapProps) => {
+export const MiniMap = ({ screenSize, title, panelWidth, isSelected, onMapCreate, createMapKeyBinding }: IMiniMapProps) => {
     const {
         store: { map },
         setStore,
@@ -54,7 +55,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, isSelected, onMapCreate
 
     const [creationMode, setCreationMode] = useState(CREATE_MODE.center);
 
-    const loadImage = async () => {
+    const loadImage = useCallback(async () => {
         const newMap = await uploadImage();
 
         if (!newMap) {
@@ -100,13 +101,24 @@ export const MiniMap = ({ screenSize, title, panelWidth, isSelected, onMapCreate
         }
 
         onMapCreate();
-    };
+    }, [creationMode, screenSize]);
 
     const handleImageMiniMapClick = () => {
         if (isSelected) {
             loadImage();
         }
     };
+
+    const handleLoadImageByKey = useCallback(
+        (key: string) => {
+            if (isSelected && key === createMapKeyBinding) {
+                loadImage();
+            }
+        },
+        [createMapKeyBinding, isSelected, loadImage],
+    );
+
+    useKey(handleLoadImageByKey);
 
     return (
         <MiniMapWrapper
@@ -153,7 +165,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, isSelected, onMapCreate
                     alignCenter
                     noPadding
                 >
-                    <Button onClick={loadImage}>Load Image</Button>
+                    <Button onClick={loadImage}>Load Image ({createMapKeyBinding})</Button>
                 </Block>
             </div>
         </MiniMapWrapper>

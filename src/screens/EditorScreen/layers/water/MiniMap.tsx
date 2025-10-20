@@ -1,9 +1,12 @@
+import { useCallback } from 'react';
+
 import { Block } from 'components/Block';
 import { Button } from 'components/Button';
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { EMPTY_COLOR, WATER_COLOR } from 'const';
 import { getHexHeight } from 'hexUtils';
+import { useKey } from 'hooks/useKey';
 import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
 
 import { HexMapData } from '../models';
@@ -40,11 +43,26 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
 };
 
 // eslint-disable-next-line import/no-unused-modules
-export const MiniMap = ({ title, panelWidth, onMapCreate }: IMiniMapProps) => {
+export const MiniMap = ({ isSelected, title, panelWidth, onMapCreate, createMapKeyBinding }: IMiniMapProps) => {
     const {
         store: { map, isVisible, opacity, showCreateButton },
         setStore,
     } = useStore();
+
+    const handleMapCreate = useCallback(() => {
+        onMapCreate({ shouldCreateWaterMap: true });
+    }, []);
+
+    const handleCreateMapByKey = useCallback(
+        (key: string) => {
+            if (isSelected && key === createMapKeyBinding) {
+                handleMapCreate();
+            }
+        },
+        [createMapKeyBinding, handleMapCreate, isSelected],
+    );
+
+    useKey(handleCreateMapByKey);
 
     return (
         <MiniMapWrapper
@@ -69,7 +87,7 @@ export const MiniMap = ({ title, panelWidth, onMapCreate }: IMiniMapProps) => {
                         alignCenter
                         noPadding
                     >
-                        <Button onClick={() => onMapCreate({ shouldCreateWaterMap: true })}>Create Map</Button>
+                        <Button onClick={handleMapCreate}>Create Map ({createMapKeyBinding})</Button>
                     </Block>
                 </div>
             )}

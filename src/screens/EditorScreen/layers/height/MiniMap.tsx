@@ -44,7 +44,7 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
 };
 
 // eslint-disable-next-line import/no-unused-modules
-export const MiniMap = ({ screenSize, title, panelWidth, onMapCreate }: IMiniMapProps) => {
+export const MiniMap = ({ isSelected, screenSize, title, panelWidth, onMapCreate, createMapKeyBinding }: IMiniMapProps) => {
     const {
         store: { map, isVisible, opacity, hasImageMap },
         setStore,
@@ -132,8 +132,10 @@ export const MiniMap = ({ screenSize, title, panelWidth, onMapCreate }: IMiniMap
         >
             <div>
                 <NewHexMapParams
+                    isSelected={isSelected}
                     hasImageMap={hasImageMap}
                     onSubmit={handleSubmit}
+                    createMapKeyBinding={createMapKeyBinding}
                 />
             </div>
         </MiniMapWrapper>
