@@ -126,7 +126,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, isSelected, onMapCreate
                 map && (
                     <MiniMapComponent
                         panelWidth={panelWidth}
-                        title={isSelected ? 'Load new image' : title}
+                        title={isSelected ? map.name : title}
                         map={map}
                         onClick={handleImageMiniMapClick}
                     />

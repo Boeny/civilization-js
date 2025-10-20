@@ -25,6 +25,7 @@ export async function uploadImage(): Promise<HTMLImageElement | null> {
         return new Promise<HTMLImageElement>((resolve) => {
             img.onload = function () {
                 URL.revokeObjectURL(img.src);
+                img.name = imageFile.name;
                 resolve(img);
             };
         });
