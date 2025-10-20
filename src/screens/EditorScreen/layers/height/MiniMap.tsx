@@ -50,7 +50,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, onMapCreate }: IMiniMap
         setStore,
     } = useStore();
 
-    const handleSubmit = (mapSize: IPoint, creationMode: CREATE_MODE) => {
+    const handleSubmit = (mapSize: IPoint, creationMode: CREATE_MODE, shouldCreateWaterMap: boolean) => {
         const otherExistingMaps = getMapsWithoutCurrent(LAYER_TYPE.height);
         const imageMap = otherExistingMaps.find(({ type }) => type === LAYER_TYPE.image);
         const hexHeight = getHexHeight(HexMapData.hexWidth);
@@ -80,7 +80,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, onMapCreate }: IMiniMap
             const newMap = new HexMapData<HEX_TYPE>(generateEmptyMapData(mapSize, HEX_TYPE.hill));
             setStore({ map: newMap });
             setCommonMapMovementParams({ borders: newMap.imageSize, ...newMapMovementParams });
-            onMapCreate();
+            onMapCreate({ shouldCreateWaterMap });
 
             return;
         }
@@ -110,7 +110,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, onMapCreate }: IMiniMap
                 newMapMovementParams.zoom,
             ),
         });
-        onMapCreate();
+        onMapCreate({ shouldCreateWaterMap });
     };
 
     return (

@@ -3,16 +3,13 @@ import { Button } from 'components/Button';
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { EMPTY_COLOR, WATER_COLOR } from 'const';
-import { generateEmptyMapData, getHexHeight } from 'hexUtils';
+import { getHexHeight } from 'hexUtils';
 import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
 
-import { heightMapStoreConfig } from '../height/store';
 import { HexMapData } from '../models';
 import { IMiniMapProps } from '../types';
 
 import { useStore } from './store';
-
-const WATER_EXISTS = 1;
 
 type Props = {
     panelWidth: number;
@@ -43,21 +40,11 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
 };
 
 // eslint-disable-next-line import/no-unused-modules
-export const MiniMap = ({ title, panelWidth }: IMiniMapProps) => {
+export const MiniMap = ({ title, panelWidth, onMapCreate }: IMiniMapProps) => {
     const {
-        store: { map, isVisible, opacity },
+        store: { map, isVisible, opacity, showCreateButton },
         setStore,
     } = useStore();
-
-    const heightMap = heightMapStoreConfig.store;
-
-    const handleCreateMap = () => {
-        setStore({
-            map: new HexMapData(generateEmptyMapData(heightMap.map!.mapSize, WATER_EXISTS)),
-            zoom: heightMap.zoom,
-            position: heightMap.position,
-        });
-    };
 
     return (
         <MiniMapWrapper
@@ -70,19 +57,19 @@ export const MiniMap = ({ title, panelWidth }: IMiniMapProps) => {
                     <MiniMapComponent
                         panelWidth={panelWidth}
                         title={title}
-                        map={map!}
+                        map={map}
                     />
                 )
             }
             title={title}
         >
-            {heightMap.map && (
+            {showCreateButton && (
                 <div>
                     <Block
                         alignCenter
                         noPadding
                     >
-                        <Button onClick={handleCreateMap}>Create Map</Button>
+                        <Button onClick={() => onMapCreate({ shouldCreateWaterMap: true })}>Create Map</Button>
                     </Block>
                 </div>
             )}

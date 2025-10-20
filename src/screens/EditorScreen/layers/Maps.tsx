@@ -28,9 +28,7 @@ export const Maps = ({ screenSize }: Props) => {
 
     useEffect(() => {
         (async () => {
-            const maps = await Promise.all(getLayerTypes().map(getMapObject));
-
-            setMaps(maps);
+            setMaps(await Promise.all(getLayerTypes().map(getMapObject)));
         })();
     }, []);
 

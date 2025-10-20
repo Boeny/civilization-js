@@ -7,7 +7,7 @@ export interface IMiniMapProps {
     panelWidth: number;
     title: string;
     isSelected: boolean;
-    onMapCreate: () => void;
+    onMapCreate: (params?: { shouldCreateWaterMap: boolean }) => void;
 }
 export interface IMapProps {
     isEditable: boolean;

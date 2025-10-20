@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { Block } from 'components/Block';
 import { Button } from 'components/Button';
+import { Checkbox } from 'components/Checkbox';
 import { Radio } from 'components/Radio';
 import { RadioItem } from 'components/Radio/RadioItem';
 import { IPoint } from 'types';
@@ -13,16 +14,17 @@ import { HexMapParamsBlock } from './HexMapParamsBlock';
 
 type Props = {
     hasImageMap: boolean;
-    onSubmit: (mapSize: IPoint, creationMode: CREATE_MODE) => void;
+    onSubmit: (mapSize: IPoint, creationMode: CREATE_MODE, shouldCreateWaterMap: boolean) => void;
 };
 
 export const NewHexMapParams = ({ hasImageMap, onSubmit }: Props) => {
     const [mapSize, setMapSize] = useState(getVector(100, 100));
     const [creationMode, setCreationMode] = useState(CREATE_MODE.fitScreen);
     const [isError, setError] = useState(false);
+    const [shouldCreateWaterMap, setCreationWaterMap] = useState(true);
 
     const handleSubmit = () => {
-        onSubmit(mapSize, creationMode);
+        onSubmit(mapSize, creationMode, shouldCreateWaterMap);
     };
 
     return (
@@ -79,6 +81,12 @@ export const NewHexMapParams = ({ hasImageMap, onSubmit }: Props) => {
                     Create map
                 </Button>
             </Block>
+
+            <Checkbox
+                label="create water map"
+                value={shouldCreateWaterMap}
+                onChange={setCreationWaterMap}
+            />
         </>
     );
 };

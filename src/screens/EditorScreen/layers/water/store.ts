@@ -6,6 +6,7 @@ import { HexMapData } from '../models';
 
 interface WaterMapStore extends Omit<HexMapStore, 'hasImageMap'> {
     map: HexMapData | null;
+    showCreateButton: boolean;
 }
 
 const [useStore, waterMapStoreConfig] = createStoreHook<WaterMapStore>({
@@ -14,6 +15,7 @@ const [useStore, waterMapStoreConfig] = createStoreHook<WaterMapStore>({
     opacity: 1,
     position: getZeroVector(),
     zoom: 1,
+    showCreateButton: false,
 });
 
 export { useStore, waterMapStoreConfig };
