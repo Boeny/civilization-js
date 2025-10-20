@@ -9,7 +9,7 @@ import { getVector, vectorSub, vectorSum } from 'utils';
 import { BRUSH_MAP } from '../components/HexBrushes/config';
 import { useBrushStore } from '../components/HexBrushes/store';
 import { useGridStore } from '../components/ToggleGridButton/store';
-import { fillHex } from '../hexUtils';
+import { getMapCoordinatesFromCursor } from '../hexUtils';
 import { HexMapData } from '../models';
 import { IMapProps, HEX_TYPE } from '../types';
 
@@ -33,12 +33,20 @@ function MapComponent({ isEditable, zIndex, map, screenSize, zoom, position, opa
     const zoomedHexHeight = getHexHeight(zoomedHexWidth);
 
     const updateMapCell = (point: IPoint) => {
-        fillHex({
-            point,
-            hexWidth: zoomedHexWidth,
-            brush,
-            map,
-        });
+        const mapPoint = getMapCoordinatesFromCursor(point, zoomedHexWidth);
+
+        if (
+            mapPoint.x < 0 ||
+            mapPoint.y < 0 ||
+            mapPoint.x >= map.rowLength ||
+            mapPoint.y >= map.columnLength ||
+            brush === null ||
+            map.data[mapPoint.y][mapPoint.x] === brush
+        ) {
+            return;
+        }
+
+        map.data[mapPoint.y][mapPoint.x] = brush;
         onUpdate({ map });
     };
 

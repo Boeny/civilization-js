@@ -7,6 +7,6 @@ export const Z_INDEX_CONFIG = {
 
 export const SQRT_3 = Math.sqrt(3);
 
-export const EMPTY_COLOR = 'rgba(0,0,0,0.1)';
+export const EMPTY_COLOR = 'rgba(0,0,0,0.01)';
 
 export const WATER_COLOR = '#02acd2';
