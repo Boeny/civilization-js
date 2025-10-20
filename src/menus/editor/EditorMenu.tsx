@@ -2,7 +2,7 @@ import { Button } from 'components/Button';
 import { Menu } from 'components/Menu';
 import { MenuItem } from 'components/Menu/MenuItem';
 import { MenuPopup } from 'components/MenuPopup';
-import { resetEditorPage } from 'screens/EditorScreen/utils';
+import { resetEditorPage } from 'screens/EditorScreen/config';
 import { screenStoreConfig } from 'screenStore';
 import { SCREEN_TYPE } from 'types';
 

@@ -60,6 +60,29 @@ export function getZeroVector(): IPoint {
     return getVector(0, 0);
 }
 
+export function vectorLength(v: IPoint): number {
+    return Math.sqrt(v.x * v.x + v.y * v.y);
+}
+
 export function getZoomFor(targetSize: number, currentSize: number): number {
     return targetSize / currentSize;
+}
+
+/**
+ * start < end!!!
+ * @param start number
+ * @param end number
+ * @param step number
+ * @returns number[]
+ */
+export function getNumbersBetween(start: number, end: number, step: number): number[] {
+    const result: number[] = [];
+    let a = start + step;
+
+    while (a < end) {
+        result.push(a);
+        a += step;
+    }
+
+    return result;
 }

@@ -1,7 +1,8 @@
-import { SQRT_3 } from 'const';
+/* eslint-disable camelcase */
+import { SQRT_2, SQRT_3 } from 'const';
 import { getHexRadius } from 'hexUtils';
 import { IPoint } from 'types';
-import { getVector, vectorSum } from 'utils';
+import { getNumbersBetween, getVector, vectorLength, vectorSub, vectorSum } from 'utils';
 
 function yIsBelowTheLine(isIncreasing: boolean, x: number, y: number, dy: number): boolean {
     // tan(30) = 1 / sqrt(3)
@@ -75,4 +76,68 @@ export function getMapCoordinatesFromCursor({ x, y }: IPoint, hexWidth: number):
     }
 
     return vectorSum(result, getVector(0, 1));
+}
+
+export function getMapCellsFromLine(
+    start: IPoint,
+    end: IPoint,
+    params: { hexWidth: number; includeStart: boolean; includeEnd: boolean },
+): IPoint[] {
+    const points: IPoint[] = [];
+
+    if (params.includeStart) {
+        points.push(start);
+    }
+    if (params.includeEnd) {
+        points.push(end);
+    }
+
+    const hexRadius = getHexRadius(params.hexWidth);
+    let additionalPoints: IPoint[] = [];
+
+    if (vectorLength(vectorSub(end, start)) > hexRadius) {
+        // y = xk + b
+        // start.y = start.x * k + b
+        // b = start.y - start.x * k = end.y - end.x * k
+        // k = (start.y - end.y) / (start.x - end.x)
+        let k = 0;
+
+        if (Math.abs(start.y - end.y) < 1) {
+            // y = b
+            if (start.x < end.x) {
+                additionalPoints = getNumbersBetween(start.x, end.x, hexRadius).map((x) => ({ x, y: end.y }));
+            } else {
+                additionalPoints = getNumbersBetween(end.x, start.x, hexRadius).map((x) => ({ x, y: start.y }));
+            }
+        } else if (Math.abs(start.x - end.x) < 1) {
+            if (start.y < end.y) {
+                additionalPoints = getNumbersBetween(start.y, end.y, hexRadius).map((y) => ({ y, x: end.x }));
+            } else {
+                additionalPoints = getNumbersBetween(end.y, start.y, hexRadius).map((y) => ({ y, x: start.x }));
+            }
+        } else {
+            k = (start.y - end.y) / (start.x - end.x);
+            const b = start.y - start.x * k;
+
+            // cos 45 = sqrt(2)
+            const step = hexRadius / SQRT_2;
+
+            // tan(45) = 1
+            if (k <= 1) {
+                if (start.x < end.x) {
+                    additionalPoints = getNumbersBetween(start.x, end.x, step).map((x) => ({ x, y: k * x + b }));
+                } else {
+                    additionalPoints = getNumbersBetween(end.x, start.x, step).map((x) => ({ x, y: k * x + b }));
+                }
+            } else {
+                if (start.y < end.y) {
+                    additionalPoints = getNumbersBetween(start.y, end.y, step).map((y) => ({ y, x: (y - b) / k }));
+                } else {
+                    additionalPoints = getNumbersBetween(end.y, start.y, step).map((y) => ({ y, x: (y - b) / k }));
+                }
+            }
+        }
+    }
+
+    return [...points, ...additionalPoints].map((point) => getMapCoordinatesFromCursor(point, params.hexWidth));
 }

@@ -9,13 +9,41 @@ import { getVector, vectorSub, vectorSum } from 'utils';
 import { BRUSH_MAP } from '../components/HexBrushes/config';
 import { useBrushStore } from '../components/HexBrushes/store';
 import { useGridStore } from '../components/ToggleGridButton/store';
-import { getMapCoordinatesFromCursor } from '../hexUtils';
+import { getMapCellsFromLine, getMapCoordinatesFromCursor } from '../hexUtils';
 import { HexMapData } from '../models';
 import { IMapProps, HEX_TYPE } from '../types';
 
 import { HexMapStore, useStore } from './store';
 
+function updateCell(mapPoint: IPoint, map: HexMapData, brush: HEX_TYPE) {
+    if (
+        mapPoint.x < 0 ||
+        mapPoint.y < 0 ||
+        mapPoint.x >= map.rowLength ||
+        mapPoint.y >= map.columnLength ||
+        map.data[mapPoint.y][mapPoint.x] === brush
+    ) {
+        return false;
+    }
+
+    map.data[mapPoint.y][mapPoint.x] = brush;
+
+    return true;
+}
+
+function updateCells(mapPoints: IPoint[], map: HexMapData, brush: HEX_TYPE) {
+    let isCellChanged = false;
+
+    for (const mapPoint of mapPoints) {
+        isCellChanged = updateCell(mapPoint, map, brush) || isCellChanged;
+    }
+
+    return isCellChanged;
+}
+
 // TODO: Ctrl+Z for painting
+
+let startingCursorPointOnMap: IPoint | null = null;
 
 type Props = IMapProps & {
     map: HexMapData<HEX_TYPE>;
@@ -32,32 +60,42 @@ function MapComponent({ isEditable, zIndex, map, screenSize, zoom, position, opa
     const zoomedHexWidth = HexMapData.hexWidth * zoom;
     const zoomedHexHeight = getHexHeight(zoomedHexWidth);
 
-    const updateMapCell = (point: IPoint) => {
-        const mapPoint = getMapCoordinatesFromCursor(point, zoomedHexWidth);
-
-        if (
-            mapPoint.x < 0 ||
-            mapPoint.y < 0 ||
-            mapPoint.x >= map.rowLength ||
-            mapPoint.y >= map.columnLength ||
-            brush === null ||
-            map.data[mapPoint.y][mapPoint.x] === brush
-        ) {
+    function handleMouseDown(ctx: CanvasRenderingContext2D, currentCursorPoint: IPoint) {
+        if (brush === null) {
             return;
         }
 
-        map.data[mapPoint.y][mapPoint.x] = brush;
-        onUpdate({ map });
-    };
+        startMoving();
 
-    const { startMoving } = useMouseMove((e) => updateMapCell(vectorSub(getVector(e.offsetX, e.offsetY), position)), isEditable);
+        const currentCursorPointOnMap = vectorSub(currentCursorPoint, position);
+        const mapPoint = getMapCoordinatesFromCursor(currentCursorPointOnMap, zoomedHexWidth);
 
-    const handleMouseDown = (ctx: CanvasRenderingContext2D, point: IPoint) => {
-        if (brush !== null) {
-            startMoving();
-            updateMapCell(vectorSub(point, position));
+        if (updateCell(mapPoint, map, brush)) {
+            onUpdate({ map });
         }
-    };
+
+        startingCursorPointOnMap = currentCursorPointOnMap;
+    }
+
+    const { startMoving } = useMouseMove((e) => {
+        if (brush === null || !startingCursorPointOnMap) {
+            return;
+        }
+
+        const currentCursorPoint = getVector(e.offsetX, e.offsetY);
+        const currentCursorPointOnMap = vectorSub(currentCursorPoint, position);
+        const mapPointsBetween = getMapCellsFromLine(startingCursorPointOnMap, currentCursorPointOnMap, {
+            includeStart: false,
+            includeEnd: true,
+            hexWidth: zoomedHexWidth,
+        });
+
+        if (updateCells(mapPointsBetween, map, brush)) {
+            onUpdate({ map });
+        }
+
+        startingCursorPointOnMap = currentCursorPointOnMap;
+    }, isEditable);
 
     return (
         <MapWrapper

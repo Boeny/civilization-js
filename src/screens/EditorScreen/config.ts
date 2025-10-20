@@ -7,7 +7,7 @@ import { imageMapStoreConfig } from './layers/image/store';
 import { waterMapStoreConfig } from './layers/water/store';
 import { layerStoreConfig } from './layerStore';
 
-export const editorScreenConfigs = [
+const editorScreenConfigs = [
     layerStoreConfig,
     brushStoreConfig,
     gridStoreConfig,
@@ -16,3 +16,9 @@ export const editorScreenConfigs = [
     heightMapStoreConfig,
     waterMapStoreConfig,
 ];
+
+const resetFunctions = editorScreenConfigs.map((config) => config.reset);
+
+export function resetEditorPage() {
+    resetFunctions.forEach((reset) => reset());
+}
