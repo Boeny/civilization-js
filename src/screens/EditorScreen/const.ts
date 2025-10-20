@@ -14,6 +14,6 @@ export const ZOOM_CONFIG = {
     maxWidth: 1000000,
 };
 
-export const KEY_PAN_SPEED = 40;
+export const KEY_PAN_SPEED = 20;
 export const WHEEL_PAN_SPEED = 5;
 export const BORDER_SIZE = getVector(200, 200);
