@@ -3,14 +3,15 @@ import { PropsWithChildren, ReactNode, useState } from 'react';
 import { Block } from 'components/Block';
 import { Button } from 'components/Button';
 
-import { EyeButton } from './EyeButton';
-import { OpacityBar } from './OpacityBar';
+import { EyeButton } from '../../components/EyeButton';
+
+import { BarWithTitle } from './BarWithTitle';
 
 type Props = PropsWithChildren & {
     title: string;
     map: ReactNode;
-} & ({ setVisible?: undefined } | { isVisible: boolean; setVisible: (v: boolean) => void }) &
-    ({ setOpacity?: undefined } | { opacity: number; setOpacity: (v: number) => void });
+    setOpacity?: (v: number) => void;
+} & ({ setVisible?: undefined } | { isVisible: boolean; setVisible: (v: boolean) => void });
 
 export function MiniMapWrapper({ title, map, children, ...props }: Props) {
     const [isOpened, setOpened] = useState(true);
@@ -48,8 +49,9 @@ export function MiniMapWrapper({ title, map, children, ...props }: Props) {
             {isOpened && (
                 <>
                     {map && props.setOpacity && (
-                        <OpacityBar
-                            opacity={props.opacity}
+                        <BarWithTitle
+                            title="opacity"
+                            defaultValue={1}
                             onChange={props.setOpacity}
                         />
                     )}

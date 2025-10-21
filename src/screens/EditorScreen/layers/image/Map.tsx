@@ -1,7 +1,7 @@
 import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
-import { MapWrapper } from 'screens/EditorScreen/components/MapWrapper';
 import { getVector, vectorMult, vectorSum } from 'utils';
 
+import { MapWrapper } from '../components/MapWrapper';
 import { IMapProps } from '../types';
 
 import { useStore } from './store';

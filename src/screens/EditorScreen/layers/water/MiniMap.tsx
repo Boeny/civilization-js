@@ -7,8 +7,8 @@ import { Hex } from 'components/canvas/Hex';
 import { EMPTY_COLOR, WATER_COLOR } from 'const';
 import { getHexHeight } from 'hexUtils';
 import { useKey } from 'hooks/useKey';
-import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
 
+import { MiniMapWrapper } from '../components/MiniMapWrapper';
 import { HexMapData } from '../models';
 import { IMiniMapProps } from '../types';
 

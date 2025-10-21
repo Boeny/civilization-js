@@ -2,10 +2,10 @@ import { Hex } from 'components/canvas/Hex';
 import { EMPTY_COLOR, WATER_COLOR } from 'const';
 import { getHexHeight } from 'hexUtils';
 import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
-import { MapWrapper } from 'screens/EditorScreen/components/MapWrapper';
 import { IPoint } from 'types';
 import { vectorSum } from 'utils';
 
+import { MapWrapper } from '../components/MapWrapper';
 import { useGridStore } from '../components/ToggleGridButton/store';
 import { HexMapStore } from '../height/store';
 import { HexMapData } from '../models';

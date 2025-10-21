@@ -8,10 +8,10 @@ import { Radio } from 'components/Radio';
 import { RadioItem } from 'components/Radio/RadioItem';
 import { useKey } from 'hooks/useKey';
 import { mapMovementParamsConfig } from 'hooks/useMapMoving/mapMovingStore';
-import { MiniMapWrapper } from 'screens/EditorScreen/components/MiniMapWrapper';
 import { IPoint, LAYER_TYPE } from 'types';
 import { getVector, getZeroVector, vectorSub } from 'utils';
 
+import { MiniMapWrapper } from '../../components/MiniMapWrapper';
 import { getMapsWithoutCurrent } from '../../config';
 import { CREATE_MODE, IMiniMapProps } from '../../types';
 import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../../utils';

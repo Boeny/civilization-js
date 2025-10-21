@@ -2,12 +2,12 @@ import { Hex } from 'components/canvas/Hex';
 import { getHexHeight } from 'hexUtils';
 import { useMapMovementParamsStore } from 'hooks/useMapMoving/mapMovingStore';
 import { useMouseMove } from 'hooks/useMouseMove';
-import { MapWrapper } from 'screens/EditorScreen/components/MapWrapper';
 import { IPoint } from 'types';
 import { getVector, vectorSub, vectorSum } from 'utils';
 
 import { BRUSH_MAP } from '../components/HexBrushes/config';
 import { useBrushStore } from '../components/HexBrushes/store';
+import { MapWrapper } from '../components/MapWrapper';
 import { useGridStore } from '../components/ToggleGridButton/store';
 import { getMapCellsFromLine, getMapCoordinatesFromCursor } from '../hexUtils';
 import { HexMapData } from '../models';

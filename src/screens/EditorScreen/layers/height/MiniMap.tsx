@@ -5,8 +5,8 @@ import { mapMovementParamsConfig } from 'hooks/useMapMoving/mapMovingStore';
 import { IPoint, LAYER_TYPE } from 'types';
 import { getVector, getZeroVector, vectorMult, vectorSub } from 'utils';
 
-import { MiniMapWrapper } from '../../components/MiniMapWrapper';
 import { BRUSH_MAP } from '../components/HexBrushes/config';
+import { MiniMapWrapper } from '../components/MiniMapWrapper';
 import { NewHexMapParams } from '../components/NewHexMapParams';
 import { getMapsWithoutCurrent } from '../config';
 import { HexMapData } from '../models';

@@ -1,7 +1,7 @@
 import { Canvas, CanvasEventHandlers } from 'components/canvas/Canvas';
 import { IPoint } from 'types';
 
-import { TOP_PANEL_HEIGHT } from '../const';
+import { TOP_PANEL_HEIGHT } from '../../const';
 
 type Props = CanvasEventHandlers & {
     zIndex: number;
