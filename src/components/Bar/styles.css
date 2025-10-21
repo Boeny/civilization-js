@@ -17,3 +17,11 @@
     background: #ccc;
     cursor: pointer;
 }
+.bar-button > .tip {
+    position: absolute;
+    top: -18px;
+    background: #fff8d9;
+    border: 1px solid black;
+    font-size: 12px;
+    padding: 0 2px;
+}
