@@ -5,7 +5,6 @@ export const Z_INDEX_CONFIG = {
     layout: { zIndex: 12 },
 } as const;
 
-export const SQRT_2 = Math.sqrt(2);
 export const SQRT_3 = Math.sqrt(3);
 
 export const EMPTY_COLOR = 'rgba(0,0,0,0.01)';

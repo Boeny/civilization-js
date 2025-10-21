@@ -9,7 +9,7 @@ import { BRUSH_MAP } from '../components/HexBrushes/config';
 import { useBrushStore } from '../components/HexBrushes/store';
 import { MapWrapper } from '../components/MapWrapper';
 import { useGridStore } from '../components/ToggleGridButton/store';
-import { getMapCellsFromLine, getMapCoordinatesFromCursor } from '../hexUtils';
+import { getMapCoordinatesFromCursor, getMapCellsFromLine } from '../hexUtils';
 import { HexMapData } from '../models';
 import { IMapProps, HEX_TYPE } from '../types';
 
@@ -84,6 +84,7 @@ function MapComponent({ isEditable, zIndex, map, screenSize, zoom, position, opa
 
         const currentCursorPoint = getVector(e.offsetX, e.offsetY);
         const currentCursorPointOnMap = vectorSub(currentCursorPoint, position);
+
         const mapPointsBetween = getMapCellsFromLine(startingCursorPointOnMap, currentCursorPointOnMap, {
             includeStart: false,
             includeEnd: true,
