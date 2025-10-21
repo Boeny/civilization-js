@@ -1,11 +1,12 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useRef } from 'react';
 
 export function useMouseMove(callback: (e: MouseEvent) => void, enabled = true) {
-    const container = useMemo(() => ({ moving: false, callback }), []);
+    const movingRef = useRef(false);
+    const callbackRef = useRef(callback);
 
     const startMoving = () => {
-        container.moving = true;
-        container.callback = callback;
+        movingRef.current = true;
+        callbackRef.current = callback;
     };
 
     useEffect(() => {
@@ -13,19 +14,19 @@ export function useMouseMove(callback: (e: MouseEvent) => void, enabled = true) 
             return () => {};
         }
 
-        function moveHandler(e: MouseEvent) {
-            if (container.moving) {
-                requestAnimationFrame(() => container.callback(e));
+        function moveHandler(e: MouseEvent | TouchEvent) {
+            if (movingRef.current) {
+                requestAnimationFrame(() => callbackRef.current(e as MouseEvent));
             }
         }
 
-        function upHandler(e: MouseEvent) {
+        function upHandler(e: MouseEvent | TouchEvent) {
             e.stopPropagation();
-            container.moving = false;
+            movingRef.current = false;
         }
 
-        document.addEventListener('touchmove', moveHandler as any);
-        document.addEventListener('touchend', upHandler as any);
+        document.addEventListener('touchmove', moveHandler);
+        document.addEventListener('touchend', upHandler);
 
         document.addEventListener('mousemove', moveHandler);
         document.addEventListener('mouseup', upHandler);
@@ -34,8 +35,8 @@ export function useMouseMove(callback: (e: MouseEvent) => void, enabled = true) 
             document.removeEventListener('mousemove', moveHandler);
             document.removeEventListener('mouseup', upHandler);
 
-            document.removeEventListener('touchmove', moveHandler as any);
-            document.removeEventListener('touchend', upHandler as any);
+            document.removeEventListener('touchmove', moveHandler);
+            document.removeEventListener('touchend', upHandler);
         };
     }, [enabled]);
 
