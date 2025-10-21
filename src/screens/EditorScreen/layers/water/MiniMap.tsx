@@ -45,7 +45,7 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
 // eslint-disable-next-line import/no-unused-modules
 export const MiniMap = ({ isSelected, title, panelWidth, onMapCreate, createMapKeyBinding }: IMiniMapProps) => {
     const {
-        store: { map, isVisible, opacity, showCreateButton },
+        store: { map, isVisible, showCreateButton },
         setStore,
     } = useStore();
 
@@ -68,7 +68,6 @@ export const MiniMap = ({ isSelected, title, panelWidth, onMapCreate, createMapK
         <MiniMapWrapper
             isVisible={isVisible}
             setVisible={(value) => setStore({ isVisible: value })}
-            opacity={opacity}
             setOpacity={(value) => setStore({ opacity: value })}
             map={
                 map && (
