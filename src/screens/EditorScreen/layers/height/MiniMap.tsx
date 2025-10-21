@@ -24,15 +24,19 @@ type Props = {
 const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
     const miniHexWidth = panelWidth / (map.rowLength + 10);
     const miniHexHeight = getHexHeight(miniHexWidth);
+    const width = panelWidth + miniHexWidth / 2;
+    const height = (miniHexHeight + 1) * map.columnLength;
 
     return (
         <Canvas
             title={title}
-            width={panelWidth + miniHexWidth / 2}
-            height={(miniHexHeight + 1) * map.columnLength}
+            width={width}
+            height={height}
             style={{ maxHeight: 170 }}
         >
             {(ctx) => {
+                ctx.clearRect(0, 0, width, height);
+
                 map.data.forEach((row, y) => {
                     row.forEach((type, x) => {
                         Hex({ ctx, position: { x, y }, width: miniHexWidth, color: BRUSH_MAP[type].color });
