@@ -5,7 +5,9 @@ import { mapMovementParamsConfig } from 'hooks/useMapMoving/mapMovingStore';
 import { IPoint, LAYER_TYPE } from 'types';
 import { getVector, getZeroVector, vectorMult, vectorSub } from 'utils';
 
+import { BarWithTitle } from '../components/BarWithTitle';
 import { BRUSH_MAP } from '../components/HexBrushes/config';
+import { brushStoreConfig } from '../components/HexBrushes/store';
 import { MiniMapWrapper } from '../components/MiniMapWrapper';
 import { NewHexMapParams } from '../components/NewHexMapParams';
 import { getMapsWithoutCurrent } from '../config';
@@ -14,6 +16,8 @@ import { IMiniMapProps, CREATE_MODE, HEX_TYPE } from '../types';
 import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../utils';
 
 import { useStore } from './store';
+
+const MAX_BRUSH_SIZE = 100;
 
 type Props = {
     panelWidth: number;
@@ -50,7 +54,7 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
 // eslint-disable-next-line import/no-unused-modules
 export const MiniMap = ({ isSelected, screenSize, title, panelWidth, onMapCreate, createMapKeyBinding }: IMiniMapProps) => {
     const {
-        store: { map, isVisible, opacity, hasImageMap },
+        store: { map, isVisible, hasImageMap },
         setStore,
     } = useStore();
 
@@ -121,15 +125,24 @@ export const MiniMap = ({ isSelected, screenSize, title, panelWidth, onMapCreate
         <MiniMapWrapper
             isVisible={isVisible}
             setVisible={(value) => setStore({ isVisible: value })}
-            opacity={opacity}
             setOpacity={(value) => setStore({ opacity: value })}
             map={
                 map && (
-                    <MiniMapComponent
-                        panelWidth={panelWidth}
-                        title={title}
-                        map={map}
-                    />
+                    <>
+                        <BarWithTitle
+                            title="brush size"
+                            round
+                            min={1}
+                            max={MAX_BRUSH_SIZE}
+                            defaultValue={1}
+                            onChange={(newSize) => brushStoreConfig.setStore({ size: newSize })}
+                        />
+                        <MiniMapComponent
+                            panelWidth={panelWidth}
+                            title={title}
+                            map={map}
+                        />
+                    </>
                 )
             }
             title={title}
