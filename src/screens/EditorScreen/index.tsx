@@ -1,5 +1,5 @@
 import '../styles.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ArrowButton } from 'components/ArrowButton';
 import { MenuItem } from 'components/Menu/MenuItem';
@@ -14,6 +14,32 @@ import { Maps } from './layers/Maps';
 import { MiniMaps } from './layers/MiniMaps';
 import { useLayerStore } from './layerStore';
 
+function useSyncExternalStore<T>(subscribe: (callback: () => void) => () => void, getSnapshot: () => T) {
+    const [data, setData] = useState(getSnapshot());
+
+    useEffect(() => {
+        function update() {
+            setData(getSnapshot());
+        }
+
+        return subscribe(update);
+    }, []);
+
+    return data;
+}
+
+function resizeSubscribe(callback: () => void) {
+    window.addEventListener('resize', callback);
+
+    return () => {
+        window.removeEventListener('resize', callback);
+    };
+}
+
+function getScreenSize() {
+    return getVector(window.innerWidth, window.innerHeight);
+}
+
 export const EditorScreen = () => {
     const { layer } = useLayerStore().store;
 
@@ -25,7 +51,7 @@ export const EditorScreen = () => {
 
     const { leftPanelContent, topPanelContent } = LAYER_CONFIG[layer];
 
-    const screenSize = getVector(window.innerWidth, window.innerHeight);
+    const screenSize = useSyncExternalStore(resizeSubscribe, getScreenSize);
 
     return (
         <div
