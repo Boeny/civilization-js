@@ -81,7 +81,12 @@ export function getMapCoordinatesFromCursor({ x, y }: IPoint, hexWidth: number):
 export function getMapCellsFromLine(
     start: IPoint,
     end: IPoint,
-    { hexWidth, includeStart, includeEnd }: { hexWidth: number; includeStart: boolean; includeEnd: boolean },
+    {
+        hexWidth,
+        includeStart,
+        includeEnd,
+        minDistance,
+    }: { hexWidth: number; includeStart: boolean; includeEnd: boolean; minDistance: number },
 ) {
     let points: IPoint[] = [];
 
@@ -92,7 +97,7 @@ export function getMapCellsFromLine(
         points.push(end);
     }
 
-    points = [...points, ...getPointsFromLine(start, end, hexWidth / 2)];
+    points = [...points, ...getPointsFromLine(start, end, minDistance)];
 
     const result: IPoint[] = [];
 

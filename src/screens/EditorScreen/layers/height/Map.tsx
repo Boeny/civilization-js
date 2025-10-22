@@ -41,6 +41,24 @@ function updateCells(mapPoints: IPoint[], map: HexMapData, brush: HEX_TYPE) {
     return isCellChanged;
 }
 
+function drawPoint(center: IPoint, size: number, map: HexMapData, brush: HEX_TYPE) {
+    if (size === 1) {
+        return updateCell(center, map, brush);
+    }
+
+    return updateCells([center], map, brush);
+}
+
+function drawPoints(mapPoints: IPoint[], size: number, map: HexMapData, brush: HEX_TYPE) {
+    let isCellChanged = false;
+
+    for (const mapPoint of mapPoints) {
+        isCellChanged = drawPoint(mapPoint, size, map, brush) || isCellChanged;
+    }
+
+    return isCellChanged;
+}
+
 // TODO: Ctrl+Z for painting
 
 let startingCursorPointOnMap: IPoint | null = null;
@@ -54,7 +72,7 @@ type Props = IMapProps & {
 };
 
 function MapComponent({ isEditable, zIndex, map, screenSize, zoom, position, opacity, onUpdate }: Props) {
-    const { brush } = useBrushStore().store;
+    const { brush, size } = useBrushStore().store;
     const { isGridTurnedOn } = useGridStore().store;
 
     const zoomedHexWidth = HexMapData.hexWidth * zoom;
@@ -70,7 +88,7 @@ function MapComponent({ isEditable, zIndex, map, screenSize, zoom, position, opa
         const currentCursorPointOnMap = vectorSub(currentCursorPoint, position);
         const mapPoint = getMapCoordinatesFromCursor(currentCursorPointOnMap, zoomedHexWidth);
 
-        if (updateCell(mapPoint, map, brush)) {
+        if (drawPoint(mapPoint, size, map, brush)) {
             onUpdate({ map });
         }
 
@@ -89,9 +107,10 @@ function MapComponent({ isEditable, zIndex, map, screenSize, zoom, position, opa
             includeStart: false,
             includeEnd: true,
             hexWidth: zoomedHexWidth,
+            minDistance: (zoomedHexHeight / 1.5) * size,
         });
 
-        if (updateCells(mapPointsBetween, map, brush)) {
+        if (drawPoints(mapPointsBetween, size, map, brush)) {
             onUpdate({ map });
         }
 

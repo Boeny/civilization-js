@@ -19,7 +19,7 @@ import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovement
 
 import { useStore } from './store';
 
-const MAX_BRUSH_SIZE = 100;
+const MAX_BRUSH_SIZE = 10;
 
 type Props = {
     panelWidth: number;
