@@ -9,6 +9,7 @@ import { useKey } from 'hooks/useKey';
 import { IPoint } from 'types';
 import { getVector } from 'utils';
 
+import { useKeyBinding } from '../../hooks/useKeyBinding';
 import { CREATE_MODE } from '../../types';
 
 import { HexMapParamsBlock } from './HexMapParamsBlock';
@@ -17,7 +18,7 @@ type Props = {
     isSelected: boolean;
     hasImageMap: boolean;
     onSubmit: (mapSize: IPoint, creationMode: CREATE_MODE, shouldCreateWaterMap: boolean) => void;
-    createMapKeyBinding: string;
+    createMapKeyBinding: string[];
 };
 
 export const NewHexMapParams = ({ isSelected, hasImageMap, onSubmit, createMapKeyBinding }: Props) => {
@@ -28,16 +29,9 @@ export const NewHexMapParams = ({ isSelected, hasImageMap, onSubmit, createMapKe
 
     const handleSubmit = useCallback(() => {
         onSubmit(mapSize, creationMode, shouldCreateWaterMap);
-    }, [creationMode, mapSize, shouldCreateWaterMap]);
+    }, [creationMode, mapSize, shouldCreateWaterMap, onSubmit]);
 
-    const handleSubmitByKey = useCallback(
-        (key: string) => {
-            if (isSelected && key === createMapKeyBinding) {
-                handleSubmit();
-            }
-        },
-        [handleSubmit, isSelected],
-    );
+    const handleSubmitByKey = useKeyBinding(createMapKeyBinding, isSelected, handleSubmit);
 
     useKey(handleSubmitByKey);
 

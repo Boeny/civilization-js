@@ -9,6 +9,7 @@ import { getHexHeight } from 'hexUtils';
 import { useKey } from 'hooks/useKey';
 
 import { MiniMapWrapper } from '../components/MiniMapWrapper';
+import { useKeyBinding } from '../hooks/useKeyBinding';
 import { HexMapData } from '../models';
 import { IMiniMapProps } from '../types';
 
@@ -53,14 +54,7 @@ export const MiniMap = ({ isSelected, title, panelWidth, onMapCreate, createMapK
         onMapCreate({ shouldCreateWaterMap: true });
     }, []);
 
-    const handleCreateMapByKey = useCallback(
-        (key: string) => {
-            if (isSelected && key === createMapKeyBinding) {
-                handleMapCreate();
-            }
-        },
-        [createMapKeyBinding, handleMapCreate, isSelected],
-    );
+    const handleCreateMapByKey = useKeyBinding(createMapKeyBinding, isSelected, handleMapCreate);
 
     useKey(handleCreateMapByKey);
 

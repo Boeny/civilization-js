@@ -103,7 +103,7 @@ export const MiniMaps = ({ panelWidth, screenSize }: Props) => {
                             panelWidth={panelWidth}
                             isSelected={isSelected}
                             onMapCreate={(params) => handleMapCreate(miniMap.type, params)}
-                            createMapKeyBinding="c"
+                            createMapKeyBinding={['c', 'с']}
                         />
                     </div>
                 );

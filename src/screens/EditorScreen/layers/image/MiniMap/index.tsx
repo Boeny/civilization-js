@@ -13,6 +13,7 @@ import { getVector, getZeroVector, vectorSub } from 'utils';
 
 import { MiniMapWrapper } from '../../components/MiniMapWrapper';
 import { getMapsWithoutCurrent } from '../../config';
+import { useKeyBinding } from '../../hooks/useKeyBinding';
 import { CREATE_MODE, IMiniMapProps } from '../../types';
 import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../../utils';
 import { useStore } from '../store';
@@ -109,14 +110,7 @@ export const MiniMap = ({ screenSize, title, panelWidth, isSelected, onMapCreate
         }
     };
 
-    const handleLoadImageByKey = useCallback(
-        (key: string) => {
-            if (isSelected && key === createMapKeyBinding) {
-                loadImage();
-            }
-        },
-        [createMapKeyBinding, isSelected, loadImage],
-    );
+    const handleLoadImageByKey = useKeyBinding(createMapKeyBinding, isSelected, loadImage);
 
     useKey(handleLoadImageByKey);
 
