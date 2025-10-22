@@ -15,7 +15,7 @@ import { MiniMapWrapper } from '../../components/MiniMapWrapper';
 import { getMapsWithoutCurrent } from '../../config';
 import { useKeyBinding } from '../../hooks/useKeyBinding';
 import { CREATE_MODE, IMiniMapProps } from '../../types';
-import { getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../../utils';
+import { getImageMiniMapSize, getMapBorders, getFitScreenMapMovementParams, getSreenCenterMapMovementParams } from '../../utils';
 import { useStore } from '../store';
 import { uploadImage } from '../utils';
 
@@ -27,8 +27,7 @@ interface Props {
 }
 
 const MiniMapComponent = ({ map, title, onClick, panelWidth }: Props) => {
-    const width = panelWidth - 29;
-    const height = (width * map.height) / map.width;
+    const { width, height } = getImageMiniMapSize(panelWidth, map);
 
     return (
         <Canvas

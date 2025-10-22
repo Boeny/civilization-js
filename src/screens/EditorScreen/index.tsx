@@ -79,7 +79,7 @@ export const EditorScreen = () => {
             {isRightPanelShown && (
                 <RightPanel>
                     <MiniMaps
-                        panelWidth={RIGHT_PANEL.innerWidth}
+                        panelWidth={RIGHT_PANEL.innerWidth - 21}
                         screenSize={screenSize}
                     />
                 </RightPanel>

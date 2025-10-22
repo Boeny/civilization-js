@@ -5,13 +5,13 @@ import { Button } from 'components/Button';
 import { Canvas } from 'components/canvas/Canvas';
 import { Hex } from 'components/canvas/Hex';
 import { EMPTY_COLOR, WATER_COLOR } from 'const';
-import { getHexHeight } from 'hexUtils';
 import { useKey } from 'hooks/useKey';
 
 import { MiniMapWrapper } from '../components/MiniMapWrapper';
 import { useKeyBinding } from '../hooks/useKeyBinding';
 import { HexMapData } from '../models';
 import { IMiniMapProps } from '../types';
+import { getHexMiniMapSize } from '../utils';
 
 import { useStore } from './store';
 
@@ -22,20 +22,20 @@ type Props = {
 };
 
 const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
-    const miniHexWidth = panelWidth / (map.rowLength + 10);
-    const miniHexHeight = getHexHeight(miniHexWidth);
+    const { width, height, hexWidth } = getHexMiniMapSize(panelWidth, map);
 
     return (
         <Canvas
             title={title}
-            width={panelWidth + miniHexWidth / 2}
-            height={(miniHexHeight + 1) * map.columnLength}
-            style={{ maxHeight: 170 }}
+            width={width}
+            height={height}
         >
             {(ctx) => {
+                ctx.clearRect(0, 0, width, height);
+
                 map.data.forEach((row, y) => {
                     row.forEach((isWaterExist, x) => {
-                        Hex({ ctx, position: { x, y }, width: miniHexWidth, color: isWaterExist ? WATER_COLOR : EMPTY_COLOR });
+                        Hex({ ctx, position: { x, y }, width: hexWidth, color: isWaterExist ? WATER_COLOR : EMPTY_COLOR });
                     });
                 });
             }}
