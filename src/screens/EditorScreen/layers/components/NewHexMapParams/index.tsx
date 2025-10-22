@@ -24,7 +24,7 @@ export const NewHexMapParams = ({ isSelected, hasImageMap, onSubmit, createMapKe
     const [mapSize, setMapSize] = useState(getVector(100, 100));
     const [creationMode, setCreationMode] = useState(CREATE_MODE.fitScreen);
     const [isError, setError] = useState(false);
-    const [shouldCreateWaterMap, setCreationWaterMap] = useState(true);
+    const [shouldCreateWaterMap, setCreationWaterMap] = useState(false);
 
     const handleSubmit = useCallback(() => {
         onSubmit(mapSize, creationMode, shouldCreateWaterMap);
