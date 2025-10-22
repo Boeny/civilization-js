@@ -38,7 +38,6 @@ const MiniMapComponent = ({ panelWidth, title, map }: Props) => {
             title={title}
             width={width}
             height={height}
-            style={{ maxHeight: 170 }}
         >
             {(ctx) => {
                 ctx.clearRect(0, 0, width, height);
@@ -79,7 +78,12 @@ export const MiniMap = ({ isSelected, screenSize, title, panelWidth, onMapCreate
                 // zoom = screen_height / hex_image_height = screen_width / hex_image_width
                 // zoom = screen_height / (map_height * hex_height)
                 // map_height = screen_height / (zoom * hex_height)
-                mapSize.y = Math.floor(screenSize.y / (newMapMovementParams.zoom * hexHeight));
+                const zoomedHexHeight = newMapMovementParams.zoom * hexHeight;
+                mapSize.y = Math.floor(screenSize.y / zoomedHexHeight);
+
+                if (mapSize.y === 0) {
+                    mapSize.y = 1;
+                }
             }
             if (creationMode === CREATE_MODE.center) {
                 newMapMovementParams = getSreenCenterMapMovementParams(screenSize, currentHexImageSize);
